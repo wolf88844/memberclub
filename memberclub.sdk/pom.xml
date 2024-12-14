@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>memberclub</artifactId>
+        <groupId>com.memberclub</groupId>
+        <version>${baseversion}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>memberclub.sdk</artifactId>
+    <packaging>jar</packaging>
+    <version>${baseversion}</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.domain</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.common</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.infrastructure</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.util</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+    </dependencies>
+
+
+</project>

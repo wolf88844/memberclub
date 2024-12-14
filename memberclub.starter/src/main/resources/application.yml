@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MYSQL;TRACE_LEVEL_SYSTEM_OUT=2;
+    username: test
+    password: test
+    hikari:
+      driver-class-name: org.h2.Driver
+    schema: sql/tables.sql
+
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.memberclub.domain.entity

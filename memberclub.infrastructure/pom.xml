@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>memberclub</artifactId>
+        <groupId>com.memberclub</groupId>
+        <version>${baseversion}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>memberclub.infrastructure</artifactId>
+    <packaging>jar</packaging>
+    <version>${baseversion}</version>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.domain</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.common</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.util</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+
+        <!--
+                <dependency>
+                    <groupId>org.mybatis.spring.boot</groupId>
+                    <artifactId>mybatis-spring-boot-starter</artifactId>
+                </dependency>-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+        </dependency>
+
+
+        <!-- lombok dependencies should not end up on classpath -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+
+    </dependencies>
+</project>

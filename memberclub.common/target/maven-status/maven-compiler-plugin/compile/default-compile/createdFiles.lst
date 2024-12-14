@@ -1,0 +1,4 @@
+com/memberclub/common/annotation/BizScene.class
+com/memberclub/common/BizScene.class
+com/memberclub/common/extension/ExtensionImpl.class
+com/memberclub/common/extension/ExtensionManger.class

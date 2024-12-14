@@ -1,0 +1,6 @@
+com/memberclub/domain/entity/MemberPerformHis.class
+com/memberclub/domain/dto/MemberSkuDTO.class
+com/memberclub/domain/dataobject/SkuItemPerformConfigDO.class
+com/memberclub/domain/entity/MemberPerformItem.class
+com/memberclub/domain/dataobject/MemberSkuSnapshotDO.class
+com/memberclub/domain/dataobject/SkuPerformConfigDO.class
