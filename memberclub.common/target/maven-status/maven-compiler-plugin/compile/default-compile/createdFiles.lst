@@ -1,4 +1,9 @@
-com/memberclub/common/annotation/BizScene.class
-com/memberclub/common/BizScene.class
+com/memberclub/common/biz/SceneEnum.class
 com/memberclub/common/extension/ExtensionImpl.class
+com/memberclub/common/biz/BizTypeEnum.class
+com/memberclub/common/exception/MemberException.class
+com/memberclub/common/log/CommonLog.class
+com/memberclub/common/BizScene.class
+com/memberclub/common/extension/BaseExtension.class
 com/memberclub/common/extension/ExtensionManger.class
+com/memberclub/common/annotation/Route.class

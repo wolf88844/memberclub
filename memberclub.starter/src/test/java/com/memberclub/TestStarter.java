@@ -48,6 +48,7 @@ public class TestStarter {
         his.setSkuId(10);
         his.setOrderId("1001");
         his.setOrderSystemType(1);
+        his.setBuyCount(1);
         his.setTradeId("1_1001");
 
 

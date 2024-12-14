@@ -1,3 +1,4 @@
 com/memberclub/util/PeriodUtils.class
-com/memberclub/util/TimeRange.class
 com/memberclub/util/TimeUtil.class
+com/memberclub/util/GsonUtils.class
+com/memberclub/util/TimeRange.class

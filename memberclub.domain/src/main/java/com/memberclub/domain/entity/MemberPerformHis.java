@@ -24,6 +24,8 @@ public class MemberPerformHis {
 
     private String tradeId;
 
+    private int buyCount;
+
     private long skuId;
 
     private String extra;

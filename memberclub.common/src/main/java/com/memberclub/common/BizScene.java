@@ -16,7 +16,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class BizScene {
 
-    public int bizId;
+    public int bizType;
 
     public String scene;
+
+    public static BizScene of(int bizType, String scene) {
+        return new BizScene(bizType, scene);
+    }
+
+    public String getKey() {
+        return String.format("%s_%s", bizType, scene);
+    }
 }

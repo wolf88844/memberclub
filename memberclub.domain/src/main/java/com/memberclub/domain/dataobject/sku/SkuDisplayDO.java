@@ -1,10 +1,10 @@
 /**
- * @(#)MemberSkuDO.java, 十二月 14, 2024.
+ * @(#)SkuDisplayDO.java, 十二月 14, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.dataobject;
+package com.memberclub.domain.dataobject.sku;
 
 import lombok.Data;
 
@@ -12,12 +12,7 @@ import lombok.Data;
  * @author yuhaiqiang
  */
 @Data
-public class MemberSkuSnapshotDO {
-
-    private int bizType;
-
-    private long skuId;
-
+public class SkuDisplayDO {
     private String displayName;
 
     private String displayDesc;
@@ -25,7 +20,4 @@ public class MemberSkuSnapshotDO {
     private String internalName;
 
     private String internalDesc;
-
-
-    private SkuPerformConfigDO performConfig;
 }

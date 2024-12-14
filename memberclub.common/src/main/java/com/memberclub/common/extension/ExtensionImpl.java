@@ -6,7 +6,7 @@
  */
 package com.memberclub.common.extension;
 
-import com.memberclub.common.annotation.BizScene;
+import com.memberclub.common.annotation.Route;
 import org.springframework.stereotype.Service;
 
 import java.lang.annotation.ElementType;
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @Service
 public @interface ExtensionImpl {
 
-    public BizScene[] bizScenes();
+    public Route[] bizScenes();
 
     public String desc();
 }

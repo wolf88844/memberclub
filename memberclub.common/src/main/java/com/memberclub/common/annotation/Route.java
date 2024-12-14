@@ -6,12 +6,15 @@
  */
 package com.memberclub.common.annotation;
 
+import com.memberclub.common.biz.BizTypeEnum;
+import com.memberclub.common.biz.SceneEnum;
+
 /**
  * @author yuhaiqiang
  */
-public @interface BizScene {
+public @interface Route {
 
-    public int bizType();
+    public BizTypeEnum bizType();
 
-    public String scene();
+    public SceneEnum scene() default SceneEnum.DEFAULT_SCENE;
 }

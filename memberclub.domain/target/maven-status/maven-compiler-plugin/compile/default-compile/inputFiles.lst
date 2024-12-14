@@ -1,6 +1,10 @@
-/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/SkuPerformConfigDO.java
 /Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/entity/MemberPerformHis.java
-/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dto/MemberSkuDTO.java
-/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/SkuItemPerformConfigDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/perform/MemberPerformHisDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/sku/SkuItemPerformConfigDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/sku/MemberSkuSnapshotDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/buy/MemberOrderDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/entity/MemberOrder.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dto/sku/MemberSkuDTO.java
 /Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/entity/MemberPerformItem.java
-/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/MemberSkuSnapshotDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/sku/SkuPerformConfigDO.java
+/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.domain/src/main/java/com/memberclub/domain/dataobject/sku/SkuDisplayDO.java

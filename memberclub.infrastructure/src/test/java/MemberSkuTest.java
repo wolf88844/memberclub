@@ -5,8 +5,8 @@
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-import com.memberclub.domain.dataobject.MemberSkuSnapshotDO;
-import com.memberclub.domain.dto.MemberSkuDTO;
+import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
+import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.junit.Test;
 

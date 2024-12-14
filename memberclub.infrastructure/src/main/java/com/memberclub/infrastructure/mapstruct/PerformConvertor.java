@@ -6,8 +6,8 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
-import com.memberclub.domain.dataobject.MemberSkuSnapshotDO;
-import com.memberclub.domain.dto.MemberSkuDTO;
+import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
+import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

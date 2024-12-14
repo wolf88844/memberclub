@@ -1,3 +1,4 @@
+com/memberclub/infrastructure/dynamic_config/DynamicConfig.class
 com/memberclub/infrastructure/mapstruct/PerformConvertorImpl.class
 com/memberclub/infrastructure/mapstruct/PerformConvertor.class
 com/memberclub/infrastructure/mybatis/mappers/MemberPerformHisDao.class
