@@ -9,7 +9,7 @@ package com.memberclub.common.extension;
 import com.memberclub.common.BizScene;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.exception.MemberException;
-import com.memberclub.common.log.CommonLog;
+import com.memberclub.util.log.CommonLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @Service
 public class ExtensionManger {

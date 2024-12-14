@@ -6,11 +6,10 @@
  */
 package com.memberclub;
 
-import com.google.gson.reflect.TypeToken;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.starter.AppStarter;
-import com.memberclub.util.GsonUtils;
+import com.memberclub.util.JsonUtils;
 import com.memberclub.util.PeriodUtils;
 import com.memberclub.util.TimeRange;
 import com.memberclub.util.TimeUtil;
@@ -23,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AppStarter.class})
@@ -81,10 +80,9 @@ public class TestStarter {
         his.setCtime(TimeUtil.now());
         his.setUtime(TimeUtil.now());
 
-        String json = GsonUtils.toJSON(his);
+        String json = JsonUtils.toJson(his);
         System.out.println(json);
-        MemberPerformHis performHis = GsonUtils.fromJson(json, new TypeToken<MemberPerformHis>() {
-        });
+        MemberPerformHis performHis = JsonUtils.fromJson(json, MemberPerformHis.class);
         System.out.println(performHis);
     }
 

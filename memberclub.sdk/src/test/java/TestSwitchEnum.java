@@ -9,7 +9,7 @@ import com.memberclub.sdk.config.SwitchEnum;
 import org.junit.Test;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class TestSwitchEnum {
 

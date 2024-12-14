@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @Mapper
 public interface PerformConvertor {

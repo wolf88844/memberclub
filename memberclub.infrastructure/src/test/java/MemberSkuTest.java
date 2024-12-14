@@ -11,7 +11,7 @@ import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.junit.Test;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class MemberSkuTest {
 

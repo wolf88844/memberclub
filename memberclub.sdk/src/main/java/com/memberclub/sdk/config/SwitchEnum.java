@@ -9,7 +9,7 @@ package com.memberclub.sdk.config;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public enum SwitchEnum {
 

@@ -11,7 +11,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @Data
 public class SkuPerformConfigDO {

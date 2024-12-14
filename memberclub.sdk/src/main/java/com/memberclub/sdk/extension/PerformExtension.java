@@ -9,7 +9,7 @@ package com.memberclub.sdk.extension;
 import com.memberclub.common.extension.BaseExtension;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public interface PerformExtension extends BaseExtension {
 

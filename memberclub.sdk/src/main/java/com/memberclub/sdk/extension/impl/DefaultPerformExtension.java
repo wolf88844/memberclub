@@ -10,11 +10,11 @@ import com.memberclub.common.annotation.Route;
 import com.memberclub.common.biz.BizTypeEnum;
 import com.memberclub.common.biz.SceneEnum;
 import com.memberclub.common.extension.ExtensionImpl;
-import com.memberclub.common.log.CommonLog;
+import com.memberclub.util.log.CommonLog;
 import com.memberclub.sdk.extension.PerformExtension;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.DEFAULT_SCENE)})
 public class DefaultPerformExtension implements PerformExtension {

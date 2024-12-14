@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class TimeUtil {
 

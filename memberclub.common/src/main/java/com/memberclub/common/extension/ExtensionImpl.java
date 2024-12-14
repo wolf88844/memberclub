@@ -15,7 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 public @interface ExtensionImpl {
 
     public Route[] bizScenes();
+
 
     public String desc();
 }

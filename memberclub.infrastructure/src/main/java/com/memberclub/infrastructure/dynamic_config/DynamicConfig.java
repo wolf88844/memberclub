@@ -9,7 +9,7 @@ package com.memberclub.infrastructure.dynamic_config;
 /**
  * // TODO: 2024/12/14 接入分布式字典服务
  *
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class DynamicConfig {
     public static boolean getBoolean(String key, Boolean value) {

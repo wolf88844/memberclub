@@ -25,6 +25,11 @@
             <version>${baseversion}</version>
         </dependency>
         <dependency>
+            <groupId>com.memberclub</groupId>
+            <artifactId>memberclub.util</artifactId>
+            <version>${baseversion}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

@@ -9,7 +9,7 @@ package com.memberclub.domain.dataobject.sku;
 import lombok.Data;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @Data
 public class SkuItemPerformConfigDO {

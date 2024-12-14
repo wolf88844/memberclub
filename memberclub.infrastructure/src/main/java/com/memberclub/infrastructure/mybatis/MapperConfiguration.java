@@ -10,7 +10,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @MapperScan(basePackages = {"com.memberclub.infrastructure.mybatis.mappers"})
 @Configuration

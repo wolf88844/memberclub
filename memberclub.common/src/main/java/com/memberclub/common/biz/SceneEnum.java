@@ -7,7 +7,7 @@
 package com.memberclub.common.biz;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public enum SceneEnum {
 

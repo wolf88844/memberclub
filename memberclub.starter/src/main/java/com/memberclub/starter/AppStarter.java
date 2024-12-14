@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @SpringBootApplication(scanBasePackages = {"com.memberclub"})
 public class AppStarter {

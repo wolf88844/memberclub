@@ -10,7 +10,7 @@ import com.memberclub.common.biz.BizTypeEnum;
 import com.memberclub.common.biz.SceneEnum;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public @interface Route {
 

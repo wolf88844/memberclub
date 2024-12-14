@@ -4,13 +4,13 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.common.log;
+package com.memberclub.util.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class CommonLog {
 

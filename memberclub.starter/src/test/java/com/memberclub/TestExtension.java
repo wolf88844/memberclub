@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AppStarter.class})

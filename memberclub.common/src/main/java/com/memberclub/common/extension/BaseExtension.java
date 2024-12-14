@@ -7,7 +7,7 @@
 package com.memberclub.common.extension;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public interface BaseExtension {
 }

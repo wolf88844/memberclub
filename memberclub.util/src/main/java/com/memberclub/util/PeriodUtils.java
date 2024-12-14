@@ -7,7 +7,7 @@
 package com.memberclub.util;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class PeriodUtils {
 

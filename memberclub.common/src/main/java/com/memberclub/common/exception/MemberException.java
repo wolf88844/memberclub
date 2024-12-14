@@ -7,7 +7,7 @@
 package com.memberclub.common.exception;
 
 /**
- * @author yuhaiqiang
+ * @author 掘金五阳
  */
 public class MemberException extends RuntimeException {
     public MemberException() {
