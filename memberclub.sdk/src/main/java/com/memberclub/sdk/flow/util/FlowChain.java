@@ -6,6 +6,8 @@
  */
 package com.memberclub.sdk.flow.util;
 
+import com.memberclub.util.log.CommonLog;
+import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.builder.el.LiteFlowChainELBuilder;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
@@ -46,8 +48,10 @@ public class FlowChain<T> {
 
     public FlowChain<T> build(String chainId) {
         this.chainId = chainId;
+        String el = buildEl(nodes);
         LiteFlowChainELBuilder.createChain().setChainId(chainId)
-                .setEL(buildEl(nodes)).build();
+                .setEL(el).build();
+        CommonLog.info("构建流程成功 chainId:{}, el:{}", chainId, el);
         return this;
     }
 
@@ -61,7 +65,10 @@ public class FlowChain<T> {
     public static <T> String buildEl(List<Class<? extends AbstractFlowNode<T>>> classes) {
         String[] classSimpleName = new String[classes.size()];
         for (int i = 0; i < classes.size(); i++) {
-            classSimpleName[i] = classes.get(i).getSimpleName();
+            LiteflowComponent component = classes.get(i).getAnnotation(LiteflowComponent.class);
+            String value = component.value();
+
+            classSimpleName[i] = value;
         }
         String el = String.format("%s(%s)", "THEN", StringUtils.join(classSimpleName, ","));
         return el;

@@ -6,14 +6,14 @@
  */
 package com.memberclub;
 
-import com.memberclub.util.log.CommonLog;
 import com.memberclub.sdk.flow.util.AbstractFlowNode;
+import com.memberclub.util.log.CommonLog;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 
 /**
  * author: 掘金五阳
  */
-@LiteflowComponent("FlowB")
+@LiteflowComponent("FlowBfff")
 public class FlowB extends AbstractFlowNode<FlowContext> {
 
     @Override

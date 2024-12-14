@@ -13,7 +13,7 @@ import com.yomahub.liteflow.annotation.LiteflowComponent;
 /**
  * author: 掘金五阳
  */
-@LiteflowComponent("FlowA")
+@LiteflowComponent("FlowAaaa")
 public class FlowA extends AbstractFlowNode<FlowContext> {
 
     @Override
