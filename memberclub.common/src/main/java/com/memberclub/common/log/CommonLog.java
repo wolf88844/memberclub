@@ -22,7 +22,7 @@ public class CommonLog {
     }
 
     public static void warn(String format, Object... args) {
-        LOG.error(format, args);
+        LOG.warn(format, args);
     }
 
     public static void error(String format, Object... args) {

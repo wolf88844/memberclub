@@ -11,6 +11,9 @@ import com.memberclub.common.biz.BizTypeEnum;
 import com.memberclub.common.biz.SceneEnum;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.log.LogDomainEnum;
+import com.memberclub.common.log.UserLog;
+import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.sdk.extension.PerformExtension;
 
 /**
@@ -19,8 +22,9 @@ import com.memberclub.sdk.extension.PerformExtension;
 @ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.DEFAULT_SCENE)})
 public class DefaultPerformExtension implements PerformExtension {
 
+    @UserLog(bizType = "bizType", orderId = "orderId", userId = "userId", domain = LogDomainEnum.PERFORM)
     @Override
-    public void execute() throws Exception {
+    public void execute(PerformCmd cmd) throws Exception {
         CommonLog.info("接收到 execute方法");
     }
 }

@@ -1,0 +1,63 @@
+/**
+ * @(#)UserLogAspect.java, 十二月 15, 2024.
+ * <p>
+ * Copyright 2024 fenbi.com. All rights reserved.
+ * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+package com.memberclub.common.log;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+
+/**
+ * author: 掘金五阳
+ */
+@Aspect
+@Component
+public class UserLogAspect {
+
+    @Pointcut("@annotation(UserLog) && execution(public * *(..))")
+    public void pointcut() {
+    }
+
+    @Around(value = "pointcut()")
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        //无参方法不处理
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        Object[] args = joinPoint.getArgs();
+
+        //获取注解
+        UserLog userLogAnnotation = method.getAnnotation(UserLog.class);
+        if (userLogAnnotation != null && args != null && args.length > 0) {
+            //使用工具类获取userId。
+            String userId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.userId()));
+            String orderId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.orderId()));
+            String bizType = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.bizType()));
+            // 放到MDC中
+            String msg = String.format(" [domain:%s bizType:%s userId:%s orderId:%s] ",
+                    userLogAnnotation.domain().name(), bizType, userId, orderId);
+
+
+            MDC.put("msg", msg);
+        }
+
+        try {
+            Object response = joinPoint.proceed();
+            return response;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            //清理MDC
+            MDC.clear();
+        }
+
+    }
+}

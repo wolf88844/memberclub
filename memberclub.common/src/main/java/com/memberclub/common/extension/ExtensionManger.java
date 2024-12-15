@@ -12,11 +12,14 @@ import com.memberclub.common.exception.MemberException;
 import com.memberclub.common.log.CommonLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author 掘金五阳
@@ -37,8 +40,9 @@ public class ExtensionManger {
 
         for (String beanName : beanNames) {
             Object bean = context.getBean(beanName);
-            Class<?>[] interfaces = bean.getClass().getInterfaces();
-            ExtensionImpl extension = bean.getClass().getAnnotation(ExtensionImpl.class);
+            Set<Class<?>> interfaces =
+                    ClassUtils.getAllInterfacesForClassAsSet(bean.getClass());
+            ExtensionImpl extension = AnnotationUtils.findAnnotation(bean.getClass(), ExtensionImpl.class);
             Route[] routes = extension.bizScenes();
 
 

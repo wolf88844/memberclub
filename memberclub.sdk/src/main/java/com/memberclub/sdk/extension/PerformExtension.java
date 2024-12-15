@@ -7,11 +7,12 @@
 package com.memberclub.sdk.extension;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.domain.dataobject.perform.PerformCmd;
 
 /**
  * @author 掘金五阳
  */
 public interface PerformExtension extends BaseExtension {
 
-    public void execute() throws Exception;
+    public void execute(PerformCmd cmd) throws Exception;
 }

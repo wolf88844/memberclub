@@ -6,8 +6,8 @@
  */
 package com.memberclub;
 
-import com.memberclub.sdk.flow.util.AbstractFlowNode;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.sdk.flow.util.AbstractFlowNode;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 
 /**
@@ -19,6 +19,6 @@ public class FlowB extends AbstractFlowNode<FlowContext> {
     @Override
     public void process() throws Exception {
         FlowContext context = this.getContextBean(FlowContext.class);
-        CommonLog.info("执行到 flowB");
+        CommonLog.warn("执行到 flowB");
     }
 }

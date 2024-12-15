@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+
+    <Appenders>
+        <Console name="consoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5p -%X{msg}%m%n%ex"
+                           charset="UTF-8"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <!-- Root Logger -->
+        <AsyncRoot level="INFO" includeLocation="true">
+            <appender-ref ref="consoleAppender"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

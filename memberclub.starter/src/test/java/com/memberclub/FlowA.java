@@ -19,6 +19,6 @@ public class FlowA extends AbstractFlowNode<FlowContext> {
     @Override
     public void process() throws Exception {
         FlowContext context = this.getContextBean(FlowContext.class);
-        CommonLog.info("执行到 FlowA");
+        CommonLog.warn("执行到 FlowA");
     }
 }

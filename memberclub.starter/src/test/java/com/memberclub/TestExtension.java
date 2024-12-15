@@ -11,6 +11,7 @@ import com.memberclub.common.biz.BizTypeEnum;
 import com.memberclub.common.biz.SceneEnum;
 import com.memberclub.common.exception.MemberException;
 import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.sdk.extension.PerformExtension;
 import com.memberclub.sdk.extension.ReversePerformExtension;
 import com.memberclub.sdk.extension.impl.DefaultPerformExtension;
@@ -39,7 +40,11 @@ public class TestExtension {
         PerformExtension extension = extensionManger.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), PerformExtension.class);
-        extension.execute();
+        PerformCmd cmd = new PerformCmd();
+        cmd.setBizType(1);
+        cmd.setUserId(1000);
+        cmd.setOrderId("8342493");
+        extension.execute(cmd);
     }
 
     @Test(expected = MemberException.class)
@@ -48,7 +53,11 @@ public class TestExtension {
         PerformExtension extension = extensionManger.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), DefaultPerformExtension.class);
-        extension.execute();
+        PerformCmd cmd = new PerformCmd();
+        cmd.setBizType(1);
+        cmd.setUserId(1000);
+        cmd.setOrderId("8342493");
+        extension.execute(cmd);
     }
 
     @Test(expected = MemberException.class)
