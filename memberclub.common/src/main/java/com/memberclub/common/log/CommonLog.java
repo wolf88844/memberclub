@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.util.log;
+package com.memberclub.common.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,9 +5,9 @@
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-import com.memberclub.util.PeriodUtils;
-import com.memberclub.util.TimeRange;
-import com.memberclub.util.TimeUtil;
+import com.memberclub.common.util.PeriodUtils;
+import com.memberclub.common.util.TimeRange;
+import com.memberclub.common.util.TimeUtil;
 import org.junit.Test;
 
 /**

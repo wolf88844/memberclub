@@ -19,7 +19,6 @@
         <module>memberclub.domain</module>
         <module>memberclub.sdk</module>
         <module>memberclub.plugin.demomember</module>
-        <module>memberclub.util</module>
         <module>memberclub.infrastructure</module>
         <module>memberclub.starter</module>
     </modules>
@@ -112,7 +111,7 @@
                 <version>4.12</version>
                 <scope>test</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>

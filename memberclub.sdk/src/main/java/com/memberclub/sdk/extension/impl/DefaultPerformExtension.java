@@ -10,7 +10,7 @@ import com.memberclub.common.annotation.Route;
 import com.memberclub.common.biz.BizTypeEnum;
 import com.memberclub.common.biz.SceneEnum;
 import com.memberclub.common.extension.ExtensionImpl;
-import com.memberclub.util.log.CommonLog;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.sdk.extension.PerformExtension;
 
 /**

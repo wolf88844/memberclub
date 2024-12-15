@@ -9,7 +9,7 @@ package com.memberclub.common.extension;
 import com.memberclub.common.BizScene;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.exception.MemberException;
-import com.memberclub.util.log.CommonLog;
+import com.memberclub.common.log.CommonLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.flow.util;
 
-import com.memberclub.util.log.CommonLog;
+import com.memberclub.common.log.CommonLog;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.builder.el.LiteFlowChainELBuilder;
 import com.yomahub.liteflow.core.FlowExecutor;

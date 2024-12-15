@@ -8,7 +8,7 @@ package com.memberclub;
 
 import com.memberclub.sdk.flow.util.FlowChain;
 import com.memberclub.starter.AppStarter;
-import com.memberclub.util.JsonUtils;
+import com.memberclub.common.util.JsonUtils;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import org.junit.Before;

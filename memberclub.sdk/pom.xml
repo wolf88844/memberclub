@@ -30,11 +30,6 @@
             <version>${baseversion}</version>
         </dependency>
         <dependency>
-            <groupId>com.memberclub</groupId>
-            <artifactId>memberclub.util</artifactId>
-            <version>${baseversion}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
