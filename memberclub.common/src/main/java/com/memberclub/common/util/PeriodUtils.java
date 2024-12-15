@@ -11,17 +11,17 @@ package com.memberclub.common.util;
  */
 public class PeriodUtils {
 
-    public static TimeRange buildTimeRangeFromNow(int periodDays) {
-        return buildTimeRangeFromNow(periodDays, true);
+    public static TimeRange buildTimeRangeFromBaseTime(int periodDays) {
+        return buildTimeRangeFromBaseTime(TimeUtil.now(), periodDays, true);
     }
 
 
-    public static TimeRange buildTimeRangeFromNow(int periodDays, boolean containsFirstDay) {
+    public static TimeRange buildTimeRangeFromBaseTime(long baseTime, int periodDays, boolean containsFirstDay) {
         if (containsFirstDay) {
             periodDays = periodDays - 1;//包含当天
         }
 
-        long now = TimeUtil.now();
+        long now = baseTime;
         long etime = TimeUtil.plusGivenDayEtime(now, periodDays);
         return new TimeRange(now, etime);
     }

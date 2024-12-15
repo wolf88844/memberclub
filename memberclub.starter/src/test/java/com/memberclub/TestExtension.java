@@ -6,15 +6,14 @@
  */
 package com.memberclub;
 
-import com.memberclub.common.BizScene;
-import com.memberclub.common.biz.BizTypeEnum;
-import com.memberclub.common.biz.SceneEnum;
-import com.memberclub.common.exception.MemberException;
 import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
-import com.memberclub.sdk.extension.PerformExtension;
+import com.memberclub.sdk.extension.perform.PerformExtension;
 import com.memberclub.sdk.extension.ReversePerformExtension;
-import com.memberclub.sdk.extension.impl.DefaultPerformExtension;
+import com.memberclub.sdk.extension.perform.impl.DefaultPerformExtension;
 import com.memberclub.starter.AppStarter;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -41,26 +40,26 @@ public class TestExtension {
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), PerformExtension.class);
         PerformCmd cmd = new PerformCmd();
-        cmd.setBizType(1);
+        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setUserId(1000);
         cmd.setOrderId("8342493");
         extension.execute(cmd);
     }
 
-    @Test(expected = MemberException.class)
+    @Test(expected = RuntimeException.class)
     @SneakyThrows
     public void testInterfaceException() {
         PerformExtension extension = extensionManger.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), DefaultPerformExtension.class);
         PerformCmd cmd = new PerformCmd();
-        cmd.setBizType(1);
+        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setUserId(1000);
         cmd.setOrderId("8342493");
         extension.execute(cmd);
     }
 
-    @Test(expected = MemberException.class)
+    @Test(expected = RuntimeException.class)
     @SneakyThrows
     public void testInterfaceExceptionAndLossBaseException() {
         ReversePerformExtension extension = extensionManger.getExtension(

@@ -2,7 +2,7 @@
 <Configuration status="info">
 
     <Appenders>
-        <Console name="consoleAppender" target="SYSTEM_OUT">
+        <Console msg="consoleAppender" name="consoleAppender" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{DEFAULT} [%t] %-5p -%X{msg}%m%n%ex"
                            charset="UTF-8"/>
         </Console>

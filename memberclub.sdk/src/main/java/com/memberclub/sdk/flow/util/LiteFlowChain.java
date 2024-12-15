@@ -13,6 +13,9 @@ import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,33 +23,46 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
+@Deprecated
 @Data
-public class FlowChain<T> {
+public class LiteFlowChain<T> {
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private String chainId;
 
     private List<Class<? extends AbstractFlowNode<T>>> nodes = new ArrayList<>();
 
-    public FlowChain<T> addNodes(Class<? extends AbstractFlowNode<T>>... components) {
+    public LiteFlowChain(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    public LiteFlowChain<T> addNodes(Class<? extends AbstractFlowNode<T>>... components) {
         for (Class<? extends AbstractFlowNode<T>> component : components) {
+            LiteflowComponent liteflowComponent = AnnotationUtils.findAnnotation(component, LiteflowComponent.class);
+            Object bean = applicationContext.getBean(liteflowComponent.value());
             nodes.add(component);
         }
         return this;
     }
 
-    public FlowChain<T> addNode(Class<? extends AbstractFlowNode<T>> component) {
+    public LiteFlowChain<T> addNode(Class<? extends AbstractFlowNode<T>> component) {
+        LiteflowComponent liteflowComponent = AnnotationUtils.findAnnotation(component, LiteflowComponent.class);
+        Object bean = applicationContext.getBean(liteflowComponent.value());
+
         nodes.add(component);
         return this;
     }
 
-    @SuppressWarnings("unchecked")
+   /* @SuppressWarnings("unchecked")
     public static <T> FlowChain<T> newChain(Class<? extends AbstractFlowNode<T>>... components) {
         FlowChain<T> flowChain = new FlowChain<T>();
         flowChain.addNodes(components);
         return flowChain;
-    }
+    }*/
 
-    public FlowChain<T> build(String chainId) {
+    public LiteFlowChain<T> build(String chainId) {
         this.chainId = chainId;
         String el = buildEl(nodes);
         LiteFlowChainELBuilder.createChain().setChainId(chainId)

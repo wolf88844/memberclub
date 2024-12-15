@@ -16,6 +16,6 @@ import java.util.List;
 @Data
 public class SkuPerformConfigDO {
     
-    private List<SkuItemPerformConfigDO> configs;
+    private List<SkuPerformItemConfigDO> configs;
 
 }

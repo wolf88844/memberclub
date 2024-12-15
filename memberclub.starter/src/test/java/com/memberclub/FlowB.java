@@ -20,5 +20,28 @@ public class FlowB extends AbstractFlowNode<FlowContext> {
     public void process() throws Exception {
         FlowContext context = this.getContextBean(FlowContext.class);
         CommonLog.warn("执行到 flowB");
+        //ResultCode.CAN_NOT_PERFORM_RETRY.throwException();
+    }
+
+
+    @Override
+    public void onSuccess() throws Exception {
+        super.onSuccess();
+        CommonLog.warn("FlowB onSuccess");
+    }
+
+    @Override
+    public void onError(Exception e) throws Exception {
+        CommonLog.warn("FlowB onError");
+    }
+
+    @Override
+    public void rollback() throws Exception {
+        CommonLog.warn("FlowB rollback");
+    }
+
+    @Override
+    public void afterProcess() {
+        CommonLog.warn("FlowB afterProcess");
     }
 }

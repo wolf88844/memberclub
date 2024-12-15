@@ -12,7 +12,7 @@ import lombok.Data;
  * @author 掘金五阳
  */
 @Data
-public class SkuItemPerformConfigDO {
+public class SkuPerformItemConfigDO {
 
     private int bizType;
 

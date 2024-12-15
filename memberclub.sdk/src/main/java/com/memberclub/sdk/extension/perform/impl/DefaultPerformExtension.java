@@ -4,17 +4,17 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.impl;
+package com.memberclub.sdk.extension.perform.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.biz.BizTypeEnum;
-import com.memberclub.common.biz.SceneEnum;
+import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
-import com.memberclub.sdk.extension.PerformExtension;
+import com.memberclub.sdk.extension.perform.PerformExtension;
 
 /**
  * @author 掘金五阳

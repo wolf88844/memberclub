@@ -39,7 +39,7 @@ public class TestStarter {
         his.setBizType(1);
         his.setUserId(1000);
 
-        TimeRange timeRange = PeriodUtils.buildTimeRangeFromNow(2);
+        TimeRange timeRange = PeriodUtils.buildTimeRangeFromBaseTime(2);
 
 
         his.setEtime(timeRange.getEtime());
@@ -67,7 +67,7 @@ public class TestStarter {
         his.setBizType(1);
         his.setUserId(1000);
 
-        TimeRange timeRange = PeriodUtils.buildTimeRangeFromNow(2);
+        TimeRange timeRange = PeriodUtils.buildTimeRangeFromBaseTime(2);
 
 
         his.setEtime(timeRange.getEtime());

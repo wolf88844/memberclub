@@ -22,9 +22,13 @@ public class MemberOrder {
 
     private String orderId;
 
+    private String tradeId;
+
     private String userInfo;
 
     private String skuDetails;
+    
+    private String extra;
 
     private String actPriceFen;
 

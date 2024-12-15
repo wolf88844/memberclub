@@ -13,7 +13,10 @@ import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
  */
 public enum SwitchEnum {
 
-    LOCK_TIMEOUT_SECONDS("lock_time", 10);
+    LOCK_TIMEOUT_SECONDS("lock_time", 10),
+    PERFORM_RETRY_MAX_TIME("perform_retry_max_time", 5),
+
+    ;
 
 
     private String key;

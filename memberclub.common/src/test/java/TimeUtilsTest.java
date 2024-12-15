@@ -23,7 +23,7 @@ public class TimeUtilsTest {
 
     @Test
     public void testRange() {
-        TimeRange range = PeriodUtils.buildTimeRangeFromNow(2, true);
+        TimeRange range = PeriodUtils.buildTimeRangeFromBaseTime(TimeUtil.now(), 2, true);
         System.out.println(range);
     }
 

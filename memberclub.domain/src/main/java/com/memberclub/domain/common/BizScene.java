@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.common;
+package com.memberclub.domain.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +22,10 @@ public class BizScene {
 
     public static BizScene of(int bizType, String scene) {
         return new BizScene(bizType, scene);
+    }
+
+    public static BizScene of(int bizType) {
+        return new BizScene(bizType, SceneEnum.DEFAULT_SCENE.getName());
     }
 
     public String getKey() {

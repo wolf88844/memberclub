@@ -6,10 +6,9 @@
  */
 package com.memberclub.common.extension;
 
-import com.memberclub.common.BizScene;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.exception.MemberException;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.domain.common.BizScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -53,7 +52,7 @@ public class ExtensionManger {
                         Object value = extensionBeanMap.put(key, bean);
                         if (value != null) {
                             CommonLog.error("注册 Extension key:{}冲突", key);
-                            throw new MemberException("注册 Extension 冲突");
+                            throw new RuntimeException("注册 Extension 冲突");
                         }
                         CommonLog.info("注册 Extension key:{}, 接口:{}, 实现类:{}", key, anInterface.getSimpleName(), bean.getClass().getSimpleName());
                     }
@@ -69,17 +68,17 @@ public class ExtensionManger {
 
     public <T> T getExtension(BizScene bizScene, Class<T> tClass) {
         if (!tClass.isInterface()) {
-            throw new MemberException(String.format("%s 需要是一个接口", tClass.getSimpleName()));
+            throw new RuntimeException(String.format("%s 需要是一个接口", tClass.getSimpleName()));
         }
         if (!BaseExtension.class.isAssignableFrom(tClass)) {
-            throw new MemberException(String.format("%s 需要继承 BaseExtension 接口", tClass.getSimpleName()));
+            throw new RuntimeException(String.format("%s 需要继承 BaseExtension 接口", tClass.getSimpleName()));
         }
 
         String key = buildKey(tClass, bizScene.getBizType(), bizScene.getScene());
         T value = (T) extensionBeanMap.get(key);
 
         if (value == null) {
-            throw new MemberException(String.format("%s 没有找到实现类%s", tClass.getSimpleName(), bizScene.getKey()));
+            throw new RuntimeException(String.format("%s 没有找到实现类%s", tClass.getSimpleName(), bizScene.getKey()));
         }
         return value;
     }

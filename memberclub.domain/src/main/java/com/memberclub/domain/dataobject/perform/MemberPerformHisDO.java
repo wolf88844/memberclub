@@ -6,8 +6,14 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
+import lombok.Data;
+
 /**
  * @author 掘金五阳
  */
+@Data
 public class MemberPerformHisDO {
+
+
+
 }

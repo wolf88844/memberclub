@@ -11,6 +11,7 @@ import com.yomahub.liteflow.core.NodeComponent;
 /**
  * author: 掘金五阳
  */
+@Deprecated
 public abstract class AbstractFlowNode<T> extends NodeComponent {
 
 
