@@ -29,7 +29,9 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.DEFAULT_SCENE)})
+@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {
+        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD, SceneEnum.SCENE_MUTIL_PERIOD_CARD})
+})
 public class DefaultBuildPerformContextExtension implements BuildPerformContextExtension {
 
     FlowChain<PerformContext> buildPerformContextChain = null;

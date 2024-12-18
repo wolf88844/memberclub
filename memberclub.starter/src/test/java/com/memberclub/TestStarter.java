@@ -6,13 +6,17 @@
  */
 package com.memberclub;
 
-import com.memberclub.domain.entity.MemberPerformHis;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
-import com.memberclub.starter.AppStarter;
+import com.google.common.collect.ImmutableMap;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.starter.AppStarter;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +88,42 @@ public class TestStarter {
         System.out.println(json);
         MemberPerformHis performHis = JsonUtils.fromJson(json, MemberPerformHis.class);
         System.out.println(performHis);
+    }
+
+    @Autowired
+    private MemberPerformItemDao memberPerformItemDao;
+
+    @Test
+    public void testItem() {
+        int cnt = 3;
+        List<MemberPerformItem> items = Lists.newArrayList();
+        for (int i = cnt; i > 0; i--) {
+            MemberPerformItem item = new MemberPerformItem();
+            item.setAssetCount(4);
+            item.setBatchCode("2323");
+            item.setBizType(1);
+            item.setBuyIndex(1);
+            item.setCtime(TimeUtil.now());
+            item.setCycle(1);
+            item.setPhase(1);
+            item.setRightId(1);
+            item.setRightType(1);
+            item.setSkuId(1);
+            item.setGrantType(1);
+            item.setStatus(1);
+            item.setTradeId("gjeigejoig" + i);
+            item.setStime(TimeUtil.now());
+            item.setEtime(TimeUtil.now());
+            item.setUserId(1);
+            item.setUtime(TimeUtil.now());
+            items.add(item);
+        }
+
+        int num = memberPerformItemDao.insertIgnoreBatch(items);
+        System.out.println(num);
+
+        List<MemberPerformItem> itemsDb = memberPerformItemDao.selectByMap(ImmutableMap.of("user_id", 1));
+        System.out.println(JsonUtils.toJson(itemsDb));
     }
 
 }

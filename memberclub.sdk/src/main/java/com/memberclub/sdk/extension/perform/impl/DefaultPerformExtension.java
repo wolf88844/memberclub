@@ -19,7 +19,7 @@ import com.memberclub.sdk.extension.perform.PerformExtension;
 /**
  * @author 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.DEFAULT_SCENE)})
+@ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultPerformExtension implements PerformExtension {
 
     @UserLog(bizType = "bizType", orderId = "orderId", userId = "userId", domain = LogDomainEnum.PERFORM)

@@ -6,6 +6,8 @@
  */
 package com.memberclub.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,6 +15,10 @@ import lombok.Data;
  */
 @Data
 public class MemberPerformItem {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
     private int bizType;
 
     private long userId;
@@ -25,17 +31,23 @@ public class MemberPerformItem {
 
     private int rightType;
 
-    private int batchCode;
+    private String batchCode;
+
+    private int assetCount;
 
     private int phase;
 
     private int cycle;
+
+    private int buyIndex;
 
     /***
      * 0 发放
      * 1 激活
      */
     private int grantType;
+
+    private int status;
 
     private String extra;
 

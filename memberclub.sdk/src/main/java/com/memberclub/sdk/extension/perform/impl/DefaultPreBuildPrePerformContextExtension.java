@@ -26,7 +26,7 @@ import org.springframework.boot.ApplicationRunner;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文前置构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.DEFAULT_SCENE)})
+@ExtensionImpl(desc = "默认履约上下文前置构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultPreBuildPrePerformContextExtension implements PreBuildPerformContextExtension, ApplicationRunner {
 
     FlowChain<PerformContext> preBuidPerformContextChain = null;

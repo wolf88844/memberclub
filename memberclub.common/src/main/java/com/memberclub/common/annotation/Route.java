@@ -23,5 +23,5 @@ public @interface Route {
 
     public BizTypeEnum bizType();
 
-    public SceneEnum scene() default SceneEnum.DEFAULT_SCENE;
+    public SceneEnum[] scenes() default SceneEnum.DEFAULT_SCENE;
 }

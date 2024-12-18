@@ -15,6 +15,7 @@ import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberPerformItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -48,4 +49,6 @@ public interface PerformConvertor {
             @Mapping(source = "skuPerformContext.skuId", target = "skuId"),
     })
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
+    
+    public MemberPerformItem toMemberPerformItem(PerformItemDO item);
 }

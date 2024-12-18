@@ -21,7 +21,7 @@ import java.util.List;
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "券类型默认发放扩展点实现", bizScenes =
-        {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scene = SceneEnum.RIGHT_TYPE_SCENE_COUPON)})
+        {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.RIGHT_TYPE_SCENE_COUPON)})
 public class CouponDefaultGrantExtension implements PerformItemGrantExtension {
 
     @Override

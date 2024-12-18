@@ -9,6 +9,7 @@ package com.memberclub.common.extension;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.SceneEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -48,13 +49,15 @@ public class ExtensionManger {
             for (Class<?> anInterface : interfaces) {
                 if (BaseExtension.class.isAssignableFrom(anInterface)) {
                     for (Route route : routes) {
-                        String key = buildKey(anInterface, route.bizType().toBizType(), route.scene().getName());
-                        Object value = extensionBeanMap.put(key, bean);
-                        if (value != null) {
-                            CommonLog.error("注册 Extension key:{}冲突", key);
-                            throw new RuntimeException("注册 Extension 冲突");
+                        for (SceneEnum scene : route.scenes()) {
+                            String key = buildKey(anInterface, route.bizType().toBizType(), scene.getName());
+                            Object value = extensionBeanMap.put(key, bean);
+                            if (value != null) {
+                                CommonLog.error("注册 Extension key:{}冲突", key);
+                                throw new RuntimeException("注册 Extension 冲突");
+                            }
+                            CommonLog.info("注册 Extension key:{}, 接口:{}, 实现类:{}", key, anInterface.getSimpleName(), bean.getClass().getSimpleName());
                         }
-                        CommonLog.info("注册 Extension key:{}, 接口:{}, 实现类:{}", key, anInterface.getSimpleName(), bean.getClass().getSimpleName());
                     }
                 }
             }
@@ -82,4 +85,9 @@ public class ExtensionManger {
         }
         return value;
     }
+
+    public BizSceneBuildExtension getSceneExtension(BizScene bizScene) {
+        return getExtension(bizScene, BizSceneBuildExtension.class);
+    }
+
 }

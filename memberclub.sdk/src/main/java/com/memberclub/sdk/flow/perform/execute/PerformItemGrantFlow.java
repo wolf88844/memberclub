@@ -27,7 +27,9 @@ public class PerformItemGrantFlow extends FlowNode<PerformItemContext> {
 
     @Override
     public void process(PerformItemContext context) {
-        String scene = String.valueOf(context.getItems().get(0).getRightType());
+        String scene = extensionManger.getSceneExtension(context.getPerformContext().toDefaultScene())
+                .buildPerformItemGrantExtensionScene(context);
+        
         PerformItemGrantExtension extension =
                 extensionManger.getExtension(BizScene.of(context.getPerformContext().getBizType().toBizType(), scene),
                         PerformItemGrantExtension.class);

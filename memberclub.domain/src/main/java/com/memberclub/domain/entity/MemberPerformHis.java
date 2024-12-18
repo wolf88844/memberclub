@@ -6,6 +6,8 @@
  */
 package com.memberclub.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -14,6 +16,7 @@ import lombok.Data;
 @Data
 public class MemberPerformHis {
 
+    @TableId(type = IdType.AUTO)
     private int bizType;
 
     private long userId;
@@ -22,9 +25,9 @@ public class MemberPerformHis {
 
     private String orderId;
 
-    private String tradeId;
+    private String tradeId;//会员单交易 ID
 
-    private String memberHisId;
+    private String performHisToken;
 
     private int buyCount;
 
