@@ -30,6 +30,7 @@ public enum MemberTradeEvent {
     MemberTradeEvent(String name, int toStatus, List<Integer> fromStatus) {
         this.toStatus = toStatus;
         this.name = name;
+        this.fromStatus = fromStatus;
     }
 
     public static MemberTradeEvent findByInt(int value) throws IllegalArgumentException {

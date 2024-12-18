@@ -41,7 +41,7 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
         }
 
 
-        return null;
+        return items;
     }
 
     @Override

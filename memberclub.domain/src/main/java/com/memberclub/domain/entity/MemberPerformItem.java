@@ -33,6 +33,8 @@ public class MemberPerformItem {
 
     private String batchCode;
 
+    private String itemToken;
+
     private int assetCount;
 
     private int phase;

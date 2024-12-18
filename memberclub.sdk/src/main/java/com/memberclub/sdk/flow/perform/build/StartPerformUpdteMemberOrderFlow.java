@@ -7,6 +7,7 @@
 package com.memberclub.sdk.flow.perform.build;
 
 import com.memberclub.common.flow.FlowNode;
+import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class StartPerformUpdteMemberOrderFlow extends FlowNode<PerformContext> {
         int count = memberOrderDao.updateStatus(context.getUserId(),
                 context.getTradeId(),
                 MEMBER_ORDER_START_PERFORM.getToStatus(),
-                MEMBER_ORDER_START_PERFORM.getFromStatus());
+                MEMBER_ORDER_START_PERFORM.getFromStatus(),
+                TimeUtil.now());
         context.setMemberOrderStartPerformUpdateCount(count);
     }
 }

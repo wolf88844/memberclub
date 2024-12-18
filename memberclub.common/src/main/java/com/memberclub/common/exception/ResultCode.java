@@ -14,7 +14,8 @@ public enum ResultCode {
     INTERNAL_ERROR(1, "内部错误"),
     CAN_NOT_PERFORM_RETRY(10, "当前状态不允许再次重试履约"),
     LOCK_ERROR(11, "加锁失败异常"),
-    PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败");
+    PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败"),
+    DEPENDENCY_GRANT_ERROR(13, "下游发放异常");
 
     private int value;
 
@@ -64,5 +65,9 @@ public enum ResultCode {
 
     public void throwException() {
         MemberException.throwException(this);
+    }
+
+    public void throwException(String msg) {
+        MemberException.throwException(this, msg);
     }
 }

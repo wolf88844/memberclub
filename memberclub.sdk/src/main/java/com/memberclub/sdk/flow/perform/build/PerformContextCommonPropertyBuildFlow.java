@@ -6,8 +6,14 @@
  */
 package com.memberclub.sdk.flow.perform.build;
 
+import com.memberclub.common.extension.ExtensionManger;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.sdk.extension.perform.PerformItemCalculateExtension;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,9 +22,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerformContextCommonPropertyBuildFlow extends FlowNode<PerformContext> {
 
+    @Autowired
+    private ExtensionManger extensionManger;
 
     @Override
     public void process(PerformContext context) {
-        
+        for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
+            PerformItemCalculateExtension extension =
+                    extensionManger.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
+
+            for (PerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
+                immediatePerformItem.setItemToken(extension.buildItemToken(context,
+                        skuPerformContext, immediatePerformItem));
+            }
+
+            if (CollectionUtils.isNotEmpty(skuPerformContext.getDelayPerformItems())) {
+                for (PerformItemDO delayPerformItem : skuPerformContext.getDelayPerformItems()) {
+                    delayPerformItem.setItemToken(extension.buildItemToken(context,
+                            skuPerformContext, delayPerformItem));
+                }
+            }
+
+        }
     }
 }

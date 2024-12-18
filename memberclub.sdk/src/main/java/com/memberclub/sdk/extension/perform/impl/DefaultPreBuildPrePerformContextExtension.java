@@ -18,6 +18,7 @@ import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.PreBuildPerformContextExtension;
 import com.memberclub.sdk.flow.perform.build.CalculateRetrySourceFlow;
 import com.memberclub.sdk.flow.perform.build.CheckMemberOrderPerformedFlow;
+import com.memberclub.sdk.flow.perform.build.ExtractMemberOrderSkuDetailsFlow;
 import com.memberclub.sdk.flow.perform.build.StartPerformUpdteMemberOrderFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -40,12 +41,15 @@ public class DefaultPreBuildPrePerformContextExtension implements PreBuildPerfor
         preBuidPerformContextChain = FlowChain.newChain(flowChainService, PerformContext.class)
                 .addNode(StartPerformUpdteMemberOrderFlow.class)
                 .addNode(CalculateRetrySourceFlow.class)
-                .addNode(CheckMemberOrderPerformedFlow.class);
+                .addNode(CheckMemberOrderPerformedFlow.class)
+                .addNode(ExtractMemberOrderSkuDetailsFlow.class);
     }
 
     @Override
     public PerformContext preBuild(PerformCmd cmd) {
         PerformContext context = PerformConvertor.INSTANCE.toPerformContext(cmd);
+        context.setCmd(cmd);
+        context.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
 
         flowChainService.execute(preBuidPerformContextChain, context);
 

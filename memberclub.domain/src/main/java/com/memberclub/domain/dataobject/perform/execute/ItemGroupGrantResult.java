@@ -16,7 +16,5 @@ import java.util.Map;
 @Data
 public class ItemGroupGrantResult {
 
-    private boolean success;
-
     private Map<String, ItemGrantResult> grantMap;
 }

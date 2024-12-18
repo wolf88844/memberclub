@@ -36,9 +36,6 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
                 immediatePerformItem.setStime(timeRange.getStime());
                 immediatePerformItem.setEtime(timeRange.getEtime());
 
-                immediatePerformItem.setBatchCode(extension.buildAssetBatchCode(context,
-                        skuPerformContext, immediatePerformItem));
-
                 context.setImmediatePerformEtime(timeRange.getEtime());
             }
         }

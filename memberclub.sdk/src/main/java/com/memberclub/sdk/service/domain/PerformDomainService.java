@@ -6,8 +6,12 @@
  */
 package com.memberclub.sdk.service.domain;
 
+import com.memberclub.domain.common.PerformItemStatusEnum;
+import com.memberclub.domain.dataobject.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,10 @@ public class PerformDomainService {
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
 
+    @Autowired
+    private MemberPerformItemDao memberPerformItemDao;
+
+
     @Transactional
     public void performSuccess(MemberPerformHis his) {
         // TODO: 2024/12/15
@@ -31,4 +39,14 @@ public class PerformDomainService {
                 his.getStatus(),
                 his.getUtime());
     }
+
+    public void itemPerformSuccess(PerformItemContext context) {
+        for (PerformItemDO item : context.getItems()) {
+            memberPerformItemDao.update2Status(context.getPerformContext().getUserId(),
+                    item.getItemToken(),
+                    item.getBatchCode(),
+                    PerformItemStatusEnum.PERFORM_SUCC.toInt());
+        }
+    }
+
 }

@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS member_perform_item (
     right_type INT(11)  NOT NULL COMMENT '权益类型',
     asset_count INT(11)  NOT NULL COMMENT '资产数量',
     grant_type INT(11)  NOT NULL COMMENT '发放类型,直发 ,激活',
+    item_token VARCHAR(128)  NOT NULL COMMENT '履约项凭证',
     batch_code VARCHAR(128)  NOT NULL COMMENT '发放批次码',
     phase INT(11)  NOT NULL COMMENT '期数',
     cycle INT(11)  NOT NULL COMMENT '周期数',

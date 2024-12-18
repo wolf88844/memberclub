@@ -31,13 +31,13 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
 
         MemberOrder memberOrder = null;
+        memberOrder = memberOrderDao.selectByTradeId(context.getUserId(), context.getTradeId());
+        context.setMemberOrder(memberOrder);
         if (context.getRetrySource() == RetrySourceEunm.UPSTREAM_RETRY) {
             context.setSkipPerform(true);
-            memberOrder = memberOrderDao.selectByTradeId(context.getUserId(), context.getTradeId());
         }
 
         if (context.getRetrySource() == RetrySourceEunm.SELF_RETRY) {
-            memberOrder = memberOrderDao.selectByTradeId(context.getUserId(), context.getTradeId());
             if (memberOrder.getStatus() == MemberOrderStatusEnum.PERFORM.toInt()) {
                 context.setSkipPerform(true);
             }

@@ -20,6 +20,8 @@ public class PerformItemDO {
 
     private int rightType;
 
+    private String itemToken;
+
     private String batchCode;
 
     private int assetCount;

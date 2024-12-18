@@ -10,6 +10,7 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
+import com.memberclub.domain.entity.MemberOrder;
 import lombok.Data;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public class PerformContext {
     private String orderId;
 
     private String tradeId;
+
+    private MemberOrder memberOrder;
 
     private OrderSystemTypeEnum orderSystemType;
 

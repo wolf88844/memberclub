@@ -38,8 +38,18 @@ public class MemberException extends RuntimeException {
         this.code = code;
     }
 
+    public MemberException(ResultCode code, String msg) {
+        super(msg);
+        this.code = code;
+    }
+
     public static void throwException(ResultCode code) {
         MemberException exception = new MemberException(code);
+        throw exception;
+    }
+
+    public static void throwException(ResultCode code, String msg) {
+        MemberException exception = new MemberException(code, msg);
         throw exception;
     }
 }

@@ -22,7 +22,7 @@ public interface PerformItemCalculateExtension extends BaseExtension {
 
     public TimeRange buildPeriod(long baseTime, PerformItemDO itemDO);
 
-    default String buildAssetBatchCode(PerformContext context, SkuPerformContext skuPerformContext, PerformItemDO itemDO) {
+    default String buildItemToken(PerformContext context, SkuPerformContext skuPerformContext, PerformItemDO itemDO) {
         return String.format("%s_%s_%s_%s", context.getTradeId(),
                 skuPerformContext.getSkuId(),
                 itemDO.getBuyIndex(),

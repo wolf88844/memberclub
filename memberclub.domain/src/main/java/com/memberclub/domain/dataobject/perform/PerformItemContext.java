@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
+import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
 import lombok.Data;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public class PerformItemContext {
 
     public SkuPerformContext skuPerformContext;
 
+    private int rightType;
+
     public List<PerformItemDO> items;
+
+    private ItemGroupGrantResult result;
 }

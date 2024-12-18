@@ -6,15 +6,29 @@
  */
 package com.memberclub;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.common.MemberOrderStatusEnum;
+import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.common.PeriodTypeEnum;
+import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.dataobject.perform.PerformCmd;
+import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.sdk.service.PerformService;
 import com.memberclub.starter.AppStarter;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -124,6 +138,62 @@ public class TestStarter {
 
         List<MemberPerformItem> itemsDb = memberPerformItemDao.selectByMap(ImmutableMap.of("user_id", 1));
         System.out.println(JsonUtils.toJson(itemsDb));
+    }
+
+    @Autowired
+    private MemberOrderDao memberOrderDao;
+
+    @Autowired
+    private PerformService performService;
+
+    @Test
+    public void testDefaultMember() {
+        MemberOrder memberOrder = new MemberOrder();
+        memberOrder.setUserId(212);
+        memberOrder.setOrderId("3232323");
+        memberOrder.setOrderSystemType(1);
+        memberOrder.setOriginPriceFen("3000");
+        memberOrder.setActPriceFen("100");
+        memberOrder.setBizType(1);
+        memberOrder.setCtime(TimeUtil.now());
+        memberOrder.setExtra("{}");
+        memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
+        memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
+        memberOrder.setUserInfo("{}");
+        List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
+        SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
+        skuBuyDetailDOS.add(skuBuyDetailDO);
+        skuBuyDetailDO.setBuyCount(1);
+        skuBuyDetailDO.setSkuId(439434);
+        MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
+        skuBuyDetailDO.setSkuSnapshot(snapshotDO);
+        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
+        snapshotDO.setPerformConfig(skuPerformConfigDO);
+        SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
+        skuPerformItemConfigDO.setAssetCount(4);
+        skuPerformItemConfigDO.setBizType(1);
+        skuPerformItemConfigDO.setCycle(1);
+        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
+        skuPerformItemConfigDO.setRightId(32424);
+        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getName()));
+
+        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
+        snapshotDO.setPerformConfig(skuPerformConfigDO);
+
+        memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
+        memberOrderDao.insert(memberOrder);
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = new PerformCmd();
+        cmd.setOrderId(memberOrder.getOrderId());
+        cmd.setActPriceFen(memberOrder.getActPriceFen());
+        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
+        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
+        cmd.setUserId(memberOrder.getUserId());
+
+        performService.perform(cmd);
     }
 
 }

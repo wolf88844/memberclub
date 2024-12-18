@@ -22,22 +22,23 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
 
     static final String TABLE_NAME = "member_order";
 
-    @Update({"<SCRIPT>UPDATE ", TABLE_NAME,
+    @Update({"<script> UPDATE ", TABLE_NAME,
             " SET status=#{toStatus}, utime=#{utime} ",
             "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND status IN ",
             "<foreach collection='fromStatuses' item='status' separator=',' open='(' close=')'> ",
             " #{status} ",
             "</foreach>",
-            "</SCRIPT>"})
-    public int updateStatus(@Param("user_id") long userId,
+            "</script>"})
+    public int updateStatus(@Param("userId") long userId,
                             @Param("tradeId") String tradeId,
                             @Param("toStatus") int toStatus,
-                            @Param("fromStatuses") List<Integer> fromStatuses);
+                            @Param("fromStatuses") List<Integer> fromStatuses,
+                            @Param("utime") long utime);
 
     @QueryMaster
     @Select({"SELECT * FROM ", TABLE_NAME,
             " WHERE user_id=#{userId} AND trade_id=#{tradeId} "})
-    public MemberOrder selectByTradeId(@Param("user_id") long userId,
+    public MemberOrder selectByTradeId(@Param("userId") long userId,
                                        @Param("tradeId") String tradeId);
 
 

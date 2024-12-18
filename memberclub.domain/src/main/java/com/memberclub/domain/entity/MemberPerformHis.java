@@ -17,6 +17,8 @@ import lombok.Data;
 public class MemberPerformHis {
 
     @TableId(type = IdType.AUTO)
+    private Long id;
+
     private int bizType;
 
     private long userId;

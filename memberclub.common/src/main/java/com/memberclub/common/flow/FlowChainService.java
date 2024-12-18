@@ -36,6 +36,7 @@ public class FlowChainService {
                 index++;
             } catch (Exception e) {
                 if (e instanceof SkipException) {
+                    CommonLog.warn("当前流程:{} 发出 Skip请求,后续流程不再执行", node.getClass().getSimpleName());
                     break;
                 }
                 exception = e;
