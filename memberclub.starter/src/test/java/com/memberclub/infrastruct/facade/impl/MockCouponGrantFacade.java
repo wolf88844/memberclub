@@ -43,13 +43,15 @@ public class MockCouponGrantFacade implements CouponGrantFacade {
                 coupon.setStime(grantItem.getStime());
                 coupon.setEtime(grantItem.getEtime());
                 coupon.setCtime(TimeUtil.now());
+                coupon.setBatchCode(batchCode);
                 coupon.setCouponId(couponIdGenerator.incrementAndGet());
                 coupon.setCouponType(1);
                 coupon.setUserId(requestDO.getUserId());
                 coupons.add(coupon);
             }
-            map.put(batchCode, coupons);
+            map.put(grantItem.getItemToken(), coupons);
         }
+        responseDO.setItemToken2CouponMap(map);
         return responseDO;
     }
 }

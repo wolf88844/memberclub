@@ -21,14 +21,14 @@ public interface BizSceneBuildExtension extends BaseExtension {
     }
 
     default String buildPreBuildPerformContextScene(PerformCmd cmd) {
-        return SceneEnum.DEFAULT_SCENE.getName();
+        return SceneEnum.DEFAULT_SCENE.getValue();
     }
 
-    default String buildBuildPerformContextScene(PerformCmd cmd) {
-        return SceneEnum.DEFAULT_SCENE.getName();
+    default String buildBuildPerformContextScene(PerformContext context) {
+        return SceneEnum.SCENE_MONTH_CARD.getValue();
     }
 
     default String buildPerformContextExecuteScene(PerformContext performContext) {
-        return SceneEnum.SCENE_MONTH_CARD.getName();
+        return SceneEnum.SCENE_MONTH_CARD.getValue();
     }
 }

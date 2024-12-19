@@ -29,8 +29,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -51,6 +49,7 @@ public class CouponDefaultGrantExtension implements PerformItemGrantExtension {
         List<CouponGrantItemDO> grantItemDOS = Lists.newArrayList();
         for (PerformItemDO item : items) {
             CouponGrantItemDO couponGrantItemDO = new CouponGrantItemDO();
+            couponGrantItemDO.setItemToken(item.getItemToken());
             couponGrantItemDO.setAssetCount(item.getAssetCount());
             couponGrantItemDO.setChannelKey(String.valueOf(item.getRightId()));
             couponGrantItemDO.setStime(item.getStime());

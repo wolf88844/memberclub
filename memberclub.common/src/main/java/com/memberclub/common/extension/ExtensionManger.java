@@ -50,7 +50,7 @@ public class ExtensionManger {
                 if (BaseExtension.class.isAssignableFrom(anInterface)) {
                     for (Route route : routes) {
                         for (SceneEnum scene : route.scenes()) {
-                            String key = buildKey(anInterface, route.bizType().toBizType(), scene.getName());
+                            String key = buildKey(anInterface, route.bizType().toBizType(), scene.getValue());
                             Object value = extensionBeanMap.put(key, bean);
                             if (value != null) {
                                 CommonLog.error("注册 Extension key:{}冲突", key);

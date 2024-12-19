@@ -22,20 +22,20 @@ public enum SceneEnum {
     SCENE_MUTIL_BUY_COUNT_CARD("203"),//履约上下文执行 scene, 多份数购买
     ;
 
-    private String name;
+    private String value;
 
-    SceneEnum(String name) {
-        this.name = name;
+    SceneEnum(String value) {
+        this.value = value;
     }
 
 
     @Override
     public String toString() {
-        return this.name;
+        return this.value;
     }
 
-    public String getName() {
-        return this.name;
+    public String getValue() {
+        return this.value;
     }
 
 }

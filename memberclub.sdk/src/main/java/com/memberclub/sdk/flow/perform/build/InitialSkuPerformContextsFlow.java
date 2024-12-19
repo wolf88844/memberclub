@@ -49,7 +49,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             skuPerformContext.setImmediatePerformItems(items);
             skuPerformContexts.add(skuPerformContext);
         }
-
+        context.setSkuPerformContexts(skuPerformContexts);
         if (context.getBaseTime() == 0) {
             context.setBaseTime(TimeUtil.now());
         }

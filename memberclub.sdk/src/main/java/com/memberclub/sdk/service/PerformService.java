@@ -46,7 +46,7 @@ public class PerformService {
         }
 
         String buildScene = extensionManger.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
-                .buildBuildPerformContextScene(cmd);
+                .buildBuildPerformContextScene(context);
 
         BuildPerformContextExtension buildPerformContextExtension =
                 extensionManger.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),

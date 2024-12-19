@@ -33,7 +33,8 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
 
     @Override
     public void process(PerformContext context) {
-        Map<Integer, List<PerformItemDO>> itemMap = context.getCurrentSkuPerformContext().getImmediatePerformItems().stream()
+        Map<Integer, List<PerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
+                .getImmediatePerformItems().stream()
                 .collect(Collectors.groupingBy(PerformItemDO::getRightType));
 
         for (Map.Entry<Integer, List<PerformItemDO>> entry : itemMap.entrySet()) {

@@ -11,6 +11,7 @@ import com.memberclub.common.extension.BizSceneBuildExtension;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.dataobject.perform.PerformItemContext;
 
 /**
  * author: 掘金五阳
@@ -19,4 +20,10 @@ import com.memberclub.domain.common.SceneEnum;
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)
 })
 public class DemoMemberBizSceneBuildExtension implements BizSceneBuildExtension {
+
+
+    @Override
+    public String buildPerformItemGrantExtensionScene(PerformItemContext context) {
+        return SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue();
+    }
 }

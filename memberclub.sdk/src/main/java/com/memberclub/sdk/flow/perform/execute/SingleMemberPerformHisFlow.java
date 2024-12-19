@@ -38,6 +38,7 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
     @Override
     public void process(PerformContext context) {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
+        context.setCurrentSkuPerformContext(skuPerformContext);
 
         MemberPerformHisExtension extension = extensionManger.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
         MemberPerformHis memberPerformHis = extension.toMemberPerformHis(context, skuPerformContext);

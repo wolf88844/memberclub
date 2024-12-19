@@ -13,6 +13,9 @@ import lombok.Data;
  */
 @Data
 public class CouponGrantItemDO {
+
+    private String itemToken;
+
     private String channelKey;
 
     private int assetCount;

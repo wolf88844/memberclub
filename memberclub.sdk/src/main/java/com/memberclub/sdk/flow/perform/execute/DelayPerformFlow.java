@@ -8,6 +8,7 @@ package com.memberclub.sdk.flow.perform.execute;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.dataobject.perform.PerformContext;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +19,8 @@ public class DelayPerformFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-
+        if (CollectionUtils.isEmpty(context.getCurrentSkuPerformContext().getDelayPerformItems())) {
+            return;
+        }
     }
 }

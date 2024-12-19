@@ -175,7 +175,7 @@ public class TestStarter {
         skuPerformItemConfigDO.setCycle(1);
         skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
         skuPerformItemConfigDO.setRightId(32424);
-        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getName()));
+        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue()));
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
         snapshotDO.setPerformConfig(skuPerformConfigDO);

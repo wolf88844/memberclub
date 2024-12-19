@@ -25,7 +25,7 @@ public class BizScene {
     }
 
     public static BizScene of(int bizType) {
-        return new BizScene(bizType, SceneEnum.DEFAULT_SCENE.getName());
+        return new BizScene(bizType, SceneEnum.DEFAULT_SCENE.getValue());
     }
 
     public String getKey() {

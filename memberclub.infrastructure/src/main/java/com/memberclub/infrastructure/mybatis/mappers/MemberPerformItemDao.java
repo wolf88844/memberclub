@@ -28,7 +28,7 @@ public interface MemberPerformItemDao extends BaseMapper<MemberPerformItem> {
     @Select({"SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND item_token=#{itemToken}"})
     public MemberPerformItem queryByItemToken(@Param("userId") long userId, @Param("itemToken") String itemToken);
 
-    @Update({"UPDATE ", TABLE, " SET status=#{status}, batch_code=#{batchCode} WHERE user_id=#{userId} AND item_token=#{itemToken}}"})
+    @Update({"UPDATE ", TABLE, " SET status=#{status}, batch_code=#{batchCode} WHERE user_id=#{userId} AND item_token=#{itemToken}"})
     public int update2Status(@Param("userId") long userId,
                              @Param("itemToken") String itemToken,
                              @Param("batchCode") String batchCode,
