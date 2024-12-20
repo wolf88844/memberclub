@@ -7,6 +7,7 @@
 package com.memberclub.infrastructure.mybatis.mappers;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.memberclub.common.annotation.QueryMaster;
 import com.memberclub.domain.entity.MemberPerformItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,8 +26,15 @@ public interface MemberPerformItemDao extends BaseMapper<MemberPerformItem> {
 
     Integer insertIgnoreBatch(List<MemberPerformItem> items);
 
+    @QueryMaster
     @Select({"SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND item_token=#{itemToken}"})
     public MemberPerformItem queryByItemToken(@Param("userId") long userId, @Param("itemToken") String itemToken);
+
+
+    @QueryMaster
+    @Select({"SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND trade_id=#{tradeId}"})
+    public List<MemberPerformItem> selectByTradeId(@Param("userId") long userId, @Param("tradeId") String tradeId);
+
 
     @Update({"UPDATE ", TABLE, " SET status=#{status}, batch_code=#{batchCode} WHERE user_id=#{userId} AND item_token=#{itemToken}"})
     public int update2Status(@Param("userId") long userId,

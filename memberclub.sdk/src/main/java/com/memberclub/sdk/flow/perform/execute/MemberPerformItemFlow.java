@@ -8,7 +8,7 @@ package com.memberclub.sdk.flow.perform.execute;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.exception.ResultCode;
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.common.log.CommonLog;
@@ -32,7 +32,7 @@ import java.util.List;
 public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
 
     @Autowired
-    ExtensionManger extensionManger;
+    ExtensionManager extensionManager;
 
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
@@ -44,7 +44,7 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
 
     public void process(PerformItemContext context) {
         MemberPerformItemExtension extension =
-                extensionManger.getExtension(context.getPerformContext().toDefaultScene(), MemberPerformItemExtension.class);
+                extensionManager.getExtension(context.getPerformContext().toDefaultScene(), MemberPerformItemExtension.class);
         List<MemberPerformItem> items = extension.toMemberPerformItems(context);
         int count = memberPerformItemDao.insertIgnoreBatch(items);
         if (count < items.size()) {

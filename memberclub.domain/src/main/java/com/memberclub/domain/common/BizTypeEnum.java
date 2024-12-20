@@ -11,6 +11,7 @@ package com.memberclub.domain.common;
  */
 public enum BizTypeEnum {
 
+    DEFAULT(0, "default_biz"),
     DEMO_MEMBER(1, "demo_member");
 
     private int value;

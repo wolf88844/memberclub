@@ -57,8 +57,11 @@ public class PerformContext {
     private List<SkuPerformContext> skuPerformContexts;
 
     private SkuPerformContext currentSkuPerformContext;
-
+    
     private long immediatePerformEtime;
+
+    private long delayPerformEtime;
+
     /******************商品和履约配置****************/
 
 

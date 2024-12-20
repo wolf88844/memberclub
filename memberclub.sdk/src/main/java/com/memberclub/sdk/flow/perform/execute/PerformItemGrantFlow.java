@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.flow.perform.execute;
 
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.dataobject.perform.PerformItemContext;
@@ -28,15 +28,15 @@ import java.util.stream.Collectors;
 public class PerformItemGrantFlow extends FlowNode<PerformItemContext> {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Override
     public void process(PerformItemContext context) {
-        String scene = extensionManger.getSceneExtension(context.getPerformContext().toDefaultScene())
+        String scene = extensionManager.getSceneExtension(context.getPerformContext().toDefaultScene())
                 .buildPerformItemGrantExtensionScene(context);
 
         PerformItemGrantExtension extension =
-                extensionManger.getExtension(BizScene.of(context.getPerformContext().getBizType().toBizType(), scene),
+                extensionManager.getExtension(BizScene.of(context.getPerformContext().getBizType().toBizType(), scene),
                         PerformItemGrantExtension.class);
         ItemGroupGrantResult result = extension.grant(context, context.getItems());
 

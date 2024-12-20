@@ -7,7 +7,7 @@
 package com.memberclub.sdk.flow.perform.build;
 
 import com.google.common.collect.Lists;
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.dataobject.perform.PerformContext;
@@ -29,7 +29,7 @@ import java.util.List;
 public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Override
     public void process(PerformContext context) {
@@ -39,7 +39,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         for (SkuBuyDetailDO detail : details) {
             SkuPerformContext skuPerformContext = PerformConvertor.INSTANCE.toSkuPerformContext(detail);
             PerformItemCalculateExtension calculateExtension =
-                    extensionManger.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
+                    extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
 
             List<PerformItemDO> items = Lists.newArrayList();
             for (SkuPerformItemConfigDO config : detail.getSkuSnapshot().getPerformConfig().getConfigs()) {

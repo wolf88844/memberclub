@@ -24,6 +24,8 @@ public class PerformCmd {
 
     private OrderSystemTypeEnum orderSystemType;
 
+    private String tradeId;
+
     private String actPriceFen;
 
     private String originPriceFen;

@@ -49,7 +49,6 @@ public class DefaultPreBuildPrePerformContextExtension implements PreBuildPerfor
     public PerformContext preBuild(PerformCmd cmd) {
         PerformContext context = PerformConvertor.INSTANCE.toPerformContext(cmd);
         context.setCmd(cmd);
-        context.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
 
         flowChainService.execute(preBuidPerformContextChain, context);
 

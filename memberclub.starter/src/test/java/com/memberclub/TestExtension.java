@@ -6,7 +6,7 @@
  */
 package com.memberclub;
 
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
@@ -30,13 +30,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestExtension {
 
     @Autowired
-    ExtensionManger extensionManger;
+    ExtensionManager extensionManager;
 
 
     @Test
     @SneakyThrows
     public void test() {
-        PerformExtension extension = extensionManger.getExtension(
+        PerformExtension extension = extensionManager.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), PerformExtension.class);
         PerformCmd cmd = new PerformCmd();
@@ -49,7 +49,7 @@ public class TestExtension {
     @Test(expected = RuntimeException.class)
     @SneakyThrows
     public void testInterfaceException() {
-        PerformExtension extension = extensionManger.getExtension(
+        PerformExtension extension = extensionManager.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), DefaultPerformExtension.class);
         PerformCmd cmd = new PerformCmd();
@@ -62,7 +62,7 @@ public class TestExtension {
     @Test(expected = RuntimeException.class)
     @SneakyThrows
     public void testInterfaceExceptionAndLossBaseException() {
-        ReversePerformExtension extension = extensionManger.getExtension(
+        ReversePerformExtension extension = extensionManager.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
                         SceneEnum.DEFAULT_SCENE.toString()), ReversePerformExtension.class);
         extension.execute();

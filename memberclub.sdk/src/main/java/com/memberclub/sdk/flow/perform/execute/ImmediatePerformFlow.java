@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.flow.perform.execute;
 
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.common.flow.SubFlowNode;
 import com.memberclub.domain.dataobject.perform.PerformContext;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformItemContext> {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Autowired
     private FlowChainService flowChainService;

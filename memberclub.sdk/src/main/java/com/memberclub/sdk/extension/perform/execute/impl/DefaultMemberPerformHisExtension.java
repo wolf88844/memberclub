@@ -8,6 +8,7 @@ package com.memberclub.sdk.extension.perform.execute.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
@@ -15,16 +16,27 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.execute.MemberPerformHisExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultMemberPerformHisExtension implements MemberPerformHisExtension {
+
+    @Autowired
+    private ExtensionManager extensionManager;
+
     @Override
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
+        IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
+                IdGenerator.class);
+        String perforHisToken = idGenerator.generateId();
+        skuPerformContext.setPerformHisToken(perforHisToken);
+
         MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(context, skuPerformContext);
         return memberPerformHis;
     }

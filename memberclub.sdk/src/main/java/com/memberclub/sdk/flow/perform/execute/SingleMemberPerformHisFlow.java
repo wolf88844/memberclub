@@ -7,7 +7,7 @@
 package com.memberclub.sdk.flow.perform.execute;
 
 import com.memberclub.common.exception.ResultCode;
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
@@ -40,7 +40,7 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
         context.setCurrentSkuPerformContext(skuPerformContext);
 
-        MemberPerformHisExtension extension = extensionManger.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
+        MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
         MemberPerformHis memberPerformHis = extension.toMemberPerformHis(context, skuPerformContext);
 
         int cnt = memberPerformHisDao.insert(memberPerformHis);
@@ -53,7 +53,10 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
             CommonLog.error("写入 member_perform_his失败", memberPerformHis);
             ResultCode.INTERNAL_ERROR.throwException();
         }
+
+        memberPerformHis.setPerformHisToken(his.getPerformHisToken());
         if (MemberPerformHisStatusEnum.hasPerformed(his.getStatus())) {
+
             CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberPerformHis);
             // TODO: 2024/12/15 如何处理返回值
             return;
@@ -65,7 +68,7 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
     @Override
     public void success(PerformContext context) {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
-        MemberPerformHisExtension extension = extensionManger.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
+        MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
         MemberPerformHis memberPerformHis = extension.toMemberPerformHisWhenPerformSuccess(context, skuPerformContext);
 
         performDomainService.performSuccess(memberPerformHis);

@@ -20,7 +20,13 @@ public class SkuPerformContext {
 
     private long buyCount;
 
-    private SkuPerformPropDO skuPerformProp;
+    private String performHisToken;
+
+    private long stime;
+
+    private long etime;
+
+    private SkuPerformPropDO extra;
 
     private List<PerformItemDO> immediatePerformItems;
 

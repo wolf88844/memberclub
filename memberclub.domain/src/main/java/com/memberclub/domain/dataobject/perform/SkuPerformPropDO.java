@@ -14,7 +14,5 @@ import lombok.Data;
 @Data
 public class SkuPerformPropDO {
 
-    private long stime;
-
-    private long etime;
+    
 }

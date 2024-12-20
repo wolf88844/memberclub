@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.service;
 
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.common.retry.Retryable;
@@ -26,16 +26,17 @@ import org.springframework.stereotype.Service;
 public class PerformService {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Retryable
     @UserLog(domain = LogDomainEnum.PERFORM)
     public void perform(PerformCmd cmd) {
-        String preBuildScene = extensionManger.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+
+        String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                 .buildPreBuildPerformContextScene(cmd);
 
         PreBuildPerformContextExtension preBuildPerformContextExtension =
-                extensionManger.getExtension(BizScene.of(cmd.getBizType().toBizType(), preBuildScene),
+                extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), preBuildScene),
                         PreBuildPerformContextExtension.class);
 
         PerformContext context = preBuildPerformContextExtension.preBuild(cmd);
@@ -45,19 +46,19 @@ public class PerformService {
             return;
         }
 
-        String buildScene = extensionManger.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+        String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                 .buildBuildPerformContextScene(context);
 
         BuildPerformContextExtension buildPerformContextExtension =
-                extensionManger.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),
+                extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),
                         BuildPerformContextExtension.class);
         buildPerformContextExtension.build(context);
 
         //execute Context
 
-        String executeScene = extensionManger.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+        String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                 .buildPerformContextExecuteScene(context);
-        PerformExecuteExtension performExecuteExtension = extensionManger.
+        PerformExecuteExtension performExecuteExtension = extensionManager.
                 getExtension(BizScene.of(cmd.getBizType().toBizType(), executeScene), PerformExecuteExtension.class);
         performExecuteExtension.execute(context);
 

@@ -9,6 +9,7 @@ package com.memberclub.common.extension;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,7 +26,7 @@ import java.util.Set;
  * @author 掘金五阳
  */
 @Service
-public class ExtensionManger {
+public class ExtensionManager {
 
 
     @Autowired
@@ -79,6 +80,11 @@ public class ExtensionManger {
 
         String key = buildKey(tClass, bizScene.getBizType(), bizScene.getScene());
         T value = (T) extensionBeanMap.get(key);
+
+        if (value == null) {
+            key = buildKey(tClass, BizTypeEnum.DEFAULT.toBizType(), SceneEnum.DEFAULT_SCENE.getValue());
+            value = (T) extensionBeanMap.get(key);
+        }
 
         if (value == null) {
             throw new RuntimeException(String.format("%s 没有找到实现类%s", tClass.getSimpleName(), bizScene.getKey()));

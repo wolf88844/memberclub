@@ -16,6 +16,7 @@ import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.sdk.extension.perform.BuildPerformContextExtension;
 import com.memberclub.sdk.flow.perform.build.CalculateDelayPerformItemPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.CalculateImmediatePerformItemPeriodFlow;
+import com.memberclub.sdk.flow.perform.build.CalculateOrderPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.InitialSkuPerformContextsFlow;
 import com.memberclub.sdk.flow.perform.build.MutilBuyCountClonePerformItemFlow;
 import com.memberclub.sdk.flow.perform.build.MutilPeriodMemberClonePerformItemFlow;
@@ -49,6 +50,7 @@ public class DefaultBuildPerformContextExtension implements BuildPerformContextE
                 .addNode(MutilPeriodMemberClonePerformItemFlow.class)
                 .addNode(CalculateImmediatePerformItemPeriodFlow.class)//计算立即履约项 时间周期
                 .addNode(CalculateDelayPerformItemPeriodFlow.class)//计算延迟履约项 时间周期
+                .addNode(CalculateOrderPeriodFlow.class)//计算订单整体有效期
                 .addNode(PerformContextCommonPropertyBuildFlow.class)// 构建通用属性
                 .addNode(PerformContextExtraPropertyBuildFlow.class)//构建其他扩展属性
         ;

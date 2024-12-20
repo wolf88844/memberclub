@@ -6,6 +6,8 @@
  */
 package com.memberclub.sdk.service.domain;
 
+import com.memberclub.common.exception.ResultCode;
+import com.memberclub.common.retry.Retryable;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.dataobject.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
@@ -32,7 +34,6 @@ public class PerformDomainService {
     @Transactional
     public void performSuccess(MemberPerformHis his) {
         // TODO: 2024/12/15
-
         memberPerformHisDao.updateStatus(his.getUserId(),
                 his.getTradeId(),
                 his.getSkuId(),
@@ -40,12 +41,16 @@ public class PerformDomainService {
                 his.getUtime());
     }
 
+    @Retryable
     public void itemPerformSuccess(PerformItemContext context) {
         for (PerformItemDO item : context.getItems()) {
-            memberPerformItemDao.update2Status(context.getPerformContext().getUserId(),
+            int cnt = memberPerformItemDao.update2Status(context.getPerformContext().getUserId(),
                     item.getItemToken(),
                     item.getBatchCode(),
                     PerformItemStatusEnum.PERFORM_SUCC.toInt());
+            if (cnt <= 0) {
+                ResultCode.INTERNAL_ERROR.throwException("更新 member_perform_item失败");
+            }
         }
     }
 

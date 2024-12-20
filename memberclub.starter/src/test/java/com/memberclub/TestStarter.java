@@ -192,8 +192,13 @@ public class TestStarter {
         cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
         cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
         cmd.setUserId(memberOrder.getUserId());
+        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
 
         performService.perform(cmd);
+
+        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        System.out.println(JsonUtils.toJson(hisList));
     }
 
 }

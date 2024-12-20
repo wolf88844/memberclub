@@ -7,7 +7,7 @@
 package com.memberclub.sdk.flow.perform.execute;
 
 import com.memberclub.common.exception.ResultCode;
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.monitor.Monitor;
@@ -27,14 +27,14 @@ import org.springframework.stereotype.Service;
 public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Autowired
     private DistributeLock distributeLock;
 
     @Override
     public void process(PerformContext context) {
-        BizConfigTable table = extensionManger.getExtension(context.toDefaultScene(), BizConfigTable.class);
+        BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
 
         String key = buildKey(context, table);
         if (context.getLockValue() == null) {
@@ -65,7 +65,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
 
     @Override
     public void success(PerformContext context) {
-        BizConfigTable table = extensionManger.getExtension(context.toDefaultScene(), BizConfigTable.class);
+        BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
         String key = buildKey(context, table);
         CommonLog.error("尝试解锁 key:{}, value:{}", key, context.getLockValue());
         Monitor.PERFORM.report(context.getBizType().toBizType(), "success_unlock_attempt");
@@ -76,7 +76,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
 
     @Override
     public void rollback(PerformContext context) {
-        BizConfigTable table = extensionManger.getExtension(context.toDefaultScene(), BizConfigTable.class);
+        BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
         String key = buildKey(context, table);
         CommonLog.error("回滚阶段尝试解锁 key:{}, value:{}", key, context.getLockValue());
         Monitor.PERFORM.report(context.getBizType().toBizType(), "rollback_unlock_attempt");

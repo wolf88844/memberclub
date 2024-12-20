@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.flow.perform.build;
 
-import com.memberclub.common.extension.ExtensionManger;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.dataobject.perform.PerformContext;
@@ -24,14 +24,14 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
 
 
     @Autowired
-    private ExtensionManger extensionManger;
+    private ExtensionManager extensionManager;
 
     @Override
     public void process(PerformContext context) {
         for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
             for (PerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
                 PerformItemCalculateExtension extension =
-                        extensionManger.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
+                        extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
                 TimeRange timeRange = extension.buildPeriod(context.getBaseTime(), immediatePerformItem);
                 immediatePerformItem.setStime(timeRange.getStime());
                 immediatePerformItem.setEtime(timeRange.getEtime());
