@@ -15,7 +15,8 @@ public enum ResultCode {
     CAN_NOT_PERFORM_RETRY(10, "当前状态不允许再次重试履约"),
     LOCK_ERROR(11, "加锁失败异常"),
     PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败"),
-    DEPENDENCY_GRANT_ERROR(13, "下游发放异常");
+    DEPENDENCY_GRANT_ERROR(13, "下游发放异常"),
+    DATA_UPDATE_ERROR(14, "数据更新异常");
 
     private int value;
 

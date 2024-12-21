@@ -8,13 +8,14 @@ package com.memberclub.domain.dataobject.perform;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.common.RetryableContext;
 import lombok.Data;
 
 /**
  * author: 掘金五阳
  */
 @Data
-public class PerformCmd {
+public class PerformCmd implements RetryableContext {
 
     private BizTypeEnum bizType;
 
@@ -30,7 +31,24 @@ public class PerformCmd {
 
     private String originPriceFen;
 
+    /*********重试相关***********/
+
     private int retryTimes;
 
+    private long baseTime;
+
     private String lockValue;
+
+    /*********重试相关***********/
+
+    @Override
+    public int getRetryTimes() {
+        return retryTimes;
+    }
+
+    @Override
+    public void setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
+        return;
+    }
 }

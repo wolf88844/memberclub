@@ -38,7 +38,7 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
         }
 
         if (context.getRetrySource() == RetrySourceEunm.SELF_RETRY) {
-            if (memberOrder.getStatus() == MemberOrderStatusEnum.PERFORM.toInt()) {
+            if (memberOrder.getStatus() == MemberOrderStatusEnum.PERFORMED.toInt()) {
                 context.setSkipPerform(true);
             }
             if (!MemberOrderStatusEnum.isPerformEnabled(memberOrder.getStatus())) {

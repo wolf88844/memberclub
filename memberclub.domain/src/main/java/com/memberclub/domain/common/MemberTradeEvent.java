@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import static com.memberclub.domain.common.MemberOrderStatusEnum.PAYED;
+import static com.memberclub.domain.common.MemberOrderStatusEnum.PERFORMED;
 import static com.memberclub.domain.common.MemberOrderStatusEnum.PERFORMING;
 
 /**
@@ -18,8 +19,11 @@ import static com.memberclub.domain.common.MemberOrderStatusEnum.PERFORMING;
  */
 public enum MemberTradeEvent {
 
-    MEMBER_ORDER_START_PERFORM("member_order_start_perform", MemberOrderStatusEnum.PERFORMING.toInt(),
-            ImmutableList.of(PAYED.toInt(), PERFORMING.toInt()));
+    MEMBER_ORDER_START_PERFORM("member_order_start_perform", PERFORMING.toInt(),
+            ImmutableList.of(PAYED.toInt(), PERFORMING.toInt())),
+
+    MEMBER_ORDER_SUCCESS_PERFORM("member_order_success_perform", PERFORMED.toInt(),
+            ImmutableList.of(PERFORMING.toInt(), PERFORMED.toInt()));
 
     private List<Integer> fromStatus;
 

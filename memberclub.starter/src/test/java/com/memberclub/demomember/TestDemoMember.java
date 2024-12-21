@@ -14,10 +14,13 @@ import com.memberclub.common.util.TimeRange;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.MemberOrderStatusEnum;
+import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
+import com.memberclub.domain.dataobject.perform.PerformResp;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
@@ -32,6 +35,7 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.mock.MockBaseTest;
 import com.memberclub.sdk.service.PerformService;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -98,10 +102,21 @@ public class TestDemoMember extends MockBaseTest {
         cmd.setUserId(memberOrder.getUserId());
         cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
 
-        performService.perform(cmd);
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
 
         List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        for (MemberPerformHis memberPerformHis : hisList) {
+            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberPerformHis.getStatus());
+        }
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        for (MemberPerformItem item : items) {
+            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
+        }
+
+        MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
+
         System.out.println(JsonUtils.toJson(hisList));
     }
 

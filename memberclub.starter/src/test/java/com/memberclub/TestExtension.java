@@ -11,9 +11,9 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
-import com.memberclub.sdk.extension.perform.PerformExtension;
+import com.memberclub.demomember.JustTestExtension;
 import com.memberclub.sdk.extension.ReversePerformExtension;
-import com.memberclub.sdk.extension.perform.impl.DefaultPerformExtension;
+import com.memberclub.demomember.DefaultTestExtension;
 import com.memberclub.starter.AppStarter;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -36,9 +36,9 @@ public class TestExtension {
     @Test
     @SneakyThrows
     public void test() {
-        PerformExtension extension = extensionManager.getExtension(
+        JustTestExtension extension = extensionManager.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
-                        SceneEnum.DEFAULT_SCENE.toString()), PerformExtension.class);
+                        SceneEnum.DEFAULT_SCENE.toString()), JustTestExtension.class);
         PerformCmd cmd = new PerformCmd();
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setUserId(1000);
@@ -49,9 +49,9 @@ public class TestExtension {
     @Test(expected = RuntimeException.class)
     @SneakyThrows
     public void testInterfaceException() {
-        PerformExtension extension = extensionManager.getExtension(
+        JustTestExtension extension = extensionManager.getExtension(
                 BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
-                        SceneEnum.DEFAULT_SCENE.toString()), DefaultPerformExtension.class);
+                        SceneEnum.DEFAULT_SCENE.toString()), DefaultTestExtension.class);
         PerformCmd cmd = new PerformCmd();
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setUserId(1000);

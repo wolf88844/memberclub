@@ -43,19 +43,19 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
         MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
         MemberPerformHis memberPerformHis = extension.toMemberPerformHis(context, skuPerformContext);
 
-        int cnt = memberPerformHisDao.insert(memberPerformHis);
+        int cnt = performDomainService.insertMemberPerformHis(memberPerformHis);
         if (cnt > 0) {
             CommonLog.warn("写入 member_perform_his 成功: {}", memberPerformHis);
             return;
         }
-        MemberPerformHis his = memberPerformHisDao.select(context.getUserId(), context.getTradeId(), skuPerformContext.getSkuId());
-        if (his == null) {
+        MemberPerformHis hisFromDb = memberPerformHisDao.select(context.getUserId(), context.getTradeId(), skuPerformContext.getSkuId());
+        if (hisFromDb == null) {
             CommonLog.error("写入 member_perform_his失败", memberPerformHis);
             ResultCode.INTERNAL_ERROR.throwException();
         }
 
-        memberPerformHis.setPerformHisToken(his.getPerformHisToken());
-        if (MemberPerformHisStatusEnum.hasPerformed(his.getStatus())) {
+        memberPerformHis.setPerformHisToken(hisFromDb.getPerformHisToken());
+        if (MemberPerformHisStatusEnum.hasPerformed(hisFromDb.getStatus())) {
 
             CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberPerformHis);
             // TODO: 2024/12/15 如何处理返回值

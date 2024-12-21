@@ -16,7 +16,7 @@ public enum MemberOrderStatusEnum {
     CANCELED(19, "canceled"),
     PAYED(29, "payed"),
     PERFORMING(30, "performing"),
-    PERFORM(39, "performed"),
+    PERFORMED(39, "performed"),
     REFUNDED(49, "refunded");
 
     private int value;
@@ -29,7 +29,11 @@ public enum MemberOrderStatusEnum {
     }
 
     public static Boolean isPerformEnabled(int status) {
-        return status < PERFORM.toInt();
+        return status < PERFORMED.toInt();
+    }
+
+    public static Boolean hasPerformed(int status) {
+        return status == PERFORMED.toInt();
     }
 
     public static MemberOrderStatusEnum findByInt(int value) throws IllegalArgumentException {

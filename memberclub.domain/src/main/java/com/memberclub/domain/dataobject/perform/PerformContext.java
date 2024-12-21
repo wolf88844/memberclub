@@ -23,6 +23,7 @@ public class PerformContext {
 
     private PerformCmd cmd;
 
+    private boolean success;
 
     private RetrySourceEunm retrySource;
 
@@ -57,7 +58,7 @@ public class PerformContext {
     private List<SkuPerformContext> skuPerformContexts;
 
     private SkuPerformContext currentSkuPerformContext;
-    
+
     private long immediatePerformEtime;
 
     private long delayPerformEtime;
