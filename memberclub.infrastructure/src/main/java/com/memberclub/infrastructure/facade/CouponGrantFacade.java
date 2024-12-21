@@ -6,13 +6,19 @@
  */
 package com.memberclub.infrastructure.facade;
 
-import com.memberclub.infrastructure.facade.data.CouponGrantRequestDO;
-import com.memberclub.infrastructure.facade.data.CouponGrantResponseDO;
+import com.memberclub.domain.facade.GrantRequestDO;
+import com.memberclub.domain.facade.GrantResponseDO;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author yuhaiqiang
  */
+@FeignClient("downstream-examples")
 public interface CouponGrantFacade {
 
-    public CouponGrantResponseDO grant(CouponGrantRequestDO requestDO);
+    @RequestMapping(method = RequestMethod.POST, value = "/items/grant")
+    public GrantResponseDO grant(@RequestBody GrantRequestDO requestDO);
 }

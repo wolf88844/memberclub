@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.facade.data;
+package com.memberclub.domain.facade;
 
 import lombok.Data;
 
@@ -12,11 +12,11 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class CouponDO {
+public class AssetDO {
 
     private long userId;
 
-    private long couponId;
+    private long assetId;
 
     private String batchCode;
 
@@ -24,7 +24,7 @@ public class CouponDO {
 
     private long etime;
 
-    private int couponType;
+    private int assetType;
 
     private long ctime;
 }

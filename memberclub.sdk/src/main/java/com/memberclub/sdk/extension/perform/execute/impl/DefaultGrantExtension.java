@@ -18,15 +18,15 @@ import com.memberclub.domain.dataobject.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.dataobject.perform.execute.ItemGrantResult;
 import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.domain.facade.GrantItemDO;
+import com.memberclub.domain.facade.GrantRequestDO;
+import com.memberclub.domain.facade.GrantResponseDO;
 import com.memberclub.infrastructure.facade.CouponGrantFacade;
-import com.memberclub.infrastructure.facade.data.CouponDO;
-import com.memberclub.infrastructure.facade.data.CouponGrantItemDO;
-import com.memberclub.infrastructure.facade.data.CouponGrantRequestDO;
-import com.memberclub.infrastructure.facade.data.CouponGrantResponseDO;
 import com.memberclub.sdk.extension.perform.execute.PerformItemGrantExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -35,30 +35,31 @@ import java.util.Map;
  */
 @ExtensionImpl(desc = "券类型默认发放扩展点实现", bizScenes =
         {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.RIGHT_TYPE_SCENE_COUPON)})
-public class CouponDefaultGrantExtension implements PerformItemGrantExtension {
+public class DefaultGrantExtension implements PerformItemGrantExtension {
 
-    @Autowired
+    //@Qualifier("couponGrantFacade")
+    @Resource()
     private CouponGrantFacade couponGrantFacade;
 
     @Override
     public ItemGroupGrantResult grant(PerformItemContext context, List<PerformItemDO> items) {
 
-        CouponGrantRequestDO request = new CouponGrantRequestDO();
+        GrantRequestDO request = new GrantRequestDO();
         request.setUserId(context.getPerformContext().getUserId());
 
-        List<CouponGrantItemDO> grantItemDOS = Lists.newArrayList();
+        List<GrantItemDO> grantItemDOS = Lists.newArrayList();
         for (PerformItemDO item : items) {
-            CouponGrantItemDO couponGrantItemDO = new CouponGrantItemDO();
-            couponGrantItemDO.setItemToken(item.getItemToken());
-            couponGrantItemDO.setAssetCount(item.getAssetCount());
-            couponGrantItemDO.setChannelKey(String.valueOf(item.getRightId()));
-            couponGrantItemDO.setStime(item.getStime());
-            couponGrantItemDO.setEtime(item.getEtime());
-            grantItemDOS.add(couponGrantItemDO);
+            GrantItemDO grantItemDO = new GrantItemDO();
+            grantItemDO.setItemToken(item.getItemToken());
+            grantItemDO.setAssetCount(item.getAssetCount());
+            grantItemDO.setChannelKey(String.valueOf(item.getRightId()));
+            grantItemDO.setStime(item.getStime());
+            grantItemDO.setEtime(item.getEtime());
+            grantItemDOS.add(grantItemDO);
         }
 
         request.setGrantItems(grantItemDOS);
-        CouponGrantResponseDO response = couponGrantFacade.grant(request);
+        GrantResponseDO response = couponGrantFacade.grant(request);
         if (!response.isSuccess()) {
             ResultCode.DEPENDENCY_GRANT_ERROR.throwException();
         }
@@ -68,7 +69,7 @@ public class CouponDefaultGrantExtension implements PerformItemGrantExtension {
         }
 
         Map<String, ItemGrantResult> grantMap = Maps.newHashMap();
-        for (Map.Entry<String, List<CouponDO>> entry : response.getItemToken2CouponMap().entrySet()) {
+        for (Map.Entry<String, List<AssetDO>> entry : response.getItemToken2CouponMap().entrySet()) {
             String itemToken = entry.getKey();
             String batchCode = entry.getValue().get(0).getBatchCode();
 

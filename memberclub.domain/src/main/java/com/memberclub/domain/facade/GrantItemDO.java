@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.facade.data;
+package com.memberclub.domain.facade;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class CouponGrantItemDO {
+public class GrantItemDO {
 
     private String itemToken;
 

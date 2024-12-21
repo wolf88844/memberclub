@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.facade.data;
+package com.memberclub.domain.facade;
 
 import lombok.Data;
 
@@ -15,11 +15,11 @@ import java.util.Map;
  * author: 掘金五阳
  */
 @Data
-public class CouponGrantResponseDO {
+public class GrantResponseDO {
 
     private int code;
 
-    private Map<String, List<CouponDO>> itemToken2CouponMap;
+    private Map<String, List<AssetDO>> itemToken2CouponMap;
 
     public boolean isSuccess() {
         return code == 0;

@@ -4,9 +4,8 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.facade.data;
+package com.memberclub.domain.facade;
 
-import com.memberclub.infrastructure.facade.data.CouponGrantItemDO;
 import lombok.Data;
 
 import java.util.List;
@@ -15,9 +14,9 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class CouponGrantRequestDO {
+public class GrantRequestDO {
 
     private long userId;
 
-    private List<CouponGrantItemDO> grantItems;
+    private List<GrantItemDO> grantItems;
 }

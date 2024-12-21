@@ -8,10 +8,16 @@ package com.memberclub.starter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Profile;
 
 /**
  * @author 掘金五阳
  */
+@Profile("!junit_test")
+@EnableFeignClients(basePackages = "com.memberclub")
+@EnableEurekaClient
 @SpringBootApplication(scanBasePackages = {"com.memberclub"})
 public class AppStarter {
 

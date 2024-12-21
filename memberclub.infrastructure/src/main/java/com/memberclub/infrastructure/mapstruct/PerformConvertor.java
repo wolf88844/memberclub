@@ -50,7 +50,7 @@ public interface PerformConvertor {
             @Mapping(source = "skuPerformContext.performHisToken", target = "performHisToken"),
             @Mapping(source = "skuPerformContext.stime", target = "stime"),
             @Mapping(source = "skuPerformContext.etime", target = "etime"),
-            @Mapping(source = "java(com.memberclub.common.util.JsonUtils.toJson(skuPerformContext.getExtra()))", target = "extra")
+            @Mapping(expression = "java(com.memberclub.common.util.JsonUtils.toJson(skuPerformContext.getExtra()))", target = "extra")
     })
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
 

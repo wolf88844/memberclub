@@ -1,10 +1,10 @@
 /**
- * @(#)TestStarter.java, 十二月 14, 2024.
+ * @(#)TestDemoMember.java, 十二月 21, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub;
+package com.memberclub.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -25,29 +25,85 @@ import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.infrastruct.facade.impl.MockCouponGrantFacade;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.mock.MockBaseTest;
 import com.memberclub.sdk.service.PerformService;
-import com.memberclub.starter.AppStarter;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
 /**
- * @author 掘金五阳
+ * author: 掘金五阳
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {AppStarter.class})
-public class TestStarter {
+public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
+
+    @SpyBean
+    private MockCouponGrantFacade couponGrantFacade;
+
+
+    @Test
+    public void testDefaultMember() {
+        MemberOrder memberOrder = new MemberOrder();
+        memberOrder.setUserId(212);
+        memberOrder.setOrderId("3232323");
+        memberOrder.setOrderSystemType(1);
+        memberOrder.setOriginPriceFen("3000");
+        memberOrder.setActPriceFen("100");
+        memberOrder.setBizType(1);
+        memberOrder.setCtime(TimeUtil.now());
+        memberOrder.setExtra("{}");
+        memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
+        memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
+        memberOrder.setUserInfo("{}");
+        List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
+        SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
+        skuBuyDetailDOS.add(skuBuyDetailDO);
+        skuBuyDetailDO.setBuyCount(1);
+        skuBuyDetailDO.setSkuId(439434);
+        MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
+        skuBuyDetailDO.setSkuSnapshot(snapshotDO);
+        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
+        snapshotDO.setPerformConfig(skuPerformConfigDO);
+        SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
+        skuPerformItemConfigDO.setAssetCount(4);
+        skuPerformItemConfigDO.setBizType(1);
+        skuPerformItemConfigDO.setCycle(1);
+        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
+        skuPerformItemConfigDO.setRightId(32424);
+        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue()));
+
+        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
+        snapshotDO.setPerformConfig(skuPerformConfigDO);
+
+        memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
+        memberOrderDao.insert(memberOrder);
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = new PerformCmd();
+        cmd.setOrderId(memberOrder.getOrderId());
+        cmd.setActPriceFen(memberOrder.getActPriceFen());
+        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
+        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
+        cmd.setUserId(memberOrder.getUserId());
+        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
+
+        performService.perform(cmd);
+
+        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        System.out.println(JsonUtils.toJson(hisList));
+    }
 
     @Test
     public void test() {
@@ -146,59 +202,6 @@ public class TestStarter {
     @Autowired
     private PerformService performService;
 
-    @Test
-    public void testDefaultMember() {
-        MemberOrder memberOrder = new MemberOrder();
-        memberOrder.setUserId(212);
-        memberOrder.setOrderId("3232323");
-        memberOrder.setOrderSystemType(1);
-        memberOrder.setOriginPriceFen("3000");
-        memberOrder.setActPriceFen("100");
-        memberOrder.setBizType(1);
-        memberOrder.setCtime(TimeUtil.now());
-        memberOrder.setExtra("{}");
-        memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
-        memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
-        memberOrder.setUserInfo("{}");
-        List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
-        SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
-        skuBuyDetailDOS.add(skuBuyDetailDO);
-        skuBuyDetailDO.setBuyCount(1);
-        skuBuyDetailDO.setSkuId(439434);
-        MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
-        skuBuyDetailDO.setSkuSnapshot(snapshotDO);
-        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
-        snapshotDO.setPerformConfig(skuPerformConfigDO);
-        SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
-        skuPerformItemConfigDO.setAssetCount(4);
-        skuPerformItemConfigDO.setBizType(1);
-        skuPerformItemConfigDO.setCycle(1);
-        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
-        skuPerformItemConfigDO.setRightId(32424);
-        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue()));
-
-        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
-        snapshotDO.setPerformConfig(skuPerformConfigDO);
-
-        memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
-        memberOrderDao.insert(memberOrder);
-        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
-        System.out.println(JsonUtils.toJson(orderInDb));
-
-        PerformCmd cmd = new PerformCmd();
-        cmd.setOrderId(memberOrder.getOrderId());
-        cmd.setActPriceFen(memberOrder.getActPriceFen());
-        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
-        cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
-        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
-        cmd.setUserId(memberOrder.getUserId());
-        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
-
-        performService.perform(cmd);
-
-        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
-        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        System.out.println(JsonUtils.toJson(hisList));
-    }
-
+    /*@SpyBean(name = "couponGrantFacade", value = MockCouponGrantFacade.class)
+    private CouponGrantFacade mockCouponGrantFacade;*/
 }
