@@ -11,7 +11,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.dataobject.aftersale.preview.UsageTypeCalculateTypeEnum;
-import com.memberclub.sdk.extension.aftersale.AftersaleAmountExtension;
+import com.memberclub.sdk.extension.aftersale.preview.AftersaleAmountExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

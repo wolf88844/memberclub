@@ -70,6 +70,10 @@ public class AftersalePreviewContext {
 
     private RefundWayEnum refundWay;
 
+    private String digests;
+
+    private Integer digestVersion;
+
     /*****************售后其他数据***********************************/
 
 

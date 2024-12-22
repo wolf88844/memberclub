@@ -6,6 +6,8 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
+import com.memberclub.domain.dataobject.aftersale.apply.AftersaleApplyCmd;
+import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
@@ -55,4 +57,8 @@ public interface PerformConvertor {
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
 
     public MemberPerformItem toMemberPerformItem(PerformItemDO item);
+
+    public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
+
+    public AftersaleApplyCmd toApplyCmd(AfterSalePreviewCmd cmd);
 }

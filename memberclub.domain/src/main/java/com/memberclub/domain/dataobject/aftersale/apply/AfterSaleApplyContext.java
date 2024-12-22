@@ -15,5 +15,9 @@ import lombok.Data;
 @Data
 public class AfterSaleApplyContext {
 
+    private AftersaleApplyCmd cmd;
+
     private AftersalePreviewContext previewContext;
+
+
 }

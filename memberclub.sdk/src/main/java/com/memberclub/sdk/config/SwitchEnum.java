@@ -15,7 +15,10 @@ public enum SwitchEnum {
 
     LOCK_TIMEOUT_SECONDS("lock_time", 10),
     PERFORM_RETRY_MAX_TIME("perform_retry_max_time", 5),
-    AFTERSALE_DEGRADE("aftersale_degrade_%s", false);
+    AFTERSALE_DEGRADE("aftersale_degrade_%s", false),
+    AFTERSALE_PLAN_GENERATE_DIGEST_VERSION("aftersale_plan_generate_digest_version", 1),
+    AFTERSALE_PLAN_GENERATE_DIGEST_CHECK_DEGRADE("aftersale_plan_generate_digest_check_degrade", false),
+    ;
 
 
     private String key;

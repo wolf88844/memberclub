@@ -7,6 +7,7 @@
 package com.memberclub.common.extension;
 
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.dataobject.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.domain.dataobject.perform.PerformContext;
@@ -37,4 +38,7 @@ public interface BizSceneBuildExtension extends BaseExtension {
         return SceneEnum.SCENE_AFTERSALE_MONTH_CARD.getValue();
     }
 
+    default String buildAftersaleApplyScene(AfterSaleApplyContext context) {
+        return SceneEnum.SCENE_AFTERSALE_MONTH_CARD.getValue();
+    }
 }

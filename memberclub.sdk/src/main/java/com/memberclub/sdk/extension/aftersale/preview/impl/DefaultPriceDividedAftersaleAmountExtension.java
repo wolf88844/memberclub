@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.aftersale.impl;
+package com.memberclub.sdk.extension.aftersale.preview.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -13,7 +13,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.aftersale.ItemUsage;
 import com.memberclub.domain.dataobject.aftersale.RefundWayEnum;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
-import com.memberclub.sdk.extension.aftersale.AftersaleAmountExtension;
+import com.memberclub.sdk.extension.aftersale.preview.AftersaleAmountExtension;
 import com.memberclub.sdk.service.aftersale.AftersaleAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 

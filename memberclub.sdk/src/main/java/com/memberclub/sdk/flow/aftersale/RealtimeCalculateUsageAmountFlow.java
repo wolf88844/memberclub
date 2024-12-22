@@ -15,8 +15,8 @@ import com.memberclub.domain.dataobject.aftersale.ItemUsage;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.dataobject.aftersale.preview.UsageTypeCalculateTypeEnum;
 import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.sdk.extension.aftersale.AftersaleAmountExtension;
-import com.memberclub.sdk.extension.aftersale.RealtimeCalculateUsageExtension;
+import com.memberclub.sdk.extension.aftersale.preview.AftersaleAmountExtension;
+import com.memberclub.sdk.extension.aftersale.preview.RealtimeCalculateUsageExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

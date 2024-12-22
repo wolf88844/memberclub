@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.aftersale.impl;
+package com.memberclub.sdk.extension.aftersale.preview.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -18,7 +18,7 @@ import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
-import com.memberclub.sdk.extension.aftersale.AftersaleCollectDataExtension;
+import com.memberclub.sdk.extension.aftersale.preview.AftersaleCollectDataExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -52,6 +52,7 @@ public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDat
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setPerformItems(items);
         context.setPayPriceFen(Integer.valueOf(memberOrder.getActPriceFen()));
+        context.setDigestVersion(cmd.getDigestVersion());
 
         return context;
     }

@@ -23,6 +23,8 @@ public enum AftersaleUnableCode {
     USE_ERROR(1005, "已使用,不能退"),
     REFUNDED(1006, "已退款"),
     NON_PERFORMED(1007, "还未履约成功,不能退"),
+    CONDITION_OCCUR(1008, "券包使用情况变化,请刷新重试"),
+
     ;
 
     private int value;

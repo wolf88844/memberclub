@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.aftersale.impl;
+package com.memberclub.sdk.extension.aftersale.preview.impl;
 
 import com.google.common.collect.Maps;
 import com.memberclub.common.annotation.Route;
@@ -20,7 +20,7 @@ import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetFetchRequestDO;
 import com.memberclub.domain.facade.AssetFetchResponseDO;
 import com.memberclub.infrastructure.facade.AssetsFacade;
-import com.memberclub.sdk.extension.aftersale.RealtimeCalculateUsageExtension;
+import com.memberclub.sdk.extension.aftersale.preview.RealtimeCalculateUsageExtension;
 import com.memberclub.sdk.service.aftersale.AftersaleAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 

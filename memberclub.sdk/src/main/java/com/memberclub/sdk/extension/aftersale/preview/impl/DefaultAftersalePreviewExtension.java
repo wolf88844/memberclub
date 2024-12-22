@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.aftersale.impl;
+package com.memberclub.sdk.extension.aftersale.preview.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -13,7 +13,7 @@ import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
-import com.memberclub.sdk.extension.aftersale.AftersalePreviewExtension;
+import com.memberclub.sdk.extension.aftersale.preview.AftersalePreviewExtension;
 import com.memberclub.sdk.flow.aftersale.AftersaleGetAndCheckPeriodFlow;
 import com.memberclub.sdk.flow.aftersale.AftersalePreviewDegradeFlow;
 import com.memberclub.sdk.flow.aftersale.AftersaleStatusCheckFlow;

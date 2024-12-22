@@ -14,7 +14,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class AfterSalePreviewRespose {
+public class AfterSalePreviewResponse {
 
     private boolean success;
 
@@ -31,4 +31,8 @@ public class AfterSalePreviewRespose {
     private int unableCode;
 
     private String unableTip;
+
+    private String digests;
+
+    private int digestVersion;
 }

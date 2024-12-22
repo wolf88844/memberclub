@@ -31,5 +31,5 @@ public class AfterSalePreviewCmd {
 
     private String operator;
 
-    private String reason;
+    private Integer digestVersion;
 }

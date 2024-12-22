@@ -6,8 +6,32 @@
  */
 package com.memberclub.domain.dataobject.aftersale.apply;
 
+import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.dataobject.aftersale.AftersaleSourceEnum;
+import lombok.Data;
+
 /**
  * author: 掘金五阳
  */
+@Data
 public class AftersaleApplyCmd {
+
+    private BizTypeEnum bizType;
+
+    private long userId;
+
+    private OrderSystemTypeEnum orderSystemTypeEnum;
+
+    private String orderId;
+
+    private String tradeId;
+
+    private AftersaleSourceEnum source;
+
+    private String operator;
+
+    private String digests;
+
+    private Integer digestVersion;
 }

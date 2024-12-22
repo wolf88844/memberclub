@@ -6,8 +6,13 @@
  */
 package com.memberclub.sdk.flow.aftersale;
 
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.sdk.config.SwitchEnum;
+import com.memberclub.sdk.extension.aftersale.preview.GenerateAfterSalePlanDigestExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,8 +22,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class GenerateAftersalePlanDigestFlow extends FlowNode<AftersalePreviewContext> {
 
+    @Autowired
+    private ExtensionManager extensionManager;
+
     @Override
     public void process(AftersalePreviewContext context) {
+        if (context.getDigestVersion() == null) {
+            int version = SwitchEnum.AFTERSALE_PLAN_GENERATE_DIGEST_VERSION.getInt(context.getCmd().getBizType().toBizType());
+            context.setDigestVersion(version);
+        }
 
+        extensionManager.getExtension(
+                BizScene.of(context.getCmd().getBizType().toBizType(), String.valueOf(context.getDigestVersion())),
+                GenerateAfterSalePlanDigestExtension.class).generateDigest(context);
     }
 }

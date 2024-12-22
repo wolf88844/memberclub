@@ -21,8 +21,10 @@ import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.dataobject.aftersale.AftersaleSourceEnum;
 import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
 import com.memberclub.domain.dataobject.aftersale.RefundTypeEnum;
+import com.memberclub.domain.dataobject.aftersale.apply.AftersaleApplyCmd;
+import com.memberclub.domain.dataobject.aftersale.apply.AftersaleApplyResponse;
 import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewCmd;
-import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewRespose;
+import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.domain.dataobject.perform.PerformResp;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
@@ -34,11 +36,12 @@ import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.infrastruct.facade.impl.MockAssetsFacade;
+import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.mock.MockBaseTest;
-import com.memberclub.sdk.service.aftersale.AftersalePreviewService;
+import com.memberclub.sdk.service.aftersale.AftersaleService;
 import com.memberclub.sdk.service.perform.PerformService;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
@@ -63,7 +66,7 @@ public class TestDemoMember extends MockBaseTest {
     private MockAssetsFacade couponGrantFacade;
 
     @Autowired
-    private AftersalePreviewService aftersalePreviewService;
+    private AftersaleService aftersaleService;
 
 
     @Test
@@ -100,13 +103,12 @@ public class TestDemoMember extends MockBaseTest {
         previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         previewCmd.setTradeId(cmd.getTradeId());
         previewCmd.setSource(AftersaleSourceEnum.User);
-        previewCmd.setReason("测试退");
         previewCmd.setOperator(String.valueOf(cmd.getUserId()));
         previewCmd.setOrderId(cmd.getOrderId());
         previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
 
 
-        AfterSalePreviewRespose respose = aftersalePreviewService.preview(previewCmd);
+        AfterSalePreviewResponse respose = aftersaleService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.ALL_REFUND, respose.getRefundType());
 
@@ -114,10 +116,18 @@ public class TestDemoMember extends MockBaseTest {
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
             entry.getValue().get(0).setStatus(1);
         }
-        respose = aftersalePreviewService.preview(previewCmd);
+        respose = aftersaleService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.PORTION_RFUND, respose.getRefundType());
 
+
+        AftersaleApplyCmd applyCmd = new AftersaleApplyCmd();
+        applyCmd = PerformConvertor.INSTANCE.toApplyCmd(previewCmd);
+        applyCmd.setDigests(respose.getDigests());
+        applyCmd.setDigestVersion(respose.getDigestVersion());
+        //applyCmd.setDigestVersion(0);
+        AftersaleApplyResponse aftersaleApplyResponse = aftersaleService.apply(applyCmd);
+        Assert.assertTrue(aftersaleApplyResponse.isSuccess());
 
         /*******************已用尽,结果为不可退********/
 
@@ -126,7 +136,7 @@ public class TestDemoMember extends MockBaseTest {
                 assetDO.setStatus(1);
             }
         }
-        respose = aftersalePreviewService.preview(previewCmd);
+        respose = aftersaleService.preview(previewCmd);
         Assert.assertEquals(false, respose.isAftersaleEnabled());
         Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
     }
