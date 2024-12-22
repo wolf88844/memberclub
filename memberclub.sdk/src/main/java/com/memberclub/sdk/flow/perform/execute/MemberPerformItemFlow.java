@@ -46,7 +46,8 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
         MemberPerformItemExtension extension =
                 extensionManager.getExtension(context.getPerformContext().toDefaultScene(), MemberPerformItemExtension.class);
         List<MemberPerformItem> items = extension.toMemberPerformItems(context);
-        int count = memberPerformItemDao.insertIgnoreBatch(items);
+
+        int count = performDomainService.insertMemberPerformItems(items);
         if (count < items.size()) {
             CommonLog.warn("当前请求写入 member_perform_item数量不足 actual:{}, expect:{}, context:{}",
                     count, items.size(), context);

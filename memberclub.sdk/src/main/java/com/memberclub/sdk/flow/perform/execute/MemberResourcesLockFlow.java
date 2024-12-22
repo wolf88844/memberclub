@@ -40,6 +40,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
         if (context.getLockValue() == null) {
             String value = String.valueOf(TimeUtil.now());
             context.setLockValue(value);
+            context.getCmd().setLockValue(context.getLockValue());
         }
 
         boolean locked = distributeLock.lock(key, context.getLockValue(), SwitchEnum.LOCK_TIMEOUT_SECONDS.getInt(context.getBizType().toBizType()));

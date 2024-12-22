@@ -11,8 +11,10 @@ import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.PerformResp;
 import com.memberclub.sdk.extension.perform.BuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.PreBuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
@@ -30,7 +32,8 @@ public class PerformService {
 
     @Retryable
     @UserLog(domain = LogDomainEnum.PERFORM)
-    public void perform(PerformCmd cmd) {
+    public PerformResp perform(PerformCmd cmd) {
+        PerformResp resp = new PerformResp();
 
         String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                 .buildPreBuildPerformContextScene(cmd);
@@ -42,8 +45,15 @@ public class PerformService {
         PerformContext context = preBuildPerformContextExtension.preBuild(cmd);
 
         if (context.isSkipPerform()) {
-            // TODO: 2024/12/15  返回当前结果
-            return;
+            if (MemberOrderStatusEnum.hasPerformed(context.getMemberOrder().getStatus())) {
+                resp.setSuccess(true);
+                resp.setNeedRetry(false);
+            } else {
+                resp.setSuccess(true);
+                resp.setNeedRetry(true);
+            }
+
+            return resp;
         }
 
         String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
@@ -62,6 +72,16 @@ public class PerformService {
                 getExtension(BizScene.of(cmd.getBizType().toBizType(), executeScene), PerformExecuteExtension.class);
         performExecuteExtension.execute(context);
 
-        //todo 处理 lockValue 重试
+        if (context.isSuccess()) {
+            resp.setSuccess(true);
+            resp.setNeedRetry(false);
+        } else {
+            resp.setSuccess(false);
+            resp.setNeedRetry(true);
+        }
+
+
+        //todo 处理 失败 重试,需要由外层注解处理!
+        return resp;
     }
 }
