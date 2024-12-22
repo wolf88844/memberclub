@@ -7,7 +7,7 @@
 package com.memberclub.sdk.flow.perform.execute;
 
 import com.google.common.collect.Lists;
-import com.memberclub.common.exception.ResultCode;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;

@@ -29,9 +29,15 @@ public interface MemberPerformHisDao extends BaseMapper<MemberPerformHis> {
 
     @QueryMaster
     @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId} AND trade_id=#{tradeId} AND sku_id=#{skuId}")
-    public MemberPerformHis select(@Param("userId") long userId,
-                                   @Param("tradeId") String tradeId,
-                                   @Param("skuId") long skuId);
+    public MemberPerformHis selectBySkuId(@Param("userId") long userId,
+                                          @Param("tradeId") String tradeId,
+                                          @Param("skuId") long skuId);
+
+    @QueryMaster
+    @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId} AND trade_id=#{tradeId} ")
+    public List<MemberPerformHis> selectByTradeId(@Param("userId") long userId,
+                                                  @Param("tradeId") String tradeId);
+
 
     @Update({"UPDATE " + TABLE_NAME + " SET  status=#{toStatus}, utime=#{utime} "
             , " WHERE user_id = #{userId}AND trade_id =#{tradeId}AND sku_id =#{skuId} AND status<#{toStatus}"})

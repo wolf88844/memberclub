@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.common.exception;
+package com.memberclub.domain.exception;
 
 /**
  * @author yuhaiqiang
@@ -15,8 +15,11 @@ public enum ResultCode {
     CAN_NOT_PERFORM_RETRY(10, "当前状态不允许再次重试履约"),
     LOCK_ERROR(11, "加锁失败异常"),
     PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败"),
-    DEPENDENCY_GRANT_ERROR(13, "下游发放异常"),
-    DATA_UPDATE_ERROR(14, "数据更新异常");
+    DEPENDENCY_ERROR(13, "下游接口异常"),
+    DATA_UPDATE_ERROR(14, "数据更新异常"),
+    AFTERSALE_UNABLE_ERROR(15, "不能发起售后异常"),
+    CONFIG_DATA_ERROR(16, "配置数据有误"),
+    ;
 
     private int value;
 

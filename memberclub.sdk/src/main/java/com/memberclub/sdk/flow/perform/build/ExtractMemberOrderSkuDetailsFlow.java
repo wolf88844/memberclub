@@ -6,11 +6,11 @@
  */
 package com.memberclub.sdk.flow.perform.build;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.sdk.service.domain.PerformDomainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +21,12 @@ import java.util.List;
 @Service
 public class ExtractMemberOrderSkuDetailsFlow extends FlowNode<PerformContext> {
 
+    @Autowired
+    private PerformDomainService performDomainService;
+
     @Override
     public void process(PerformContext context) {
-        List<SkuBuyDetailDO> skuBuyDetails = JsonUtils.fromJson(context.getMemberOrder().getSkuDetails()
-                , new TypeReference<List<SkuBuyDetailDO>>() {
-                });
+        List<SkuBuyDetailDO> skuBuyDetails = performDomainService.extractSkuBuyDetail(context.getMemberOrder());
         context.setSkuBuyDetails(skuBuyDetails);
     }
 }

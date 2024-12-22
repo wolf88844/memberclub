@@ -11,13 +11,13 @@ package com.memberclub.domain.common;
  */
 public enum MemberOrderStatusEnum {
 
-    INIT(0, "init"),
-    SUBMITED(9, "submited"),
-    CANCELED(19, "canceled"),
-    PAYED(29, "payed"),
-    PERFORMING(30, "performing"),
-    PERFORMED(39, "performed"),
-    REFUNDED(49, "refunded");
+    INIT(0, "初始化"),
+    SUBMITED(9, "已提单"),
+    CANCELED(19, "已取消"),
+    PAYED(29, "已支付"),
+    PERFORMING(30, "履约中"),
+    PERFORMED(39, "已履约"),
+    REFUNDED(49, "已退款");
 
     private int value;
 
@@ -32,9 +32,18 @@ public enum MemberOrderStatusEnum {
         return status < PERFORMED.toInt();
     }
 
-    public static Boolean hasPerformed(int status) {
+    public static Boolean isPerformed(int status) {
         return status == PERFORMED.toInt();
     }
+
+    public static boolean nonPerformed(int status) {
+        return status < PERFORMED.toInt();
+    }
+
+    public static boolean isRefunded(int status) {
+        return status == MemberOrderStatusEnum.REFUNDED.toInt();
+    }
+
 
     public static MemberOrderStatusEnum findByInt(int value) throws IllegalArgumentException {
         for (MemberOrderStatusEnum item : MemberOrderStatusEnum.values()) {

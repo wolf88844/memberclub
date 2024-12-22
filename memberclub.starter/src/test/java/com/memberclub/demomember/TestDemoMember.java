@@ -18,7 +18,11 @@ import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
-import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.dataobject.aftersale.AftersaleSourceEnum;
+import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
+import com.memberclub.domain.dataobject.aftersale.RefundTypeEnum;
+import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewCmd;
+import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewRespose;
 import com.memberclub.domain.dataobject.perform.PerformCmd;
 import com.memberclub.domain.dataobject.perform.PerformResp;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
@@ -28,12 +32,15 @@ import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.infrastruct.facade.impl.MockCouponGrantFacade;
+import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.infrastruct.facade.impl.MockAssetsFacade;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.mock.MockBaseTest;
-import com.memberclub.sdk.service.PerformService;
+import com.memberclub.sdk.service.aftersale.AftersalePreviewService;
+import com.memberclub.sdk.service.perform.PerformService;
+import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,6 +48,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * author: 掘金五阳
@@ -51,17 +60,118 @@ public class TestDemoMember extends MockBaseTest {
     private MemberPerformHisDao memberPerformHisDao;
 
     @SpyBean
-    private MockCouponGrantFacade couponGrantFacade;
+    private MockAssetsFacade couponGrantFacade;
+
+    @Autowired
+    private AftersalePreviewService aftersalePreviewService;
 
 
     @Test
     public void testDefaultMember() {
+        MemberOrder memberOrder = buildMemberOrder();
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd);
+    }
+
+    @Test
+    public void testDefaultMemberRefund() {
+        MemberOrder memberOrder = buildMemberOrder();
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd);
+
+        AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
+        previewCmd.setUserId(cmd.getUserId());
+        previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        previewCmd.setTradeId(cmd.getTradeId());
+        previewCmd.setSource(AftersaleSourceEnum.User);
+        previewCmd.setReason("测试退");
+        previewCmd.setOperator(String.valueOf(cmd.getUserId()));
+        previewCmd.setOrderId(cmd.getOrderId());
+        previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
+
+
+        AfterSalePreviewRespose respose = aftersalePreviewService.preview(previewCmd);
+        Assert.assertEquals(true, respose.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.ALL_REFUND, respose.getRefundType());
+
+        /*******************部分使用,结果为部分退********/
+        for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
+            entry.getValue().get(0).setStatus(1);
+        }
+        respose = aftersalePreviewService.preview(previewCmd);
+        Assert.assertEquals(true, respose.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.PORTION_RFUND, respose.getRefundType());
+
+
+        /*******************已用尽,结果为不可退********/
+
+        for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
+            for (AssetDO assetDO : entry.getValue()) {
+                assetDO.setStatus(1);
+            }
+        }
+        respose = aftersalePreviewService.preview(previewCmd);
+        Assert.assertEquals(false, respose.isAftersaleEnabled());
+        Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
+    }
+
+    private void verifyData(PerformCmd cmd) {
+        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        for (MemberPerformHis memberPerformHis : hisList) {
+            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberPerformHis.getStatus());
+        }
+        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        for (MemberPerformItem item : items) {
+            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
+        }
+
+        MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
+
+        System.out.println(JsonUtils.toJson(hisList));
+    }
+
+
+    private PerformCmd buildCmd(MemberOrder memberOrder) {
+        PerformCmd cmd = new PerformCmd();
+        cmd.setOrderId(memberOrder.getOrderId());
+        cmd.setActPriceFen(memberOrder.getActPriceFen());
+        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
+        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
+        cmd.setUserId(memberOrder.getUserId());
+        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
+        return cmd;
+    }
+
+
+    public AtomicLong userIdGenerator = new AtomicLong(RandomUtils.nextInt());
+
+    public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
+
+    private MemberOrder buildMemberOrder() {
         MemberOrder memberOrder = new MemberOrder();
-        memberOrder.setUserId(212);
-        memberOrder.setOrderId("3232323");
+        memberOrder.setUserId(userIdGenerator.incrementAndGet());
+        memberOrder.setOrderId(orderIdGenerator.incrementAndGet() + "");
         memberOrder.setOrderSystemType(1);
         memberOrder.setOriginPriceFen("3000");
-        memberOrder.setActPriceFen("100");
+        memberOrder.setActPriceFen("699");
         memberOrder.setBizType(1);
         memberOrder.setCtime(TimeUtil.now());
         memberOrder.setExtra("{}");
@@ -83,41 +193,14 @@ public class TestDemoMember extends MockBaseTest {
         skuPerformItemConfigDO.setCycle(1);
         skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
         skuPerformItemConfigDO.setRightId(32424);
-        skuPerformItemConfigDO.setRightType(Integer.valueOf(SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue()));
+        skuPerformItemConfigDO.setPeriodCount(31);
+        skuPerformItemConfigDO.setRightType(1);
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
         snapshotDO.setPerformConfig(skuPerformConfigDO);
 
         memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
-        memberOrderDao.insert(memberOrder);
-        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
-        System.out.println(JsonUtils.toJson(orderInDb));
-
-        PerformCmd cmd = new PerformCmd();
-        cmd.setOrderId(memberOrder.getOrderId());
-        cmd.setActPriceFen(memberOrder.getActPriceFen());
-        cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
-        cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
-        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
-        cmd.setUserId(memberOrder.getUserId());
-        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
-
-        PerformResp resp = performService.perform(cmd);
-        Assert.assertTrue(resp.isSuccess());
-
-        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
-        for (MemberPerformHis memberPerformHis : hisList) {
-            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberPerformHis.getStatus());
-        }
-        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        for (MemberPerformItem item : items) {
-            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
-        }
-
-        MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
-
-        System.out.println(JsonUtils.toJson(hisList));
+        return memberOrder;
     }
 
     @Test

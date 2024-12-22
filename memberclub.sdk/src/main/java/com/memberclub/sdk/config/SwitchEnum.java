@@ -15,8 +15,7 @@ public enum SwitchEnum {
 
     LOCK_TIMEOUT_SECONDS("lock_time", 10),
     PERFORM_RETRY_MAX_TIME("perform_retry_max_time", 5),
-
-    ;
+    AFTERSALE_DEGRADE("aftersale_degrade_%s", false);
 
 
     private String key;
@@ -52,11 +51,21 @@ public enum SwitchEnum {
         return DynamicConfig.getBoolean(key, (Boolean) defaultValue);
     }
 
+    public boolean getBoolean(int bizType, String... args) {
+        String formatKey = String.format(key, args);
+        return getBoolean(formatKey, bizType);
+    }
+
     public boolean getBoolean(int bizType) {
-        String key = getKey(bizType);
+        return getBoolean(key, bizType);
+    }
+
+    private boolean getBoolean(String key, int bizType) {
+        key = getKey(bizType);
 
         return DynamicConfig.getBoolean(key, (Boolean) defaultValue);
     }
+
 
     public boolean isEnable(int bizType, long userId) {
         String rateKey = getRateKey();

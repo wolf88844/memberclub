@@ -6,13 +6,13 @@
  */
 package com.memberclub.sdk.flow.perform.execute;
 
-import com.memberclub.common.exception.ResultCode;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.monitor.Monitor;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.common.LockMode;
 import com.memberclub.sdk.config.SwitchEnum;
@@ -68,7 +68,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
     public void success(PerformContext context) {
         BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
         String key = buildKey(context, table);
-        CommonLog.error("尝试解锁 key:{}, value:{}", key, context.getLockValue());
+        CommonLog.info("尝试解锁 key:{}, value:{}", key, context.getLockValue());
         Monitor.PERFORM.report(context.getBizType().toBizType(), "success_unlock_attempt");
 
         //内部重试解锁,务必确保解锁成功

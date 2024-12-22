@@ -12,7 +12,7 @@ import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuPerformContext;
-import com.memberclub.sdk.extension.perform.PerformItemCalculateExtension;
+import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

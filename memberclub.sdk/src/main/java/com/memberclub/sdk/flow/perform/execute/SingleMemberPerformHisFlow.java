@@ -6,7 +6,6 @@
  */
 package com.memberclub.sdk.flow.perform.execute;
 
-import com.memberclub.common.exception.ResultCode;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
@@ -14,6 +13,7 @@ import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.sdk.extension.perform.execute.MemberPerformHisExtension;
 import com.memberclub.sdk.service.domain.PerformDomainService;
@@ -48,7 +48,8 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
             CommonLog.warn("写入 member_perform_his 成功: {}", memberPerformHis);
             return;
         }
-        MemberPerformHis hisFromDb = memberPerformHisDao.select(context.getUserId(), context.getTradeId(), skuPerformContext.getSkuId());
+        MemberPerformHis hisFromDb = memberPerformHisDao.selectBySkuId(context.getUserId(),
+                context.getTradeId(), skuPerformContext.getSkuId());
         if (hisFromDb == null) {
             CommonLog.error("写入 member_perform_his失败", memberPerformHis);
             ResultCode.INTERNAL_ERROR.throwException();

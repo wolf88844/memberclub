@@ -6,16 +6,20 @@
  */
 package com.memberclub.sdk.service.domain;
 
-import com.memberclub.common.exception.ResultCode;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.dataobject.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
@@ -97,8 +101,10 @@ public class PerformDomainService {
 
     @Transactional
     public void updateMemberOrderPerformSuccess(PerformContext context) {
-        int count = memberOrderDao.updateStatus(context.getUserId(),
+        int count = memberOrderDao.updateStatus2PerformSucc(context.getUserId(),
                 context.getTradeId(),
+                context.getStime(),
+                context.getEtime(),
                 MEMBER_ORDER_SUCCESS_PERFORM.getToStatus(),
                 MEMBER_ORDER_SUCCESS_PERFORM.getFromStatus(),
                 TimeUtil.now());
@@ -108,5 +114,11 @@ public class PerformDomainService {
         return;
     }
 
+    public List<SkuBuyDetailDO> extractSkuBuyDetail(MemberOrder order) {
+        List<SkuBuyDetailDO> skuBuyDetails = JsonUtils.fromJson(order.getSkuDetails()
+                , new TypeReference<List<SkuBuyDetailDO>>() {
+                });
+        return skuBuyDetails;
+    }
 
 }

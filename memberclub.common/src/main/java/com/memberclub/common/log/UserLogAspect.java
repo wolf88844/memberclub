@@ -6,6 +6,7 @@
  */
 package com.memberclub.common.log;
 
+import com.memberclub.domain.common.BizTypeEnum;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -40,7 +41,14 @@ public class UserLogAspect {
             //使用工具类获取userId。
             String userId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.userId()));
             String orderId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.orderId()));
-            String bizType = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.bizType()));
+            Object bizTypeObject = PropertyUtils.getProperty(args[0], userLogAnnotation.bizType());
+            String bizType = null;
+            if (bizTypeObject instanceof BizTypeEnum) {
+                bizType = String.valueOf(((BizTypeEnum) bizTypeObject).toBizType());
+            } else {
+                bizType = String.valueOf(bizTypeObject);
+            }
+
             // 放到MDC中
             String msg = String.format(" [domain:%s bizType:%s userId:%s orderId:%s] ",
                     userLogAnnotation.domain().name(), bizType, userId, orderId);

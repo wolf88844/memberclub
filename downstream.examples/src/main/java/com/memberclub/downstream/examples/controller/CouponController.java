@@ -57,7 +57,7 @@ public class CouponController {
             }
             map.put(grantItem.getItemToken(), coupons);
         }
-        responseDO.setItemToken2CouponMap(map);
+        responseDO.setItemToken2AssetsMap(map);
         return responseDO;
     }
 }

@@ -23,4 +23,6 @@ public class GrantItemDO {
     private long stime;
 
     private long etime;
+
+    private int rightType;
 }

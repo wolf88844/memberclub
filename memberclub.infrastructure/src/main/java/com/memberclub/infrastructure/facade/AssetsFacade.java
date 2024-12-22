@@ -6,6 +6,8 @@
  */
 package com.memberclub.infrastructure.facade;
 
+import com.memberclub.domain.facade.AssetFetchRequestDO;
+import com.memberclub.domain.facade.AssetFetchResponseDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author yuhaiqiang
  */
 @FeignClient("downstream-examples")
-public interface CouponGrantFacade {
+public interface AssetsFacade {
 
     @RequestMapping(method = RequestMethod.POST, value = "/items/grant")
     public GrantResponseDO grant(@RequestBody GrantRequestDO requestDO);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/items/fetch")
+    public AssetFetchResponseDO fetch(@RequestBody AssetFetchRequestDO request);
 }

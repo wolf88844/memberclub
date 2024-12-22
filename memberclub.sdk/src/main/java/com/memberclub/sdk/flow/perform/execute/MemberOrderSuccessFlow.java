@@ -29,6 +29,5 @@ public class MemberOrderSuccessFlow extends FlowNode<PerformContext> {
     @Override
     public void success(PerformContext context) {
         performDomainService.updateMemberOrderPerformSuccess(context);
-        context.setSuccess(true);
     }
 }

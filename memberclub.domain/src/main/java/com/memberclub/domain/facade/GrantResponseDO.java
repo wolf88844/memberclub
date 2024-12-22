@@ -19,7 +19,7 @@ public class GrantResponseDO {
 
     private int code;
 
-    private Map<String, List<AssetDO>> itemToken2CouponMap;
+    private Map<String, List<AssetDO>> itemToken2AssetsMap;
 
     public boolean isSuccess() {
         return code == 0;

@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.impl;
+package com.memberclub.sdk.extension.perform.build.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -15,7 +15,7 @@ import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
-import com.memberclub.sdk.extension.perform.PerformItemCalculateExtension;
+import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 
 /**
  * author: 掘金五阳

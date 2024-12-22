@@ -6,7 +6,7 @@
  */
 package com.memberclub.sdk.flow.perform.build;
 
-import com.memberclub.common.exception.ResultCode;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.monitor.Monitor;

@@ -6,6 +6,8 @@
  */
 package com.memberclub.common.util;
 
+import com.memberclub.domain.exception.ResultCode;
+
 /**
  * @author 掘金五阳
  */
@@ -19,6 +21,9 @@ public class PeriodUtils {
     public static TimeRange buildTimeRangeFromBaseTime(long baseTime, int periodDays, boolean containsFirstDay) {
         if (containsFirstDay) {
             periodDays = periodDays - 1;//包含当天
+        }
+        if (periodDays < 0) {
+            ResultCode.CONFIG_DATA_ERROR.throwException();
         }
 
         long now = baseTime;

@@ -29,6 +29,8 @@ public class MemberOrder {
 
     private String tradeId;
 
+    private int renewType;
+
     private String userInfo;
 
     private String skuDetails;
@@ -40,6 +42,8 @@ public class MemberOrder {
     private String originPriceFen;
 
     private int status;
+
+    private int refundStatus;
 
     private long stime;
 

@@ -23,8 +23,6 @@ public class PerformContext {
 
     private PerformCmd cmd;
 
-    private boolean success;
-
     private RetrySourceEunm retrySource;
 
     private boolean skipPerform;
@@ -46,8 +44,11 @@ public class PerformContext {
 
     private String originPriceFen;
 
-
     private int memberOrderStartPerformUpdateCount;
+
+    private long stime;
+
+    private long etime;
 
     /******************订单信息****************/
 

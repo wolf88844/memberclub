@@ -9,7 +9,6 @@ package com.memberclub.sdk.extension.perform.execute.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.exception.ResultCode;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -18,11 +17,12 @@ import com.memberclub.domain.dataobject.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.dataobject.perform.execute.ItemGrantResult;
 import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
-import com.memberclub.infrastructure.facade.CouponGrantFacade;
+import com.memberclub.infrastructure.facade.AssetsFacade;
 import com.memberclub.sdk.extension.perform.execute.PerformItemGrantExtension;
 import org.springframework.util.CollectionUtils;
 
@@ -39,7 +39,7 @@ public class DefaultGrantExtension implements PerformItemGrantExtension {
 
     //@Qualifier("couponGrantFacade")
     @Resource()
-    private CouponGrantFacade couponGrantFacade;
+    private AssetsFacade assetsFacade;
 
     @Override
     public ItemGroupGrantResult grant(PerformItemContext context, List<PerformItemDO> items) {
@@ -55,21 +55,22 @@ public class DefaultGrantExtension implements PerformItemGrantExtension {
             grantItemDO.setChannelKey(String.valueOf(item.getRightId()));
             grantItemDO.setStime(item.getStime());
             grantItemDO.setEtime(item.getEtime());
+            grantItemDO.setRightType(item.getRightType());
             grantItemDOS.add(grantItemDO);
         }
 
         request.setGrantItems(grantItemDOS);
-        GrantResponseDO response = couponGrantFacade.grant(request);
+        GrantResponseDO response = assetsFacade.grant(request);
         if (!response.isSuccess()) {
-            ResultCode.DEPENDENCY_GRANT_ERROR.throwException();
+            ResultCode.DEPENDENCY_ERROR.throwException();
         }
         CommonLog.warn("调用发券结果:{}, 入参:{}", response, request);
-        if (CollectionUtils.isEmpty(response.getItemToken2CouponMap())) {
-            ResultCode.DEPENDENCY_GRANT_ERROR.throwException("下游发券列表为空");
+        if (CollectionUtils.isEmpty(response.getItemToken2AssetsMap())) {
+            ResultCode.DEPENDENCY_ERROR.throwException("下游发券列表为空");
         }
 
         Map<String, ItemGrantResult> grantMap = Maps.newHashMap();
-        for (Map.Entry<String, List<AssetDO>> entry : response.getItemToken2CouponMap().entrySet()) {
+        for (Map.Entry<String, List<AssetDO>> entry : response.getItemToken2AssetsMap().entrySet()) {
             String itemToken = entry.getKey();
             String batchCode = entry.getValue().get(0).getBatchCode();
 

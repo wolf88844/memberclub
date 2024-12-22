@@ -35,6 +35,21 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
                             @Param("fromStatuses") List<Integer> fromStatuses,
                             @Param("utime") long utime);
 
+    @Update({"<script> UPDATE ", TABLE_NAME,
+            " SET status=#{toStatus}, utime=#{utime}, stime=#{stime}, etime=#{etime} ",
+            "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND status IN ",
+            "<foreach collection='fromStatuses' item='status' separator=',' open='(' close=')'> ",
+            " #{status} ",
+            "</foreach>",
+            "</script>"})
+    public int updateStatus2PerformSucc(@Param("userId") long userId,
+                                        @Param("tradeId") String tradeId,
+                                        @Param("stime") long stime,
+                                        @Param("etime") long etime,
+                                        @Param("toStatus") int toStatus,
+                                        @Param("fromStatuses") List<Integer> fromStatuses,
+                                        @Param("utime") long utime);
+
     @QueryMaster
     @Select({"SELECT * FROM ", TABLE_NAME,
             " WHERE user_id=#{userId} AND trade_id=#{tradeId} "})

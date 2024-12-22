@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.impl;
+package com.memberclub.sdk.extension.perform.build.impl;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -13,7 +13,7 @@ import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.sdk.extension.perform.BuildPerformContextExtension;
+import com.memberclub.sdk.extension.perform.build.BuildPerformContextExtension;
 import com.memberclub.sdk.flow.perform.build.CalculateDelayPerformItemPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.CalculateImmediatePerformItemPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.CalculateOrderPeriodFlow;

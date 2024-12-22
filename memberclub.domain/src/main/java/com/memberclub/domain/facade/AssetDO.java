@@ -18,13 +18,33 @@ public class AssetDO {
 
     private long assetId;
 
+    private int rightType;
+
     private String batchCode;
+
+    private int priceFen;
 
     private long stime;
 
     private long etime;
 
+    private int status;
+
     private int assetType;
 
     private long ctime;
+
+    public boolean isUsed() {
+        return status == 1;
+    }
+
+    /**
+     * 正常资产(非废弃,冻结类资产)
+     *
+     * @return
+     */
+    public boolean isNormal() {
+        return true;
+    }
+
 }

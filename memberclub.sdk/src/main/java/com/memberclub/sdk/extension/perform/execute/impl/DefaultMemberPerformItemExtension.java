@@ -18,7 +18,7 @@ import com.memberclub.domain.dataobject.perform.PerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
-import com.memberclub.sdk.extension.perform.PerformItemCalculateExtension;
+import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 import com.memberclub.sdk.extension.perform.execute.MemberPerformItemExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
