@@ -9,9 +9,9 @@ package com.memberclub.sdk.flow.perform.build;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeRange;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
     @Override
     public void process(PerformContext context) {
         for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
-            for (PerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
+            for (MemberPerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
                 PerformItemCalculateExtension extension =
                         extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
                 TimeRange timeRange = extension.buildPeriod(context.getBaseTime(), immediatePerformItem);

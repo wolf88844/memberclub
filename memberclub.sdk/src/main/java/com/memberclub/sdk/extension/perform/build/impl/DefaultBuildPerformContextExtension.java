@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.sdk.extension.perform.build.BuildPerformContextExtension;
 import com.memberclub.sdk.flow.perform.build.CalculateDelayPerformItemPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.CalculateImmediatePerformItemPeriodFlow;

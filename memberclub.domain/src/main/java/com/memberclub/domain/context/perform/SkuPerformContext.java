@@ -4,8 +4,10 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.dataobject.perform;
+package com.memberclub.domain.context.perform;
 
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.perform.SkuPerformPropDO;
 import lombok.Data;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class SkuPerformContext {
 
     private SkuPerformPropDO extra;
 
-    private List<PerformItemDO> immediatePerformItems;
+    private List<MemberPerformItemDO> immediatePerformItems;
 
-    private List<PerformItemDO> delayPerformItems;
+    private List<MemberPerformItemDO> delayPerformItems;
 }

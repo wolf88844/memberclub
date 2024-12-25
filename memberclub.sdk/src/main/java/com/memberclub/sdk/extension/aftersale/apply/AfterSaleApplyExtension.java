@@ -7,7 +7,7 @@
 package com.memberclub.sdk.extension.aftersale.apply;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 
 /**
  * author: 掘金五阳

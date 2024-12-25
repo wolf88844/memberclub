@@ -7,7 +7,7 @@
 package com.memberclub.sdk.extension.aftersale.preview;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 
 /**
  * @author yuhaiqiang

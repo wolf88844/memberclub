@@ -6,12 +6,12 @@
  */
 package com.memberclub.sdk.service.aftersale;
 
-import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
-import com.memberclub.domain.dataobject.aftersale.ItemUsage;
-import com.memberclub.domain.dataobject.aftersale.RefundTypeEnum;
-import com.memberclub.domain.dataobject.aftersale.RefundWayEnum;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
-import com.memberclub.domain.dataobject.aftersale.preview.UsageTypeEnum;
+import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
+import com.memberclub.domain.context.aftersale.preview.ItemUsage;
+import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
+import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
 import com.memberclub.domain.facade.AssetDO;
 import org.springframework.stereotype.Service;
 

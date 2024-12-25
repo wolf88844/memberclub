@@ -13,10 +13,10 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.execute.ItemGrantResult;
-import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.execute.ItemGrantResult;
+import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.GrantItemDO;
@@ -42,20 +42,20 @@ public class DefaultGrantExtension implements PerformItemGrantExtension {
     private AssetsFacade assetsFacade;
 
     @Override
-    public ItemGroupGrantResult grant(PerformItemContext context, List<PerformItemDO> items) {
+    public ItemGroupGrantResult grant(PerformItemContext context, List<MemberPerformItemDO> items) {
 
         GrantRequestDO request = new GrantRequestDO();
         request.setUserId(context.getPerformContext().getUserId());
 
         List<GrantItemDO> grantItemDOS = Lists.newArrayList();
-        for (PerformItemDO item : items) {
+        for (MemberPerformItemDO item : items) {
             GrantItemDO grantItemDO = new GrantItemDO();
             grantItemDO.setItemToken(item.getItemToken());
             grantItemDO.setAssetCount(item.getAssetCount());
             grantItemDO.setChannelKey(String.valueOf(item.getRightId()));
             grantItemDO.setStime(item.getStime());
             grantItemDO.setEtime(item.getEtime());
-            grantItemDO.setRightType(item.getRightType());
+            grantItemDO.setRightType(item.getRightType().toInt());
             grantItemDOS.add(grantItemDO);
         }
 

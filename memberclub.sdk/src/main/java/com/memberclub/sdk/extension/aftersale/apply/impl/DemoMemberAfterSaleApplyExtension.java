@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.sdk.extension.aftersale.apply.AfterSaleApplyExtension;
 import com.memberclub.sdk.flow.aftersale.AfterSalePlanDigestCheckFlow;
 import org.springframework.beans.factory.annotation.Autowired;

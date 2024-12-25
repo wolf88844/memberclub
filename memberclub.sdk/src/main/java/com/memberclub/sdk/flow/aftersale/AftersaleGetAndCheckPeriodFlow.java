@@ -8,7 +8,7 @@ package com.memberclub.sdk.flow.aftersale;
 
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.sdk.extension.aftersale.preview.AftersaleBasicCheckExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

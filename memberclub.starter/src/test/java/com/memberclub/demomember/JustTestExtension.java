@@ -7,7 +7,7 @@
 package com.memberclub.demomember;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.perform.PerformCmd;
+import com.memberclub.domain.context.perform.PerformCmd;
 
 /**
  * @author 掘金五阳

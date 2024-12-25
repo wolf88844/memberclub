@@ -11,8 +11,8 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.common.RefundStatusEnum;
-import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 
 /**
  * author: 掘金五阳

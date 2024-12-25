@@ -6,13 +6,13 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
-import com.memberclub.domain.dataobject.aftersale.apply.AftersaleApplyCmd;
-import com.memberclub.domain.dataobject.aftersale.preview.AfterSalePreviewCmd;
-import com.memberclub.domain.dataobject.perform.PerformCmd;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
+import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
+import com.memberclub.domain.context.perform.PerformCmd;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
@@ -26,7 +26,7 @@ import org.mapstruct.factory.Mappers;
 /**
  * @author 掘金五阳
  */
-@Mapper
+@Mapper(uses = ConvertorMethod.class)
 public interface PerformConvertor {
 
     PerformConvertor INSTANCE = Mappers.getMapper(PerformConvertor.class);
@@ -37,9 +37,19 @@ public interface PerformConvertor {
 
     public SkuPerformContext toSkuPerformContext(SkuBuyDetailDO skuBuyDetailDO);
 
-    public PerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
+    @Mappings(value = {
+            @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
+            @Mapping(target = "periodType", source = "periodType", qualifiedByName = "toPeriodTypeEnum")
+    })
+    public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
 
-    public PerformItemDO copyPerformItem(PerformItemDO performItemDO);
+    @Mappings(value = {
+            @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType")
+    })
+    public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);
+
+
+    public MemberPerformItemDO copyPerformItem(MemberPerformItemDO memberPerformItemDO);
 
     @Mappings(value = {
             @Mapping(expression = "java(context.getBizType().toBizType())", target = "bizType"),
@@ -56,7 +66,6 @@ public interface PerformConvertor {
     })
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
 
-    public MemberPerformItem toMemberPerformItem(PerformItemDO item);
 
     public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
 

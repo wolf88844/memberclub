@@ -8,8 +8,8 @@ package com.memberclub.sdk.flow.aftersale;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
-import com.memberclub.domain.dataobject.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.sdk.config.SwitchEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

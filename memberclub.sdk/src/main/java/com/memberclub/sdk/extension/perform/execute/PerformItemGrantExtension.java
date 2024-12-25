@@ -7,9 +7,9 @@
 package com.memberclub.sdk.extension.perform.execute;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ import java.util.List;
  */
 public interface PerformItemGrantExtension extends BaseExtension {
 
-    public ItemGroupGrantResult grant(PerformItemContext context, List<PerformItemDO> items);
+    public ItemGroupGrantResult grant(PerformItemContext context, List<MemberPerformItemDO> items);
 }

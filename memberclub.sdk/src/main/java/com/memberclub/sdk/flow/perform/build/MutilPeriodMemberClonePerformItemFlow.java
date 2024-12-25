@@ -8,9 +8,9 @@ package com.memberclub.sdk.flow.perform.build;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +26,16 @@ public class MutilPeriodMemberClonePerformItemFlow extends FlowNode<PerformConte
     @Override
     public void process(PerformContext context) {
         for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
-            for (PerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
+            for (MemberPerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
                 if (immediatePerformItem.getCycle() <= 1) {
                     continue;
                 }
 
-                List<PerformItemDO> performItems = Lists.newArrayList();
-                List<PerformItemDO> delayPerformItems = Lists.newArrayList();
+                List<MemberPerformItemDO> performItems = Lists.newArrayList();
+                List<MemberPerformItemDO> delayPerformItems = Lists.newArrayList();
 
                 for (long i = immediatePerformItem.getCycle(); i > 0; i--) {
-                    PerformItemDO temp = PerformConvertor.INSTANCE.copyPerformItem(immediatePerformItem);
+                    MemberPerformItemDO temp = PerformConvertor.INSTANCE.copyPerformItem(immediatePerformItem);
                     temp.setPhase((int) i);
                     if (i == 1) {
                         performItems.add(temp);

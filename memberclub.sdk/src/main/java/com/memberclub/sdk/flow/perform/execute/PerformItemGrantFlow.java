@@ -9,10 +9,10 @@ package com.memberclub.sdk.flow.perform.execute;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.common.BizScene;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.execute.ItemGrantResult;
-import com.memberclub.domain.dataobject.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.execute.ItemGrantResult;
+import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
 import com.memberclub.sdk.extension.perform.execute.PerformItemGrantExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +40,8 @@ public class PerformItemGrantFlow extends FlowNode<PerformItemContext> {
                         PerformItemGrantExtension.class);
         ItemGroupGrantResult result = extension.grant(context, context.getItems());
 
-        Map<String, PerformItemDO> token2Items =
-                context.getItems().stream().collect(Collectors.toMap(PerformItemDO::getItemToken, Function.identity()));
+        Map<String, MemberPerformItemDO> token2Items =
+                context.getItems().stream().collect(Collectors.toMap(MemberPerformItemDO::getItemToken, Function.identity()));
 
         for (Map.Entry<String, ItemGrantResult> entry : result.getGrantMap().entrySet()) {
             token2Items.get(entry.getKey()).setBatchCode(entry.getValue().getBatchCode());

@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.sdk.extension.aftersale.preview.AftersalePreviewExtension;
 import com.memberclub.sdk.flow.aftersale.AftersaleGetAndCheckPeriodFlow;
 import com.memberclub.sdk.flow.aftersale.AftersalePreviewDegradeFlow;

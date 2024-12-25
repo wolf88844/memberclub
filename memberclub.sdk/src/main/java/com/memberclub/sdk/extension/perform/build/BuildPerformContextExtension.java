@@ -7,7 +7,7 @@
 package com.memberclub.sdk.extension.perform.build;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
 
 /**
  * author: 掘金五阳

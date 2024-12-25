@@ -11,7 +11,7 @@ import com.memberclub.common.extension.BizSceneBuildExtension;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
 
 /**
  * author: 掘金五阳

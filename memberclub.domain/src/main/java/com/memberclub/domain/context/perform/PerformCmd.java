@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.dataobject.perform;
+package com.memberclub.domain.context.perform;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;

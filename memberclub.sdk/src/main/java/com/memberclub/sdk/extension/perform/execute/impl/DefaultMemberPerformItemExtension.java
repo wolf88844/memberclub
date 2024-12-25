@@ -13,9 +13,9 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
@@ -43,7 +43,7 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
 
 
         List<MemberPerformItem> items = Lists.newArrayList();
-        for (PerformItemDO item : performItemContext.getItems()) {
+        for (MemberPerformItemDO item : performItemContext.getItems()) {
             MemberPerformItem itemPO = PerformConvertor.INSTANCE.toMemberPerformItem(item);
             itemPO.setBizType(performItemContext.getPerformContext().getBizType().toBizType());
             itemPO.setUserId(performItemContext.getPerformContext().getUserId());
@@ -65,7 +65,7 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
     }
 
     @Override
-    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SkuPerformContext context, PerformItemDO item) {
+    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SkuPerformContext context, MemberPerformItemDO item) {
         return null;
     }
 }

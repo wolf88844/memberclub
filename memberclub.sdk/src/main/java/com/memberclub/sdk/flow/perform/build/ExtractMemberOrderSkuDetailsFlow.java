@@ -7,7 +7,7 @@
 package com.memberclub.sdk.flow.perform.build;
 
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.sdk.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,7 +10,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformCmd;
+import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.demomember.JustTestExtension;
 import com.memberclub.sdk.extension.ReversePerformExtension;
 import com.memberclub.demomember.DefaultTestExtension;

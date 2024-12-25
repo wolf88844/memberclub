@@ -8,7 +8,7 @@ package com.memberclub.sdk.extension.perform.build;
 
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.common.util.TimeRange;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 
 /**
@@ -16,9 +16,9 @@ import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
  */
 public interface PerformItemCalculateExtension extends BaseExtension {
 
-    public PerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
+    public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
 
-    public TimeRange buildPeriod(long baseTime, PerformItemDO itemDO);
+    public TimeRange buildPeriod(long baseTime, MemberPerformItemDO itemDO);
 
     
 }

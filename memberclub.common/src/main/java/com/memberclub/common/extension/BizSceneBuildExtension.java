@@ -7,11 +7,11 @@
 package com.memberclub.common.extension;
 
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.aftersale.apply.AfterSaleApplyContext;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
-import com.memberclub.domain.dataobject.perform.PerformCmd;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.perform.PerformCmd;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
 
 /**
  * author: 掘金五阳
@@ -19,7 +19,7 @@ import com.memberclub.domain.dataobject.perform.PerformItemContext;
 public interface BizSceneBuildExtension extends BaseExtension {
 
     default String buildPerformItemGrantExtensionScene(PerformItemContext context) {
-        return String.valueOf(context.getItems().get(0).getRightType());
+        return String.valueOf(context.getItems().get(0).getRightType().toInt());
     }
 
     default String buildPreBuildPerformContextScene(PerformCmd cmd) {

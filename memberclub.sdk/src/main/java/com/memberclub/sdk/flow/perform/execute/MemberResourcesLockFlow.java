@@ -11,7 +11,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.monitor.Monitor;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.dataobject.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.common.LockMode;

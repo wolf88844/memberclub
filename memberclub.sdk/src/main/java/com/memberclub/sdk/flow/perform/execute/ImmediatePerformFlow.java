@@ -9,9 +9,9 @@ package com.memberclub.sdk.flow.perform.execute;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.common.flow.SubFlowNode;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +33,11 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
 
     @Override
     public void process(PerformContext context) {
-        Map<Integer, List<PerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
+        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
                 .getImmediatePerformItems().stream()
-                .collect(Collectors.groupingBy(PerformItemDO::getRightType));
+                .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
 
-        for (Map.Entry<Integer, List<PerformItemDO>> entry : itemMap.entrySet()) {
+        for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {
             PerformItemContext itemContext = new PerformItemContext();
             itemContext.setItems(entry.getValue());
             itemContext.setPerformContext(context);

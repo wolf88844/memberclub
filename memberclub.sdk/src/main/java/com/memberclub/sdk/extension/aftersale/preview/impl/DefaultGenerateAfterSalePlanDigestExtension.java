@@ -13,7 +13,7 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.sdk.extension.aftersale.preview.GenerateAfterSalePlanDigestExtension;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;

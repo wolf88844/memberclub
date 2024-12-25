@@ -12,7 +12,7 @@ import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
@@ -25,18 +25,17 @@ public class DefaultPerformItemCalculateExtension implements PerformItemCalculat
 
 
     @Override
-    public PerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO) {
+    public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO) {
         return PerformConvertor.INSTANCE.toPerformItem(performConfigDO);
     }
 
     @Override
-    public TimeRange buildPeriod(long baseTime, PerformItemDO itemDO) {
-        if (itemDO.getPeriodType() == PeriodTypeEnum.FIX_DAY.toInt()) {
+    public TimeRange buildPeriod(long baseTime, MemberPerformItemDO itemDO) {
+        if (itemDO.getPeriodType() == PeriodTypeEnum.FIX_DAY) {
             return PeriodUtils.buildTimeRangeFromBaseTime(baseTime, itemDO.getPeriodCount(), true);
         }
         return null;
     }
-
 
 
 }

@@ -6,7 +6,7 @@
  */
 package com.memberclub.domain.exception;
 
-import com.memberclub.domain.dataobject.aftersale.AftersaleUnableCode;
+import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 

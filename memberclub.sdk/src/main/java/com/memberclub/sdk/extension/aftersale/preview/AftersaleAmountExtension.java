@@ -7,9 +7,9 @@
 package com.memberclub.sdk.extension.aftersale.preview;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.dataobject.aftersale.ItemUsage;
-import com.memberclub.domain.dataobject.aftersale.RefundWayEnum;
-import com.memberclub.domain.dataobject.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.ItemUsage;
+import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 
 import java.util.Map;
 

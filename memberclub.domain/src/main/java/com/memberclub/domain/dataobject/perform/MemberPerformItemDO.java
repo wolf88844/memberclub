@@ -6,19 +6,21 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
+import com.memberclub.domain.common.PeriodTypeEnum;
+import com.memberclub.domain.common.RightTypeEnum;
 import lombok.Data;
 
 /**
  * author: 掘金五阳
  */
 @Data
-public class PerformItemDO {
+public class MemberPerformItemDO {
 
     private long skuId;
 
     private long rightId;
 
-    private int rightType;
+    private RightTypeEnum rightType;
 
     private String itemToken;
 
@@ -40,7 +42,7 @@ public class PerformItemDO {
 
     private int periodCount;
 
-    private int periodType;
+    private PeriodTypeEnum periodType;
 
     private long stime;
 

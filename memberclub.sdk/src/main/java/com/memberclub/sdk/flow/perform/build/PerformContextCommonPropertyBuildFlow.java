@@ -8,8 +8,8 @@ package com.memberclub.sdk.flow.perform.build;
 
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

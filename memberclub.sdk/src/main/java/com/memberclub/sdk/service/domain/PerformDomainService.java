@@ -12,9 +12,9 @@ import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.PerformItemStatusEnum;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
@@ -60,7 +60,7 @@ public class PerformDomainService {
 
     @Retryable
     public void itemPerformSuccess(PerformItemContext context) {
-        for (PerformItemDO item : context.getItems()) {
+        for (MemberPerformItemDO item : context.getItems()) {
             int cnt = memberPerformItemDao.update2Status(context.getPerformContext().getUserId(),
                     item.getItemToken(),
                     item.getBatchCode(),

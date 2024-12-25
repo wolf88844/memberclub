@@ -10,10 +10,10 @@ import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.dataobject.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.PerformItemDO;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
@@ -41,9 +41,9 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
 
-            List<PerformItemDO> items = Lists.newArrayList();
+            List<MemberPerformItemDO> items = Lists.newArrayList();
             for (SkuPerformItemConfigDO config : detail.getSkuSnapshot().getPerformConfig().getConfigs()) {
-                PerformItemDO item = calculateExtension.toPerformItem(config);
+                MemberPerformItemDO item = calculateExtension.toPerformItem(config);
                 items.add(item);
             }
             skuPerformContext.setImmediatePerformItems(items);

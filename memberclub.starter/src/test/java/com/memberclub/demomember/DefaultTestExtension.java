@@ -13,7 +13,7 @@ import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.dataobject.perform.PerformCmd;
+import com.memberclub.domain.context.perform.PerformCmd;
 
 /**
  * @author 掘金五阳
