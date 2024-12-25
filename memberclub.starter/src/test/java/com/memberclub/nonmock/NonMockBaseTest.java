@@ -9,12 +9,13 @@ package com.memberclub.nonmock;
 import com.memberclub.Starter;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author 掘金五阳
  */
-
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Starter.class)
 public class NonMockBaseTest {

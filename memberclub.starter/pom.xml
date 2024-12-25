@@ -89,4 +89,93 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <!-- 配置文件标识id，命令行用到，如mvn package -P ut -->
+            <id>ut</id> <!--单测环境-->
+            <!-- 设置变量 -->
+            <properties>
+                <enviroment>ut</enviroment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>standalone</id>
+            <properties>
+                <enviroment>standalone</enviroment>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <enviroment>test</enviroment>
+            </properties>
+        </profile>
+        <profile>
+            <id>online</id>
+            <properties>
+                <enviroment>online</enviroment>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <finalName>memberclub-starter-${enviroment}</finalName>
+        <!-- maven打包插件 -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 资源文件相关插件，用于将资源文件复制到输出目录，在相关生命周期中调用 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <!-- 使用你需要的版本 -->
+                <version>3.2.0</version>
+                <!-- 在这里添加你的配置 -->
+                <configuration>
+                    <!-- 资源文件的字符集编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!--                    <delimiters>-->
+                    <!--                        <delimiter>@</delimiter> &lt;!&ndash; 自定义定界符 &ndash;&gt;-->
+                    <!--                    </delimiters>-->
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <!-- maven-resources-plugin的配置 -->
+        <resources>
+            <!-- 每个资源目录一个resource标签 -->
+            <resource>
+                <!-- 指定资源文件目录 -->
+                <directory>src/main/resources</directory>
+                <!-- 哪些文件需要打包，不配置就是全部进行打包 -->
+                <includes>
+                    <include>application.yml</include>
+                    <include>application-${enviroment}.yml</include>
+                    <include>sql/*.sql</include>
+                    <include>log/log4j2.xml</include>
+                    <include>log/log4j2-${enviroment}.xml</include>
+                </includes>
+                <!-- 是否需要进行变量替换，没有必要使用变量取值的，千万不要将filtering设置为true，针对于这一点官网也明确指出二进制文件一定不要过滤，例如Excel模板 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: memberclub
   datasource:
     url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;TRACE_LEVEL_SYSTEM_OUT=2;
     username: test
@@ -9,12 +7,11 @@ spring:
       driver-class-name: org.h2.Driver
     schema: classpath*:sql/tables.sql
 
-mybatis:
-  mapper-locations: classpath*:mapper/*.xml
-  type-aliases-package: com.memberclub.domain.entity
+eureka:
+  client:
+    enable: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
-liteflow:
-  print-execution-log: false
 logging:
   config: classpath:log4j2.xml
-

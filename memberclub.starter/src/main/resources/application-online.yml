@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url:
+    username:
+    password:
+    hikari:
+      driver-class-name:
+
+eureka:
+  client:
+    enable: true
+    service-url:
+      defaultZone:
+
+logging:
+  config: classpath:log4j2.xml

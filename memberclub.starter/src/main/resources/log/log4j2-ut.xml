@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="LOG_HOME">target/logs</Property>
+        <Property name="pattern">%d{DEFAULT} [%t] %C{1} %-5p -%X{msg}%m%n%ex</Property>
+    </Properties>
+    <Appenders>
+        <Console msg="consoleAppender" name="consoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"
+                           charset="UTF-8"/>
+        </Console>
+        <!--日志打印工具-->
+        <RollingFile name="FILE-LOG" fileName="${LOG_HOME}/memberclub.log" append="true"
+                     filePattern="${LOG_HOME}/memberclub-%i.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8">
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="200MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <!-- Root Logger -->
+        <AsyncRoot level="INFO" includeLocation="true">
+            <appender-ref ref="consoleAppender"/>
+            <appender-ref ref="FILE-LOG"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

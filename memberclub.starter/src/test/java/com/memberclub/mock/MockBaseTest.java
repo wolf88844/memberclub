@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * author: 掘金五阳
  */
 
-@ActiveProfiles("junit_test")
+@ActiveProfiles("ut")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Starter.class)
 public class MockBaseTest {
