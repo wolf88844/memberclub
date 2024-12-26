@@ -6,22 +6,12 @@
  */
 package com.memberclub.infrastructure.lock;
 
-import com.memberclub.common.retry.Retryable;
-import org.springframework.stereotype.Service;
-
 /**
  * author: 掘金五阳
  */
-@Service
-public class DistributeLock {
+public interface DistributeLock {
 
-    @Retryable
-    public boolean lock(String key, String value, int timeSeconds) {
-        return true;
-    }
+    boolean lock(String key, String value, int timeSeconds);
 
-    @Retryable
-    public boolean unlock(String key, String value) {
-        return true;
-    }
+    boolean unlock(String key, String value);
 }

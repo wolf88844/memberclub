@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Profile;
 /**
  * author: 掘金五阳
  */
-@Profile("!ut")
 @EnableFeignClients(basePackages = "com.memberclub")
 @EnableEurekaClient
 @Configuration
+@Profile("!ut")
 public class FeignConfiguration {
 
 }

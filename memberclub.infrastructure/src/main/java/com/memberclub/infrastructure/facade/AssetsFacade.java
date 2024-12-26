@@ -11,6 +11,7 @@ import com.memberclub.domain.facade.AssetFetchResponseDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author yuhaiqiang
  */
+@Profile("!ut")
 @FeignClient("downstream-examples")
 public interface AssetsFacade {
 

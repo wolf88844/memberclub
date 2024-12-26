@@ -13,6 +13,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
@@ -26,6 +27,7 @@ import java.util.Set;
  * @author 掘金五阳
  */
 @Service
+@DependsOn({"applicationContextUtils", "infrastructureImplChecker"})
 public class ExtensionManager {
 
 

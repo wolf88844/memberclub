@@ -6,7 +6,9 @@
  */
 package com.memberclub.sdk.config;
 
+import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
+import org.springframework.util.Assert;
 
 /**
  * @author 掘金五阳
@@ -51,7 +53,7 @@ public enum SwitchEnum {
     }
 
     public boolean getBoolean() {
-        return DynamicConfig.getBoolean(key, (Boolean) defaultValue);
+        return getDynamicConfig().getBoolean(key, (Boolean) defaultValue);
     }
 
     public boolean getBoolean(int bizType, String... args) {
@@ -66,14 +68,14 @@ public enum SwitchEnum {
     private boolean getBoolean(String key, int bizType) {
         key = getKey(bizType);
 
-        return DynamicConfig.getBoolean(key, (Boolean) defaultValue);
+        return getDynamicConfig().getBoolean(key, (Boolean) defaultValue);
     }
 
 
     public boolean isEnable(int bizType, long userId) {
         String rateKey = getRateKey();
 
-        int rateConfig = DynamicConfig.getInt(rateKey, 0);
+        int rateConfig = getDynamicConfig().getInt(rateKey, 0);
 
         int rate = (int) (userId % maxRate);
 
@@ -81,7 +83,7 @@ public enum SwitchEnum {
             return true;
         }
 
-        String whiteList = DynamicConfig.getString(getUserIdWhiteListKey(), "");
+        String whiteList = getDynamicConfig().getString(getUserIdWhiteListKey(), "");
 
         String[] whiteUserIds = whiteList.split(",");
         for (String whiteUserId : whiteUserIds) {
@@ -93,29 +95,37 @@ public enum SwitchEnum {
     }
 
     public int getInt() {
-        return DynamicConfig.getInt(key, (int) defaultValue);
+        return getDynamicConfig().getInt(key, (int) defaultValue);
     }
 
     public int getInt(int bizType) {
         String key = getKey(bizType);
-        return DynamicConfig.getInt(key, (int) defaultValue);
+        return getDynamicConfig()
+                .getInt(key, (int) defaultValue);
     }
 
     public long getLong() {
-        return DynamicConfig.getLong(key, (long) defaultValue);
+        return getDynamicConfig()
+                .getLong(key, (long) defaultValue);
     }
 
     public long getLong(int bizType) {
         String key = getKey(bizType);
-        return DynamicConfig.getLong(key, (long) defaultValue);
+        return getDynamicConfig().getLong(key, (long) defaultValue);
     }
 
     public String getString() {
-        return DynamicConfig.getString(key, (String) defaultValue);
+        return getDynamicConfig().getString(key, (String) defaultValue);
     }
 
     public String getString(int bizType) {
         String key = getKey(bizType);
-        return DynamicConfig.getString(key, (String) defaultValue);
+        return getDynamicConfig().getString(key, (String) defaultValue);
+    }
+
+    public DynamicConfig getDynamicConfig() {
+        DynamicConfig config = ApplicationContextUtils.getContext().getBean(DynamicConfig.class);
+        Assert.notNull(config, "DynamicConfig依赖 Spring 启动");
+        return config;
     }
 }

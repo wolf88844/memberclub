@@ -11,20 +11,13 @@ package com.memberclub.infrastructure.dynamic_config;
  *
  * @author 掘金五阳
  */
-public class DynamicConfig {
-    public static boolean getBoolean(String key, Boolean value) {
-        return value;
-    }
+public interface DynamicConfig {
 
-    public static int getInt(String key, int value) {
-        return value;
-    }
+    boolean getBoolean(String key, Boolean value);
 
-    public static long getLong(String key, long value) {
-        return value;
-    }
+    int getInt(String key, int value);
 
-    public static String getString(String key, String value) {
-        return value;
-    }
+    long getLong(String key, long value);
+
+    String getString(String key, String value);
 }

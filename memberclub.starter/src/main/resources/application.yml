@@ -1,4 +1,3 @@
-
 spring:
   profiles:
     active: @enviroment@
@@ -27,3 +26,10 @@ liteflow:
   print-execution-log: false
 logging:
   config: classpath:log4j2.xml
+
+memberclub:
+  infrastructure:
+    config: apollo
+    id: redis
+    lock: redis
+

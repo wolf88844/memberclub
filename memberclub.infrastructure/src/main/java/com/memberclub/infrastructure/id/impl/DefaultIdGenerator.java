@@ -12,6 +12,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.infrastructure.id.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 /**
  * author: 掘金五阳
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @ExtensionImpl(desc = "默认 Id 生成器", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
+@ConditionalOnProperty(name = "memberclub.infrastructure.id", havingValue = "none")
 public class DefaultIdGenerator implements IdGenerator {
 
     @Override
