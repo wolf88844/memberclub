@@ -49,7 +49,6 @@
             <artifactId>mybatis-plus-generator</artifactId>
         </dependency>
 
-
         <!-- lombok dependencies should not end up on classpath -->
         <dependency>
             <groupId>org.projectlombok</groupId>

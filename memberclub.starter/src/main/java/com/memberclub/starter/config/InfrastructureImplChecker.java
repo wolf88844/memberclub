@@ -4,16 +4,20 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure;
+package com.memberclub.starter.config;
 
 import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.lock.DistributeLock;
+import lombok.Data;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
@@ -22,9 +26,43 @@ import static org.springframework.util.Assert.notNull;
 /**
  * author: 掘金五阳
  */
-@Service
+
+@Configuration
 @Order(2)
+@Data
+@ConfigurationProperties(prefix = "memberclub.infrastructure")
+@DependsOn({"applicationContextUtils"})
 public class InfrastructureImplChecker {
+
+
+    /**
+     * 分布式Id 类型, none 为随机生成; 默认类型为 redis
+     */
+    private String id;
+
+    /**
+     * 分布式锁类型,none 为不加锁,默认是 redis
+     */
+    private String lock;
+
+    /**
+     * 配置中心类型,none为取默认值; 默认类型为apollo(携程开源配置中心)
+     */
+    private String config;
+
+    @NestedConfigurationProperty()
+    private Feign feign;
+
+    @Data
+    class Feign {
+
+        /**
+         * 是否开启 feign
+         */
+
+        private Boolean enabled;
+    }
+
 
     @PostConstruct
     public void init() {

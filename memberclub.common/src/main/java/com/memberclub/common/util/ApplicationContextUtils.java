@@ -10,14 +10,14 @@ import com.memberclub.common.log.CommonLog;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 
 /**
  * author: 掘金五阳
  * 第一个启动
  */
-@Service
+@Configuration
 @Order(1)
 public class ApplicationContextUtils implements ApplicationContextAware {
 

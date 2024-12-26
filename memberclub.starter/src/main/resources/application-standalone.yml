@@ -22,3 +22,5 @@ memberclub:
     config: none
     id: none
     lock: none
+    feign:
+      enabled: false

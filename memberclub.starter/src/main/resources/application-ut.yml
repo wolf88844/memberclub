@@ -18,7 +18,6 @@ eureka.client.register-with-eureka: false
 eureka.client.fetch-registry: false
 
 
-
 logging:
   config: classpath:log/log4j2-ut.xml
 
@@ -27,3 +26,5 @@ memberclub:
     config: none
     id: none
     lock: none
+    feign:
+      enabled: false
