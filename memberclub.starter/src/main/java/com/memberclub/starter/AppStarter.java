@@ -17,6 +17,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AppStarter {
 
     public static void main(String[] args) {
-        SpringApplication.run(AppStarter.class, args);
+        SpringApplication application = new SpringApplication(AppStarter.class);
+
+        application.run(args);
     }
 }

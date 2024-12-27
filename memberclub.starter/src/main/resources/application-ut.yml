@@ -5,8 +5,9 @@ spring:
     password: test
     hikari:
       driver-class-name: org.h2.Driver
-    schema: classpath*:sql/tables.sql
-
+  sql:
+    init:
+      schema-locations: classpath:sql/tables.sql
 eureka:
   client:
     enable: false

@@ -6,7 +6,7 @@
  */
 package com.memberclub.mock;
 
-import com.memberclub.Starter;
+import com.memberclub.starter.AppStarter;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles("ut")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Starter.class)
+@SpringBootTest(classes = AppStarter.class)
 public class MockBaseTest {
 
 

@@ -31,7 +31,6 @@ import static org.springframework.util.Assert.notNull;
 @Order(2)
 @Data
 @ConfigurationProperties(prefix = "memberclub.infrastructure")
-@DependsOn({"applicationContextUtils"})
 public class InfrastructureImplChecker {
 
 

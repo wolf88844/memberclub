@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <!--<version>2.1.6.RELEASE</version>-->
-        <version>2.4.2</version>
+        <version>2.7.14</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,10 +28,12 @@
     <properties>
         <baseversion>1.0.0-SNAPSHOT</baseversion>
         <org.mapstruct.version>1.4.0.Beta3</org.mapstruct.version>
-        <org.projectlombok.version>1.18.12</org.projectlombok.version>
+        <!--<org.projectlombok.version>1.18.12</org.projectlombok.version> jdk8-->
+        <org.projectlombok.version>1.18.24</org.projectlombok.version><!--jdk17-->
+
         <!--<springversion>2.1.6.RELEASE</springversion>-->
-        <springversion>2.4.2</springversion>
-        <spring-cloud.version>2020.0.0</spring-cloud.version>
+        <springversion>2.7.14</springversion>
+        <spring-cloud.version>2021.0.6</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -248,10 +250,15 @@
 
     <build>
         <plugins>
-            <!--  <plugin>
-                  <groupId>org.springframework.boot</groupId>
-                  <artifactId>spring-boot-maven-plugin</artifactId>
-              </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version> <!-- 使用最新的版本 -->
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
