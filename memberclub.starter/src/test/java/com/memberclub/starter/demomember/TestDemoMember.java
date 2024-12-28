@@ -35,20 +35,19 @@ import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.facade.AssetDO;
-import com.memberclub.starter.impl.MockAssetsFacade;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
-import com.memberclub.starter.mock.MockBaseTest;
 import com.memberclub.sdk.service.aftersale.AftersaleService;
 import com.memberclub.sdk.service.perform.PerformService;
+import com.memberclub.starter.mock.MockBaseTest;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 import java.util.Map;
@@ -63,11 +62,11 @@ public class TestDemoMember extends MockBaseTest {
     private MemberPerformHisDao memberPerformHisDao;
 
 
-
     @Autowired
     private AftersaleService aftersaleService;
 
 
+    @SneakyThrows
     @Test
     public void testDefaultMember() {
         MemberOrder memberOrder = buildMemberOrder();
@@ -81,6 +80,8 @@ public class TestDemoMember extends MockBaseTest {
         PerformResp resp = performService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd);
+
+        //Thread.sleep(1000000);
     }
 
     @Test

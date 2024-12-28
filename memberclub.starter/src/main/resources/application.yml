@@ -40,3 +40,35 @@ memberclub:
     config: apollo
     id: redis
     lock: redis
+
+
+
+# actuator 配置
+management:
+  #默认和请求接口的端口一致，这里指定一个新的端口号，防止被人猜到
+  server:
+    port: 8686
+  endpoints:
+    web:
+      #对外暴露actuator的哪些监控数据，注意单词不要写错了，写错了外部是无法访问接口的
+      exposure:
+        include:
+        - health
+        - prometheus
+  endpoint:
+    # 启用之后，才能够正常调用  /actuator/prometheus 接口
+    prometheus:
+      enabled: true
+    #健康检查
+    health:
+      #总是展示健康检查的详细信息
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      #应用程序名称，这个配置建议加上，Grafana官方提供的面板配置很多用了这个label
+      application: ${spring.application.name}
+# 配置完成之后，启动项目
+# 就可以正常访问 /actuator/health接口 或者 /actuator/prometheus ，因为目前只暴露了这两个接口

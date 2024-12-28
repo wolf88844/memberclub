@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.config;
+package com.memberclub.sdk.common;
 
 import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;

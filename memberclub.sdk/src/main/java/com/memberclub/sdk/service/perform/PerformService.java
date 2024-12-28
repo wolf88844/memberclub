@@ -16,6 +16,7 @@ import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformResp;
+import com.memberclub.sdk.common.MetricsEnum;
 import com.memberclub.sdk.extension.perform.build.BuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.build.PreBuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
@@ -53,6 +54,10 @@ public class PerformService {
                     resp.setSuccess(true);
                     resp.setNeedRetry(true);
                 }
+                MetricsEnum.PERFORM.counter(cmd.getBizType(),
+                        "retryTimes", cmd.getRetryTimes(),
+                        "skip", true,
+                        "result", resp.isSuccess());
 
                 return resp;
             }
@@ -66,7 +71,6 @@ public class PerformService {
             buildPerformContextExtension.build(context);
 
             //execute Context
-
             String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                     .buildPerformContextExecuteScene(context);
             PerformExecuteExtension performExecuteExtension = extensionManager.
@@ -75,11 +79,21 @@ public class PerformService {
 
             resp.setSuccess(true);
             resp.setNeedRetry(false);
+
+            MetricsEnum.PERFORM.counter(cmd.getBizType(),
+                    "retryTimes", cmd.getRetryTimes(),
+                    "skip", false,
+                    "result", resp.isSuccess());
             CommonLog.error("履约流程成功:{}", cmd);
         } catch (Exception e) {
             CommonLog.error("内部履约流程异常,需要重试:{}", cmd, e);
             resp.setSuccess(false);
             resp.setNeedRetry(true);
+            
+            MetricsEnum.PERFORM.counter(cmd.getBizType(),
+                    "retryTimes", cmd.getRetryTimes(),
+                    "skip", false,
+                    "result", "exception");
         }
 
         //todo 处理 失败 重试,需要由外层注解处理!

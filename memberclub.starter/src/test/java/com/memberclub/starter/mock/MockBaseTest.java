@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles("ut")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppStarter.class)
+@SpringBootTest(classes = AppStarter.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class MockBaseTest {
     @SpyBean
     public MockAssetsFacade couponGrantFacade;

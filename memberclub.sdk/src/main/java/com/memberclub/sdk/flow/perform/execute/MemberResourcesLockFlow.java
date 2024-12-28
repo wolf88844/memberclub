@@ -15,7 +15,7 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.common.LockMode;
-import com.memberclub.sdk.config.SwitchEnum;
+import com.memberclub.sdk.common.SwitchEnum;
 import com.memberclub.sdk.extension.config.BizConfigTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
