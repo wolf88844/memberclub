@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub;
+package com.memberclub.starter;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.common.flow.FlowChain;
@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.sdk.flow.util.LiteFlowChain;
 import com.memberclub.sdk.flow.util.LiteFlowChainService;
-import com.memberclub.starter.AppStarter;
+import com.memberclub.starter.mock.MockBaseTest;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AppStarter.class})
-public class TestFlow {
+public class TestFlow extends MockBaseTest {
 
     @Autowired
     private FlowExecutor flowExecutor;

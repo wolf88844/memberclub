@@ -4,17 +4,17 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub;
+package com.memberclub.starter;
 
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
-import com.memberclub.demomember.JustTestExtension;
 import com.memberclub.sdk.extension.ReversePerformExtension;
-import com.memberclub.demomember.DefaultTestExtension;
-import com.memberclub.starter.AppStarter;
+import com.memberclub.starter.demomember.DefaultTestExtension;
+import com.memberclub.starter.demomember.JustTestExtension;
+import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AppStarter.class})
-public class TestExtension {
+public class ExtensionTest extends MockBaseTest {
 
     @Autowired
     ExtensionManager extensionManager;

@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.demomember;
+package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -35,12 +35,12 @@ import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.facade.AssetDO;
-import com.memberclub.infrastruct.facade.impl.MockAssetsFacade;
+import com.memberclub.starter.impl.MockAssetsFacade;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
-import com.memberclub.mock.MockBaseTest;
+import com.memberclub.starter.mock.MockBaseTest;
 import com.memberclub.sdk.service.aftersale.AftersaleService;
 import com.memberclub.sdk.service.perform.PerformService;
 import org.apache.commons.lang3.RandomUtils;
@@ -62,8 +62,7 @@ public class TestDemoMember extends MockBaseTest {
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
 
-    @SpyBean
-    private MockAssetsFacade couponGrantFacade;
+
 
     @Autowired
     private AftersaleService aftersaleService;

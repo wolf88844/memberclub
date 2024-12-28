@@ -4,11 +4,13 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.nonmock;
+package com.memberclub.starter.nonmock;
 
-import com.memberclub.Starter;
+import com.memberclub.starter.AppStarter;
+import com.memberclub.starter.impl.MockAssetsFacade;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,8 +19,14 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Starter.class)
-public class NonMockBaseTest {
+@SpringBootTest(classes = AppStarter.class)
+public abstract class NonMockBaseTest {
+    @SpyBean
+    private MockAssetsFacade couponGrantFacade;
 
+    /*@Test
+    public void test() {
+
+    }*/
 
 }

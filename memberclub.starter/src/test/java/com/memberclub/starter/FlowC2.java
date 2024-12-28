@@ -1,10 +1,10 @@
 /**
- * @(#)FlowC1.java, 十二月 15, 2024.
+ * @(#)FlowC2.java, 十二月 15, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub;
+package com.memberclub.starter;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
@@ -14,21 +14,21 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class FlowC1 extends FlowNode<SubFlowContext> {
+public class FlowC2 extends FlowNode<SubFlowContext> {
 
     @Override
     public void process(SubFlowContext flowContext) {
-        CommonLog.info("FlowC1 process");
+        CommonLog.info("FlowC2 process");
     }
 
     @Override
     public void success(SubFlowContext flowContext) {
-        CommonLog.info("FlowC1 success");
+        CommonLog.info("FlowC2 success");
     }
 
     @Override
     public void rollback(SubFlowContext flowContext) {
-        CommonLog.info("FlowC1 rollback");
+        CommonLog.info("FlowC2 rollback");
     }
 
     @Override
@@ -36,6 +36,6 @@ public class FlowC1 extends FlowNode<SubFlowContext> {
         if (e != null) {
             CommonLog.error("callback 是异常", e);
         }
-        CommonLog.info("FlowC1 callback");
+        CommonLog.info("FlowC2 callback");
     }
 }

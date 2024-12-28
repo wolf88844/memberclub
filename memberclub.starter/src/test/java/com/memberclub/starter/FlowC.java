@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub;
+package com.memberclub.starter;
 
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.common.flow.SubFlowNode;

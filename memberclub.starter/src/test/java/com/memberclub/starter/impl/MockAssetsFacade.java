@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastruct.facade.impl;
+package com.memberclub.starter.impl;
 
 import com.google.common.collect.Maps;
 import com.memberclub.common.util.TimeUtil;
