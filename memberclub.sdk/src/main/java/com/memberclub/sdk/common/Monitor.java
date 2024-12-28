@@ -13,13 +13,15 @@ import org.apache.commons.lang.ObjectUtils;
 /**
  * @author yuhaiqiang
  */
-public enum MetricsEnum {
+public enum Monitor {
 
-    PERFORM("perform");
+    PERFORM("perform_request"),
+    PERFORM_EXECUTE("perform_execute"),
+    ;
 
     private String name;
 
-    MetricsEnum(String name) {
+    Monitor(String name) {
         this.name = name;
     }
 
@@ -33,7 +35,7 @@ public enum MetricsEnum {
     }
 
     private String buildCounterName(int bizType) {
-        return String.format("%s_%s_%s", name, bizType, "counter");
+        return String.format("%s_%s_%s", name, "counter", bizType);
     }
 
     public void counter(BizTypeEnum bizType, Object... tags) {

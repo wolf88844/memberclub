@@ -9,12 +9,12 @@ package com.memberclub.sdk.flow.perform.execute;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.common.monitor.Monitor;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.common.LockMode;
+import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.common.SwitchEnum;
 import com.memberclub.sdk.extension.config.BizConfigTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +46,12 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
         boolean locked = distributeLock.lock(key, context.getLockValue(), SwitchEnum.LOCK_TIMEOUT_SECONDS.getInt(context.getBizType().toBizType()));
         if (!locked) {
             CommonLog.error("加锁失败,需要再次重试 key:{}, value:{}", key, context.getLockValue());
-            Monitor.PERFORM.report(context.getBizType().toBizType(), "lock_fail");
+            Monitor.PERFORM_EXECUTE.counter(context.getBizType(), "lock", false);
             ResultCode.LOCK_ERROR.throwException();
         }
+
         CommonLog.error("加锁成功 key:{}, value:{}", key, context.getLockValue());
-        Monitor.PERFORM.report(context.getBizType().toBizType(), "lock_succ");
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(), "lock", true);
     }
 
     private String buildKey(PerformContext context, BizConfigTable table) {
@@ -69,7 +70,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
         BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
         String key = buildKey(context, table);
         CommonLog.info("尝试解锁 key:{}, value:{}", key, context.getLockValue());
-        Monitor.PERFORM.report(context.getBizType().toBizType(), "success_unlock_attempt");
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(), "unlock", "true");
 
         //内部重试解锁,务必确保解锁成功
         distributeLock.unlock(key, context.getLockValue());
@@ -80,7 +81,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
         BizConfigTable table = extensionManager.getExtension(context.toDefaultScene(), BizConfigTable.class);
         String key = buildKey(context, table);
         CommonLog.error("回滚阶段尝试解锁 key:{}, value:{}", key, context.getLockValue());
-        Monitor.PERFORM.report(context.getBizType().toBizType(), "rollback_unlock_attempt");
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(), "unlock", "rollback");
         if (table.getLockMode() == LockMode.LOCK_ORDER) {
             distributeLock.unlock(key, context.getLockValue());
         } else if (table.getLockMode() == LockMode.LOCK_USER) {
