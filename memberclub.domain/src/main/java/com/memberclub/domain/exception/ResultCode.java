@@ -68,10 +68,10 @@ public enum ResultCode {
     }
 
     public void throwException() {
-        MemberException.throwException(this);
+        throw MemberException.newException(this);
     }
 
     public void throwException(String msg) {
-        MemberException.throwException(this, msg);
+        throw MemberException.newException(this, msg);
     }
 }

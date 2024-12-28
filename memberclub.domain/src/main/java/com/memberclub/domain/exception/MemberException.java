@@ -43,13 +43,13 @@ public class MemberException extends RuntimeException {
         this.code = code;
     }
 
-    public static void throwException(ResultCode code) {
+    public static MemberException newException(ResultCode code) {
         MemberException exception = new MemberException(code);
-        throw exception;
+        return exception;
     }
 
-    public static void throwException(ResultCode code, String msg) {
+    public static MemberException newException(ResultCode code, String msg) {
         MemberException exception = new MemberException(code, msg);
-        throw exception;
+        return exception;
     }
 }
