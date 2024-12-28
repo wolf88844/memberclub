@@ -26,10 +26,10 @@ public class CalculateOrderPeriodFlow extends FlowNode<PerformContext> {
                 etime = context.getDelayPerformEtime();
             }
 
-            skuPerformContext.setStime(stime);
-            skuPerformContext.setEtime(etime);
+            skuPerformContext.getHis().setStime(stime);
+            skuPerformContext.getHis().setEtime(etime);
         }
-        context.setStime(context.getSkuPerformContexts().get(0).getStime());
-        context.setEtime(context.getSkuPerformContexts().get(0).getEtime());
+        context.setStime(context.getSkuPerformContexts().get(0).getHis().getStime());
+        context.setEtime(context.getSkuPerformContexts().get(0).getHis().getEtime());
     }
 }

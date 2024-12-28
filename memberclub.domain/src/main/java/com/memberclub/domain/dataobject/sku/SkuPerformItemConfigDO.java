@@ -6,6 +6,10 @@
  */
 package com.memberclub.domain.dataobject.sku;
 
+import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import lombok.Data;
 
 /**
@@ -27,4 +31,14 @@ public class SkuPerformItemConfigDO {
     private int periodType;
 
     private int cycle;
+
+    private String providerId;
+
+    private RightGrantInfo grantInfo = new RightGrantInfo();
+
+    private RightSettleInfo settleInfo = new RightSettleInfo();
+
+    private RightViewInfo viewInfo = new RightViewInfo();
+
+    private RightSaleInfo saleInfo = new RightSaleInfo();
 }

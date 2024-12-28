@@ -9,6 +9,7 @@ package com.memberclub.sdk.extension.perform.execute;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.entity.MemberPerformHis;
 
 /**
@@ -19,4 +20,7 @@ public interface MemberPerformHisExtension extends BaseExtension {
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
 
     public MemberPerformHis toMemberPerformHisWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext);
+
+
+    public PerformHisExtraInfo toCommonExtraInfo(SkuPerformContext skuPerformContext);
 }

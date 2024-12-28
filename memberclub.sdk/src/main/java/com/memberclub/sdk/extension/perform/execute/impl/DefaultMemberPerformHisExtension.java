@@ -15,6 +15,8 @@ import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -34,10 +36,10 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
         IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
                 IdGenerator.class);
-        String perforHisToken = idGenerator.generateId();
-        skuPerformContext.setPerformHisToken(perforHisToken);
+        String performHisToken = idGenerator.generateId();
+        skuPerformContext.getHis().setPerformHisToken(performHisToken);
 
-        MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(context, skuPerformContext);
+        MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(skuPerformContext.getHis());
         return memberPerformHis;
     }
 
@@ -47,5 +49,15 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
         memberPerformHis.setStatus(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt());
         memberPerformHis.setUtime(TimeUtil.now());
         return memberPerformHis;
+    }
+
+    @Override
+    public PerformHisExtraInfo toCommonExtraInfo(SkuPerformContext skuPerformContext) {
+        PerformHisExtraInfo extraInfo = new PerformHisExtraInfo();
+
+        SkuBuyDetailDO skuBuyDetail = skuPerformContext.getSkuBuyDetail();
+        //TODO 补充
+
+        return extraInfo;
     }
 }

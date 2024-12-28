@@ -12,7 +12,8 @@ import lombok.Data;
  * @author 掘金五阳
  */
 @Data
-public class SkuDisplayDO {
+public class SkuViewInfo {
+    
     private String displayName;
 
     private String displayDesc;

@@ -10,10 +10,12 @@ import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
-import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
@@ -37,7 +39,16 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
 
         List<SkuPerformContext> skuPerformContexts = Lists.newArrayList();
         for (SkuBuyDetailDO detail : details) {
-            SkuPerformContext skuPerformContext = PerformConvertor.INSTANCE.toSkuPerformContext(detail);
+            SkuPerformContext skuPerformContext = new SkuPerformContext();
+            skuPerformContext.setSkuBuyDetail(detail);
+            MemberPerformHisDO his = PerformConvertor.INSTANCE.toMemberPerformHisDO(context);
+            his.setStatus(MemberPerformHisStatusEnum.INIT);
+            his.setSkuId(detail.getSkuId());
+            his.setBuyCount(detail.getBuyCount());
+            his.setCtime(TimeUtil.now());
+            his.setUtime(TimeUtil.now());
+            skuPerformContext.setHis(his);
+
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
 

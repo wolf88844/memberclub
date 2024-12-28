@@ -6,8 +6,9 @@
  */
 package com.memberclub.domain.context.perform;
 
+import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuPerformPropDO;
+import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import lombok.Data;
 
 import java.util.List;
@@ -18,17 +19,9 @@ import java.util.List;
 @Data
 public class SkuPerformContext {
 
-    private long skuId;
+    private SkuBuyDetailDO skuBuyDetail;
 
-    private long buyCount;
-
-    private String performHisToken;
-
-    private long stime;
-
-    private long etime;
-
-    private SkuPerformPropDO extra;
+    private MemberPerformHisDO his = new MemberPerformHisDO();
 
     private List<MemberPerformItemDO> immediatePerformItems;
 

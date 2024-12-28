@@ -6,6 +6,7 @@
  */
 package com.memberclub.common.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.memberclub.common.log.CommonLog;
 
 import java.io.IOException;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
 
 /**
  * author: 掘金五阳
@@ -24,6 +27,9 @@ public class JsonUtils {
 
     static {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
 
     }

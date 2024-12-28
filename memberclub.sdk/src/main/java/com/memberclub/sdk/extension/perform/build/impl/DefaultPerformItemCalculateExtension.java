@@ -11,6 +11,7 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.common.GrantTypeEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
@@ -26,7 +27,9 @@ public class DefaultPerformItemCalculateExtension implements PerformItemCalculat
 
     @Override
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO) {
-        return PerformConvertor.INSTANCE.toPerformItem(performConfigDO);
+        MemberPerformItemDO item = PerformConvertor.INSTANCE.toPerformItem(performConfigDO);
+        item.setGrantType(GrantTypeEnum.GRANT);
+        return item;
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
@@ -205,6 +206,10 @@ public class TestDemoMember extends MockBaseTest {
         skuPerformItemConfigDO.setRightId(32424);
         skuPerformItemConfigDO.setPeriodCount(31);
         skuPerformItemConfigDO.setRightType(1);
+        skuPerformItemConfigDO.setProviderId("1");
+        RightViewInfo viewInfo = new RightViewInfo();
+        viewInfo.setDisplayName("默认权益");
+        skuPerformItemConfigDO.setViewInfo(viewInfo);
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
         snapshotDO.setPerformConfig(skuPerformConfigDO);

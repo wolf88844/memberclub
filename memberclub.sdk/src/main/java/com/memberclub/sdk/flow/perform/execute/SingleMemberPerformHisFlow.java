@@ -49,7 +49,7 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
             return;
         }
         MemberPerformHis hisFromDb = memberPerformHisDao.selectBySkuId(context.getUserId(),
-                context.getTradeId(), skuPerformContext.getSkuId());
+                context.getTradeId(), skuPerformContext.getHis().getSkuId());
         if (hisFromDb == null) {
             CommonLog.error("写入 member_perform_his失败", memberPerformHis);
             ResultCode.INTERNAL_ERROR.throwException();

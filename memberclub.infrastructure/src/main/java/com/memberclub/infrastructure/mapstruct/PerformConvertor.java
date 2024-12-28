@@ -10,11 +10,18 @@ import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
@@ -34,17 +41,23 @@ public interface PerformConvertor {
     public MemberSkuSnapshotDO toMemberSkuDO(MemberSkuDTO dto);
 
     public PerformContext toPerformContext(PerformCmd cmd);
-
-    public SkuPerformContext toSkuPerformContext(SkuBuyDetailDO skuBuyDetailDO);
+    
+    public MemberPerformHisDO toMemberPerformHisDO(PerformContext context);
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
-            @Mapping(target = "periodType", source = "periodType", qualifiedByName = "toPeriodTypeEnum")
+            @Mapping(target = "periodType", source = "periodType", qualifiedByName = "toPeriodTypeEnum"),
     })
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
 
     @Mappings(value = {
-            @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType")
+            @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
+            @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
+            @Mapping(qualifiedByName = "toViewInfoString", target = "viewInfo"),
+            @Mapping(qualifiedByName = "toGrantInfoString", target = "grantInfo"),
+            @Mapping(qualifiedByName = "toSettleInfoString", target = "settleInfo"),
+            @Mapping(qualifiedByName = "toSaleInfoString", target = "saleInfo"),
+            @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
     })
     public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);
 
@@ -52,22 +65,23 @@ public interface PerformConvertor {
     public MemberPerformItemDO copyPerformItem(MemberPerformItemDO memberPerformItemDO);
 
     @Mappings(value = {
-            @Mapping(expression = "java(context.getBizType().toBizType())", target = "bizType"),
-            @Mapping(source = "context.userId", target = "userId"),
-            @Mapping(expression = "java(context.getOrderSystemType().toInt())", target = "orderSystemType"),
-            @Mapping(source = "context.orderId", target = "orderId"),
-            @Mapping(source = "context.tradeId", target = "tradeId"),
-            @Mapping(source = "skuPerformContext.buyCount", target = "buyCount"),
-            @Mapping(source = "skuPerformContext.skuId", target = "skuId"),
-            @Mapping(source = "skuPerformContext.performHisToken", target = "performHisToken"),
-            @Mapping(source = "skuPerformContext.stime", target = "stime"),
-            @Mapping(source = "skuPerformContext.etime", target = "etime"),
-            @Mapping(expression = "java(com.memberclub.common.util.JsonUtils.toJson(skuPerformContext.getExtra()))", target = "extra")
+            @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),
+            @Mapping(qualifiedByName = "toOrderSystemTypeInt", target = "orderSystemType"),
+            @Mapping(qualifiedByName = "toMemberPerformHisExtraString", target = "extra"),
+            @Mapping(qualifiedByName = "toMemberPerformHisStatusInt", target = "status"),
     })
-    public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
+    public MemberPerformHis toMemberPerformHis(MemberPerformHisDO his);
 
 
     public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
 
     public AftersaleApplyCmd toApplyCmd(AfterSalePreviewCmd cmd);
+
+    public PerformItemViewInfo toViewInfo(RightViewInfo viewInfo);
+
+    public PerformItemSettleInfo toSettleInfo(RightSettleInfo settleInfo);
+
+    public PerformItemSaleInfo toSaleInfo(RightSaleInfo saleInfo);
+
+    public PerformItemGrantInfo toGrantInfo(RightGrantInfo grantInfo);
 }

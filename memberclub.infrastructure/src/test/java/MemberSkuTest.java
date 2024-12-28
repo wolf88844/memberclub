@@ -11,7 +11,6 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
-import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.junit.Test;
 
@@ -39,7 +38,7 @@ public class MemberSkuTest {
 
         context.setBizType(BizTypeEnum.DEMO_MEMBER);
         context.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
-        MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(context, skuPerformContext);
-        System.out.println(memberPerformHis);
+        //MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(context, skuPerformContext);
+        //System.out.println(memberPerformHis);
     }
 }
