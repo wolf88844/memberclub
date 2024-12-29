@@ -47,6 +47,7 @@ public class DefaultBuildPerformContextExtension implements BuildPerformContextE
                 .addNode(InitialSkuPerformContextsFlow.class)
                 .addNode(MutilBuyCountClonePerformItemFlow.class)
                 .addNode(MutilPeriodMemberClonePerformItemFlow.class)
+                //如果年卡周期是自然月,则可以在此处根据当前期数计算每期的天数
                 .addNode(CalculateImmediatePerformItemPeriodFlow.class)//计算立即履约项 时间周期
                 .addNode(CalculateDelayPerformItemPeriodFlow.class)//计算延迟履约项 时间周期
                 .addNode(CalculateOrderPeriodFlow.class)//计算订单整体有效期
