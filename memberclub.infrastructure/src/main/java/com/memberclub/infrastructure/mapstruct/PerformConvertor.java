@@ -29,9 +29,11 @@ import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.OnceTask;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -69,8 +71,23 @@ public interface PerformConvertor {
     })
     public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);
 
+    @Mappings(value = {
+            @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
+            @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
+            @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
+    })
+    public PerformTaskContentItemDO toPerformTaskContentItemDO(MemberPerformItemDO item);
+
 
     public MemberPerformItemDO copyPerformItem(MemberPerformItemDO memberPerformItemDO);
+
+    @Mappings(value = {
+            @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),
+            @Mapping(qualifiedByName = "toTaskStatusInt", target = "status"),
+            @Mapping(qualifiedByName = "toTaskTypeInt", target = "taskType"),
+            @Mapping(qualifiedByName = "toTaskContentString", target = "content"),
+    })
+    public OnceTask toOnceTask(OnceTaskDO task);
 
 
     @Mappings(value = {

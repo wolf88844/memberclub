@@ -11,11 +11,14 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.common.TaskTypeEnum;
-import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.sdk.extension.perform.delay.DelayOnceTaskExtension;
+
+import java.util.List;
 
 /**
  * author: 掘金五阳
@@ -26,11 +29,15 @@ import com.memberclub.sdk.extension.perform.delay.DelayOnceTaskExtension;
 public class DefaultDelayOnceTaskExtension implements DelayOnceTaskExtension {
 
     @Override
-    public OnceTaskDO buildTask(PerformContext context, MemberPerformItemDO item) {
-        OnceTaskDO task = ConvertorMethod.buildTaskForPeriodPerform(context, item);
+    public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items) {
+        OnceTaskDO task = ConvertorMethod.buildTaskForPeriodPerform(context.getPerformContext(), items.get(0));
         task.setTaskType(TaskTypeEnum.PERIOD_PERFORM);
-        task.setTaskContentClassName();
-        task.setContent();
+        task.setTaskContentClassName(PerformTaskContentDO.class.getName());
+
+        PerformTaskContentDO content = ConvertorMethod.buildPerformTaskContent(context, items);
+
+        task.setContent(content);
         return task;
     }
+
 }

@@ -42,11 +42,13 @@ import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import com.memberclub.sdk.service.aftersale.AftersaleService;
 import com.memberclub.sdk.service.perform.PerformService;
 import com.memberclub.starter.mock.MockBaseTest;
@@ -73,11 +75,35 @@ public class TestDemoMember extends MockBaseTest {
     @Autowired
     private AftersaleService aftersaleService;
 
+    @Autowired
+    private OnceTaskDao onceTaskDao;
+
+
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndMutilPeriodCard() {
+        int buyCount = 1;
+        MemberOrder memberOrder = buildMemberOrder(buyCount, 3);
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+
+        verifyTaskData(cmd, 2);
+        //Thread.sleep(1000000);
+    }
+
     @SneakyThrows
     @Test
     public void testDefaultMemberAndBuyCount() {
         int buyCount = 3;
-        MemberOrder memberOrder = buildMemberOrder(buyCount);
+        MemberOrder memberOrder = buildMemberOrder(buyCount, 1);
         memberOrderDao.insert(memberOrder);
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
@@ -190,6 +216,11 @@ public class TestDemoMember extends MockBaseTest {
         System.out.println(JsonUtils.toJson(hisList));
     }
 
+    private void verifyTaskData(PerformCmd cmd, int taskSize) {
+        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
+        Assert.assertEquals(taskSize, tasks.size());
+    }
+
 
     @SneakyThrows
     private PerformCmd buildCmd(MemberOrder memberOrder) {
@@ -210,12 +241,12 @@ public class TestDemoMember extends MockBaseTest {
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
     private MemberOrder buildMemberOrder() {
-        return buildMemberOrder(1);
+        return buildMemberOrder(1, 1);
     }
 
 
     @SneakyThrows
-    private MemberOrder buildMemberOrder(int buyCount) {
+    private MemberOrder buildMemberOrder(int buyCount, int cycle) {
         MemberOrder memberOrder = new MemberOrder();
         memberOrder.setUserId(userIdGenerator.incrementAndGet());
         memberOrder.setOrderId(orderIdGenerator.incrementAndGet() + "");
@@ -263,7 +294,7 @@ public class TestDemoMember extends MockBaseTest {
         SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
         skuPerformItemConfigDO.setAssetCount(4);
         skuPerformItemConfigDO.setBizType(1);
-        skuPerformItemConfigDO.setCycle(1);
+        skuPerformItemConfigDO.setCycle(cycle);
         skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
         skuPerformItemConfigDO.setRightId(32424);
         skuPerformItemConfigDO.setPeriodCount(31);

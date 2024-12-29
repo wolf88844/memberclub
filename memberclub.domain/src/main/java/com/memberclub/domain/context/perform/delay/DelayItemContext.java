@@ -9,6 +9,7 @@ package com.memberclub.domain.context.perform.delay;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import lombok.Data;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public class DelayItemContext {
 
     private int rightType;
 
+    private int phase;
+
     public List<MemberPerformItemDO> items;
+
+    public List<OnceTaskDO> tasks;
 
 }

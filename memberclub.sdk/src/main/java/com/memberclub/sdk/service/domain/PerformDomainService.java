@@ -26,11 +26,13 @@ import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,13 @@ public class PerformDomainService {
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
 
+    @Autowired
+    private OnceTaskDao taskDao;
+
+    @Transactional
+    public int createOnceTask(List<OnceTask> tasks) {
+        return taskDao.insertIgnoreBatch(tasks);
+    }
 
     @Transactional
     public void performSuccess(MemberPerformHis his) {

@@ -15,15 +15,18 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
+import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.sdk.extension.perform.complete.MemberPerformMessageFlow;
-import com.memberclub.sdk.flow.perform.execute.delay.DelayPerformFlow;
+import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
 import com.memberclub.sdk.flow.perform.execute.ImmediatePerformFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberOrderSuccessFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberPerformItemFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberResourcesLockFlow;
 import com.memberclub.sdk.flow.perform.execute.PerformItemGrantFlow;
 import com.memberclub.sdk.flow.perform.execute.SingleMemberPerformHisFlow;
+import com.memberclub.sdk.flow.perform.execute.delay.BuildDelayPerformOnceTaskFlow;
+import com.memberclub.sdk.flow.perform.execute.delay.CreateDelayPerformOnceTaskFlow;
+import com.memberclub.sdk.flow.perform.execute.delay.DelayPerformFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -50,8 +53,11 @@ public class DefaultPerformExecuteExtension implements PerformExecuteExtension {
                 .addNode(MemberPerformMessageFlow.class)
                 .addNode(SingleMemberPerformHisFlow.class)
                 .addNodeWithSubNodes(ImmediatePerformFlow.class, PerformItemContext.class,
+                        // 构建 MemberPerformItem, 发放权益
                         ImmutableList.of(MemberPerformItemFlow.class, PerformItemGrantFlow.class))
-                .addNode(DelayPerformFlow.class)
+                .addNodeWithSubNodes(DelayPerformFlow.class, DelayItemContext.class,
+                        // 构建 任务, 存储任务
+                        ImmutableList.of(BuildDelayPerformOnceTaskFlow.class, CreateDelayPerformOnceTaskFlow.class))
 
         ;
     }

@@ -6,16 +6,21 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
+import com.google.common.collect.Lists;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.GrantTypeEnum;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.common.RightTypeEnum;
+import com.memberclub.domain.common.TaskTypeEnum;
 import com.memberclub.domain.common.status.OnceTaskStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
@@ -24,7 +29,13 @@ import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.dataobject.task.TaskContentDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
+import com.memberclub.domain.entity.MemberPerformItem;
 import org.mapstruct.Named;
+
+import java.util.List;
 
 /**
  * author: 掘金五阳
@@ -107,6 +118,21 @@ public class ConvertorMethod {
         return JsonUtils.toJson(extraInfo);
     }
 
+    @Named("toTaskStatusInt")
+    public int toTaskStatusInt(OnceTaskStatusEnum status) {
+        return status.toInt();
+    }
+
+    @Named("toTaskTypeInt")
+    public int toTaskTypeInt(TaskTypeEnum taskType) {
+        return taskType.toInt();
+    }
+
+    @Named("toTaskContentString")
+    public String toTaskContentString(TaskContentDO content) {
+        return JsonUtils.toJson(content);
+    }
+
     public static OnceTaskDO buildTaskForPeriodPerform(PerformContext context, MemberPerformItemDO item) {
         OnceTaskDO task = new OnceTaskDO();
         task.setUserId(context.getUserId());
@@ -118,5 +144,51 @@ public class ConvertorMethod {
         task.setCtime(TimeUtil.now());
         task.setUtime(TimeUtil.now());
         return task;
+    }
+
+
+    public static PerformTaskContentDO buildPerformTaskContent(DelayItemContext context, List<MemberPerformItemDO> items) {
+        PerformTaskContentDO content = new PerformTaskContentDO();
+        content.setBizType(context.getPerformContext().getBizType().toBizType());
+        content.setPerformHisToken(context.getSkuPerformContext().getHis().getPerformHisToken());
+        content.setTradeId(context.getPerformContext().getTradeId());
+
+        List<PerformTaskContentItemDO> contentItems = Lists.newArrayList();
+        for (MemberPerformItemDO item : items) {
+            PerformTaskContentItemDO itemPO = ConvertorMethod.toContentItem(item,
+                    context.getPerformContext(), context.getSkuPerformContext());
+            contentItems.add(itemPO);
+        }
+
+        content.setItems(contentItems);
+        return content;
+    }
+
+    public static PerformTaskContentItemDO toContentItem(MemberPerformItemDO item,
+                                                         PerformContext context,
+                                                         SkuPerformContext skuPerformContext) {
+        PerformTaskContentItemDO itemPO = PerformConvertor.INSTANCE.toPerformTaskContentItemDO(item);
+        itemPO.setBizType(context.getBizType().toBizType());
+        itemPO.setUserId(context.getUserId());
+        itemPO.setTradeId(context.getTradeId());
+        itemPO.setSkuId(skuPerformContext.getHis().getSkuId());
+        itemPO.setCtime(TimeUtil.now());
+        itemPO.setUtime(TimeUtil.now());
+        itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());
+        return itemPO;
+    }
+
+    public static MemberPerformItem toMemberPerformItem(MemberPerformItemDO item,
+                                                        PerformContext context,
+                                                        SkuPerformContext skuPerformContext) {
+        MemberPerformItem itemPO = PerformConvertor.INSTANCE.toMemberPerformItem(item);
+        itemPO.setBizType(context.getBizType().toBizType());
+        itemPO.setUserId(context.getUserId());
+        itemPO.setTradeId(context.getTradeId());
+        itemPO.setSkuId(skuPerformContext.getHis().getSkuId());
+        itemPO.setCtime(TimeUtil.now());
+        itemPO.setUtime(TimeUtil.now());
+        itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());
+        return itemPO;
     }
 }

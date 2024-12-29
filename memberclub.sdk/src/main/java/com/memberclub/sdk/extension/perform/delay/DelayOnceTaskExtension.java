@@ -7,14 +7,16 @@
 package com.memberclub.sdk.extension.perform.delay;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
+
+import java.util.List;
 
 /**
  * @author yuhaiqiang
  */
 public interface DelayOnceTaskExtension extends BaseExtension {
 
-    public OnceTaskDO buildTask(PerformContext context, MemberPerformItemDO item);
+    public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items);
 }

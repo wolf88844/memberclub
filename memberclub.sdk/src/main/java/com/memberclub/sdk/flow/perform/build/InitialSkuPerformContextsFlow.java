@@ -17,6 +17,8 @@ import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +44,15 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             SkuPerformContext skuPerformContext = new SkuPerformContext();
             skuPerformContext.setSkuBuyDetail(detail);
             MemberPerformHisDO his = PerformConvertor.INSTANCE.toMemberPerformHisDO(context);
+            skuPerformContext.setHis(his);
+
             his.setStatus(MemberPerformHisStatusEnum.INIT);
             his.setSkuId(detail.getSkuId());
             his.setBuyCount(detail.getBuyCount());
             his.setCtime(TimeUtil.now());
             his.setUtime(TimeUtil.now());
-            skuPerformContext.setHis(his);
+            String hisToken = buildPerformHisToken(context, detail);
+            his.setPerformHisToken(hisToken);
 
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
@@ -64,6 +69,18 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         if (context.getBaseTime() == 0) {
             context.setBaseTime(TimeUtil.now());
             context.getCmd().setBaseTime(context.getBaseTime());
+        }
+    }
+
+    private String buildPerformHisToken(PerformContext context, SkuBuyDetailDO detail) {
+        MemberPerformHis hisFromDb = context.matchHisFromDb(detail.getSkuId());
+        if (hisFromDb != null) {
+            return hisFromDb.getPerformHisToken();
+        } else {
+            IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
+                    IdGenerator.class);
+            String performHisToken = idGenerator.generateId();
+            return performHisToken;
         }
     }
 }

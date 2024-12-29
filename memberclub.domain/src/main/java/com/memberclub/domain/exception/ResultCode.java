@@ -19,6 +19,7 @@ public enum ResultCode {
     DATA_UPDATE_ERROR(14, "数据更新异常"),
     AFTERSALE_UNABLE_ERROR(15, "不能发起售后异常"),
     CONFIG_DATA_ERROR(16, "配置数据有误"),
+    PERIOD_PERFORM_TASK_CREATE_ERROR(17, "周期履约任务创建失败"),
     ;
 
     private int value;

@@ -13,6 +13,7 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
+import com.memberclub.sdk.uti.BizUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,12 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
                 immediatePerformItem.setEtime(timeRange.getEtime());
 
                 context.setImmediatePerformEtime(timeRange.getEtime());
+
+                String itemToken = BizUtils.toItemToken(
+                        skuPerformContext.getHis().getPerformHisToken(),
+                        immediatePerformItem.getRightId(),
+                        immediatePerformItem.getBuyIndex(), immediatePerformItem.getPhase());
+                immediatePerformItem.setItemToken(itemToken);
             }
         }
 

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS once_task (
     user_id BIGINT(20)  NOT NULL COMMENT 'userId',
     task_type INT(11)  NOT NULL COMMENT '任务类型',
     status INT(11)  NOT NULL COMMENT '状态',
+    task_content_class_name VARCHAR(256)  NOT NULL COMMENT '类型名称',
     content TEXT NOT NULL COMMENT '扩展属性',
     stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
     etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',

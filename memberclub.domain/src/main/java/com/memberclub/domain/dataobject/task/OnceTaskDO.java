@@ -30,10 +30,11 @@ public class OnceTaskDO {
     private String taskContentClassName;
 
     private TaskTypeEnum taskType;
-    
+
     private TaskContentDO content;
 
     private OnceTaskStatusEnum status;
+
     private long utime;
 
     private long ctime;

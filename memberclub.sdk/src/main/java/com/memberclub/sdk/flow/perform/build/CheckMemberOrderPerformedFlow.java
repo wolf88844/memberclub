@@ -12,11 +12,15 @@ import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.sdk.common.Monitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * author: 掘金五阳
@@ -26,6 +30,9 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
 
     @Autowired
     private MemberOrderDao memberOrderDao;
+
+    @Autowired
+    private MemberPerformHisDao performHisDao;
 
     @Override
     public void process(PerformContext context) {
@@ -49,6 +56,11 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
 
         if (context.isSkipPerform() && memberOrder != null) {
             // TODO: 2024/12/15 构建返回值
+        }
+
+        if (memberOrder != null && !context.isSkipPerform()) {
+            List<MemberPerformHis> hisList = performHisDao.selectByTradeId(context.getUserId(), context.getTradeId());
+            context.setHisListFromDb(hisList);
         }
     }
 }

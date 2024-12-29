@@ -17,7 +17,6 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.entity.MemberPerformHis;
-import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.execute.MemberPerformHisExtension;
 import com.memberclub.sdk.service.domain.PerformDomainService;
@@ -37,11 +36,6 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
 
     @Override
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
-        IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
-                IdGenerator.class);
-        String performHisToken = idGenerator.generateId();
-        skuPerformContext.getHis().setPerformHisToken(performHisToken);
-
         MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(skuPerformContext.getHis());
         return memberPerformHis;
     }
@@ -57,7 +51,7 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
     @Override
     public PerformHisExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
         PerformHisExtraInfo extraInfo = performDomainService.buildPerformHisExtraInfo(context, skuPerformContext);
-        
+
         return extraInfo;
     }
 

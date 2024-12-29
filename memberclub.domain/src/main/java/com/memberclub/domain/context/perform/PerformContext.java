@@ -14,7 +14,9 @@ import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.entity.MemberPerformHis;
 import lombok.Data;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -61,6 +63,12 @@ public class PerformContext {
 
     /****************** Start 商品和履约配置****************/
 
+
+    /**
+     * 只读,不能写
+     */
+    private List<MemberPerformHis> hisListFromDb;
+
     private List<SkuBuyDetailDO> skuBuyDetails;
 
     private List<SkuPerformContext> skuPerformContexts;
@@ -85,5 +93,16 @@ public class PerformContext {
 
     public BizScene toDefaultScene() {
         return BizScene.of(bizType.toBizType());
+    }
+
+    public MemberPerformHis matchHisFromDb(long skuId) {
+        if (!CollectionUtils.isEmpty(hisListFromDb)) {
+            for (MemberPerformHis memberPerformHis : hisListFromDb) {
+                if (memberPerformHis.getSkuId() == skuId) {
+                    return memberPerformHis;
+                }
+            }
+        }
+        return null;
     }
 }

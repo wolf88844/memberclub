@@ -6,21 +6,22 @@
  */
 package com.memberclub.domain.dataobject.task.perform;
 
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.dataobject.task.TaskContentDO;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * author: 掘金五阳
  */
 @Data
-public class PerformTaskContentDO {
+public class PerformTaskContentDO extends TaskContentDO {
 
     private int bizType;
-    
+
     private String tradeId;
 
     private String performHisToken;
 
-
-    private MemberPerformItem performItem;
+    private List<PerformTaskContentItemDO> items;
 }
