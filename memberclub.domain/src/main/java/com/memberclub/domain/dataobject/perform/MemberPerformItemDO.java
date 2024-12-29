@@ -10,10 +10,6 @@ import com.memberclub.domain.common.GrantTypeEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.common.RightTypeEnum;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import lombok.Data;
 
 /**
@@ -47,15 +43,7 @@ public class MemberPerformItemDO {
     private GrantTypeEnum grantType;
 
     private String providerId;
-
-    private PerformItemGrantInfo grantInfo = new PerformItemGrantInfo();
-
-    private PerformItemViewInfo viewInfo = new PerformItemViewInfo();
-
-    private PerformItemSettleInfo settleInfo = new PerformItemSettleInfo();
-
-    private PerformItemSaleInfo saleInfo = new PerformItemSaleInfo();
-
+    
     private PerformItemExtraInfo extra = new PerformItemExtraInfo();
 
     private int periodCount;

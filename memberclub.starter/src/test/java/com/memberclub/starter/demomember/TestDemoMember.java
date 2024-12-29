@@ -73,6 +73,25 @@ public class TestDemoMember extends MockBaseTest {
     @Autowired
     private AftersaleService aftersaleService;
 
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndBuyCount() {
+        int buyCount = 3;
+        MemberOrder memberOrder = buildMemberOrder(buyCount);
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, buyCount);
+
+        //Thread.sleep(1000000);
+    }
+
 
     @SneakyThrows
     @Test
@@ -150,14 +169,20 @@ public class TestDemoMember extends MockBaseTest {
     }
 
     private void verifyData(PerformCmd cmd) {
+        verifyData(cmd, 1);
+    }
+
+    private void verifyData(PerformCmd cmd, int buyCount) {
         List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
         for (MemberPerformHis memberPerformHis : hisList) {
             Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberPerformHis.getStatus());
         }
+        Assert.assertEquals(1, hisList.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         for (MemberPerformItem item : items) {
             Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
         }
+        Assert.assertEquals(buyCount, items.size());
 
         MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
@@ -184,8 +209,13 @@ public class TestDemoMember extends MockBaseTest {
 
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
-    @SneakyThrows
     private MemberOrder buildMemberOrder() {
+        return buildMemberOrder(1);
+    }
+
+
+    @SneakyThrows
+    private MemberOrder buildMemberOrder(int buyCount) {
         MemberOrder memberOrder = new MemberOrder();
         memberOrder.setUserId(userIdGenerator.incrementAndGet());
         memberOrder.setOrderId(orderIdGenerator.incrementAndGet() + "");
@@ -201,7 +231,7 @@ public class TestDemoMember extends MockBaseTest {
         List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
         SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
         skuBuyDetailDOS.add(skuBuyDetailDO);
-        skuBuyDetailDO.setBuyCount(1);
+        skuBuyDetailDO.setBuyCount(buyCount);
         skuBuyDetailDO.setSkuId(439434);
         MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
         skuBuyDetailDO.setSkuSnapshot(snapshotDO);

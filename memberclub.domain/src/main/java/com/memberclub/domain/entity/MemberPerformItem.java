@@ -30,16 +30,7 @@ public class MemberPerformItem {
     private long rightId;
 
     private int providerId;
-
-    private String grantInfo;
-
-    private String viewInfo;
-
-    private String settleInfo;
-
-    private String saleInfo;
-
-
+    
     private int rightType;
 
     private String batchCode;

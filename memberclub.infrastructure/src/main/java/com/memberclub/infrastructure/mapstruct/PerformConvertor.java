@@ -53,16 +53,17 @@ public interface PerformConvertor {
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
             @Mapping(target = "periodType", source = "periodType", qualifiedByName = "toPeriodTypeEnum"),
+            @Mapping(target = "extra.grantInfo", source = "grantInfo"),
+            @Mapping(target = "extra.viewInfo", source = "viewInfo"),
+            @Mapping(target = "extra.saleInfo", source = "saleInfo"),
+            @Mapping(target = "extra.settleInfo", source = "settleInfo"),
+
     })
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
             @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
-            @Mapping(qualifiedByName = "toViewInfoString", target = "viewInfo"),
-            @Mapping(qualifiedByName = "toGrantInfoString", target = "grantInfo"),
-            @Mapping(qualifiedByName = "toSettleInfoString", target = "settleInfo"),
-            @Mapping(qualifiedByName = "toSaleInfoString", target = "saleInfo"),
             @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
     })
     public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);

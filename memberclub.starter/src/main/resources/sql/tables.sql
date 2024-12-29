@@ -37,17 +37,14 @@ CREATE TABLE IF NOT EXISTS member_perform_item (
     cycle INT(11)  NOT NULL COMMENT '周期数',
     buy_index INT(11)  NOT NULL COMMENT '购买序号',
     status INT(11)  NOT NULL COMMENT '状态',
-    grant_info TEXT NOT NULL COMMENT '发放属性',
-    sale_info TEXT NOT NULL COMMENT '售卖属性',
-    view_info TEXT NOT NULL COMMENT '展示属性',
-    settle_info TEXT NOT NULL COMMENT '结算属性',
     extra TEXT NOT NULL COMMENT '扩展属性',
     stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
     etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',
     utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
     ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (id),
-    UNIQUE KEY uniq_perform_item (user_id, trade_id, batch_code)
+    KEY uniq_perform_item_batch (user_id, trade_id, batch_code),
+    UNIQUE KEY uniq_perform_item (user_id, item_token, biz_type)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
 
 
