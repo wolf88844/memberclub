@@ -60,6 +60,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             List<MemberPerformItemDO> items = Lists.newArrayList();
             for (SkuPerformItemConfigDO config : detail.getSkuSnapshot().getPerformConfig().getConfigs()) {
                 MemberPerformItemDO item = calculateExtension.toPerformItem(config);
+                item.setSkuId(detail.getSkuId());
                 items.add(item);
             }
             skuPerformContext.setImmediatePerformItems(items);

@@ -39,11 +39,15 @@ import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.dataobject.task.TaskContentDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
@@ -63,6 +67,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -77,6 +82,41 @@ public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private OnceTaskDao onceTaskDao;
+
+
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndMutilPeriodCardAndPeriodPerform() {
+        int buyCount = 1;
+        MemberOrder memberOrder = buildMemberOrder(buyCount, 3);
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+
+        verifyTaskData(cmd, 2);
+
+        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
+
+        List<OnceTaskDO> taskDOS = tasks.stream().map(task -> {
+            OnceTaskDO taskDO = PerformConvertor.INSTANCE.toOnceTaskDO(task);
+            TaskContentDO contentDO = ConvertorMethod.toTaskContentDO(task.getContent(), task.getTaskContentClassName());
+            taskDO.setTradeId(((PerformTaskContentDO) contentDO).getTradeId());
+            taskDO.setContent(contentDO);
+            return taskDO;
+        }).collect(Collectors.toList());
+        for (OnceTaskDO taskDO : taskDOS) {
+            performService.periodPerform(taskDO);
+        }
+        verifyData(cmd, 3);
+        //Thread.sleep(1000000);
+    }
 
 
     @SneakyThrows

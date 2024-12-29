@@ -16,10 +16,14 @@ import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformResp;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.extension.perform.build.BuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.build.PreBuildPerformContextExtension;
 import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
+import com.memberclub.sdk.extension.perform.period.PeriodPerformExecuteExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +35,21 @@ public class PerformService {
 
     @Autowired
     private ExtensionManager extensionManager;
+
+
+    @UserLog(domain = LogDomainEnum.PERFORM)
+    public PerformResp periodPerform(OnceTaskDO task) {
+        PeriodPerformContext context = PerformConvertor.INSTANCE.toPeriodPerformContextForTask(task);
+        PeriodPerformExecuteExtension extension =
+                extensionManager.getExtension(BizScene.of(context.getBizType()), PeriodPerformExecuteExtension.class);
+
+        extension.buildContext(task, context);
+
+        extension.periodPerform(context);
+
+        return null;
+    }
+
 
     @Retryable
     @UserLog(domain = LogDomainEnum.PERFORM)

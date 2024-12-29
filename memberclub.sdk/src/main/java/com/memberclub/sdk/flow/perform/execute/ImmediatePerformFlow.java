@@ -40,8 +40,13 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
         for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {
             PerformItemContext itemContext = new PerformItemContext();
             itemContext.setItems(entry.getValue());
-            itemContext.setPerformContext(context);
-            itemContext.setSkuPerformContext(context.getCurrentSkuPerformContext());
+            itemContext.setUserId(context.getUserId());
+            itemContext.setBizType(context.getBizType());
+            itemContext.setTradeId(context.getTradeId());
+            itemContext.setRightType(entry.getKey());
+            itemContext.setPeriodPerform(false);
+            itemContext.setSkuId(context.getCurrentSkuPerformContext().getHis().getSkuId());
+
             flowChainService.execute(getSubChain(), itemContext);
         }
     }

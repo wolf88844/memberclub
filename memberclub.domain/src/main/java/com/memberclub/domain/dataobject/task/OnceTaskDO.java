@@ -21,6 +21,8 @@ public class OnceTaskDO {
 
     private long userId;
 
+    private String tradeId;
+
     private String taskToken;
 
     private long stime;

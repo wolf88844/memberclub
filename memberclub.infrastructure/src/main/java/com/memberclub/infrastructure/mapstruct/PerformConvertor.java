@@ -10,6 +10,8 @@ import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
@@ -64,12 +66,34 @@ public interface PerformConvertor {
     })
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
 
+    @Mappings({
+            @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
+            @Mapping(qualifiedByName = "toGrantTypeEnum", target = "grantType"),
+            @Mapping(qualifiedByName = "toPerformItemExtraInfo", target = "extra"),
+            @Mapping(qualifiedByName = "toPeriodTypeEnum", target = "periodType"),
+
+    })
+    public MemberPerformItemDO toMemberPerformItemDOForPeriodPerform(PerformTaskContentItemDO item);
+
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
             @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
             @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
     })
     public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);
+
+    public PerformItemContext toPerformItemContextForPeriodPerform(PeriodPerformContext context);
+
+
+    public PeriodPerformContext toPeriodPerformContextForTask(OnceTaskDO task);
+
+    @Mappings({
+            @Mapping(target = "bizType", qualifiedByName = "toBizTypeEnum"),
+            @Mapping(target = "taskType", qualifiedByName = "toTaskTypeEnum"),
+            @Mapping(target = "status", qualifiedByName = "toTaskStatusEnum"),
+            @Mapping(target = "content", ignore = true)
+    })
+    public OnceTaskDO toOnceTaskDO(OnceTask onceTask);
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),

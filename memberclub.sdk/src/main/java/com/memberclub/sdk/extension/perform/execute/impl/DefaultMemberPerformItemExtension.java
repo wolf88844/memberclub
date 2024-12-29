@@ -38,14 +38,13 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
     public List<MemberPerformItem> toMemberPerformItems(PerformItemContext performItemContext) {
         PerformItemCalculateExtension extension =
                 extensionManager.getExtension(
-                        performItemContext.getPerformContext().toDefaultScene(), PerformItemCalculateExtension.class);
+                        performItemContext.toDefaultScene(), PerformItemCalculateExtension.class);
 
 
         List<MemberPerformItem> items = Lists.newArrayList();
         for (MemberPerformItemDO item : performItemContext.getItems()) {
             MemberPerformItem itemPO = ConvertorMethod.toMemberPerformItem(item,
-                    performItemContext.getPerformContext(),
-                    performItemContext.getSkuPerformContext());
+                    performItemContext);
             items.add(itemPO);
         }
 

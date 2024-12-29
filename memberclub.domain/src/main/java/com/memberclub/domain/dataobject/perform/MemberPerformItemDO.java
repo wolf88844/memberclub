@@ -16,7 +16,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class MemberPerformItemDO {
+public class MemberPerformItemDO implements Comparable {
 
     private long skuId;
 
@@ -43,7 +43,7 @@ public class MemberPerformItemDO {
     private GrantTypeEnum grantType;
 
     private String providerId;
-    
+
     private PerformItemExtraInfo extra = new PerformItemExtraInfo();
 
     private int periodCount;
@@ -53,4 +53,10 @@ public class MemberPerformItemDO {
     private long stime;
 
     private long etime;
+
+
+    @Override
+    public int compareTo(Object o) {
+        return phase < ((MemberPerformItemDO) o).getPhase() ? -1 : 1;
+    }
 }

@@ -18,6 +18,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 /**
  * author: 掘金五阳
  */
@@ -35,7 +37,10 @@ public class CalculateDelayPerformItemPeriodFlow extends FlowNode<PerformContext
                 continue;
             }
 
-            long stime = context.getImmediatePerformEtime();
+            long stime = context.getImmediatePerformEtime() + 1;
+
+            Collections.sort(skuPerformContext.getDelayPerformItems());
+
             for (MemberPerformItemDO delayItem : skuPerformContext.getDelayPerformItems()) {
                 // TODO: 2024/12/15
                 TimeRange timeRange = extensionManager.getExtension(context.toDefaultScene(),

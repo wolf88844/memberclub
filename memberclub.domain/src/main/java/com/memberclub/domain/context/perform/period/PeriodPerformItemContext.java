@@ -1,13 +1,11 @@
 /**
- * @(#)PerformItemContext.java, 十二月 15, 2024.
+ * @(#)PeriodPerformItemContext.java, 十二月 29, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.context.perform;
+package com.memberclub.domain.context.perform.period;
 
-import com.memberclub.domain.common.BizScene;
-import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import lombok.Data;
@@ -18,25 +16,13 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class PerformItemContext {
+public class PeriodPerformItemContext {
 
-    private BizTypeEnum bizType;
-
-    private long userId;
+    private PeriodPerformContext periodPerformContext;
 
     private int rightType;
-
-    private String tradeId;
-
-    private long skuId;
-
-    private boolean periodPerform;
 
     public List<MemberPerformItemDO> items;
 
     private ItemGroupGrantResult result;
-
-    public BizScene toDefaultScene() {
-        return BizScene.of(bizType.toBizType());
-    }
 }

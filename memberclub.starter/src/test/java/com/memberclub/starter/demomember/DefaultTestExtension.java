@@ -21,7 +21,7 @@ import com.memberclub.domain.context.perform.PerformCmd;
 @ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultTestExtension implements JustTestExtension {
 
-    @UserLog(bizType = "bizType", orderId = "orderId", userId = "userId", domain = LogDomainEnum.PERFORM)
+    @UserLog(bizType = "bizType", tradeId = "tradeId", userId = "userId", domain = LogDomainEnum.PERFORM)
     @Override
     public void execute(PerformCmd cmd) throws Exception {
         CommonLog.info("接收到 execute方法");

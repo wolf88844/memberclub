@@ -19,6 +19,7 @@ import com.memberclub.domain.common.RightTypeEnum;
 import com.memberclub.domain.common.TaskTypeEnum;
 import com.memberclub.domain.common.status.OnceTaskStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
@@ -33,6 +34,7 @@ import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.entity.MemberPerformItem;
+import lombok.SneakyThrows;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -47,6 +49,12 @@ public class ConvertorMethod {
     public int toBizTypeInt(BizTypeEnum bizType) {
         return bizType.toBizType();
     }
+
+    @Named("toBizTypeEnum")
+    public BizTypeEnum toBizType(int bizType) {
+        return BizTypeEnum.findByInt(bizType);
+    }
+
 
     @Named("toOrderSystemTypeInt")
     public int toOrderSystemTypeInt(OrderSystemTypeEnum orderSystemType) {
@@ -113,6 +121,11 @@ public class ConvertorMethod {
         return JsonUtils.toJson(extraInfo);
     }
 
+    @Named("toPerformItemExtraInfo")
+    public PerformItemExtraInfo toPerformItemExtraInfo(String extraInfo) {
+        return JsonUtils.fromJson(extraInfo, PerformItemExtraInfo.class);
+    }
+
     @Named("toMemberPerformHisExtraString")
     public String toMemberPerformHisExtraString(PerformHisExtraInfo extraInfo) {
         return JsonUtils.toJson(extraInfo);
@@ -123,9 +136,26 @@ public class ConvertorMethod {
         return status.toInt();
     }
 
+    @Named("toTaskStatusEnum")
+    public OnceTaskStatusEnum toTaskStatusEnum(int status) {
+        return OnceTaskStatusEnum.findByInt(status);
+    }
+
+    @SneakyThrows
+    public static TaskContentDO toTaskContentDO(String content, String className) {
+        Class<?> clazz = Class.forName(className);
+        return (TaskContentDO) JsonUtils.fromJson(content, clazz);
+    }
+
+
     @Named("toTaskTypeInt")
     public int toTaskTypeInt(TaskTypeEnum taskType) {
         return taskType.toInt();
+    }
+
+    @Named("toTaskTypeEnum")
+    public TaskTypeEnum toTaskTypeEnum(int taskType) {
+        return TaskTypeEnum.findByInt(taskType);
     }
 
     @Named("toTaskContentString")
@@ -152,6 +182,7 @@ public class ConvertorMethod {
         content.setBizType(context.getPerformContext().getBizType().toBizType());
         content.setPerformHisToken(context.getSkuPerformContext().getHis().getPerformHisToken());
         content.setTradeId(context.getPerformContext().getTradeId());
+        content.setSkuId(context.getSkuPerformContext().getHis().getSkuId());
 
         List<PerformTaskContentItemDO> contentItems = Lists.newArrayList();
         for (MemberPerformItemDO item : items) {
@@ -179,13 +210,12 @@ public class ConvertorMethod {
     }
 
     public static MemberPerformItem toMemberPerformItem(MemberPerformItemDO item,
-                                                        PerformContext context,
-                                                        SkuPerformContext skuPerformContext) {
+                                                        PerformItemContext context) {
         MemberPerformItem itemPO = PerformConvertor.INSTANCE.toMemberPerformItem(item);
         itemPO.setBizType(context.getBizType().toBizType());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
-        itemPO.setSkuId(skuPerformContext.getHis().getSkuId());
+        itemPO.setSkuId(context.getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
         itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());

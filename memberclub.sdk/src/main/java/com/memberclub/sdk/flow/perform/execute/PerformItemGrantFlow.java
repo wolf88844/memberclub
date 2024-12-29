@@ -10,9 +10,9 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.context.perform.execute.ItemGrantResult;
 import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.extension.perform.execute.PerformItemGrantExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class PerformItemGrantFlow extends FlowNode<PerformItemContext> {
 
     @Override
     public void process(PerformItemContext context) {
-        String scene = extensionManager.getSceneExtension(context.getPerformContext().toDefaultScene())
+        String scene = extensionManager.getSceneExtension(context.toDefaultScene())
                 .buildPerformItemGrantExtensionScene(context);
 
         PerformItemGrantExtension extension =
-                extensionManager.getExtension(BizScene.of(context.getPerformContext().getBizType().toBizType(), scene),
+                extensionManager.getExtension(BizScene.of(context.getBizType().toBizType(), scene),
                         PerformItemGrantExtension.class);
         ItemGroupGrantResult result = extension.grant(context, context.getItems());
 

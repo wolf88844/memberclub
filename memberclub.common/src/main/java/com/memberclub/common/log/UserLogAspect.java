@@ -39,19 +39,36 @@ public class UserLogAspect {
         UserLog userLogAnnotation = method.getAnnotation(UserLog.class);
         if (userLogAnnotation != null && args != null && args.length > 0) {
             //使用工具类获取userId。
-            String userId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.userId()));
-            String orderId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.orderId()));
-            Object bizTypeObject = PropertyUtils.getProperty(args[0], userLogAnnotation.bizType());
+            String userId = null;
+            String tradeId = null;
+            Object bizTypeObject = null;
+            try {
+                userId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.userId()));
+            } catch (Exception e) {
+            }
+            try {
+                tradeId = String.valueOf(PropertyUtils.getProperty(args[0], userLogAnnotation.tradeId()));
+            } catch (Exception e) {
+            }
+
+            try {
+                bizTypeObject = PropertyUtils.getProperty(args[0], userLogAnnotation.bizType());
+            } catch (Exception e) {
+            }
+
+
             String bizType = null;
-            if (bizTypeObject instanceof BizTypeEnum) {
-                bizType = String.valueOf(((BizTypeEnum) bizTypeObject).toBizType());
-            } else {
-                bizType = String.valueOf(bizTypeObject);
+            if (bizTypeObject != null) {
+                if (bizTypeObject instanceof BizTypeEnum) {
+                    bizType = String.valueOf(((BizTypeEnum) bizTypeObject).toBizType());
+                } else {
+                    bizType = String.valueOf(bizTypeObject);
+                }
             }
 
             // 放到MDC中
-            String msg = String.format(" [domain:%s bizType:%s userId:%s orderId:%s] ",
-                    userLogAnnotation.domain().name(), bizType, userId, orderId);
+            String msg = String.format(" [domain:%s bizType:%s userId:%s tradeId:%s] ",
+                    userLogAnnotation.domain().name(), bizType, userId, tradeId);
 
 
             MDC.put("msg", msg);

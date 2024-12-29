@@ -20,7 +20,7 @@ public @interface UserLog {
 
     public String userId() default "userId";
 
-    public String orderId() default "orderId";
+    public String tradeId() default "tradeId";
 
     public String bizType() default "bizType";
 

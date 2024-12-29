@@ -50,7 +50,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
             ResultCode.LOCK_ERROR.throwException();
         }
 
-        CommonLog.error("加锁成功 key:{}, value:{}", key, context.getLockValue());
+        CommonLog.info("加锁成功 key:{}, value:{}", key, context.getLockValue());
         Monitor.PERFORM_EXECUTE.counter(context.getBizType(), "lock", true);
     }
 

@@ -45,7 +45,7 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
     public ItemGroupGrantResult grant(PerformItemContext context, List<MemberPerformItemDO> items) {
 
         GrantRequestDO request = new GrantRequestDO();
-        request.setUserId(context.getPerformContext().getUserId());
+        request.setUserId(context.getUserId());
 
         List<GrantItemDO> grantItemDOS = Lists.newArrayList();
         for (MemberPerformItemDO item : items) {

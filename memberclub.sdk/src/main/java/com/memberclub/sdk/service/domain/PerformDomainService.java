@@ -78,12 +78,12 @@ public class PerformDomainService {
     @Retryable
     public void itemPerformSuccess(PerformItemContext context) {
         for (MemberPerformItemDO item : context.getItems()) {
-            int cnt = memberPerformItemDao.update2Status(context.getPerformContext().getUserId(),
+            int cnt = memberPerformItemDao.update2Status(context.getUserId(),
                     item.getItemToken(),
                     item.getBatchCode(),
                     PerformItemStatusEnum.PERFORM_SUCC.toInt());
             if (cnt <= 0) {
-                MemberPerformItem itemFromDb = memberPerformItemDao.queryByItemToken(context.getPerformContext().getUserId(),
+                MemberPerformItem itemFromDb = memberPerformItemDao.queryByItemToken(context.getUserId(),
                         item.getItemToken());
                 if (!PerformItemStatusEnum.hasPerformed(itemFromDb.getStatus())) {
                     CommonLog.error("更新 item 失败 itemToken:{}", item.getItemToken());
