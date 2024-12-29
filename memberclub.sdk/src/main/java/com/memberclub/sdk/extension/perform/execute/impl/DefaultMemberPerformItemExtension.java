@@ -27,7 +27,7 @@ import java.util.List;
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "构建履约项扩展点,默认实现", bizScenes = {
-        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.DEFAULT_SCENE})
+        @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class DefaultMemberPerformItemExtension implements MemberPerformItemExtension {
 

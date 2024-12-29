@@ -14,9 +14,9 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.context.perform.execute.ItemGrantResult;
 import com.memberclub.domain.context.perform.execute.ItemGroupGrantResult;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.GrantItemDO;
@@ -35,7 +35,7 @@ import java.util.Map;
  */
 @ExtensionImpl(desc = "券类型默认发放扩展点实现", bizScenes =
         {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.RIGHT_TYPE_SCENE_COUPON)})
-public class DefaultGrantExtension implements PerformItemGrantExtension {
+public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
 
     //@Qualifier("couponGrantFacade")
     @Resource()

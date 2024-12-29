@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.build.impl;
+package com.memberclub.plugin.demomember.extension.perform;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -27,8 +27,8 @@ import org.springframework.boot.ApplicationRunner;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文前置构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
-public class DefaultPreBuildPerformContextExtension implements PreBuildPerformContextExtension, ApplicationRunner {
+@ExtensionImpl(desc = "DemoMember 履约上下文前置构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
+public class DemoMemberPreBuildPerformContextExtension implements PreBuildPerformContextExtension, ApplicationRunner {
 
     FlowChain<PerformContext> preBuidPerformContextChain = null;
 

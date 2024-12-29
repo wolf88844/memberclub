@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
+@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultMemberPerformHisExtension implements MemberPerformHisExtension {
 
     @Autowired

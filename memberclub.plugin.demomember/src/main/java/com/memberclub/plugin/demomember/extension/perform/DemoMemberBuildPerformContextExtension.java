@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.build.impl;
+package com.memberclub.plugin.demomember.extension.perform;
 
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
@@ -29,10 +29,10 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {
+@ExtensionImpl(desc = "DemoMember 履约上下文构建", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD, SceneEnum.SCENE_MUTIL_PERIOD_CARD})
 })
-public class DefaultBuildPerformContextExtension implements BuildPerformContextExtension {
+public class DemoMemberBuildPerformContextExtension implements BuildPerformContextExtension {
 
     FlowChain<PerformContext> buildPerformContextChain = null;
 

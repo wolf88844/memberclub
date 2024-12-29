@@ -24,7 +24,7 @@ import java.util.List;
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "DemoMember 延迟任务扩展点", bizScenes = {
-        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)
+        @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
 public class DefaultDelayOnceTaskExtension implements DelayOnceTaskExtension {
 

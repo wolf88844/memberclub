@@ -27,7 +27,7 @@ import java.util.List;
  */
 @ExtensionImpl(desc = "默认的售后计划摘要生成", bizScenes = {
         //@Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
-        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.DEFAULT_SCENE})
+        @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class DefaultGenerateAfterSalePlanDigestExtension implements GenerateAfterSalePlanDigestExtension {
 

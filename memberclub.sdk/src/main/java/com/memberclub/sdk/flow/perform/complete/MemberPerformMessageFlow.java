@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.complete;
+package com.memberclub.sdk.flow.perform.complete;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;

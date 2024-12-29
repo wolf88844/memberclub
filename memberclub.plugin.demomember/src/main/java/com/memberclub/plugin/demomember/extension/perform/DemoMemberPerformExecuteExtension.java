@@ -1,10 +1,10 @@
 /**
- * @(#)DefaultPerformExecuteExtension.java, 十二月 15, 2024.
+ * @(#)DemoMemberPerformExecuteExtension.java, 十二月 29, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.extension.perform.execute.impl;
+package com.memberclub.plugin.demomember.extension.perform;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.common.annotation.Route;
@@ -16,7 +16,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
-import com.memberclub.sdk.extension.perform.complete.MemberPerformMessageFlow;
+import com.memberclub.sdk.flow.perform.complete.MemberPerformMessageFlow;
 import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
 import com.memberclub.sdk.flow.perform.execute.ImmediatePerformFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberOrderSuccessFlow;
@@ -34,12 +34,10 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认执行履约扩展点", bizScenes = {
+@ExtensionImpl(desc = "DemoMember 执行履约扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD, SceneEnum.SCENE_MUTIL_BUY_COUNT_CARD})//Demo会员月卡,多份数
 })
-public class DefaultPerformExecuteExtension implements PerformExecuteExtension {
-
-
+public class DemoMemberPerformExecuteExtension implements PerformExecuteExtension {
     private FlowChain<PerformContext> flowChain;
 
     @Autowired
