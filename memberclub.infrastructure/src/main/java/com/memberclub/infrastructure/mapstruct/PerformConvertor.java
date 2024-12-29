@@ -28,6 +28,7 @@ import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
@@ -70,6 +71,7 @@ public interface PerformConvertor {
 
 
     public MemberPerformItemDO copyPerformItem(MemberPerformItemDO memberPerformItemDO);
+
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),

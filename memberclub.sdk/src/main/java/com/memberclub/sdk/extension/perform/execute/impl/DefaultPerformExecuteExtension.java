@@ -17,7 +17,7 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.sdk.extension.perform.execute.PerformExecuteExtension;
 import com.memberclub.sdk.extension.perform.complete.MemberPerformMessageFlow;
-import com.memberclub.sdk.flow.perform.execute.DelayPerformFlow;
+import com.memberclub.sdk.flow.perform.execute.delay.DelayPerformFlow;
 import com.memberclub.sdk.flow.perform.execute.ImmediatePerformFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberOrderSuccessFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberPerformItemFlow;

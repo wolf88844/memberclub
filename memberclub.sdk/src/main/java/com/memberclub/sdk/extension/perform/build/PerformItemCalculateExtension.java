@@ -20,5 +20,5 @@ public interface PerformItemCalculateExtension extends BaseExtension {
 
     public TimeRange buildPeriod(long baseTime, MemberPerformItemDO itemDO);
 
-    
+    public TimeRange buildDelayPeriod(long stime, MemberPerformItemDO itemDO);
 }

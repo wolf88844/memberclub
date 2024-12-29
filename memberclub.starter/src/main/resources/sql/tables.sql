@@ -1,4 +1,22 @@
 SET MODE MYSQL;
+
+CREATE TABLE IF NOT EXISTS once_task (
+    id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
+    biz_type INT(11)  NOT NULL COMMENT '产品线',
+    task_token VARCHAR(128)  NOT NULL COMMENT 'taskToken',
+    user_id BIGINT(20)  NOT NULL COMMENT 'userId',
+    task_type INT(11)  NOT NULL COMMENT '任务类型',
+    status INT(11)  NOT NULL COMMENT '状态',
+    content TEXT NOT NULL COMMENT '扩展属性',
+    stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
+    etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',
+    utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
+    ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_once_task (user_id, task_token, task_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+
 CREATE TABLE IF NOT EXISTS member_perform_his (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',

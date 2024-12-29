@@ -6,10 +6,15 @@
  */
 package com.memberclub.sdk.flow.perform.build;
 
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
+import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,11 +24,24 @@ import org.springframework.stereotype.Service;
 public class CalculateDelayPerformItemPeriodFlow extends FlowNode<PerformContext> {
 
 
+    @Autowired
+    private ExtensionManager extensionManager;
+
     @Override
     public void process(PerformContext context) {
         for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
-            for (MemberPerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
+            if (CollectionUtils.isEmpty(skuPerformContext.getDelayPerformItems())) {
+                continue;
+            }
+
+            long stime = context.getImmediatePerformEtime();
+            for (MemberPerformItemDO delayItem : skuPerformContext.getDelayPerformItems()) {
                 // TODO: 2024/12/15
+                TimeRange timeRange = extensionManager.getExtension(context.toDefaultScene(),
+                        PerformItemCalculateExtension.class).buildDelayPeriod(stime, delayItem);
+                delayItem.setStime(timeRange.getStime());
+                delayItem.setEtime(timeRange.getEtime());
+                stime = timeRange.getEtime() + 1;
             }
         }
     }

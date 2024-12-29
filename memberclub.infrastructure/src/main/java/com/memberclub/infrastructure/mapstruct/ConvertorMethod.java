@@ -7,18 +7,23 @@
 package com.memberclub.infrastructure.mapstruct;
 
 import com.memberclub.common.util.JsonUtils;
+import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.GrantTypeEnum;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.common.RightTypeEnum;
+import com.memberclub.domain.common.status.OnceTaskStatusEnum;
+import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import org.mapstruct.Named;
 
 /**
@@ -100,5 +105,18 @@ public class ConvertorMethod {
     @Named("toMemberPerformHisExtraString")
     public String toMemberPerformHisExtraString(PerformHisExtraInfo extraInfo) {
         return JsonUtils.toJson(extraInfo);
+    }
+
+    public static OnceTaskDO buildTaskForPeriodPerform(PerformContext context, MemberPerformItemDO item) {
+        OnceTaskDO task = new OnceTaskDO();
+        task.setUserId(context.getUserId());
+        task.setBizType(context.getBizType());
+        task.setStime(item.getStime());
+        task.setEtime(item.getEtime());
+        task.setStatus(OnceTaskStatusEnum.INIT);
+        task.setTaskToken(String.format("%s", item.getItemToken()));
+        task.setCtime(TimeUtil.now());
+        task.setUtime(TimeUtil.now());
+        return task;
     }
 }

@@ -13,6 +13,7 @@ import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.GrantTypeEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
+import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -21,7 +22,9 @@ import com.memberclub.sdk.extension.perform.build.PerformItemCalculateExtension;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "构建履约项扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER)})
+@ExtensionImpl(desc = "构建履约项扩展点", bizScenes = {
+        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.DEFAULT_SCENE})
+})
 public class DefaultPerformItemCalculateExtension implements PerformItemCalculateExtension {
 
 
@@ -40,5 +43,11 @@ public class DefaultPerformItemCalculateExtension implements PerformItemCalculat
         return null;
     }
 
-
+    @Override
+    public TimeRange buildDelayPeriod(long stime, MemberPerformItemDO itemDO) {
+        if (itemDO.getPeriodType() == PeriodTypeEnum.FIX_DAY) {
+            return PeriodUtils.buildTimeRangeFromBaseTime(stime, itemDO.getPeriodCount(), true);
+        }
+        return null;
+    }
 }
