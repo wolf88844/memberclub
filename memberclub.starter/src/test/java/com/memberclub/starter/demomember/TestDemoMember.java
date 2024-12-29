@@ -62,6 +62,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -82,6 +83,33 @@ public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private OnceTaskDao onceTaskDao;
+
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndRetry() {
+        MemberOrder memberOrder = buildMemberOrder();
+        memberOrderDao.insert(memberOrder);
+
+        Mockito.reset(couponGrantFacade);
+
+        Mockito.doThrow(new RuntimeException("mock error"))
+                .when(couponGrantFacade).grant(Mockito.any());
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        try {
+            PerformResp resp = performService.perform(cmd);
+            Assert.assertTrue(resp.isSuccess());
+            verifyData(cmd);
+        } catch (Exception e) {
+
+        }
+
+        Thread.sleep(2000);
+    }
 
 
     @SneakyThrows
