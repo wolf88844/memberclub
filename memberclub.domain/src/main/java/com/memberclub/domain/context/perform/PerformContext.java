@@ -10,6 +10,8 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
+import com.memberclub.domain.dataobject.CommonUserInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.entity.MemberOrder;
 import lombok.Data;
@@ -30,6 +32,8 @@ public class PerformContext {
 
     private BizTypeEnum bizType;
 
+    private CommonUserInfo userInfo;
+
     private long userId;
 
     /******************订单信息****************/
@@ -38,6 +42,8 @@ public class PerformContext {
     private String tradeId;
 
     private MemberOrder memberOrder;
+
+    private MemberOrderExtraInfo memberOrderExtraInfo;
 
     private OrderSystemTypeEnum orderSystemType;
 

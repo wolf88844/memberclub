@@ -18,7 +18,11 @@ public class MemberSkuSnapshotDO {
 
     private long skuId;
 
-    private SkuViewInfo display;
+    private SkuViewInfo viewInfo;
+
+    private SkuSettleInfo settleInfo;
+
+    private SkuSaleInfo saleInfo;
 
     private SkuPerformConfigDO performConfig;
 }

@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.dataobject.perform.his;
 
+import com.memberclub.domain.dataobject.CommonUserInfo;
 import lombok.Data;
 
 /**
@@ -20,8 +21,5 @@ public class PerformHisExtraInfo {
 
     private PerformHisViewInfo viewInfo = new PerformHisViewInfo();
 
-    private PerformHisLocationInfo locationInfo = new PerformHisLocationInfo();
-
-    private PerformHisUserInfo userInfo = new PerformHisUserInfo();
-
+    private CommonUserInfo userInfo = new CommonUserInfo();
 }

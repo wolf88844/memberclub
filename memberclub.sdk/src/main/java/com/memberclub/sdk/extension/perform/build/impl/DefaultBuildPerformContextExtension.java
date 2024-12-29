@@ -20,8 +20,7 @@ import com.memberclub.sdk.flow.perform.build.CalculateOrderPeriodFlow;
 import com.memberclub.sdk.flow.perform.build.InitialSkuPerformContextsFlow;
 import com.memberclub.sdk.flow.perform.build.MutilBuyCountClonePerformItemFlow;
 import com.memberclub.sdk.flow.perform.build.MutilPeriodMemberClonePerformItemFlow;
-import com.memberclub.sdk.flow.perform.build.PerformContextCommonPropertyBuildFlow;
-import com.memberclub.sdk.flow.perform.build.PerformContextExtraPropertyBuildFlow;
+import com.memberclub.sdk.flow.perform.build.PerformContextExtraInfoBuildFlow;
 import com.memberclub.sdk.flow.perform.build.QuerySkuBuyDetailsFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,8 +50,7 @@ public class DefaultBuildPerformContextExtension implements BuildPerformContextE
                 .addNode(CalculateImmediatePerformItemPeriodFlow.class)//计算立即履约项 时间周期
                 .addNode(CalculateDelayPerformItemPeriodFlow.class)//计算延迟履约项 时间周期
                 .addNode(CalculateOrderPeriodFlow.class)//计算订单整体有效期
-                .addNode(PerformContextCommonPropertyBuildFlow.class)// 构建通用属性
-                .addNode(PerformContextExtraPropertyBuildFlow.class)//构建其他扩展属性
+                .addNode(PerformContextExtraInfoBuildFlow.class)// 构建扩展属性
         ;
     }
 

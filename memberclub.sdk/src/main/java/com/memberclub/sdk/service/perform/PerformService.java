@@ -40,11 +40,8 @@ public class PerformService {
             String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                     .buildPreBuildPerformContextScene(cmd);
 
-            PreBuildPerformContextExtension preBuildPerformContextExtension =
-                    extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), preBuildScene),
-                            PreBuildPerformContextExtension.class);
-
-            PerformContext context = preBuildPerformContextExtension.preBuild(cmd);
+            PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), preBuildScene),
+                    PreBuildPerformContextExtension.class).preBuild(cmd);
 
             if (context.isSkipPerform()) {
                 if (MemberOrderStatusEnum.isPerformed(context.getMemberOrder().getStatus())) {
@@ -55,9 +52,7 @@ public class PerformService {
                     resp.setNeedRetry(true);
                 }
                 Monitor.PERFORM.counter(cmd.getBizType(),
-                        "retryTimes", cmd.getRetryTimes(),
-                        "skip", true,
-                        "result", resp.isSuccess());
+                        "retryTimes", cmd.getRetryTimes(), "skip", true, "result", resp.isSuccess());
 
                 return resp;
             }
@@ -65,25 +60,21 @@ public class PerformService {
             String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                     .buildBuildPerformContextScene(context);
 
-            BuildPerformContextExtension buildPerformContextExtension =
-                    extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),
-                            BuildPerformContextExtension.class);
-            buildPerformContextExtension.build(context);
+
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),
+                    BuildPerformContextExtension.class).build(context);
 
             //execute Context
             String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
                     .buildPerformContextExecuteScene(context);
-            PerformExecuteExtension performExecuteExtension = extensionManager.
-                    getExtension(BizScene.of(cmd.getBizType().toBizType(), executeScene), PerformExecuteExtension.class);
-            performExecuteExtension.execute(context);
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), executeScene),
+                    PerformExecuteExtension.class).execute(context);
 
             resp.setSuccess(true);
             resp.setNeedRetry(false);
 
             Monitor.PERFORM.counter(cmd.getBizType(),
-                    "retryTimes", cmd.getRetryTimes(),
-                    "skip", false,
-                    "result", resp.isSuccess());
+                    "retryTimes", cmd.getRetryTimes(), "skip", false, "result", resp.isSuccess());
             CommonLog.error("履约流程成功:{}", cmd);
         } catch (Exception e) {
             CommonLog.error("内部履约流程异常,需要重试:{}", cmd, e);
@@ -91,9 +82,7 @@ public class PerformService {
             resp.setNeedRetry(true);
 
             Monitor.PERFORM.counter(cmd.getBizType(),
-                    "retryTimes", cmd.getRetryTimes(),
-                    "skip", false,
-                    "result", "exception");
+                    "retryTimes", cmd.getRetryTimes(), "skip", false, "result", "exception");
         }
 
         //todo 处理 失败 重试,需要由外层注解处理!

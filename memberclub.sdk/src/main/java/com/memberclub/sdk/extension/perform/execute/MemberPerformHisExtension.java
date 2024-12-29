@@ -22,5 +22,5 @@ public interface MemberPerformHisExtension extends BaseExtension {
     public MemberPerformHis toMemberPerformHisWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext);
 
 
-    public PerformHisExtraInfo toCommonExtraInfo(SkuPerformContext skuPerformContext);
+    public PerformHisExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext);
 }

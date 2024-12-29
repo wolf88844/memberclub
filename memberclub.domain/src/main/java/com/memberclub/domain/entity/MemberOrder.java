@@ -31,8 +31,6 @@ public class MemberOrder {
 
     private int renewType;
 
-    private String userInfo;
-
     private String skuDetails;
 
     private String extra;

@@ -8,6 +8,7 @@ package com.memberclub.sdk.flow.perform.build;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.sdk.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,9 @@ public class ExtractMemberOrderSkuDetailsFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
         List<SkuBuyDetailDO> skuBuyDetails = performDomainService.extractSkuBuyDetail(context.getMemberOrder());
         context.setSkuBuyDetails(skuBuyDetails);
+
+        MemberOrderExtraInfo extraInfo = performDomainService.extractExtraInfO(context.getMemberOrder());
+        context.setMemberOrderExtraInfo(extraInfo);
+        context.setUserInfo(extraInfo.getUserInfo());
     }
 }

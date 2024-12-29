@@ -11,6 +11,8 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
+import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
+import com.memberclub.sdk.extension.perform.execute.MemberPerformHisExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +20,19 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class PerformContextCommonPropertyBuildFlow extends FlowNode<PerformContext> {
+public class PerformContextExtraInfoBuildFlow extends FlowNode<PerformContext> {
 
     @Autowired
     private ExtensionManager extensionManager;
 
     @Override
     public void process(PerformContext context) {
-
         for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
             MemberPerformHisDO his = skuPerformContext.getHis();
-            
-
+            PerformHisExtraInfo extraInfo =
+                    extensionManager.getExtension(context.toDefaultScene(),
+                            MemberPerformHisExtension.class).toCommonExtraInfo(context, skuPerformContext);
+            his.setExtra(extraInfo);
         }
     }
 }

@@ -12,12 +12,18 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
+import com.memberclub.domain.dataobject.perform.his.PerformHisSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.PerformHisViewInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
+import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
+import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
@@ -41,7 +47,7 @@ public interface PerformConvertor {
     public MemberSkuSnapshotDO toMemberSkuDO(MemberSkuDTO dto);
 
     public PerformContext toPerformContext(PerformCmd cmd);
-    
+
     public MemberPerformHisDO toMemberPerformHisDO(PerformContext context);
 
     @Mappings(value = {
@@ -84,4 +90,10 @@ public interface PerformConvertor {
     public PerformItemSaleInfo toSaleInfo(RightSaleInfo saleInfo);
 
     public PerformItemGrantInfo toGrantInfo(RightGrantInfo grantInfo);
+
+    public PerformHisViewInfo toPerformHisViewInfo(SkuViewInfo viewInfo);
+
+    public PerformHisSettleInfo toPerformHisSettleInfo(SkuSettleInfo settleInfo);
+
+    public PerformHisSaleInfo toPerformHisSaleInfo(SkuSaleInfo saleInfo);
 }

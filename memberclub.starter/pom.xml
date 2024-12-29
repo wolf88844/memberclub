@@ -98,6 +98,11 @@
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version> <!-- 检查最新版本 -->
+        </dependency>
     </dependencies>
 
     <profiles>

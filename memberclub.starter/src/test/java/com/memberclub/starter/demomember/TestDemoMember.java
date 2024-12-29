@@ -8,6 +8,7 @@ package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.memberclub.common.util.EncrptUtils;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
@@ -27,10 +28,16 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
+import com.memberclub.domain.dataobject.CommonUserInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderLocationInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
+import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
+import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
@@ -44,6 +51,7 @@ import com.memberclub.sdk.service.aftersale.AftersaleService;
 import com.memberclub.sdk.service.perform.PerformService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
@@ -61,7 +69,6 @@ public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
-
 
     @Autowired
     private AftersaleService aftersaleService;
@@ -159,6 +166,7 @@ public class TestDemoMember extends MockBaseTest {
     }
 
 
+    @SneakyThrows
     private PerformCmd buildCmd(MemberOrder memberOrder) {
         PerformCmd cmd = new PerformCmd();
         cmd.setOrderId(memberOrder.getOrderId());
@@ -176,6 +184,7 @@ public class TestDemoMember extends MockBaseTest {
 
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
+    @SneakyThrows
     private MemberOrder buildMemberOrder() {
         MemberOrder memberOrder = new MemberOrder();
         memberOrder.setUserId(userIdGenerator.incrementAndGet());
@@ -188,7 +197,7 @@ public class TestDemoMember extends MockBaseTest {
         memberOrder.setExtra("{}");
         memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
         memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
-        memberOrder.setUserInfo("{}");
+
         List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
         SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
         skuBuyDetailDOS.add(skuBuyDetailDO);
@@ -196,8 +205,31 @@ public class TestDemoMember extends MockBaseTest {
         skuBuyDetailDO.setSkuId(439434);
         MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
         skuBuyDetailDO.setSkuSnapshot(snapshotDO);
+
+        SkuSaleInfo skuSaleInfo = new SkuSaleInfo();
+        skuSaleInfo.setOriginPriceFen(3000);
+        skuSaleInfo.setSalePriceFen(699);
+
+        snapshotDO.setSaleInfo(skuSaleInfo);
+
+        SkuSettleInfo settleInfo = new SkuSettleInfo();
+        settleInfo.setContractorId("438098434");
+        settleInfo.setSettlePriceFen(300);
+
+        snapshotDO.setSettleInfo(settleInfo);
+
+        SkuViewInfo viewInfo = new SkuViewInfo();
+        viewInfo.setDisplayDesc("大额红包");
+        viewInfo.setDisplayName("大额红包");
+        viewInfo.setInternalDesc("大额红包 5 元");
+        viewInfo.setInternalName("大额红包 5 元");
+        snapshotDO.setViewInfo(viewInfo);
+
+
         SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
         snapshotDO.setPerformConfig(skuPerformConfigDO);
+
+
         SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
         skuPerformItemConfigDO.setAssetCount(4);
         skuPerformItemConfigDO.setBizType(1);
@@ -207,12 +239,38 @@ public class TestDemoMember extends MockBaseTest {
         skuPerformItemConfigDO.setPeriodCount(31);
         skuPerformItemConfigDO.setRightType(1);
         skuPerformItemConfigDO.setProviderId("1");
-        RightViewInfo viewInfo = new RightViewInfo();
-        viewInfo.setDisplayName("默认权益");
-        skuPerformItemConfigDO.setViewInfo(viewInfo);
+        RightViewInfo rightViewInfo = new RightViewInfo();
+        rightViewInfo.setDisplayName("默认权益");
+        skuPerformItemConfigDO.setViewInfo(rightViewInfo);
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
         snapshotDO.setPerformConfig(skuPerformConfigDO);
+
+
+        CommonUserInfo userInfo = new CommonUserInfo();
+        userInfo.setUuid(RandomStringUtils.randomAlphabetic(12));
+        userInfo.setPhone(RandomStringUtils.randomNumeric(11));
+        userInfo.setMaskedPhone(EncrptUtils.generatePhoneMask(userInfo.getPhone()));
+
+
+        String key = EncrptUtils.generateAESKey();
+
+        userInfo.setKey(key);
+        userInfo.setEncryptedPhone(EncrptUtils.encryptAES(userInfo.getPhone(), key));
+
+        MemberOrderLocationInfo locationInfo = new MemberOrderLocationInfo();
+        locationInfo.setActualLatitude("8493458355");
+        locationInfo.setActualLongitude("48934834");
+        locationInfo.setActualSecondCityId("110100");
+        locationInfo.setActualThirdCityId("4384394");
+
+        MemberOrderExtraInfo extraInfo = new MemberOrderExtraInfo();
+        extraInfo.setUserInfo(userInfo);
+        extraInfo.setLocationInfo(locationInfo);
+
+        memberOrder.setExtra(JsonUtils.toJson(extraInfo));
+
+        System.out.println("解密后的电话号码： " + EncrptUtils.decrypt(userInfo.getEncryptedPhone(), userInfo.getKey()));
 
         memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
         return memberOrder;

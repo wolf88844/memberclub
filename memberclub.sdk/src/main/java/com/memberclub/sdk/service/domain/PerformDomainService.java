@@ -14,12 +14,20 @@ import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
+import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
+import com.memberclub.domain.dataobject.perform.his.PerformHisSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.PerformHisViewInfo;
+import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.exception.ResultCode;
+import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
@@ -119,6 +127,27 @@ public class PerformDomainService {
                 , new TypeReference<List<SkuBuyDetailDO>>() {
                 });
         return skuBuyDetails;
+    }
+
+    public MemberOrderExtraInfo extractExtraInfO(MemberOrder order) {
+        return JsonUtils.fromJson(order.getExtra(), MemberOrderExtraInfo.class);
+    }
+
+    public PerformHisExtraInfo buildPerformHisExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
+        PerformHisExtraInfo extraInfo = new PerformHisExtraInfo();
+
+        MemberSkuSnapshotDO snapshot = skuPerformContext.getSkuBuyDetail().getSkuSnapshot();
+
+        PerformHisViewInfo viewInfo = PerformConvertor.INSTANCE.toPerformHisViewInfo(snapshot.getViewInfo());
+
+        PerformHisSettleInfo settleInfo = PerformConvertor.INSTANCE.toPerformHisSettleInfo(snapshot.getSettleInfo());
+
+        PerformHisSaleInfo saleInfo = PerformConvertor.INSTANCE.toPerformHisSaleInfo(snapshot.getSaleInfo());
+        extraInfo.setSettleInfo(settleInfo);
+        extraInfo.setViewInfo(viewInfo);
+        extraInfo.setUserInfo(context.getUserInfo());
+        extraInfo.setSaleInfo(saleInfo);
+        return extraInfo;
     }
 
 }

@@ -15,12 +15,12 @@ import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.extension.perform.execute.MemberPerformHisExtension;
+import com.memberclub.sdk.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -31,6 +31,9 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
 
     @Autowired
     private ExtensionManager extensionManager;
+
+    @Autowired
+    private PerformDomainService performDomainService;
 
     @Override
     public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
@@ -52,12 +55,11 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
     }
 
     @Override
-    public PerformHisExtraInfo toCommonExtraInfo(SkuPerformContext skuPerformContext) {
-        PerformHisExtraInfo extraInfo = new PerformHisExtraInfo();
-
-        SkuBuyDetailDO skuBuyDetail = skuPerformContext.getSkuBuyDetail();
-        //TODO 补充
-
+    public PerformHisExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
+        PerformHisExtraInfo extraInfo = performDomainService.buildPerformHisExtraInfo(context, skuPerformContext);
+        
         return extraInfo;
     }
+
+
 }

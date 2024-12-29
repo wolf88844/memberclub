@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS member_order (
     order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
     trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
     renew_type INT(11)  NOT NULL COMMENT '续费类型 0 无续费,1 用户续费 2 系统自动续费',
-    user_info TEXT NOT NULL COMMENT '用户属性',
     sku_details TEXT NOT NULL COMMENT '购买商品信息',
     act_price_fen VARCHAR(128)  NOT NULL COMMENT '实付金额',
     origin_price_fen VARCHAR(128)  NOT NULL COMMENT '原价金额',
