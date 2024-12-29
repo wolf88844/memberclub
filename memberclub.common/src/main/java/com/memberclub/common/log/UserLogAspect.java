@@ -6,6 +6,7 @@
  */
 package com.memberclub.common.log;
 
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.common.BizTypeEnum;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -67,17 +68,21 @@ public class UserLogAspect {
             }
 
             // 放到MDC中
-            String msg = String.format(" [domain:%s bizType:%s userId:%s tradeId:%s] ",
-                    userLogAnnotation.domain().name(), bizType, userId, tradeId);
-
+            String msg = String.format(" [domain:%s] [method:%s] [bizType:%s] [userId:%s] [tradeId:%s] ",
+                    userLogAnnotation.domain().name(), method.getName(), bizType, userId, tradeId);
 
             MDC.put("msg", msg);
         }
 
         try {
+            CommonLog.info("method:{}开始执行, request:{}", method.getName(), JsonUtils.toJson(args));
             Object response = joinPoint.proceed();
+            CommonLog.info("method:{}执行成功, request:{}, response:{}",
+                    method.getName(), JsonUtils.toJson(args), JsonUtils.toJson(response));
             return response;
         } catch (Exception e) {
+            CommonLog.error("method:{}执行异常, request:{}",
+                    method.getName(), JsonUtils.toJson(args), e);
             throw e;
         } finally {
             //清理MDC

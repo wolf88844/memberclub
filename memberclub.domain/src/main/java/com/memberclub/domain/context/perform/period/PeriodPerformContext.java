@@ -29,5 +29,7 @@ public class PeriodPerformContext {
 
     private OnceTaskDO task;
 
+    private String lockValue;
+
     private PerformTaskContentDO content;
 }

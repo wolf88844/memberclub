@@ -23,6 +23,7 @@ import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
 import com.memberclub.infrastructure.facade.AssetsFacade;
+import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.extension.perform.execute.PerformItemGrantExtension;
 import org.springframework.util.CollectionUtils;
 
@@ -62,12 +63,26 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
         request.setGrantItems(grantItemDOS);
         GrantResponseDO response = assetsFacade.grant(request);
         if (!response.isSuccess()) {
+            Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                    "grant_code", response.getCode(),
+                    "period_perform", context.isPeriodPerform());
             ResultCode.DEPENDENCY_ERROR.throwException();
         }
+
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                "grant_code", response.getCode(),
+                "period_perform", context.isPeriodPerform());
         CommonLog.warn("调用发券结果:{}, 入参:{}", response, request);
         if (CollectionUtils.isEmpty(response.getItemToken2AssetsMap())) {
+            Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                    "grant_result", "empty",
+                    "period_perform", context.isPeriodPerform());
+
             ResultCode.DEPENDENCY_ERROR.throwException("下游发券列表为空");
         }
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                "grant_result", "normal",
+                "period_perform", context.isPeriodPerform());
 
         Map<String, ItemGrantResult> grantMap = Maps.newHashMap();
         for (Map.Entry<String, List<AssetDO>> entry : response.getItemToken2AssetsMap().entrySet()) {

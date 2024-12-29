@@ -17,9 +17,11 @@ import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.sdk.extension.perform.period.PeriodPerformExecuteExtension;
+import com.memberclub.sdk.flow.perform.complete.PeriodPerformMessageFlow;
 import com.memberclub.sdk.flow.perform.execute.MemberPerformItemFlow;
 import com.memberclub.sdk.flow.perform.execute.PerformItemGrantFlow;
 import com.memberclub.sdk.flow.perform.period.PeriodPerformImmediatePerformFlow;
+import com.memberclub.sdk.flow.perform.period.PeriodPerformResourceLockFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +32,7 @@ import javax.annotation.PostConstruct;
 @ExtensionImpl(desc = "周期履约执行扩展点实现", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER)
 })
-public class DefaultPeriodPerformExecuteExtension implements PeriodPerformExecuteExtension {
+public class DemoMemberPeriodPerformExecuteExtension implements PeriodPerformExecuteExtension {
 
     @Autowired
     private FlowChainService chainService;
@@ -40,6 +42,9 @@ public class DefaultPeriodPerformExecuteExtension implements PeriodPerformExecut
     @PostConstruct
     public void init() {
         flowChain = FlowChain.newChain(chainService, PeriodPerformContext.class)
+                .addNode(PeriodPerformResourceLockFlow.class)//周期履约加锁
+                .addNode(PeriodPerformMessageFlow.class)//构建周期履约消息
+                //编排周期履约流程,按权益类型分别履约
                 .addNodeWithSubNodes(PeriodPerformImmediatePerformFlow.class, PerformItemContext.class,
                         ImmutableList.of(MemberPerformItemFlow.class, PerformItemGrantFlow.class));
 

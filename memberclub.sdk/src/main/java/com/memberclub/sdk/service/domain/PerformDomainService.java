@@ -90,7 +90,7 @@ public class PerformDomainService {
                     ResultCode.INTERNAL_ERROR.throwException("更新 member_perform_item失败");
                 }
             }
-            CommonLog.error("成功更新 item 到履约完成itemToken:{}", item.getItemToken());
+            CommonLog.info("成功更新 item 到履约完成itemToken:{}, batchCode:{}", item.getItemToken(), item.getBatchCode());
         }
     }
 

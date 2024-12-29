@@ -1,13 +1,13 @@
 /**
- * @(#)MemberResourcesLockFlow.java, 十二月 15, 2024.
+ * @(#)PeriodPerformResourceLockFlow.java, 十二月 29, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.flow.perform.execute;
+package com.memberclub.sdk.flow.perform.period;
 
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.sdk.service.perform.LockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,24 +16,22 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
-    
+public class PeriodPerformResourceLockFlow extends FlowNode<PeriodPerformContext> {
+
     @Autowired
     private LockService lockService;
 
     @Override
-    public void process(PerformContext context) {
+    public void process(PeriodPerformContext context) {
         String lockValue = lockService.lock(context.getBizType(),
-                context.getLockValue(),
+                null,
                 context.getUserId(),
                 context.getTradeId());
         context.setLockValue(lockValue);
-        context.getCmd().setLockValue(context.getLockValue());
     }
 
-
     @Override
-    public void success(PerformContext context) {
+    public void success(PeriodPerformContext context) {
         lockService.unlock(context.getBizType(),
                 context.getUserId(),
                 context.getTradeId(),
@@ -41,11 +39,10 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
     }
 
     @Override
-    public void rollback(PerformContext context) {
-        lockService.rollbackLock(context.getBizType(),
+    public void rollback(PeriodPerformContext context) {
+        lockService.unlock(context.getBizType(),
                 context.getUserId(),
                 context.getTradeId(),
-                context.getLockValue(),
-                context.getRetryTimes());
+                context.getLockValue());
     }
 }
