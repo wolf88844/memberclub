@@ -62,6 +62,7 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
                 count, items.size(), context);
         // TODO: 2024/12/18 兼容异常处理
         List<MemberPerformItemDO> memberPerformItemDOS = Lists.newArrayList();
+
         for (MemberPerformItemDO item : context.getItems()) {
             MemberPerformItem itemInDb =
                     memberPerformItemDao.queryByItemToken(context.getUserId(), item.getItemToken());
@@ -75,13 +76,16 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
                 memberPerformItemDOS.add(item);
             }
         }
-        if (CollectionUtils.isEmpty(items)) {
+        if (CollectionUtils.isEmpty(memberPerformItemDOS)) {
             Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
                     "insert_item", "duplicated",
                     "right_type", context.getRightType());
             CommonLog.warn("已完成履约:{}", context.getRightType());
             throw new SkipException();
         }
+        CommonLog.warn("当前是重试请求, member_perform_item已被幂等写入 dbExistSize:{}, insert:{}",
+                memberPerformItemDOS.size(), items.size());
+
         context.setItems(memberPerformItemDOS);
     }
 

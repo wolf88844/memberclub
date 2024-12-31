@@ -43,6 +43,11 @@ public class MemberException extends RuntimeException {
         this.code = code;
     }
 
+    public MemberException(ResultCode code, String msg, Exception e) {
+        super(msg, e);
+        this.code = code;
+    }
+
     public static MemberException newException(ResultCode code) {
         MemberException exception = new MemberException(code);
         return exception;
@@ -50,6 +55,11 @@ public class MemberException extends RuntimeException {
 
     public static MemberException newException(ResultCode code, String msg) {
         MemberException exception = new MemberException(code, msg);
+        return exception;
+    }
+
+    public static MemberException newException(ResultCode code, String msg, Exception e) {
+        MemberException exception = new MemberException(code, msg, e);
         return exception;
     }
 }

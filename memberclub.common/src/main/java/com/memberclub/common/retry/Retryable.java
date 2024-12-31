@@ -22,7 +22,9 @@ public @interface Retryable {
 
     public int maxDelaySeconds() default 60;
 
-    public int maxTimes() default 10;
+    public int maxTimes() default 5;
+
+    public double multiplier() default 1.0;
 
     public Class<Exception>[] include() default {Exception.class};
 

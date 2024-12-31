@@ -8,6 +8,7 @@ package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.EncrptUtils;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.PeriodUtils;
@@ -105,10 +106,16 @@ public class TestDemoMember extends MockBaseTest {
             Assert.assertTrue(resp.isSuccess());
             verifyData(cmd);
         } catch (Exception e) {
-
+            CommonLog.error("首次调用出现异常", e);
         }
 
-        Thread.sleep(2000);
+        Thread.sleep(7000);
+
+        Mockito.doCallRealMethod()
+                .when(couponGrantFacade).grant(Mockito.any());
+
+
+        Thread.sleep(200000);
     }
 
 

@@ -6,6 +6,8 @@
  */
 package com.memberclub.common.retry;
 
+import com.google.common.collect.Lists;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.RetryableContext;
@@ -18,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -49,29 +54,45 @@ public class RetryableAspect {
             } catch (Exception e) {
                 Object param = joinPoint.getArgs()[0];
 
-                int retryTimes = 0;
+                int retryTimes = RetryLocalContext.getRetryTimes();
+                retryTimes++;
+
+                if (retryTimes > annotation.maxTimes()) {
+                    // TODO: 2024/12/31 fallback逻辑
+                    CommonLog.error("超过最大重试次数 methodName:{} ,params:{}", method.getName(), args);
+                    throw e;
+                }
+
                 if (param instanceof RetryableContext) {
                     RetryableContext retryableContext = ((RetryableContext) param);
-                    retryableContext.setRetryTimes(retryableContext.getRetryTimes() + 1);
-                    retryTimes = retryableContext.getRetryTimes();
+                    retryableContext.setRetryTimes(retryTimes);
                 } else {
                     throw e;
                 }
 
-                long delayTime = annotation.initialDelaySeconds() * (int) Math.pow(1, retryTimes);
+                int initialDelayTime = annotation.initialDelaySeconds();
+                double multiplier = annotation.multiplier();
+
+                long delayTime = initialDelayTime * (int) Math.pow(multiplier, retryTimes - 1);
                 delayTime = delayTime > annotation.maxDelaySeconds() ? annotation.maxDelaySeconds() : delayTime;
 
                 RetryMessage message = new RetryMessage();
                 message.setBeanName(toLowerCaseFirst(joinPoint.getSignature().getDeclaringType().getSimpleName()));
                 message.setBeanClassName(joinPoint.getSignature().getDeclaringType().getName());
                 message.setMethodName(((MethodSignature) joinPoint.getSignature()).getMethod().getName());
-                message.setArgs(JsonUtils.toJson(param));
-                message.setArgsClassName(param.getClass().getName());
+
+                List<String> argsList = Lists.newArrayList(args).stream().map(JsonUtils::toJson).collect(Collectors.toList());
+
+                List<String> argsClassList = Arrays.stream(((MethodSignature) joinPoint.getSignature()).getParameterTypes())
+                        .map(Class::getName).collect(Collectors.toList());
+
+                message.setArgsList(argsList);
+                message.setArgsClassList(argsClassList);
                 message.setRetryTimes(retryTimes);
                 message.setExpectedTime(TimeUtil.now() + TimeUnit.SECONDS.toMillis(delayTime));
 
                 retryService.addRetryMessage(message);
-                return null;
+                throw e;
             }
         } else {
             return joinPoint.proceed();

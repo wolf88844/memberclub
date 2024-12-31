@@ -24,6 +24,8 @@ public interface MemberPerformHisDao extends BaseMapper<MemberPerformHis> {
 
     public static final String TABLE_NAME = "member_perform_his";
 
+    Integer insertIgnoreBatch(List<MemberPerformHis> hisList);
+
     @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId}")
     public List<MemberPerformHis> selectByUserId(@Param("userId") long userId);
 

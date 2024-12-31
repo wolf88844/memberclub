@@ -14,4 +14,6 @@ public interface RetryService {
     public void addRetryMessage(RetryMessage message);
 
     public void consumeMessage(RetryMessage message);
+
+    
 }

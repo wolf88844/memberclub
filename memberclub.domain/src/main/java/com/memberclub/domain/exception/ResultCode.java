@@ -75,4 +75,8 @@ public enum ResultCode {
     public void throwException(String msg) {
         throw MemberException.newException(this, msg);
     }
+
+    public void throwException(String msg, Exception e) {
+        throw MemberException.newException(this, msg, e);
+    }
 }

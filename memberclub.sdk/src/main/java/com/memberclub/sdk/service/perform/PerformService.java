@@ -50,9 +50,8 @@ public class PerformService {
         return null;
     }
 
-
-    @Retryable(initialDelaySeconds = 1)
     @UserLog(domain = LogDomainEnum.PERFORM)
+    @Retryable(initialDelaySeconds = 5, multiplier = 2.0, maxDelaySeconds = 10)
     public PerformResp perform(PerformCmd cmd) {
         PerformResp resp = new PerformResp();
         try {
@@ -94,7 +93,7 @@ public class PerformService {
 
             Monitor.PERFORM.counter(cmd.getBizType(),
                     "retryTimes", cmd.getRetryTimes(), "skip", false, "result", resp.isSuccess());
-            CommonLog.error("履约流程成功:{}", cmd);
+            CommonLog.info("履约流程成功:{}", cmd);
         } catch (Throwable e) {
             CommonLog.error("内部履约流程异常,需要重试:{}", cmd, e);
 

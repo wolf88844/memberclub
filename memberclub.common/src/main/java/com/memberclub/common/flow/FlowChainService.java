@@ -8,6 +8,7 @@ package com.memberclub.common.flow;
 
 import com.memberclub.common.log.CommonLog;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class FlowChainService {
     @Autowired
     public ApplicationContext applicationContext;
 
+    @SneakyThrows
     public <T> void execute(FlowChain<T> chain, T context) {
         Exception exception = null;
         int index = -1;
@@ -74,7 +76,7 @@ public class FlowChainService {
             }
         }
         if (exception != null) {
-            throw new RuntimeException(exception);
+            throw exception;
         }
     }
 }

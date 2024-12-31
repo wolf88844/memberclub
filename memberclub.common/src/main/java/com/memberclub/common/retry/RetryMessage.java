@@ -6,9 +6,9 @@
  */
 package com.memberclub.common.retry;
 
-import com.memberclub.common.util.TimeUtil;
 import lombok.Data;
 
+import java.util.List;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +24,9 @@ public class RetryMessage implements Delayed {
 
     private String methodName;
 
-    private String args;
+    private List<String> argsList;
 
-    private String argsClassName;
+    private List<String> argsClassList;
 
     private int retryTimes;
 
@@ -34,11 +34,12 @@ public class RetryMessage implements Delayed {
 
     @Override
     public long getDelay(TimeUnit unit) {
-        return unit.toMillis(expectedTime - TimeUtil.now());
+        return unit.convert(this.expectedTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 
     @Override
     public int compareTo(Delayed o) {
-        return expectedTime < o.getDelay(TimeUnit.MILLISECONDS) ? -1 : 1;
+        return ((RetryMessage) this).getExpectedTime() < ((RetryMessage) o).getExpectedTime() ?
+                -1 : 1;
     }
 }

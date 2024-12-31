@@ -7,6 +7,7 @@
 package com.memberclub.sdk.service.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
@@ -106,7 +107,7 @@ public class PerformDomainService {
 
     @Transactional
     public int insertMemberPerformHis(MemberPerformHis memberPerformHis) {
-        int cnt = memberPerformHisDao.insert(memberPerformHis);
+        int cnt = memberPerformHisDao.insertIgnoreBatch(Lists.newArrayList(memberPerformHis));
         return cnt;
     }
 

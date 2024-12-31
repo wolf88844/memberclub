@@ -61,28 +61,35 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
         }
 
         request.setGrantItems(grantItemDOS);
-        GrantResponseDO response = assetsFacade.grant(request);
+
+        GrantResponseDO response = null;
+        try {
+            response = assetsFacade.grant(request);
+            if (response == null) {
+                Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                        "grant_code", "null",
+                        "period_perform", context.isPeriodPerform());
+
+                ResultCode.DEPENDENCY_ERROR.throwException("调用下游为空");
+            }
+        } catch (Exception e) {
+            monitor(context, "exception");
+            CommonLog.error("调用下游异常 request:{} ", request, e);
+            ResultCode.DEPENDENCY_ERROR.throwException(String.format("调用下游异常:%s", e.getMessage()), e);
+        }
+
         if (!response.isSuccess()) {
-            Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
-                    "grant_code", response.getCode(),
-                    "period_perform", context.isPeriodPerform());
+            monitor(context, response.getCode());
             ResultCode.DEPENDENCY_ERROR.throwException();
         }
+        monitor(context, response.getCode());
 
-        Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
-                "grant_code", response.getCode(),
-                "period_perform", context.isPeriodPerform());
-        CommonLog.warn("调用发券结果:{}, 入参:{}", response, request);
+        CommonLog.warn("调用权益发放返回值:{}, 入参:{}", response, request);
         if (CollectionUtils.isEmpty(response.getItemToken2AssetsMap())) {
-            Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
-                    "grant_result", "empty",
-                    "period_perform", context.isPeriodPerform());
-
+            monitor(context, "empty");
             ResultCode.DEPENDENCY_ERROR.throwException("下游发券列表为空");
         }
-        Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
-                "grant_result", "normal",
-                "period_perform", context.isPeriodPerform());
+        monitor(context, "normal");
 
         Map<String, ItemGrantResult> grantMap = Maps.newHashMap();
         for (Map.Entry<String, List<AssetDO>> entry : response.getItemToken2AssetsMap().entrySet()) {
@@ -93,9 +100,17 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
             result.setBatchCode(batchCode);
             grantMap.put(itemToken, result);
         }
+        CommonLog.warn("调用权益发放结果:{}", grantMap);
 
         ItemGroupGrantResult result = new ItemGroupGrantResult();
         result.setGrantMap(grantMap);
         return result;
+    }
+
+
+    public static void monitor(PerformItemContext context, Object msg) {
+        Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
+                "grant_result", msg,
+                "period_perform", context.isPeriodPerform());
     }
 }
