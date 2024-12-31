@@ -11,7 +11,7 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
-import com.memberclub.sdk.extension.ReversePerformExtension;
+import com.memberclub.sdk.perform.extension.ReversePerformExtension;
 import com.memberclub.starter.demomember.DefaultTestExtension;
 import com.memberclub.starter.demomember.JustTestExtension;
 import com.memberclub.starter.mock.MockBaseTest;

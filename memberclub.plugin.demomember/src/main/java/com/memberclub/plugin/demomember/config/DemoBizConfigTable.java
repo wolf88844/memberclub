@@ -9,7 +9,7 @@ package com.memberclub.plugin.demomember.config;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.sdk.extension.config.BizConfigTable;
+import com.memberclub.sdk.config.extension.BizConfigTable;
 
 /**
  * author: 掘金五阳

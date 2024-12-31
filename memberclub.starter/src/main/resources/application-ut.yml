@@ -25,7 +25,8 @@ logging:
 memberclub:
   infrastructure:
     config: none
-    id: none
     lock: none
     feign:
       enabled: false
+    id: none
+

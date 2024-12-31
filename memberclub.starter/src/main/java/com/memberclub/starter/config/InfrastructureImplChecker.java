@@ -16,7 +16,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,7 @@ public class InfrastructureImplChecker {
     /**
      * 分布式Id 类型, none 为随机生成; 默认类型为 redis
      */
-    private String id;
+    private DistributedIdEnum id;
 
     /**
      * 分布式锁类型,none 为不加锁,默认是 redis

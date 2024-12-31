@@ -54,8 +54,8 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
-import com.memberclub.sdk.service.aftersale.AftersaleService;
-import com.memberclub.sdk.service.perform.PerformService;
+import com.memberclub.sdk.aftersale.service.AftersaleBizService;
+import com.memberclub.sdk.perform.service.PerformBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -80,7 +80,7 @@ public class TestDemoMember extends MockBaseTest {
     private MemberPerformHisDao memberPerformHisDao;
 
     @Autowired
-    private AftersaleService aftersaleService;
+    private AftersaleBizService aftersaleBizService;
 
     @Autowired
     private OnceTaskDao onceTaskDao;
@@ -102,20 +102,17 @@ public class TestDemoMember extends MockBaseTest {
         PerformCmd cmd = buildCmd(memberOrder);
 
         try {
-            PerformResp resp = performService.perform(cmd);
+            PerformResp resp = performBizService.perform(cmd);
             Assert.assertTrue(resp.isSuccess());
             verifyData(cmd);
         } catch (Exception e) {
             CommonLog.error("首次调用出现异常", e);
         }
 
-        Thread.sleep(7000);
-
         Mockito.doCallRealMethod()
                 .when(couponGrantFacade).grant(Mockito.any());
-
-
-        Thread.sleep(200000);
+        Thread.sleep(1500);
+        verifyData(cmd);
     }
 
 
@@ -131,7 +128,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformCmd cmd = buildCmd(memberOrder);
 
-        PerformResp resp = performService.perform(cmd);
+        PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
@@ -147,7 +144,7 @@ public class TestDemoMember extends MockBaseTest {
             return taskDO;
         }).collect(Collectors.toList());
         for (OnceTaskDO taskDO : taskDOS) {
-            performService.periodPerform(taskDO);
+            performBizService.periodPerform(taskDO);
         }
         verifyData(cmd, 3);
         //Thread.sleep(1000000);
@@ -166,7 +163,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformCmd cmd = buildCmd(memberOrder);
 
-        PerformResp resp = performService.perform(cmd);
+        PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
@@ -186,7 +183,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformCmd cmd = buildCmd(memberOrder);
 
-        PerformResp resp = performService.perform(cmd);
+        PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, buyCount);
 
@@ -205,7 +202,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformCmd cmd = buildCmd(memberOrder);
 
-        PerformResp resp = performService.perform(cmd);
+        PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd);
 
@@ -222,7 +219,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformCmd cmd = buildCmd(memberOrder);
 
-        PerformResp resp = performService.perform(cmd);
+        PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd);
 
@@ -236,7 +233,7 @@ public class TestDemoMember extends MockBaseTest {
         previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
 
 
-        AfterSalePreviewResponse respose = aftersaleService.preview(previewCmd);
+        AfterSalePreviewResponse respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.ALL_REFUND, respose.getRefundType());
 
@@ -244,7 +241,7 @@ public class TestDemoMember extends MockBaseTest {
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
             entry.getValue().get(0).setStatus(1);
         }
-        respose = aftersaleService.preview(previewCmd);
+        respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.PORTION_RFUND, respose.getRefundType());
 
@@ -254,7 +251,7 @@ public class TestDemoMember extends MockBaseTest {
         applyCmd.setDigests(respose.getDigests());
         applyCmd.setDigestVersion(respose.getDigestVersion());
         //applyCmd.setDigestVersion(0);
-        AftersaleApplyResponse aftersaleApplyResponse = aftersaleService.apply(applyCmd);
+        AftersaleApplyResponse aftersaleApplyResponse = aftersaleBizService.apply(applyCmd);
         Assert.assertTrue(aftersaleApplyResponse.isSuccess());
 
         /*******************已用尽,结果为不可退********/
@@ -264,7 +261,7 @@ public class TestDemoMember extends MockBaseTest {
                 assetDO.setStatus(1);
             }
         }
-        respose = aftersaleService.preview(previewCmd);
+        respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(false, respose.isAftersaleEnabled());
         Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
     }
@@ -507,7 +504,7 @@ public class TestDemoMember extends MockBaseTest {
     private MemberOrderDao memberOrderDao;
 
     @Autowired
-    private PerformService performService;
+    private PerformBizService performBizService;
 
     /*@SpyBean(name = "couponGrantFacade", value = MockCouponGrantFacade.class)
     private CouponGrantFacade mockCouponGrantFacade;*/

@@ -7,7 +7,7 @@
 package com.memberclub.starter;
 
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.sdk.flow.util.AbstractFlowNode;
+import com.memberclub.sdk.perform.util.AbstractFlowNode;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 
 /**
