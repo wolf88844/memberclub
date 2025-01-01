@@ -332,7 +332,7 @@ public class TestDemoMember extends MockBaseTest {
 
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
             for (AssetDO assetDO : entry.getValue()) {
-                assetDO.setStatus(AssetStatusEnum.UNUSE.toInt());
+                assetDO.setStatus(AssetStatusEnum.USED.toInt());
             }
         }
         respose = aftersaleBizService.preview(previewCmd);
