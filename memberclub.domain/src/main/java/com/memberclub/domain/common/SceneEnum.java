@@ -21,13 +21,9 @@ public enum SceneEnum {
 
     SCENE_MUTIL_PERIOD_CARD("202"),//履约上下文执行 scene, 多周期卡部分
 
-    SCENE_MUTIL_BUY_COUNT_CARD("203"),//履约上下文执行 scene, 多份数购买
-
     SCENE_AFTERSALE_MONTH_CARD("301"),//售后月卡
 
     SCENE_AFTERSALE_MUTIL_PERIOD_CARD("302"),//售后多周期卡
-
-    SCENE_AFTERSALE_BUY_COUNT_CARD("303"),//售后多份数卡
 
     SCENE_AFTERSALE_RENEW("304"),//售后续费
 

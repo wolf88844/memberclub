@@ -11,6 +11,7 @@ import com.memberclub.common.extension.BizSceneBuildExtension;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 
 /**
@@ -21,6 +22,14 @@ import com.memberclub.domain.context.perform.PerformItemContext;
 })
 public class DemoMemberBizSceneBuildExtension implements BizSceneBuildExtension {
 
+
+    @Override
+    public String buildBuildPerformContextScene(PerformContext context) {
+        if (context.getSkuBuyDetails().get(0).getSkuSnapshot().getPerformConfig().getConfigs().get(0).getCycle() > 1) {
+            return SceneEnum.SCENE_MUTIL_PERIOD_CARD.getValue();
+        }
+        return SceneEnum.SCENE_MONTH_CARD.getValue();
+    }
 
     @Override
     public String buildPerformItemGrantExtensionScene(PerformItemContext context) {

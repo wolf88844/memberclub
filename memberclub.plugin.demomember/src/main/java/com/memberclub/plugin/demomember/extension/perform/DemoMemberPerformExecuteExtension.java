@@ -16,8 +16,8 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
-import com.memberclub.sdk.perform.flow.complete.MemberPerformMessageFlow;
 import com.memberclub.sdk.perform.extension.execute.PerformExecuteExtension;
+import com.memberclub.sdk.perform.flow.complete.MemberPerformMessageFlow;
 import com.memberclub.sdk.perform.flow.execute.ImmediatePerformFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberOrderSuccessFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberPerformItemFlow;
@@ -35,7 +35,7 @@ import javax.annotation.PostConstruct;
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "DemoMember 执行履约扩展点", bizScenes = {
-        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD, SceneEnum.SCENE_MUTIL_BUY_COUNT_CARD})//Demo会员月卡,多份数
+        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD})//Demo会员月卡,多份数
 })
 public class DemoMemberPerformExecuteExtension implements PerformExecuteExtension {
     private FlowChain<PerformContext> flowChain;
