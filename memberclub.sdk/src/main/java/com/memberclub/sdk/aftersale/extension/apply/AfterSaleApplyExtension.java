@@ -8,11 +8,15 @@ package com.memberclub.sdk.aftersale.extension.apply;
 
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 
 /**
  * author: 掘金五阳
  */
 public interface AfterSaleApplyExtension extends BaseExtension {
-
     public void apply(AfterSaleApplyContext context);
+
+    public void doApply(AfterSaleApplyContext context);
+
+    public void customBuildAftersaleOrder(AfterSaleApplyContext context, AftersaleOrderDO aftersaleOrderDO);
 }

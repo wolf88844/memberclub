@@ -25,6 +25,8 @@ import java.util.List;
 @Data
 public class AftersalePreviewContext {
 
+    private boolean previewBeforeApply;
+
     /***************** 基础履约数据 *********************/
     private AfterSalePreviewCmd cmd;
 

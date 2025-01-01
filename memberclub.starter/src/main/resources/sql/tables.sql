@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS member_perform_his (
     order_system_type INT(11)  NOT NULL COMMENT '订单系统类型',
     order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
     trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
-    perform_his_token VARCHAR(128)  NOT NULL COMMENT '履约单 token',
+    perform_his_token BIGINT(20)  NOT NULL COMMENT '履约单 token',
     sku_id BIGINT(20)  NOT NULL COMMENT 'skuId',
     buy_count INT(11)  NOT NULL COMMENT '购买数量',
     status INT(11)  NOT NULL COMMENT '状态',
@@ -87,4 +87,29 @@ CREATE TABLE IF NOT EXISTS member_order (
     ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (id),
     UNIQUE KEY uniq_member_order (user_id, trade_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+
+CREATE TABLE IF NOT EXISTS aftersale_order (
+    id BIGINT(20)  NOT NULL COMMENT '表主键',
+    biz_type INT(11)  NOT NULL COMMENT '产品线',
+    user_id BIGINT(20)  NOT NULL COMMENT 'userId',
+    source INT(11)  NOT NULL COMMENT '售后来源',
+    trade_id VARCHAR(128)  NOT NULL COMMENT '会员单 id',
+    operator VARCHAR(128)  NOT NULL COMMENT '操作人',
+    act_pay_price_fen INT(11)  NOT NULL COMMENT '实付金额分',
+    act_refund_price_fen INT(11)  NOT NULL COMMENT '实际退款金额分',
+    recommend_refund_price_fen INT(11)  NOT NULL COMMENT '推荐的退款金额分',
+    sku_details TEXT NOT NULL COMMENT '购买商品信息',
+    act_price_fen VARCHAR(128)  NOT NULL COMMENT '实付金额',
+    origin_price_fen VARCHAR(128)  NOT NULL COMMENT '原价金额',
+    status INT(11)  NOT NULL COMMENT '售后状态',
+    refund_type INT(11)  NOT NULL COMMENT '退款类型 全部退或部分退',
+    extra TEXT NOT NULL COMMENT '扩展属性',
+    apply_sku_details TEXT NOT NULL COMMENT '售后商品信息',
+    utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
+    ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (id),
+    --UNIQUE KEY uniq_aftersale_order (user_id, preview_token),
+    KEY tradeid_key (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;

@@ -17,6 +17,8 @@ public enum Monitor {
 
     PERFORM("perform_request"),
     PERFORM_EXECUTE("perform_execute"),
+    AFTER_SALE_DOAPPLY("aftersale_doapply"),
+    AFTER_SALE_APPLY("aftersale_apply"),
     ;
 
     private String name;

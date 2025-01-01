@@ -13,5 +13,5 @@ import com.memberclub.common.extension.BaseExtension;
  */
 public interface IdGenerator extends BaseExtension {
 
-    public String generateId();
+    public Long generateId(IdTypeEnum idType);
 }

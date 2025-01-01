@@ -28,7 +28,7 @@ public class MemberPerformHisDO {
 
     private String tradeId;//会员单交易 ID
 
-    private String performHisToken;
+    private Long performHisToken;
 
     private int buyCount;
 

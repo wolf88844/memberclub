@@ -28,8 +28,12 @@ public class BizScene {
         return new BizScene(bizType, SceneEnum.DEFAULT_SCENE.getValue());
     }
 
+    public static BizScene of(BizTypeEnum bizType, String scene) {
+        return new BizScene(bizType.toBizType(), scene);
+    }
+
     public static BizScene of(BizTypeEnum bizType) {
-        return new BizScene(bizType.toBizType(), SceneEnum.DEFAULT_SCENE.getValue());
+        return of(bizType.toBizType(), SceneEnum.DEFAULT_SCENE.getValue());
     }
 
     public String getKey() {

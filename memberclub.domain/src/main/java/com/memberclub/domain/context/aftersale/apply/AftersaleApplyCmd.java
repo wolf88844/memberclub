@@ -31,6 +31,8 @@ public class AftersaleApplyCmd {
 
     private String operator;
 
+    private String reason;
+
     private String digests;
 
     private Integer digestVersion;

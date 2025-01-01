@@ -20,6 +20,7 @@ public enum ResultCode {
     AFTERSALE_UNABLE_ERROR(15, "不能发起售后异常"),
     CONFIG_DATA_ERROR(16, "配置数据有误"),
     PERIOD_PERFORM_TASK_CREATE_ERROR(17, "周期履约任务创建失败"),
+    AFTERSALE_DO_APPLY_ERROR(18, "售后受理执行失败"),
     ;
 
     private int value;

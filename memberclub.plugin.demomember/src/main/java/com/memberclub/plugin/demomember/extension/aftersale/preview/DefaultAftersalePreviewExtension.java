@@ -14,14 +14,14 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.sdk.aftersale.extension.preview.AftersalePreviewExtension;
-import com.memberclub.sdk.aftersale.flow.AftersaleGetAndCheckPeriodFlow;
-import com.memberclub.sdk.aftersale.flow.AftersalePreviewDegradeFlow;
-import com.memberclub.sdk.aftersale.flow.AftersaleStatusCheckFlow;
-import com.memberclub.sdk.aftersale.flow.CalculateRefundWayFlow;
-import com.memberclub.sdk.aftersale.flow.GenerateAftersalePlanDigestFlow;
-import com.memberclub.sdk.aftersale.flow.GetAndCheckAftersaleTimesFlow;
-import com.memberclub.sdk.aftersale.flow.OverallCheckUsageFlow;
-import com.memberclub.sdk.aftersale.flow.RealtimeCalculateUsageAmountFlow;
+import com.memberclub.sdk.aftersale.flow.preview.AftersaleGetAndCheckPeriodFlow;
+import com.memberclub.sdk.aftersale.flow.preview.AftersalePreviewDegradeFlow;
+import com.memberclub.sdk.aftersale.flow.preview.AftersaleStatusCheckFlow;
+import com.memberclub.sdk.aftersale.flow.preview.CalculateRefundWayFlow;
+import com.memberclub.sdk.aftersale.flow.preview.GenerateAftersalePlanDigestFlow;
+import com.memberclub.sdk.aftersale.flow.preview.GetAndCheckAftersaleTimesFlow;
+import com.memberclub.sdk.aftersale.flow.preview.OverallCheckUsageFlow;
+import com.memberclub.sdk.aftersale.flow.preview.RealtimeCalculateUsageAmountFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -44,6 +44,7 @@ public class DefaultAftersalePreviewExtension implements AftersalePreviewExtensi
     public void init() {
         previewChain = FlowChain.newChain(flowChainService, AftersalePreviewContext.class)
                 .addNode(AftersalePreviewDegradeFlow.class)
+                // TODO: 2025/1/1  //增加售后单 进行中校验,当前存在生效中受理单,不允许预览(数据处于不一致状态,无法获得准确的预览结果),返回特殊错误码
                 .addNode(AftersaleStatusCheckFlow.class)
                 .addNode(AftersaleGetAndCheckPeriodFlow.class)
                 .addNode(GetAndCheckAftersaleTimesFlow.class)

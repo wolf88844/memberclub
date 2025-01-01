@@ -18,10 +18,15 @@ import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.common.RightTypeEnum;
 import com.memberclub.domain.common.TaskTypeEnum;
 import com.memberclub.domain.common.status.OnceTaskStatusEnum;
+import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
+import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
+import com.memberclub.domain.dataobject.aftersale.ApplySkuDetail;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
@@ -44,6 +49,46 @@ import java.util.List;
  */
 public class ConvertorMethod {
 
+
+    @Named("toAftersaleOrderExtraDO")
+    public String toAftersaleOrderExtraDO(AftersaleOrderExtraDO extra) {
+        return JsonUtils.toJson(extra);
+    }
+
+    @Named("toApplySkuDetails")
+    public String toApplySkuDetails(List<ApplySkuDetail> details) {
+        return JsonUtils.toJson(details);
+    }
+
+    @Named("toAftersaleSourceInt")
+    public int toAftersaleSourceInt(AftersaleSourceEnum source) {
+        return source.toInt();
+    }
+
+    @Named("toAftersaleSourceEnum")
+    public AftersaleSourceEnum toAftersaleSourceEnum(int source) {
+        return AftersaleSourceEnum.findByInt(source);
+    }
+
+    @Named("toAftersaleOrderStatusInt")
+    public int toAftersaleOrderStatusInt(AftersaleOrderStatusEnum status) {
+        return status.toInt();
+    }
+
+    @Named("toAftersaleOrderStatusEnum")
+    public AftersaleOrderStatusEnum toAftersaleOrderStatusEnum(int status) {
+        return AftersaleOrderStatusEnum.findByInt(status);
+    }
+
+    @Named("toRefundTypeInt")
+    public int toRefundTypeInt(RefundTypeEnum source) {
+        return source.toInt();
+    }
+
+    @Named("toRefundTypeEnum")
+    public RefundTypeEnum toRefundTypeEnum(int source) {
+        return RefundTypeEnum.findByInt(source);
+    }
 
     @Named("toBizTypeInt")
     public int toBizTypeInt(BizTypeEnum bizType) {

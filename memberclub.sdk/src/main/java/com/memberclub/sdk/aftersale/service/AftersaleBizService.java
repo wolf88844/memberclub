@@ -20,7 +20,6 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.exception.AfterSaleUnableException;
-import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.aftersale.extension.apply.AfterSaleApplyExtension;
 import com.memberclub.sdk.aftersale.extension.preview.AftersaleCollectDataExtension;
 import com.memberclub.sdk.aftersale.extension.preview.AftersalePreviewExtension;
@@ -35,6 +34,9 @@ public class AftersaleBizService {
 
     @Autowired
     private ExtensionManager extensionManager;
+
+    @Autowired
+    private AftersaleBizService aftersaleBizService;
 
     @UserLog(domain = LogDomainEnum.AFTER_SALE)
     public AfterSalePreviewResponse preview(AfterSalePreviewCmd cmd) {
@@ -76,8 +78,8 @@ public class AftersaleBizService {
     }
 
     public AftersalePreviewContext doPreview(AfterSalePreviewCmd cmd) {
-        AftersaleCollectDataExtension aftersaleCollectDataExtension
-                = extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType()), AftersaleCollectDataExtension.class);
+        AftersaleCollectDataExtension aftersaleCollectDataExtension = extensionManager.getExtension(
+                BizScene.of(cmd.getBizType().toBizType()), AftersaleCollectDataExtension.class);
         AftersalePreviewContext context = aftersaleCollectDataExtension.collect(cmd);
         context.setCmd(cmd);
 
@@ -93,51 +95,37 @@ public class AftersaleBizService {
         return context;
     }
 
+
     @UserLog(domain = LogDomainEnum.AFTER_SALE)
     public AftersaleApplyResponse apply(AftersaleApplyCmd cmd) {
-        AfterSalePreviewCmd previewCmd = PerformConvertor.INSTANCE.toPreviewCmd(cmd);
-        previewCmd.setDigestVersion(cmd.getDigestVersion());
+        AfterSaleApplyContext context = new AfterSaleApplyContext();
+        context.setCmd(cmd);
 
+        BizSceneBuildExtension bizSceneBuildExtension = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()));
+        String applyExtensionScene = bizSceneBuildExtension.buildAftersaleApplyScene(context);
+        context.setScene(applyExtensionScene);
         AftersaleApplyResponse response = new AftersaleApplyResponse();
-
-        AftersalePreviewContext previewContext;
         try {
-            previewContext = doPreview(previewCmd);
+            //调用受理方法
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), applyExtensionScene),
+                    AfterSaleApplyExtension.class).apply(context);
+            response.setSuccess(true);
+            //response.setRefundWay();
+            // TODO: 2025/1/1 处理返回值
         } catch (Exception e) {
-            if (e.getCause() instanceof AfterSaleUnableException) {
-                CommonLog.warn("售后预览流程返回不可退", e);
-                response.setUnableCode(((AfterSaleUnableException) e.getCause()).getUnableCode());
+            if (extractException(e) != null) {
+                Throwable t = extractException(e);
+                CommonLog.warn("售后受理前验证流程返回不可退", e);
+                response.setUnableCode(((AfterSaleUnableException) t).getUnableCode());
                 response.setSuccess(false);
                 response.setUnableTip(e.getMessage());
             } else {
-                CommonLog.error("售后预览流程异常", e);
+                CommonLog.error("售后受理流程异常", e);
                 response.setSuccess(false);
                 response.setUnableCode(AftersaleUnableCode.INTERNAL_ERROR.toInt());
                 response.setUnableTip(AftersaleUnableCode.INTERNAL_ERROR.toString());
             }
-            return response;
         }
-        AfterSaleApplyContext context = new AfterSaleApplyContext();
-        context.setPreviewContext(previewContext);
-
-
-        try {
-            BizSceneBuildExtension bizSceneBuildExtension =
-                    extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()));
-            String applyExtensionScene = bizSceneBuildExtension.buildAftersaleApplyScene(context);
-
-            AfterSaleApplyExtension applyExtension = extensionManager.getExtension(
-                    BizScene.of(cmd.getBizType().toBizType(), applyExtensionScene),
-                    AfterSaleApplyExtension.class);
-            context.setCmd(cmd);
-
-            applyExtension.apply(context);
-            response.setSuccess(true);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
         return response;
     }
-
 }

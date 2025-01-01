@@ -11,7 +11,8 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.infrastructure.id.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.memberclub.infrastructure.id.IdTypeEnum;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 /**
@@ -24,8 +25,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 public class DefaultIdGenerator implements IdGenerator {
 
     @Override
-    public String generateId() {
+    public Long generateId(IdTypeEnum idTypeEnum) {
         // TODO: 2024/12/19 修改为其他 ID 生成器
-        return RandomStringUtils.randomNumeric(20);
+        return RandomUtils.nextLong();
     }
 }

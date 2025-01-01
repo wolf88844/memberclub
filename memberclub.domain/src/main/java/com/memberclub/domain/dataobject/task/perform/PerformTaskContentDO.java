@@ -23,7 +23,7 @@ public class PerformTaskContentDO extends TaskContentDO {
 
     private long skuId;
 
-    private String performHisToken;
+    private Long performHisToken;
 
     private List<PerformTaskContentItemDO> items;
 }

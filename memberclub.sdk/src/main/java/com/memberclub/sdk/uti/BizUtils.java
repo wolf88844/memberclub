@@ -11,7 +11,7 @@ package com.memberclub.sdk.uti;
  */
 public class BizUtils {
 
-    public static String toItemToken(String hisToken, long rightId, int buyIndex, int phase) {
+    public static String toItemToken(Long hisToken, long rightId, int buyIndex, int phase) {
         return String.format("%s_%s_%s_%s", hisToken, rightId, buyIndex, phase);
     }
 }

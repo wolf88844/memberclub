@@ -6,7 +6,10 @@
  */
 package com.memberclub.domain.context.aftersale.apply;
 
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
+import com.memberclub.domain.entity.AftersaleOrder;
 import lombok.Data;
 
 /**
@@ -15,9 +18,29 @@ import lombok.Data;
 @Data
 public class AfterSaleApplyContext {
 
+    private String scene;
+
+    /******************************************/
+
+    //售后预览和入参
+
     private AftersaleApplyCmd cmd;
 
     private AftersalePreviewContext previewContext;
 
+    private String lockValue;//成功后释放锁
 
+    /******************************************/
+    //售后订单信息
+
+    private AftersaleOrderDO aftersaleOrderDO;
+
+    AftersaleOrder order;
+
+    /******************************************/
+
+
+    public BizScene toBizScene() {
+        return BizScene.of(cmd.getBizType(), scene);
+    }
 }

@@ -19,6 +19,7 @@ import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.infrastructure.id.IdGenerator;
+import com.memberclub.infrastructure.id.IdTypeEnum;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             his.setBuyCount(detail.getBuyCount());
             his.setCtime(TimeUtil.now());
             his.setUtime(TimeUtil.now());
-            String hisToken = buildPerformHisToken(context, detail);
+            Long hisToken = buildPerformHisToken(context, detail);
             his.setPerformHisToken(hisToken);
 
             PerformItemCalculateExtension calculateExtension =
@@ -73,14 +74,14 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         }
     }
 
-    private String buildPerformHisToken(PerformContext context, SkuBuyDetailDO detail) {
+    private Long buildPerformHisToken(PerformContext context, SkuBuyDetailDO detail) {
         MemberPerformHis hisFromDb = context.matchHisFromDb(detail.getSkuId());
         if (hisFromDb != null) {
             return hisFromDb.getPerformHisToken();
         } else {
             IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
                     IdGenerator.class);
-            String performHisToken = idGenerator.generateId();
+            Long performHisToken = idGenerator.generateId(IdTypeEnum.PERFORM_HIS);
             return performHisToken;
         }
     }

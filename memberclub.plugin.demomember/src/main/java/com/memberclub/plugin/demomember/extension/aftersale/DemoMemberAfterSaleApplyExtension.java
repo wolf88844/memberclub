@@ -13,8 +13,18 @@ import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 import com.memberclub.sdk.aftersale.extension.apply.AfterSaleApplyExtension;
-import com.memberclub.sdk.aftersale.flow.AfterSalePlanDigestCheckFlow;
+import com.memberclub.sdk.aftersale.flow.apply.AfterSalePlanDigestCheckFlow;
+import com.memberclub.sdk.aftersale.flow.apply.AftersaleApplyLockFlow;
+import com.memberclub.sdk.aftersale.flow.apply.AftersaleApplyPreviewFlow;
+import com.memberclub.sdk.aftersale.flow.apply.AftersaleDoApplyFlow;
+import com.memberclub.sdk.aftersale.flow.apply.AftersaleGenerateOrderFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleAsyncRollbackFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleOrderFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleRefundFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReverseBuyFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePerformFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -27,20 +37,50 @@ import javax.annotation.PostConstruct;
 })
 public class DemoMemberAfterSaleApplyExtension implements AfterSaleApplyExtension {
 
-    FlowChain<AfterSaleApplyContext> flowChain = null;
+
+    FlowChain<AfterSaleApplyContext> applyFlowChain = null;
+
+    FlowChain<AfterSaleApplyContext> checkFlowChain = null;
+
+    FlowChain<AfterSaleApplyContext> doApplyFlowChain = null;
 
     @Autowired
     private FlowChainService flowChainService;
 
     @PostConstruct
     public void init() {
-        flowChain = FlowChain.newChain(flowChainService, AfterSaleApplyContext.class)
-                .addNode(AfterSalePlanDigestCheckFlow.class)
+        applyFlowChain = FlowChain.newChain(flowChainService, AfterSaleApplyContext.class)
+                .addNode(AftersaleApplyLockFlow.class)     //加锁
+                .addNode(AftersaleApplyPreviewFlow.class)       //售后预览
+                .addNode(AfterSalePlanDigestCheckFlow.class)    //校验售后计划摘要
+                .addNode(AftersaleGenerateOrderFlow.class)      //生成售后单
+                .addNode(AftersaleDoApplyFlow.class)
         ;
+
+        doApplyFlowChain = FlowChain.newChain(flowChainService, AfterSaleApplyContext.class)
+                .addNode(AftersaleOrderFlow.class)
+                .addNode(AftersaleAsyncRollbackFlow.class)
+                .addNode(AftersaleReversePerformFlow.class)
+                .addNode(AftersaleReverseBuyFlow.class)
+                .addNode(AftersaleRefundFlow.class)
+        //.addNode()
+        ;
+
+
     }
 
     @Override
     public void apply(AfterSaleApplyContext context) {
-        flowChainService.execute(flowChain, context);
+        flowChainService.execute(applyFlowChain, context);
+    }
+
+    @Override
+    public void doApply(AfterSaleApplyContext context) {
+        flowChainService.execute(doApplyFlowChain, context);
+    }
+
+    @Override
+    public void customBuildAftersaleOrder(AfterSaleApplyContext context, AftersaleOrderDO aftersaleOrderDO) {
+
     }
 }

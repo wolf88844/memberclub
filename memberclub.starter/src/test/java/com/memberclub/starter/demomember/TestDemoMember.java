@@ -48,6 +48,7 @@ import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
@@ -209,6 +210,44 @@ public class TestDemoMember extends MockBaseTest {
         //Thread.sleep(1000000);
     }
 
+
+    @Test
+    public void testDefaultMemberRefundAndApply() {
+        MemberOrder memberOrder = buildMemberOrder();
+        memberOrderDao.insert(memberOrder);
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd);
+
+        AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
+        previewCmd.setUserId(cmd.getUserId());
+        previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        previewCmd.setTradeId(cmd.getTradeId());
+        previewCmd.setSource(AftersaleSourceEnum.User);
+        previewCmd.setOperator(String.valueOf(cmd.getUserId()));
+        previewCmd.setOrderId(cmd.getOrderId());
+        previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
+
+
+        AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
+        Assert.assertEquals(true, response.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.ALL_REFUND, response.getRefundType());
+
+        AftersaleApplyCmd applyCmd = AftersaleConvertor.INSTANCE.toAftersaleApplyCmd(previewCmd);
+        applyCmd.setDigests(response.getDigests());
+        applyCmd.setDigestVersion(response.getDigestVersion());
+
+        AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
+        Assert.assertTrue(applyResponse.isSuccess());
+    }
+
+
     @Test
     public void testDefaultMemberRefund() {
         MemberOrder memberOrder = buildMemberOrder();
@@ -265,6 +304,7 @@ public class TestDemoMember extends MockBaseTest {
         Assert.assertEquals(false, respose.isAftersaleEnabled());
         Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
     }
+
 
     private void verifyData(PerformCmd cmd) {
         verifyData(cmd, 1);
