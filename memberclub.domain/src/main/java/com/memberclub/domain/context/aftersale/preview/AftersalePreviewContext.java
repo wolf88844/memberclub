@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.context.aftersale.preview;
 
+import com.google.common.collect.Maps;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
@@ -63,7 +64,7 @@ public class AftersalePreviewContext {
     private int usedPriceFen;
 
 
-    private Map<String, ItemUsage> batchCode2ItemUsage = null;
+    private Map<String, ItemUsage> batchCode2ItemUsage = Maps.newHashMap();
 
     /******************赔付金额相关数据****************************/
 

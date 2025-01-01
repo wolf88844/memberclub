@@ -12,8 +12,10 @@ package com.memberclub.domain.common;
 public enum SceneEnum {
 
     DEFAULT_SCENE("1"),
-    
-    RIGHT_TYPE_SCENE_COUPON("101"),
+
+    RIGHT_TYPE_SCENE_COUPON("1"),
+
+    RIGHT_TYPE_SCENE_DISCOUNT_COUPON("2"),
 
     SCENE_MONTH_CARD("201"),//履约上下文执行 scene, 月卡部分
 
@@ -45,7 +47,7 @@ public enum SceneEnum {
 
 
     public static String buildRightTypeScene(int rightType) {
-        return "10" + rightType;
+        return "" + rightType;
     }
 
     @Override

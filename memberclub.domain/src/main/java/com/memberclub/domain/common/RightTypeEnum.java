@@ -11,7 +11,8 @@ package com.memberclub.domain.common;
  */
 public enum RightTypeEnum {
 
-    COUPON(1, "券"),
+    COUPON(1, "会员立减券"),
+    DISCOUNT_COUPON(2, "会员折扣券"),
     ;
 
     private int value;

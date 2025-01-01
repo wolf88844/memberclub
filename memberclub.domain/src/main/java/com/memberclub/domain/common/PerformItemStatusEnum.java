@@ -45,6 +45,9 @@ public enum PerformItemStatusEnum {
         return status >= PERFORM_SUCC.toInt();
     }
 
+    public static int getReversedStatus(boolean completed) {
+        return completed ? COMPLETED_REVERSED.toInt() : PORTION_REVERSED.toInt();
+    }
 
     @Override
     public String toString() {

@@ -33,7 +33,7 @@ public class BuildDelayPerformOnceTaskFlow extends FlowNode<DelayItemContext> {
     @Override
     public void process(DelayItemContext context) {
         Map<Integer, List<MemberPerformItemDO>> phase2Item =
-                context.getSkuPerformContext().getDelayPerformItems()
+                context.getItems()
                         .stream().collect(Collectors.groupingBy(MemberPerformItemDO::getPhase));
         List<OnceTaskDO> tasks = Lists.newArrayList();
 

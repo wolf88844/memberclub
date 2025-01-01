@@ -24,6 +24,6 @@ public class DemoMemberBizSceneBuildExtension implements BizSceneBuildExtension 
 
     @Override
     public String buildPerformItemGrantExtensionScene(PerformItemContext context) {
-        return SceneEnum.RIGHT_TYPE_SCENE_COUPON.getValue();
+        return context.getRightType() + "";
     }
 }

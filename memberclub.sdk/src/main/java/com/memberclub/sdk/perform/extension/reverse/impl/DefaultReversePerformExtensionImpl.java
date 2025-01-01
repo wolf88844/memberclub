@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.perform.extension.reverse.impl;
 
+import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.flow.FlowChain;
@@ -14,6 +15,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
 import com.memberclub.sdk.perform.flow.reverse.BuildReversePerformInfosFlow;
+import com.memberclub.sdk.perform.flow.reverse.MutilReversePerformItemFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReverseAssetsFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReversePerformHisFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReversePerformItemFlow;
@@ -39,8 +41,10 @@ public class DefaultReversePerformExtensionImpl implements ReversePerformExtensi
         reversePerformChain = FlowChain.newChain(flowChainService, ReversePerformContext.class)
                 .addNode(BuildReversePerformInfosFlow.class)//构建逆向履约信息
                 .addNode(ReversePerformHisFlow.class)//逆向履约单
-                .addNode(ReversePerformItemFlow.class)//逆向履约项
-                .addNode(ReverseAssetsFlow.class)// 逆向资产
+                .addNodeWithSubNodes(MutilReversePerformItemFlow.class, ReversePerformContext.class,
+                        Lists.newArrayList(ReversePerformItemFlow.class,//逆向履约项
+                                ReverseAssetsFlow.class))//// 逆向资产
+        //addNote 清理 Tasks
         ;
     }
 

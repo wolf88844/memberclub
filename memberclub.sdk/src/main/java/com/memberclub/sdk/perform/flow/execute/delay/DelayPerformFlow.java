@@ -35,7 +35,7 @@ public class DelayPerformFlow extends SubFlowNode<PerformContext, DelayItemConte
         }
 
         Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
-                .getImmediatePerformItems().stream()
+                .getDelayPerformItems().stream()
                 .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
 
         for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {

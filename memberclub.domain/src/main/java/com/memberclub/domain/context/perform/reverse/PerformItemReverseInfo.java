@@ -18,6 +18,8 @@ public class PerformItemReverseInfo {
     private String itemToken;
 
     private String batchCode;
+    
+    private int rightType;
 
     private long skuId;
 

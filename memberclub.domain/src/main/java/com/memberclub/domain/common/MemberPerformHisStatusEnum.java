@@ -47,6 +47,10 @@ public enum MemberPerformHisStatusEnum {
     }
 
 
+    public static int getReversedStatus(boolean completed) {
+        return completed ? COMPLETED_REVERSED.toInt() : PORTION_REVERSED.toInt();
+    }
+
     @Override
     public String toString() {
         return this.name;

@@ -141,7 +141,7 @@ public class TestDemoMember extends MockBaseTest {
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
-        verifyTaskData(cmd, 2);
+        verifyTaskData(cmd, 4);
 
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
 
@@ -176,7 +176,7 @@ public class TestDemoMember extends MockBaseTest {
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
-        verifyTaskData(cmd, 2);
+        verifyTaskData(cmd, 4);
         //Thread.sleep(1000000);
     }
 
@@ -254,6 +254,12 @@ public class TestDemoMember extends MockBaseTest {
         AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
         Assert.assertTrue(applyResponse.isSuccess());
 
+        verifyOrderRefund(applyCmd, true);
+
+
+    }
+
+    private void verifyOrderRefund(AftersaleApplyCmd applyCmd, boolean completeRefund) {
         List<AftersaleOrder> orders = aftersaleOrderDao.queryByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         Assert.assertEquals(1, orders.size());
 
@@ -264,11 +270,11 @@ public class TestDemoMember extends MockBaseTest {
         List<MemberPerformHis> hisAfterApply = memberPerformHisDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         List<MemberPerformItem> itemsAfterApply = memberPerformItemDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         for (MemberPerformHis his : hisAfterApply) {
-            Assert.assertEquals(MemberPerformHisStatusEnum.COMPLETED_REVERSED.toInt(),
+            Assert.assertEquals(MemberPerformHisStatusEnum.getReversedStatus(completeRefund),
                     his.getStatus());
         }
         for (MemberPerformItem item : itemsAfterApply) {
-            Assert.assertEquals(PerformItemStatusEnum.COMPLETED_REVERSED.toInt(),
+            Assert.assertEquals(PerformItemStatusEnum.getReversedStatus(completeRefund),
                     item.getStatus());
             for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
                 if (StringUtils.equals(item.getBatchCode(), entry.getKey())) {
@@ -278,8 +284,6 @@ public class TestDemoMember extends MockBaseTest {
                 }
             }
         }
-
-
     }
 
 
@@ -326,6 +330,8 @@ public class TestDemoMember extends MockBaseTest {
         applyCmd.setDigestVersion(respose.getDigestVersion());
         //applyCmd.setDigestVersion(0);
         AftersaleApplyResponse aftersaleApplyResponse = aftersaleBizService.apply(applyCmd);
+
+        verifyOrderRefund(applyCmd, false);
         Assert.assertTrue(aftersaleApplyResponse.isSuccess());
 
         /*******************已用尽,结果为不可退********/
@@ -355,7 +361,7 @@ public class TestDemoMember extends MockBaseTest {
         for (MemberPerformItem item : items) {
             Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
         }
-        Assert.assertEquals(buyCount, items.size());
+        Assert.assertEquals(buyCount * 2, items.size());
 
         MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
@@ -448,10 +454,24 @@ public class TestDemoMember extends MockBaseTest {
         skuPerformItemConfigDO.setRightType(1);
         skuPerformItemConfigDO.setProviderId("1");
         RightViewInfo rightViewInfo = new RightViewInfo();
-        rightViewInfo.setDisplayName("默认权益");
+        rightViewInfo.setDisplayName("会员立减券权益");
         skuPerformItemConfigDO.setViewInfo(rightViewInfo);
 
-        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO));
+
+        SkuPerformItemConfigDO skuPerformItemConfigDO2 = new SkuPerformItemConfigDO();
+        skuPerformItemConfigDO2.setAssetCount(4);
+        skuPerformItemConfigDO2.setBizType(1);
+        skuPerformItemConfigDO2.setCycle(cycle);
+        skuPerformItemConfigDO2.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
+        skuPerformItemConfigDO2.setRightId(32423);
+        skuPerformItemConfigDO2.setPeriodCount(31);
+        skuPerformItemConfigDO2.setRightType(2);
+        skuPerformItemConfigDO2.setProviderId("1");
+        rightViewInfo = new RightViewInfo();
+        rightViewInfo.setDisplayName("会员折扣券权益");
+        skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
+
+        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
         snapshotDO.setPerformConfig(skuPerformConfigDO);
 
 

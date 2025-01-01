@@ -290,6 +290,7 @@ public class PerformDomainService {
                         info.setRefundType(RefundTypeEnum.PORTION_RFUND);
                     }
                     if (info != null) {
+                        info.setRightType(performItem.getRightType());
                         info.setItemToken(performItem.getItemToken());
                         info.setBatchCode(performItem.getBatchCode());
                         info.setSkuId(performItem.getSkuId());

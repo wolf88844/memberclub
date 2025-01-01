@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * author: 掘金五阳
  */
 @ExtensionImpl(desc = "实时查询计算使用情况", bizScenes = {
-        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.RIGHT_TYPE_SCENE_COUPON})
+        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.RIGHT_TYPE_SCENE_COUPON, SceneEnum.RIGHT_TYPE_SCENE_DISCOUNT_COUPON})
 })
 public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculateUsageExtension {
 
@@ -66,7 +66,7 @@ public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculate
             ItemUsage itemUsage = aftersaleAmountService.summingPrice(entry.getValue());
             itemUsageMap.put(entry.getKey(), itemUsage);
         }
-        context.setBatchCode2ItemUsage(itemUsageMap);
+        context.getBatchCode2ItemUsage().putAll(itemUsageMap);
 
         return itemUsageMap;
     }

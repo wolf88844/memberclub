@@ -16,7 +16,7 @@ public enum MemberOrderStatusEnum {
     CANCELED(19, "已取消"),
     PAYED(29, "已支付"),
     PERFORMING(30, "履约中"),
-    PERFORMED(39, "已履约"),
+    PERFORMED(35, "已履约"),
     REFUNDED(49, "已退款");
 
     private int value;
