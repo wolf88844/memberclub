@@ -11,7 +11,7 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
-import com.memberclub.sdk.perform.extension.ReversePerformExtension;
+import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
 import com.memberclub.starter.demomember.DefaultTestExtension;
 import com.memberclub.starter.demomember.JustTestExtension;
 import com.memberclub.starter.mock.MockBaseTest;
@@ -63,8 +63,8 @@ public class ExtensionTest extends MockBaseTest {
     @SneakyThrows
     public void testInterfaceExceptionAndLossBaseException() {
         ReversePerformExtension extension = extensionManager.getExtension(
-                BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType(),
+                BizScene.of(BizTypeEnum.DEMO_MEMBER.toBizType() + 100,
                         SceneEnum.DEFAULT_SCENE.toString()), ReversePerformExtension.class);
-        extension.execute();
+        extension.reverse(null);
     }
 }

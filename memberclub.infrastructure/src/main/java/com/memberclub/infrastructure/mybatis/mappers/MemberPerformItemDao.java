@@ -30,6 +30,16 @@ public interface MemberPerformItemDao extends BaseMapper<MemberPerformItem> {
     @Select({"SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND item_token=#{itemToken}"})
     public MemberPerformItem queryByItemToken(@Param("userId") long userId, @Param("itemToken") String itemToken);
 
+    @QueryMaster
+    @Select({"<script>",
+            " SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND item_token IN ",
+            "<foreach collection='itemTokens' item='itemToken' separator=',' open='(' close=')'> ",
+            " #{itemToken} ",
+            "</foreach>",
+            "</script>"
+    })
+    public List<MemberPerformItem> queryByItemTokens(@Param("userId") long userId, @Param("itemTokens") List<String> itemTokens);
+
 
     @QueryMaster
     @Select({"SELECT * FROM ", TABLE, " WHERE user_id=#{userId} AND trade_id=#{tradeId}"})
@@ -37,9 +47,15 @@ public interface MemberPerformItemDao extends BaseMapper<MemberPerformItem> {
 
 
     @Update({"UPDATE ", TABLE, " SET status=#{status}, batch_code=#{batchCode} WHERE user_id=#{userId} AND item_token=#{itemToken}"})
-    public int update2Status(@Param("userId") long userId,
-                             @Param("itemToken") String itemToken,
-                             @Param("batchCode") String batchCode,
-                             @Param("status") int status);
+    public int updateAssetbatchAndStatus(@Param("userId") long userId,
+                                         @Param("itemToken") String itemToken,
+                                         @Param("batchCode") String batchCode,
+                                         @Param("status") int status);
+
+    @Update({"UPDATE ", TABLE, " SET status=#{status}, utime=#{utime} WHERE user_id=#{userId} AND item_token=#{itemToken}"})
+    public int updateStatus(@Param("userId") long userId,
+                            @Param("itemToken") String itemToken,
+                            @Param("status") int status,
+                            @Param("utime") long utime);
 
 }

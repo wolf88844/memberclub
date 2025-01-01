@@ -8,6 +8,7 @@ package com.memberclub.infrastructure.mapstruct;
 
 import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 import com.memberclub.domain.entity.AftersaleOrder;
 import org.mapstruct.Mapper;
@@ -36,4 +37,6 @@ public interface AftersaleConvertor {
     public AftersaleOrder toAftersaleOrder(AftersaleOrderDO orderDO);
 
     public AftersaleApplyCmd toAftersaleApplyCmd(AfterSalePreviewCmd previewCmd);
+
+    public ReversePerformContext toReversePerformContext(AftersaleApplyCmd cmd);
 }

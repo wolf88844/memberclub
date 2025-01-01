@@ -12,7 +12,7 @@ package com.memberclub.domain.common;
 public enum SceneEnum {
 
     DEFAULT_SCENE("1"),
-
+    
     RIGHT_TYPE_SCENE_COUPON("101"),
 
     SCENE_MONTH_CARD("201"),//履约上下文执行 scene, 月卡部分

@@ -33,6 +33,13 @@ public interface AftersaleOrderDao extends BaseMapper<AftersaleOrder> {
     })
     public AftersaleOrder queryById(@Param("userId") long userId, @Param("id") Long id);
 
+    @QueryMaster
+    @Select({
+            "SELECT * FROM ", TABLE_NAME,
+            " WHERE user_id=#{userId} AND trade_id=#{tradeId} "
+    })
+    public List<AftersaleOrder> queryByTradeId(@Param("userId") long userId, @Param("tradeId") String tradeId);
+
 
     @Update({
             "UPDATE ", TABLE_NAME, " SET status=#{status} ,utime=#{utime} ",

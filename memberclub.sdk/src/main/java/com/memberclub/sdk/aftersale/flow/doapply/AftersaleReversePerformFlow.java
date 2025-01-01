@@ -9,6 +9,8 @@ package com.memberclub.sdk.aftersale.flow.doapply;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.sdk.perform.service.PerformBizService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,9 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AftersaleReversePerformFlow extends FlowNode<AfterSaleApplyContext> {
 
+    @Autowired
+    private PerformBizService performBizService;
 
     @Override
     public void process(AfterSaleApplyContext context) {
         CommonLog.info("开始执行逆向履约");
+
+        performBizService.reversePerform(context);
     }
 }

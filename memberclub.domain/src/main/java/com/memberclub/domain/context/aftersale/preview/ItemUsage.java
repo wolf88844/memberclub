@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.context.aftersale.preview;
 
+import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
 import lombok.Data;
 
 /**
@@ -17,5 +18,7 @@ public class ItemUsage {
     public Integer usedPrice;
 
     public Integer totalPrice;
+
+    public UsageTypeEnum usageType;
 
 }

@@ -13,10 +13,12 @@ import com.memberclub.common.log.UserLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
@@ -24,6 +26,8 @@ import com.memberclub.sdk.perform.extension.build.BuildPerformContextExtension;
 import com.memberclub.sdk.perform.extension.build.PreBuildPerformContextExtension;
 import com.memberclub.sdk.perform.extension.execute.PerformExecuteExtension;
 import com.memberclub.sdk.perform.extension.period.PeriodPerformExecuteExtension;
+import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
+import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +40,8 @@ public class PerformBizService {
     @Autowired
     private ExtensionManager extensionManager;
 
+    @Autowired
+    private PerformDomainService performDomainService;
 
     @UserLog(domain = LogDomainEnum.PERFORM)
     public PerformResp periodPerform(OnceTaskDO task) {
@@ -49,6 +55,15 @@ public class PerformBizService {
 
         return null;
     }
+
+
+    public void reversePerform(AfterSaleApplyContext context) {
+        ReversePerformContext reversePerformContext = performDomainService.buildReversePerformContext(context);
+
+        extensionManager.getExtension(context.toBizScene(),
+                ReversePerformExtension.class).reverse(reversePerformContext);
+    }
+
 
     @UserLog(domain = LogDomainEnum.PERFORM)
     @Retryable(initialDelaySeconds = 1, multiplier = 2.0, maxDelaySeconds = 10)

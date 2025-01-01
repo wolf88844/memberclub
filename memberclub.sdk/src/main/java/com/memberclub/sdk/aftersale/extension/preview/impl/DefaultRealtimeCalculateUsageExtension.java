@@ -12,8 +12,8 @@ import com.memberclub.common.extension.ExtensionImpl;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetDO;
@@ -66,6 +66,8 @@ public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculate
             ItemUsage itemUsage = aftersaleAmountService.summingPrice(entry.getValue());
             itemUsageMap.put(entry.getKey(), itemUsage);
         }
+        context.setBatchCode2ItemUsage(itemUsageMap);
+
         return itemUsageMap;
     }
 }

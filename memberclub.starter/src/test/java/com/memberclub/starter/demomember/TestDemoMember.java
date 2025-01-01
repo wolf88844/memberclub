@@ -30,6 +30,7 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.dataobject.CommonUserInfo;
+import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderLocationInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
@@ -43,14 +44,17 @@ import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
+import com.memberclub.domain.entity.AftersaleOrder;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
+import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
@@ -61,6 +65,7 @@ import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,6 +84,9 @@ public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private MemberPerformHisDao memberPerformHisDao;
+
+    @Autowired
+    private AftersaleOrderDao aftersaleOrderDao;
 
     @Autowired
     private AftersaleBizService aftersaleBizService;
@@ -213,7 +221,7 @@ public class TestDemoMember extends MockBaseTest {
 
     @Test
     public void testDefaultMemberRefundAndApply() {
-        MemberOrder memberOrder = buildMemberOrder();
+        MemberOrder memberOrder = buildMemberOrder(3, 1);
         memberOrderDao.insert(memberOrder);
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
@@ -223,7 +231,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
-        verifyData(cmd);
+        verifyData(cmd, 3);
 
         AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
         previewCmd.setUserId(cmd.getUserId());
@@ -245,6 +253,33 @@ public class TestDemoMember extends MockBaseTest {
 
         AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
         Assert.assertTrue(applyResponse.isSuccess());
+
+        List<AftersaleOrder> orders = aftersaleOrderDao.queryByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
+        Assert.assertEquals(1, orders.size());
+
+        for (AftersaleOrder order : orders) {
+            Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.toInt(), order.getStatus());
+        }
+
+        List<MemberPerformHis> hisAfterApply = memberPerformHisDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
+        List<MemberPerformItem> itemsAfterApply = memberPerformItemDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
+        for (MemberPerformHis his : hisAfterApply) {
+            Assert.assertEquals(MemberPerformHisStatusEnum.COMPLETED_REVERSED.toInt(),
+                    his.getStatus());
+        }
+        for (MemberPerformItem item : itemsAfterApply) {
+            Assert.assertEquals(PerformItemStatusEnum.COMPLETED_REVERSED.toInt(),
+                    item.getStatus());
+            for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
+                if (StringUtils.equals(item.getBatchCode(), entry.getKey())) {
+                    boolean hasReverse = entry.getValue().stream().anyMatch(v ->
+                            v.getStatus() == AssetStatusEnum.FREEZE.toInt());
+                    Assert.assertTrue(hasReverse);
+                }
+            }
+        }
+
+
     }
 
 
@@ -278,7 +313,7 @@ public class TestDemoMember extends MockBaseTest {
 
         /*******************部分使用,结果为部分退********/
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
-            entry.getValue().get(0).setStatus(1);
+            entry.getValue().get(0).setStatus(AssetStatusEnum.USED.toInt());
         }
         respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
@@ -297,7 +332,7 @@ public class TestDemoMember extends MockBaseTest {
 
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
             for (AssetDO assetDO : entry.getValue()) {
-                assetDO.setStatus(1);
+                assetDO.setStatus(AssetStatusEnum.UNUSE.toInt());
             }
         }
         respose = aftersaleBizService.preview(previewCmd);

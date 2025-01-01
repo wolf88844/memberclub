@@ -13,11 +13,15 @@ public enum MemberPerformHisStatusEnum {
 
     INIT(0, "init"),
     IMMEDIATE_PERFORMING(10, "immediate_performing"),
-    IMMEDIATE_PERFORED(19, "immediate_performed"),
+    IMMEDIATE_PERFORED(15, "immediate_performed"),
     DELAY_PERFORMING(20, "delay_performing"),
-    DELAY_PERFORMED(29, "delay_performed"),
+    DELAY_PERFORMED(25, "delay_performed"),
     PERFORM_FAIL(36, "perform_fail"),
-    PERFORM_SUCC(39, "perform_succ");
+    PERFORM_SUCC(35, "perform_succ"),
+    REVEREING(40, "reversing"),
+    PORTION_REVERSED(44, "portion_reversed"),
+    COMPLETED_REVERSED(45, "completed_reversed"),
+    ;
 
     private int value;
 

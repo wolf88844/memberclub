@@ -11,6 +11,9 @@ import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetFetchRequestDO;
 import com.memberclub.domain.facade.AssetFetchResponseDO;
+import com.memberclub.domain.facade.AssetReverseRequestDO;
+import com.memberclub.domain.facade.AssetReverseResponseDO;
+import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
@@ -66,6 +69,24 @@ public class MockAssetsFacade implements AssetsFacade {
         Map<String, List<AssetDO>> map = Maps.newHashMap();
         for (String assetBatch : request.getAssetBatchs()) {
             List<AssetDO> assets = assetBatchCode2Assets.get(assetBatch);
+            map.put(assetBatch, assets);
+        }
+        resp.setAssetBatchCode2AssetsMap(map);
+        return resp;
+    }
+
+    @Override
+    public AssetReverseResponseDO reverse(AssetReverseRequestDO request) {
+        AssetReverseResponseDO resp = new AssetReverseResponseDO();
+
+        Map<String, List<AssetDO>> map = Maps.newHashMap();
+        for (String assetBatch : request.getAssetBatchs()) {
+            List<AssetDO> assets = assetBatchCode2Assets.get(assetBatch);
+            for (AssetDO asset : assets) {
+                if (asset.getStatus() == AssetStatusEnum.UNUSE.toInt()) {
+                    asset.setStatus(AssetStatusEnum.FREEZE.toInt());
+                }
+            }
             map.put(assetBatch, assets);
         }
         resp.setAssetBatchCode2AssetsMap(map);

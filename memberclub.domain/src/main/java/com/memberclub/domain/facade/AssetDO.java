@@ -35,7 +35,11 @@ public class AssetDO {
     private long ctime;
 
     public boolean isUsed() {
-        return status == 1;
+        return status == AssetStatusEnum.USED.toInt();
+    }
+
+    public boolean isReversed() {
+        return status == AssetStatusEnum.FREEZE.toInt();
     }
 
     /**

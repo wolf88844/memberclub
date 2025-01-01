@@ -7,11 +7,11 @@
 package com.memberclub.sdk.aftersale.service.domain;
 
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
-import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
-import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
+import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.facade.AssetDO;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +39,13 @@ public class AftersaleAmountService {
 
         itemUsage.setUsedPrice(usedPriceFen);
         itemUsage.setTotalPrice(totalPriceFen);
+        if (usedPriceFen <= 0) {
+            itemUsage.setUsageType(UsageTypeEnum.UNUSE);
+        } else if (usedPriceFen < totalPriceFen) {
+            itemUsage.setUsageType(UsageTypeEnum.USED);
+        } else {
+            itemUsage.setUsageType(UsageTypeEnum.USEOUT);
+        }
         return itemUsage;
     }
 

@@ -35,7 +35,6 @@ public class MemberPerformHis {
 
     private long skuId;
 
-
     private int status;
 
     private String extra;

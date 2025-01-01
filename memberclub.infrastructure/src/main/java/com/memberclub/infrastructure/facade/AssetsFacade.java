@@ -8,6 +8,8 @@ package com.memberclub.infrastructure.facade;
 
 import com.memberclub.domain.facade.AssetFetchRequestDO;
 import com.memberclub.domain.facade.AssetFetchResponseDO;
+import com.memberclub.domain.facade.AssetReverseRequestDO;
+import com.memberclub.domain.facade.AssetReverseResponseDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -26,4 +28,7 @@ public interface AssetsFacade {
 
     @RequestMapping(method = RequestMethod.POST, value = "/items/fetch")
     public AssetFetchResponseDO fetch(@RequestBody AssetFetchRequestDO request);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/items/reverse")
+    public AssetReverseResponseDO reverse(@RequestBody AssetReverseRequestDO request);
 }

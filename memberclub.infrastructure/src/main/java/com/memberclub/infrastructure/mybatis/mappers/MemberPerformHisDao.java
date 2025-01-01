@@ -42,7 +42,7 @@ public interface MemberPerformHisDao extends BaseMapper<MemberPerformHis> {
 
 
     @Update({"UPDATE " + TABLE_NAME + " SET  status=#{toStatus}, utime=#{utime} "
-            , " WHERE user_id = #{userId}AND trade_id =#{tradeId}AND sku_id =#{skuId} AND status<#{toStatus}"})
+            , " WHERE user_id = #{userId} AND trade_id =#{tradeId} AND sku_id =#{skuId} AND status<#{toStatus}"})
     public int updateStatus(@Param("userId") long userId,
                             @Param("tradeId") String tradeId,
                             @Param("skuId") long skuId,

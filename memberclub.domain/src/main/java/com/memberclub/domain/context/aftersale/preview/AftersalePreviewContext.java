@@ -18,6 +18,7 @@ import com.memberclub.domain.entity.MemberPerformItem;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * author: 掘金五阳
@@ -61,6 +62,8 @@ public class AftersalePreviewContext {
 
     private int usedPriceFen;
 
+
+    private Map<String, ItemUsage> batchCode2ItemUsage = null;
 
     /******************赔付金额相关数据****************************/
 
