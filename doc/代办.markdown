@@ -1,3 +1,15 @@
 
 1. MemberOrder 转换为 MemberOrderDO
 2. 修改履约代码,兼容修改 memberOrder 和 memberSubOrder.
+
+3. 链接 H2 的地址.
+url: jdbc:h2:tcp://localhost:9092/~/member_db
+username: sa
+password: dean 
+
+ http://localhost:8080/h2-console/login.do?jsessionid=4ceb7097ecb1ef2c97823d1f44c32f6c
+
+4. 如何清理数据库 
+切换到用户目录下,删除 h2 数据库文件名
+ 1) cd ~;
+ 2) rm member_db.*;

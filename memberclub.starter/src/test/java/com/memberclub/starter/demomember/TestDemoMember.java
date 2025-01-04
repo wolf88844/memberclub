@@ -276,6 +276,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     }
 
 
+    @SneakyThrows
     @Test
     public void testDefaultMemberRefund() {
         PurchaseSubmitResponse submitResponse = submit(doubleRightsSku, 3);
@@ -333,6 +334,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(false, respose.isAftersaleEnabled());
         Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
+        //Thread.sleep(10000000);
     }
 
 

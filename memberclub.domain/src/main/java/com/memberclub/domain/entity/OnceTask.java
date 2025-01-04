@@ -17,14 +17,14 @@ import lombok.Data;
 public class OnceTask {
 
     @TableId(type = IdType.AUTO)
-    private long id;
+    private Long id;
 
     private int bizType;
 
     private int taskType;
 
     private long userId;
-    
+
     private String taskToken;
 
     private long stime;

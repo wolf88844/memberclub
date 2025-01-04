@@ -11,8 +11,9 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.starter.AppStarter;
 import com.memberclub.starter.impl.MockAssetsFacade;
 import com.memberclub.starter.impl.MockSkuBizService;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Test;
+import org.h2.tools.Server;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,8 +47,16 @@ public class MockBaseTest {
 
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
-    @Test
-    public void test() {
+    @SneakyThrows
+    //@BeforeClass
+    public static void startH2() {
+        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-ifNotExists", "-tcpPort",
+                "9092");
+
+        server.start();
+    }
+
+    public void testBase() {
 
     }
 
