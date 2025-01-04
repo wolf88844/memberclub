@@ -9,10 +9,10 @@ package com.memberclub.sdk.aftersale.extension.preview;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
-import com.memberclub.domain.context.aftersale.common.RefundStatusEnum;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 
 /**
  * author: 掘金五阳
@@ -20,10 +20,10 @@ import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 public interface AftersaleBasicCheckExtension extends BaseExtension {
     default void statusCheck(AftersalePreviewContext context) {
         MemberOrderStatusEnum status = MemberOrderStatusEnum.findByCode(context.getMemberOrder().getStatus());
-        RefundStatusEnum refundStatus = RefundStatusEnum.findByInt(context.getMemberOrder().getPerformStatus());
+        MemberOrderPerformStatusEnum performStatus = MemberOrderPerformStatusEnum.findByCode(context.getMemberOrder().getPerformStatus());
 
 
-        CommonLog.info("当前订单状态:{}", status.toString(), refundStatus.toString());
+        CommonLog.info("当前订单状态:{}", status.toString(), performStatus.toString());
         if (status == MemberOrderStatusEnum.REFUNDED) {
             AftersaleUnableCode.REFUNDED.throwException();
         }
@@ -32,13 +32,8 @@ public interface AftersaleBasicCheckExtension extends BaseExtension {
             AftersaleUnableCode.NON_PERFORMED.throwException();
         }
 
-        if (MemberOrderStatusEnum.PERFORMED == status) {
-            if (refundStatus == RefundStatusEnum.ALL_REFUNDED) {
-                AftersaleUnableCode.REFUNDED.throwException();
-            }
-            if (refundStatus == RefundStatusEnum.PORTION_REFUNDED) {
-                CommonLog.info("当前会员订单已部分退可以再次申请售后");
-            }
+        if (MemberOrderStatusEnum.PORTION_REFUNDED == status) {
+            CommonLog.info("当前会员订单已部分退可以再次申请售后");
         }
     }
 

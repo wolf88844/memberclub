@@ -8,6 +8,8 @@ package com.memberclub.sdk.perform.flow.execute;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class MemberOrderSuccessFlow extends FlowNode<PerformContext> {
 
     @Override
     public void success(PerformContext context) {
-        performDomainService.updateMemberOrderPerformSuccess(context);
+        context.getMemberOrder().setStatus(MemberOrderStatusEnum.PERFORMED);
+        context.getMemberOrder().setPerformStatus(MemberOrderPerformStatusEnum.PERFORMED);
+        performDomainService.finishMemberOrderPerformOnSuccess(context);
     }
 }

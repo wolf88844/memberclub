@@ -11,17 +11,13 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
+import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * author: 掘金五阳
@@ -29,11 +25,6 @@ import java.util.List;
 @Service
 public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
 
-    @Autowired
-    private MemberOrderDao memberOrderDao;
-
-    @Autowired
-    private MemberSubOrderDao performHisDao;
 
     @Autowired
     private MemberOrderDomainService memberOrderDomainService;
@@ -43,6 +34,11 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
         MemberOrderDO memberOrder = memberOrderDomainService.getMemberOrderDO(context.getUserId(), context.getTradeId());
         context.setMemberOrder(memberOrder);
+        context.setMemberSubOrders(memberOrder.getSubOrders());
+        MemberOrderExtraInfo extraInfo = context.getMemberOrder().getExtra();
+        context.setMemberOrderExtraInfo(extraInfo);
+        context.setUserInfo(extraInfo.getUserInfo());
+        
         if (context.getRetrySource() == RetrySourceEunm.UPSTREAM_RETRY) {
             context.setSkipPerform(true);
         }
@@ -62,9 +58,5 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
             // TODO: 2024/12/15 构建返回值
         }
 
-        if (memberOrder != null && !context.isSkipPerform()) {
-            List<MemberSubOrder> hisList = performHisDao.selectByTradeId(context.getUserId(), context.getTradeId());
-            context.setHisListFromDb(hisList);
-        }
     }
 }

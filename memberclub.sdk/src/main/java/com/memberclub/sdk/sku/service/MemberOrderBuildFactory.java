@@ -9,7 +9,6 @@ package com.memberclub.sdk.sku.service;
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
@@ -26,6 +25,7 @@ import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.purchase.OrderInfoDO;
+import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.id.IdTypeEnum;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
@@ -74,7 +74,7 @@ public class MemberOrderBuildFactory {
         order.setUserId(context.getUserId());
         order.setUserInfo(context.getUserInfo());
         order.setStatus(MemberOrderStatusEnum.INIT);
-        order.setPerformStatus(MemberOrderPerformStatusEnum.INIT);
+        order.setPerformStatus(com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.INIT);
         order.setSettleInfo(new MemberOrderSettleInfo());
         order.setSaleInfo(new MemberOrderSaleInfo());
         order.getSaleInfo().setRenewType(RenewTypeEnum.NONE);
@@ -82,7 +82,7 @@ public class MemberOrderBuildFactory {
         order.getExtra().setLocationInfo(order.getLocationInfo());
         order.getExtra().setUserInfo(order.getUserInfo());
         order.getExtra().setSettleInfo(order.getSettleInfo());
-
+        order.getExtra().setSaleInfo(order.getSaleInfo());
 
         extensionManager.getExtension(context.toDefaultBizScene(),
                 PurchaseOrderBuildExtension.class).buildOrder(order, context);
@@ -104,6 +104,9 @@ public class MemberOrderBuildFactory {
             SubOrderSettleInfo settleInfo = PurchaseConvertor.INSTANCE.toSubOrderSettleInfo(skuInfo.getSettleInfo());
 
             SubOrderSaleInfo saleInfo = PurchaseConvertor.INSTANCE.toSubOrderSaleInfo(skuInfo.getSaleInfo());
+
+            SubOrderPerformConfigDO performConfig = skuInfo.getPerformConfig();
+            subOrder.getExtra().setPerformConfig(performConfig);
             subOrder.getExtra().setSettleInfo(settleInfo);
             subOrder.getExtra().setViewInfo(viewInfo);
             subOrder.getExtra().setUserInfo(context.getUserInfo());

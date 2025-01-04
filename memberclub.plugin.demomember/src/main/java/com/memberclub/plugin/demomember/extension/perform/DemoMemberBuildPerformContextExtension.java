@@ -19,7 +19,6 @@ import com.memberclub.sdk.perform.flow.build.CalculateOrderPeriodFlow;
 import com.memberclub.sdk.perform.flow.build.InitialSkuPerformContextsFlow;
 import com.memberclub.sdk.perform.flow.build.MutilBuyCountClonePerformItemFlow;
 import com.memberclub.sdk.perform.flow.build.PerformContextExtraInfoBuildFlow;
-import com.memberclub.sdk.perform.flow.build.QuerySkuBuyDetailsFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +40,6 @@ public class DemoMemberBuildPerformContextExtension implements BuildPerformConte
     @PostConstruct
     public void run() throws Exception {
         buildPerformContextChain = FlowChain.newChain(flowChainService, PerformContext.class)
-                .addNode(QuerySkuBuyDetailsFlow.class)
                 .addNode(InitialSkuPerformContextsFlow.class)
                 .addNode(MutilBuyCountClonePerformItemFlow.class)
                 //如果年卡周期是自然月,则可以在此处根据当前期数计算每期的天数

@@ -6,7 +6,7 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
-import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
@@ -30,5 +30,5 @@ public class SkuInfoDO {
 
     private SkuSaleInfo saleInfo;
 
-    private SkuPerformConfigDO performConfig;
+    private SubOrderPerformConfigDO performConfig;
 }

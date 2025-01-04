@@ -22,23 +22,25 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
 
     static final String TABLE_NAME = "member_order";
 
+    // 更新履约状态
     @Update({"<script> UPDATE ", TABLE_NAME,
-            " SET status=#{toStatus}, utime=#{utime} ",
-            "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND status IN ",
-            "<foreach collection='fromStatuses' item='status' separator=',' open='(' close=')'> ",
+            " SET perform_status=#{toPerformStatus}, utime=#{utime} ",
+            "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND perform_status IN ",
+            "<foreach collection='fromPerformStatuses' item='status' separator=',' open='(' close=')'> ",
             " #{status} ",
             "</foreach>",
             "</script>"})
-    public int updateStatus(@Param("userId") long userId,
-                            @Param("tradeId") String tradeId,
-                            @Param("toStatus") int toStatus,
-                            @Param("fromStatuses") List<Integer> fromStatuses,
-                            @Param("utime") long utime);
+    public int updatePerformStatus(@Param("userId") long userId,
+                                   @Param("tradeId") String tradeId,
+                                   @Param("toPerformStatus") int toPerformStatus,
+                                   @Param("fromPerformStatuses") List<Integer> fromPerformStatuses,
+                                   @Param("utime") long utime);
 
+    // 更新履约到成功
     @Update({"<script> UPDATE ", TABLE_NAME,
-            " SET status=#{toStatus}, utime=#{utime}, stime=#{stime}, etime=#{etime} ",
-            "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND status IN ",
-            "<foreach collection='fromStatuses' item='status' separator=',' open='(' close=')'> ",
+            " SET perform_status=#{toPerformStatus}, status=#{status}, utime=#{utime}, stime=#{stime}, etime=#{etime} ",
+            "WHERE user_id=#{userId} AND trade_id=#{tradeId} AND perform_status IN ",
+            "<foreach collection='fromPerformStatuses' item='status' separator=',' open='(' close=')'> ",
             " #{status} ",
             "</foreach>",
             "</script>"})
@@ -46,10 +48,12 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
                                         @Param("tradeId") String tradeId,
                                         @Param("stime") long stime,
                                         @Param("etime") long etime,
-                                        @Param("toStatus") int toStatus,
-                                        @Param("fromStatuses") List<Integer> fromStatuses,
+                                        @Param("status") int status,
+                                        @Param("toPerformStatus") int toPerformStatus,
+                                        @Param("fromPerformStatuses") List<Integer> fromPerformStatuses,
                                         @Param("utime") long utime);
 
+    // 更新主状态到提单完成
     @Update({
             "UPDATE ", TABLE_NAME,
             " SET status=#{status}, extra=#{extra}, utime=#{utime}, order_id=#{orderId}",

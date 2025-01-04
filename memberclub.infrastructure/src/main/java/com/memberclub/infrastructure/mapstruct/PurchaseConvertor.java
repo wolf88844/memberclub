@@ -40,8 +40,8 @@ public interface PurchaseConvertor {
     @Mappings(value = {
             @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),
             @Mapping(qualifiedByName = "toOrderSystemTypeInt", target = "orderSystemType"),
-            @Mapping(qualifiedByName = "toMemberSubOrderExtraString", target = "extra"),/*
-            @Mapping(qualifiedByName = "toSubOrderStatusEnumInt", target = "status"),*/
+            @Mapping(qualifiedByName = "toMemberSubOrderExtraString", target = "extra"),
+            @Mapping(qualifiedByName = "toSubOrderStatusEnumInt", target = "status"),
             @Mapping(qualifiedByName = "toSubOrderPerformStatusEnumInt", target = "performStatus"),
     })
     public MemberSubOrder toMemberSubOrder(MemberSubOrderDO subOrder);
@@ -58,5 +58,6 @@ public interface PurchaseConvertor {
             @Mapping(target = "performStatus", qualifiedByName = "toMemberOrderPerformStatusEnumInt"),
     })
     public MemberOrder toMemberOrder(MemberOrderDO order);
+
 
 }

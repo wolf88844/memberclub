@@ -12,11 +12,10 @@ import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberSubOrder;
 import lombok.Data;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class PerformContext {
     /**
      * 只读,不能写
      */
-    private List<MemberSubOrder> hisListFromDb;
+    private List<MemberSubOrderDO> memberSubOrders;
 
     private List<SkuInfoDO> skuBuyDetails;
 
@@ -95,14 +94,13 @@ public class PerformContext {
         return BizScene.of(bizType.getCode());
     }
 
-    public MemberSubOrder matchHisFromDb(long skuId) {
-        if (!CollectionUtils.isEmpty(hisListFromDb)) {
-            for (MemberSubOrder memberSubOrder : hisListFromDb) {
-                if (memberSubOrder.getSkuId() == skuId) {
-                    return memberSubOrder;
-                }
+    public MemberSubOrderDO getSubOrder(long skuId) {
+        for (MemberSubOrderDO subOrder : memberOrder.getSubOrders()) {
+            if (subOrder.getSkuId() == skuId) {
+                return subOrder;
             }
         }
+
         return null;
     }
 }

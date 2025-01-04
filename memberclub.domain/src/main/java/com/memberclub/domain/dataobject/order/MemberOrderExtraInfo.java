@@ -20,4 +20,7 @@ public class MemberOrderExtraInfo {
     private CommonUserInfo userInfo;
 
     private MemberOrderSettleInfo settleInfo;
+
+    private MemberOrderSaleInfo saleInfo;
+
 }

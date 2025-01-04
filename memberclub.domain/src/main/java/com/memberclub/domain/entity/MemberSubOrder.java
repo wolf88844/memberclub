@@ -41,6 +41,8 @@ public class MemberSubOrder {
 
     private long skuId;
 
+    private int status;
+
     private int performStatus;
 
     private String extra;

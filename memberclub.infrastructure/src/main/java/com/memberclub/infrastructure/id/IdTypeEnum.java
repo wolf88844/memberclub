@@ -11,7 +11,7 @@ package com.memberclub.infrastructure.id;
  */
 public enum IdTypeEnum {
 
-    PERFORM_HIS(1, "perform_his"),
+    SubOrder(1, "perform_his"),
     AFTERSALE_ORDER(2, "aftersale_order"),
     PURCHASE_TRADE(3, "purchase_trade"),
     PURCHASE_SUB_TRADE(4, "purchase_sub_trade"),

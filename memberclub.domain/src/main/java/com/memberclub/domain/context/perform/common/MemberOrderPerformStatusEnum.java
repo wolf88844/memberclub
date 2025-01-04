@@ -13,7 +13,7 @@ public enum MemberOrderPerformStatusEnum {
 
     INIT(0, "init"),
     PERFORMING(10, "performing"),
-    PERFORM_SUCC(35, "perform_succ"),
+    PERFORMED(35, "performed"),
     REVEREING(40, "reversing"),
     PORTION_REVERSED(44, "portion_reversed"),
     COMPLETED_REVERSED(45, "completed_reversed"),

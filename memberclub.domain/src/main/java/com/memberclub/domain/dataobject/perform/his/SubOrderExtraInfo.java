@@ -7,6 +7,7 @@
 package com.memberclub.domain.dataobject.perform.his;
 
 import com.memberclub.domain.dataobject.CommonUserInfo;
+import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import lombok.Data;
 
 /**
@@ -22,4 +23,6 @@ public class SubOrderExtraInfo {
     private SubOrderViewInfo viewInfo = new SubOrderViewInfo();
 
     private CommonUserInfo userInfo = new CommonUserInfo();
+
+    private SubOrderPerformConfigDO performConfig = new SubOrderPerformConfigDO();
 }

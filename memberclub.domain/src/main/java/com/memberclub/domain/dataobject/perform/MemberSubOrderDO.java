@@ -11,6 +11,7 @@ import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
+import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import lombok.Data;
 
 /**
@@ -46,6 +47,8 @@ public class MemberSubOrderDO {
     private SubOrderPerformStatusEnum performStatus;
 
     private SubOrderExtraInfo extra = new SubOrderExtraInfo();
+
+    private SubOrderPerformConfigDO performConfig;
 
     private long stime;
 

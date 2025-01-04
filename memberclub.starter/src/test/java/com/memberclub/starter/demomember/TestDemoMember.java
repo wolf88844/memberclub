@@ -26,12 +26,14 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
@@ -52,7 +54,6 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import com.memberclub.sdk.aftersale.service.AftersaleBizService;
 import com.memberclub.sdk.perform.service.PerformBizService;
-import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ import java.util.stream.Collectors;
 /**
  * author: 掘金五阳
  */
-public class TestDemoMember extends MockBaseTest {
+public class TestDemoMember extends TestDemoMemberPurchase {
 
     @Autowired
     private MemberSubOrderDao memberSubOrderDao;
@@ -83,12 +84,11 @@ public class TestDemoMember extends MockBaseTest {
     @Autowired
     private OnceTaskDao onceTaskDao;
 
-
     @SneakyThrows
     @Test
     public void testDefaultMemberAndRetry() {
-        MemberOrder memberOrder = buildMemberOrder();
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse response = submit(doubleRightsSku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
 
         Mockito.reset(couponGrantFacade);
 
@@ -118,9 +118,9 @@ public class TestDemoMember extends MockBaseTest {
     @SneakyThrows
     @Test
     public void testDefaultMemberAndMutilPeriodCardAndPeriodPerform() {
-        int buyCount = 1;
-        MemberOrder memberOrder = buildMemberOrder(buyCount, 3);
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse response = submit(cycle3Sku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
+
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -153,9 +153,8 @@ public class TestDemoMember extends MockBaseTest {
     @SneakyThrows
     @Test
     public void testDefaultMemberAndMutilPeriodCard() {
-        int buyCount = 1;
-        MemberOrder memberOrder = buildMemberOrder(buyCount, 3);
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse response = submit(cycle3Sku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -174,8 +173,8 @@ public class TestDemoMember extends MockBaseTest {
     @Test
     public void testDefaultMemberAndBuyCount() {
         int buyCount = 3;
-        MemberOrder memberOrder = buildMemberOrder(buyCount, 1);
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse response = submit(doubleRightsSku, buyCount);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -193,8 +192,8 @@ public class TestDemoMember extends MockBaseTest {
     @SneakyThrows
     @Test
     public void testDefaultMember() {
-        MemberOrder memberOrder = buildMemberOrder();
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse response = submit(doubleRightsSku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -211,8 +210,8 @@ public class TestDemoMember extends MockBaseTest {
 
     @Test
     public void testDefaultMemberRefundAndApply() {
-        MemberOrder memberOrder = buildMemberOrder(3, 1);
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse submitResponse = submit(doubleRightsSku, 3);
+        MemberOrderDO memberOrder = submitResponse.getMemberOrderDO();
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -279,8 +278,8 @@ public class TestDemoMember extends MockBaseTest {
 
     @Test
     public void testDefaultMemberRefund() {
-        MemberOrder memberOrder = buildMemberOrder();
-        memberOrderDao.insert(memberOrder);
+        PurchaseSubmitResponse submitResponse = submit(doubleRightsSku, 3);
+        MemberOrderDO memberOrder = submitResponse.getMemberOrderDO();
 
         MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
         System.out.println(JsonUtils.toJson(orderInDb));
@@ -289,7 +288,7 @@ public class TestDemoMember extends MockBaseTest {
 
         PerformResp resp = performBizService.perform(cmd);
         Assert.assertTrue(resp.isSuccess());
-        verifyData(cmd);
+        verifyData(cmd, 3);
 
         AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
         previewCmd.setUserId(cmd.getUserId());
@@ -342,11 +341,11 @@ public class TestDemoMember extends MockBaseTest {
     }
 
     private void verifyData(PerformCmd cmd, int buyCount) {
-        List<MemberSubOrder> hisList = memberSubOrderDao.selectByUserId(cmd.getUserId());
-        for (MemberSubOrder memberSubOrder : hisList) {
+        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByUserId(cmd.getUserId());
+        for (MemberSubOrder memberSubOrder : subOrders) {
             Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode(), memberSubOrder.getPerformStatus());
         }
-        Assert.assertEquals(1, hisList.size());
+        Assert.assertEquals(1, subOrders.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
 
         for (MemberPerformItem item : items) {
@@ -357,7 +356,7 @@ public class TestDemoMember extends MockBaseTest {
         MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.getCode(), orderFromDb.getStatus());
 
-        System.out.println(JsonUtils.toJson(hisList));
+        System.out.println(JsonUtils.toJson(subOrders));
     }
 
     private void verifyTaskData(PerformCmd cmd, int taskSize) {
@@ -367,15 +366,15 @@ public class TestDemoMember extends MockBaseTest {
 
 
     @SneakyThrows
-    private PerformCmd buildCmd(MemberOrder memberOrder) {
+    private PerformCmd buildCmd(MemberOrderDO memberOrder) {
         PerformCmd cmd = new PerformCmd();
-        cmd.setOrderId(memberOrder.getOrderId());
+        cmd.setOrderId(memberOrder.getOrderInfo().getOrderId());
         cmd.setActPriceFen(memberOrder.getActPriceFen());
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
         cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
         cmd.setUserId(memberOrder.getUserId());
-        cmd.setTradeId(String.format("%s_%s", cmd.getOrderSystemType().toInt(), cmd.getOrderId()));
+        cmd.setTradeId(memberOrder.getTradeId());
         return cmd;
     }
 

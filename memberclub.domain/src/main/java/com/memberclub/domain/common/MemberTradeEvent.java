@@ -10,9 +10,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PAYED;
-import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PERFORMED;
-import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PERFORMING;
+import static com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.*;
 
 /**
  * @author yuhaiqiang
@@ -20,7 +18,7 @@ import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnu
 public enum MemberTradeEvent {
 
     MEMBER_ORDER_START_PERFORM("member_order_start_perform", PERFORMING.getCode(),
-            ImmutableList.of(PAYED.getCode(), PERFORMING.getCode())),
+            ImmutableList.of(INIT.getCode(), PERFORMING.getCode())),
 
     MEMBER_ORDER_SUCCESS_PERFORM("member_order_success_perform", PERFORMED.getCode(),
             ImmutableList.of(PERFORMING.getCode(), PERFORMED.getCode()));

@@ -11,7 +11,6 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
-import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.RenewTypeEnum;
@@ -123,13 +122,13 @@ public class CommonCustomConvertor {
     }
 
     @Named("toMemberOrderPerformStatusEnumInt")
-    public int toMemberOrderPerformStatusEnumInt(MemberOrderPerformStatusEnum e) {
+    public int toMemberOrderPerformStatusEnumInt(com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum e) {
         return e.getCode();
     }
 
     @Named("toMemberOrderPerformStatusEnum")
-    public MemberOrderPerformStatusEnum toMemberOrderPerformStatusEnumEnum(int code) {
-        return MemberOrderPerformStatusEnum.findByCode(code);
+    public com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum toMemberOrderPerformStatusEnumEnum(int code) {
+        return com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.findByCode(code);
     }
 
 }

@@ -18,7 +18,6 @@ import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.perform.extension.build.PreBuildPerformContextExtension;
 import com.memberclub.sdk.perform.flow.build.CalculateRetrySourceFlow;
 import com.memberclub.sdk.perform.flow.build.CheckMemberOrderPerformedFlow;
-import com.memberclub.sdk.perform.flow.build.ExtractMemberOrderSkuDetailsFlow;
 import com.memberclub.sdk.perform.flow.build.StartPerformUpdteMemberOrderFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -42,7 +41,7 @@ public class DemoMemberPreBuildPerformContextExtension implements PreBuildPerfor
                 .addNode(StartPerformUpdteMemberOrderFlow.class)
                 .addNode(CalculateRetrySourceFlow.class)
                 .addNode(CheckMemberOrderPerformedFlow.class)
-                .addNode(ExtractMemberOrderSkuDetailsFlow.class);
+        ;
     }
 
     @Override

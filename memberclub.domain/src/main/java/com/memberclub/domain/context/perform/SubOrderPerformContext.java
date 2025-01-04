@@ -6,9 +6,8 @@
  */
 package com.memberclub.domain.context.perform;
 
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import lombok.Data;
 
 import java.util.List;
@@ -18,9 +17,7 @@ import java.util.List;
  */
 @Data
 public class SubOrderPerformContext {
-
-    private SkuInfoDO skuInfo;
-
+    
     private MemberSubOrderDO subOrder = new MemberSubOrderDO();
 
     private List<MemberPerformItemDO> immediatePerformItems;

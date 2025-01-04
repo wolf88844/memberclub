@@ -23,7 +23,7 @@ public class StartPerformUpdteMemberOrderFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        int count = performDomainService.updateMemberOrderPerforming(context);
+        int count = performDomainService.startPerformMemberOrder(context);
         context.setMemberOrderStartPerformUpdateCount(count);
     }
 }

@@ -43,7 +43,7 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
         MemberSubOrder memberSubOrder = extension.toMemberSubOrder(context, subOrderPerformContext);
 
-        int cnt = performDomainService.insertMemberSubOrder(memberSubOrder);
+        int cnt = performDomainService.startPerformSubOrder(memberSubOrder);
         if (cnt > 0) {
             CommonLog.warn("写入 member_perform_his 成功: {}", memberSubOrder);
             return;
@@ -51,18 +51,17 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
         MemberSubOrder hisFromDb = memberSubOrderDao.selectBySkuId(context.getUserId(),
                 context.getTradeId(), subOrderPerformContext.getSubOrder().getSkuId());
         if (hisFromDb == null) {
-            CommonLog.error("写入 member_perform_his失败", memberSubOrder);
-            ResultCode.INTERNAL_ERROR.newException();
+            CommonLog.error("member_sub_order缺失!", memberSubOrder);
+            throw ResultCode.INTERNAL_ERROR.newException();
         }
 
         memberSubOrder.setSubTradeId(hisFromDb.getSubTradeId());
         if (SubOrderPerformStatusEnum.hasPerformed(hisFromDb.getPerformStatus())) {
-
             CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberSubOrder);
             // TODO: 2024/12/15 如何处理返回值
             return;
         }
-        CommonLog.error(" member_perform_his已存在,但未履约成功,继续履约:{}", memberSubOrder);
+        CommonLog.error("重试请求,继续履约子单:{}", memberSubOrder);
     }
 
 
@@ -72,6 +71,6 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
         MemberSubOrder memberSubOrder = extension.toMemberSubOrderWhenPerformSuccess(context, subOrderPerformContext);
 
-        performDomainService.performSuccess(memberSubOrder);
+        performDomainService.finishSubOrderPerformOnSuccess(memberSubOrder);
     }
 }

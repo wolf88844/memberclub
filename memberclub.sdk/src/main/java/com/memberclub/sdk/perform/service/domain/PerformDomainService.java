@@ -24,16 +24,11 @@ import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
@@ -74,13 +69,21 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public void performSuccess(MemberSubOrder his) {
+    public void finishSubOrderPerformOnSuccess(MemberSubOrder subOrder) {
         // TODO: 2024/12/15
-        memberSubOrderDao.updateStatus(his.getUserId(),
-                his.getTradeId(),
-                his.getSkuId(),
-                his.getPerformStatus(),
-                his.getUtime());
+        memberSubOrderDao.updateStatus(subOrder.getUserId(),
+                subOrder.getSubTradeId(),
+                subOrder.getPerformStatus(),
+                subOrder.getUtime());
+    }
+
+    @Transactional
+    public int startPerformSubOrder(MemberSubOrder subOrder) {
+        // TODO: 2024/12/15
+        return memberSubOrderDao.updateStatus(subOrder.getUserId(),
+                subOrder.getSubTradeId(),
+                subOrder.getPerformStatus(),
+                subOrder.getUtime());
     }
 
     @Retryable
@@ -103,8 +106,8 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public int updateMemberOrderPerforming(PerformContext context) {
-        int count = memberOrderDao.updateStatus(context.getUserId(),
+    public int startPerformMemberOrder(PerformContext context) {
+        int count = memberOrderDao.updatePerformStatus(context.getUserId(),
                 context.getTradeId(),
                 MEMBER_ORDER_START_PERFORM.getToStatus(),
                 MEMBER_ORDER_START_PERFORM.getFromStatus(),
@@ -125,16 +128,17 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public void updateMemberOrderPerformSuccess(PerformContext context) {
+    public void finishMemberOrderPerformOnSuccess(PerformContext context) {
         int count = memberOrderDao.updateStatus2PerformSucc(context.getUserId(),
                 context.getTradeId(),
                 context.getStime(),
                 context.getEtime(),
+                context.getMemberOrder().getStatus().getCode(),
                 MEMBER_ORDER_SUCCESS_PERFORM.getToStatus(),
                 MEMBER_ORDER_SUCCESS_PERFORM.getFromStatus(),
                 TimeUtil.now());
         if (count <= 0) {
-            throw ResultCode.DATA_UPDATE_ERROR.newException("member_order更新到成功态异常");
+            throw ResultCode.DATA_UPDATE_ERROR.newException("member_order 更新到成功态异常");
         }
         return;
     }
@@ -155,7 +159,7 @@ public class PerformDomainService {
     @Transactional
     public void startReversePerformMemberSubOrder(ReversePerformContext context,
                                                   SubOrderReverseInfo info) {
-        int cnt = memberSubOrderDao.updateStatus(context.getUserId(), context.getTradeId(),
+        int cnt = memberSubOrderDao.updateStatusDeprecate(context.getUserId(), context.getTradeId(),
                 info.getSkuId(), SubOrderPerformStatusEnum.REVEREING.getCode(), TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约中:{}", cnt);
     }
@@ -165,7 +169,7 @@ public class PerformDomainService {
                                                    SubOrderReverseInfo info) {
         int status = generateMemberSubOrderFinishReverseStatus(context);
 
-        memberSubOrderDao.updateStatus(context.getUserId(), context.getTradeId(),
+        memberSubOrderDao.updateStatusDeprecate(context.getUserId(), context.getTradeId(),
                 info.getSkuId(), status, TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约完成");
     }
@@ -243,20 +247,8 @@ public class PerformDomainService {
     }*/
 
     public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        SubOrderExtraInfo extraInfo = new SubOrderExtraInfo();
-
-        SkuInfoDO skuInfo = subOrderPerformContext.getSkuInfo();
-
-        SubOrderViewInfo viewInfo = PurchaseConvertor.INSTANCE.toSubOrderViewInfo(skuInfo.getViewInfo());
-
-        SubOrderSettleInfo settleInfo = PurchaseConvertor.INSTANCE.toSubOrderSettleInfo(skuInfo.getSettleInfo());
-
-        SubOrderSaleInfo saleInfo = PurchaseConvertor.INSTANCE.toSubOrderSaleInfo(skuInfo.getSaleInfo());
-        extraInfo.setSettleInfo(settleInfo);
-        extraInfo.setViewInfo(viewInfo);
-        extraInfo.setUserInfo(context.getUserInfo());
-        extraInfo.setSaleInfo(saleInfo);
-        return extraInfo;
+        //补充
+        return subOrderPerformContext.getSubOrder().getExtra();
     }
 
 

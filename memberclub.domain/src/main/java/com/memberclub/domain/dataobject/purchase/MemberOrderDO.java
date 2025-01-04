@@ -7,7 +7,6 @@
 package com.memberclub.domain.dataobject.purchase;
 
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
@@ -53,7 +52,7 @@ public class MemberOrderDO {
 
     private MemberOrderStatusEnum status;
 
-    private MemberOrderPerformStatusEnum performStatus;
+    private com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum performStatus;
 
     private long stime;
 

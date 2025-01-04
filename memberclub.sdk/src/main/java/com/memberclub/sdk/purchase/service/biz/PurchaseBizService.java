@@ -35,7 +35,8 @@ public class PurchaseBizService {
         PurchaseSubmitResponse response = new PurchaseSubmitResponse();
         try {
             extensionManager.getExtension(
-                    context.toDefaultBizScene(), PurchaseSubmitExtension.class).submit(context);
+                    context.toDefaultBizScene(), PurchaseSubmitExtension.class)
+                    .submit(context);
             context.monitor();
 
             if (context.getMemberOrder().getStatus() == MemberOrderStatusEnum.SUBMITED) {

@@ -25,7 +25,7 @@ public enum OrderSystemTypeEnum {
         this.name = name;
     }
 
-    public static OrderSystemTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static OrderSystemTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (OrderSystemTypeEnum item : OrderSystemTypeEnum.values()) {
             if (item.value == value) {
                 return item;

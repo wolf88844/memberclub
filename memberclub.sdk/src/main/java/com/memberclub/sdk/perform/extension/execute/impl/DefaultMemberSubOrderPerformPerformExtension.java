@@ -49,10 +49,8 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     }
 
     @Override
-    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+    public void buildCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         SubOrderExtraInfo extraInfo = performDomainService.buildSubOrderExtraInfo(context, subOrderPerformContext);
-
-        return extraInfo;
     }
 
 

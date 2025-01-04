@@ -10,8 +10,6 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.sdk.perform.extension.execute.MemberSubOrderPerformExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +26,8 @@ public class PerformContextExtraInfoBuildFlow extends FlowNode<PerformContext> {
     @Override
     public void process(PerformContext context) {
         for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
-            MemberSubOrderDO his = subOrderPerformContext.getSubOrder();
-            SubOrderExtraInfo extraInfo =
-                    extensionManager.getExtension(context.toDefaultScene(),
-                            MemberSubOrderPerformExtension.class).toCommonExtraInfo(context, subOrderPerformContext);
-            his.setExtra(extraInfo);
+            extensionManager.getExtension(context.toDefaultScene(),
+                    MemberSubOrderPerformExtension.class).buildCommonExtraInfo(context, subOrderPerformContext);
         }
     }
 }

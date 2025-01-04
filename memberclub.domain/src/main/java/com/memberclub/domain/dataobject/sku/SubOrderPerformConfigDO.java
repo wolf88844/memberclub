@@ -14,7 +14,7 @@ import java.util.List;
  * @author 掘金五阳
  */
 @Data
-public class SkuPerformConfigDO {
+public class SubOrderPerformConfigDO {
     
     private List<SkuPerformItemConfigDO> configs;
 

@@ -18,11 +18,11 @@ import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
-import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
+import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -46,6 +46,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     public SkuInfoDO doubleRightsSku = null;
 
+    public SkuInfoDO cycle3Sku = null;
+
     @Autowired
     public PurchaseBizService purchaseBizService;
 
@@ -64,6 +66,12 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         for (MemberSubOrder subOrder : subOrders) {
             //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
         }
+    }
+
+    public PurchaseSubmitResponse submit(SkuInfoDO skuInfoDO, int buyCount) {
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(skuInfoDO.getSkuId(), buyCount);
+        PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
+        return response;
     }
 
 
@@ -102,6 +110,9 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     public void init() {
         doubleRightsSku = buildDoubleRightsSku(1);
         mockSkuBizService.addSku(doubleRightsSku.getSkuId(), doubleRightsSku);
+
+        cycle3Sku = buildDoubleRightsSku(3);
+        mockSkuBizService.addSku(cycle3Sku.getSkuId(), cycle3Sku);
     }
 
 
@@ -131,8 +142,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuInfoDO.setViewInfo(viewInfo);
 
 
-        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
-        skuInfoDO.setPerformConfig(skuPerformConfigDO);
+        SubOrderPerformConfigDO subOrderPerformConfigDO = new SubOrderPerformConfigDO();
+        skuInfoDO.setPerformConfig(subOrderPerformConfigDO);
 
 
         SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
@@ -162,8 +173,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         rightViewInfo.setDisplayName("会员折扣券权益");
         skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
 
-        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
-        skuInfoDO.setPerformConfig(skuPerformConfigDO);
+        subOrderPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
+        skuInfoDO.setPerformConfig(subOrderPerformConfigDO);
         return skuInfoDO;
     }
 }
