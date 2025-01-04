@@ -28,7 +28,7 @@ public class FlowD extends FlowNode<FlowContext> {
     }
 
     @Override
-    public void rollback(FlowContext flowContext) {
+    public void rollback(FlowContext flowContext, Exception e) {
         CommonLog.info("FlowD rollback");
     }
 

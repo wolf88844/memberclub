@@ -27,7 +27,7 @@ public class FlowC2 extends FlowNode<SubFlowContext> {
     }
 
     @Override
-    public void rollback(SubFlowContext flowContext) {
+    public void rollback(SubFlowContext flowContext, Exception e) {
         CommonLog.info("FlowC2 rollback");
     }
 

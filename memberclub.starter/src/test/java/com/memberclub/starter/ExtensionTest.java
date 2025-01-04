@@ -37,7 +37,7 @@ public class ExtensionTest extends MockBaseTest {
     @SneakyThrows
     public void test() {
         JustTestExtension extension = extensionManager.getExtension(
-                BizScene.of(BizTypeEnum.DEMO_MEMBER.toCode(),
+                BizScene.of(BizTypeEnum.DEMO_MEMBER.getCode(),
                         SceneEnum.DEFAULT_SCENE.toString()), JustTestExtension.class);
         PerformCmd cmd = new PerformCmd();
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
@@ -50,7 +50,7 @@ public class ExtensionTest extends MockBaseTest {
     @SneakyThrows
     public void testInterfaceException() {
         JustTestExtension extension = extensionManager.getExtension(
-                BizScene.of(BizTypeEnum.DEMO_MEMBER.toCode(),
+                BizScene.of(BizTypeEnum.DEMO_MEMBER.getCode(),
                         SceneEnum.DEFAULT_SCENE.toString()), DefaultTestExtension.class);
         PerformCmd cmd = new PerformCmd();
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
@@ -63,7 +63,7 @@ public class ExtensionTest extends MockBaseTest {
     @SneakyThrows
     public void testInterfaceExceptionAndLossBaseException() {
         ReversePerformExtension extension = extensionManager.getExtension(
-                BizScene.of(BizTypeEnum.DEMO_MEMBER.toCode() + 100,
+                BizScene.of(BizTypeEnum.DEMO_MEMBER.getCode() + 100,
                         SceneEnum.DEFAULT_SCENE.toString()), ReversePerformExtension.class);
         extension.reverse(null);
     }

@@ -33,7 +33,7 @@ public class FlowC extends SubFlowNode<FlowContext, SubFlowContext> {
     }
 
     @Override
-    public void rollback(FlowContext flowContext) {
+    public void rollback(FlowContext flowContext, Exception e) {
         CommonLog.info("FlowC rollback");
     }
 

@@ -6,7 +6,6 @@
  */
 package com.memberclub.starter.demomember;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.EncrptUtils;
@@ -26,7 +25,6 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
-import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
@@ -34,12 +32,6 @@ import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
-import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
-import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
-import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
-import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
-import com.memberclub.domain.dataobject.sku.SkuViewInfo;
-import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
@@ -51,8 +43,8 @@ import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
-import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
+import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
@@ -63,7 +55,6 @@ import com.memberclub.sdk.perform.service.PerformBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
@@ -73,7 +64,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -92,6 +82,7 @@ public class TestDemoMember extends MockBaseTest {
 
     @Autowired
     private OnceTaskDao onceTaskDao;
+
 
     @SneakyThrows
     @Test
@@ -146,7 +137,7 @@ public class TestDemoMember extends MockBaseTest {
 
         List<OnceTaskDO> taskDOS = tasks.stream().map(task -> {
             OnceTaskDO taskDO = PerformConvertor.INSTANCE.toOnceTaskDO(task);
-            TaskContentDO contentDO = ConvertorMethod.toTaskContentDO(task.getContent(), task.getTaskContentClassName());
+            TaskContentDO contentDO = PerformCustomConvertor.toTaskContentDO(task.getContent(), task.getTaskContentClassName());
             taskDO.setTradeId(((PerformTaskContentDO) contentDO).getTradeId());
             taskDO.setContent(contentDO);
             return taskDO;
@@ -270,7 +261,7 @@ public class TestDemoMember extends MockBaseTest {
         List<MemberPerformItem> itemsAfterApply = memberPerformItemDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         for (MemberSubOrder his : hisAfterApply) {
             Assert.assertEquals(SubOrderPerformStatusEnum.getReversedStatus(completeRefund),
-                    his.getStatus());
+                    his.getPerformStatus());
         }
         for (MemberPerformItem item : itemsAfterApply) {
             Assert.assertEquals(PerformItemStatusEnum.getReversedStatus(completeRefund),
@@ -324,7 +315,7 @@ public class TestDemoMember extends MockBaseTest {
 
 
         AftersaleApplyCmd applyCmd = new AftersaleApplyCmd();
-        applyCmd = PerformConvertor.INSTANCE.toApplyCmd(previewCmd);
+        applyCmd = AftersaleConvertor.INSTANCE.toApplyCmd(previewCmd);
         applyCmd.setDigests(respose.getDigests());
         applyCmd.setDigestVersion(respose.getDigestVersion());
         //applyCmd.setDigestVersion(0);
@@ -353,7 +344,7 @@ public class TestDemoMember extends MockBaseTest {
     private void verifyData(PerformCmd cmd, int buyCount) {
         List<MemberSubOrder> hisList = memberSubOrderDao.selectByUserId(cmd.getUserId());
         for (MemberSubOrder memberSubOrder : hisList) {
-            Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.toInt(), memberSubOrder.getStatus());
+            Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode(), memberSubOrder.getPerformStatus());
         }
         Assert.assertEquals(1, hisList.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
@@ -364,7 +355,7 @@ public class TestDemoMember extends MockBaseTest {
         Assert.assertEquals(buyCount * 2, items.size());
 
         MemberOrder orderFromDb = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.toInt(), orderFromDb.getStatus());
+        Assert.assertEquals(MemberOrderStatusEnum.PERFORMED.getCode(), orderFromDb.getStatus());
 
         System.out.println(JsonUtils.toJson(hisList));
     }
@@ -389,10 +380,6 @@ public class TestDemoMember extends MockBaseTest {
     }
 
 
-    public AtomicLong userIdGenerator = new AtomicLong(RandomUtils.nextInt());
-
-    public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
-
     private MemberOrder buildMemberOrder() {
         return buildMemberOrder(1, 1);
     }
@@ -404,73 +391,15 @@ public class TestDemoMember extends MockBaseTest {
         memberOrder.setUserId(userIdGenerator.incrementAndGet());
         memberOrder.setOrderId(orderIdGenerator.incrementAndGet() + "");
         memberOrder.setOrderSystemType(1);
-        memberOrder.setOriginPriceFen("3000");
-        memberOrder.setActPriceFen("699");
+        memberOrder.setOriginPriceFen(3000);
+        memberOrder.setActPriceFen(699);
         memberOrder.setBizType(1);
         memberOrder.setCtime(TimeUtil.now());
         memberOrder.setExtra("{}");
-        memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
+        memberOrder.setStatus(MemberOrderStatusEnum.PAYED.getCode());
         memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
 
         List<SkuInfoDO> skuInfoDOS = Lists.newArrayList();
-        SkuInfoDO skuInfoDO = new SkuInfoDO();
-        skuInfoDOS.add(skuInfoDO);
-        skuInfoDO.setBuyCount(buyCount);
-        skuInfoDO.setSkuId(439434);
-
-        SkuSaleInfo skuSaleInfo = new SkuSaleInfo();
-        skuSaleInfo.setOriginPriceFen(3000);
-        skuSaleInfo.setSalePriceFen(699);
-
-        skuInfoDO.setSaleInfo(skuSaleInfo);
-
-        SkuSettleInfo settleInfo = new SkuSettleInfo();
-        settleInfo.setContractorId("438098434");
-        settleInfo.setSettlePriceFen(300);
-
-        skuInfoDO.setSettleInfo(settleInfo);
-
-        SkuViewInfo viewInfo = new SkuViewInfo();
-        viewInfo.setDisplayDesc("大额红包");
-        viewInfo.setDisplayName("大额红包");
-        viewInfo.setInternalDesc("大额红包 5 元");
-        viewInfo.setInternalName("大额红包 5 元");
-        skuInfoDO.setViewInfo(viewInfo);
-
-
-        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
-        skuInfoDO.setPerformConfig(skuPerformConfigDO);
-
-
-        SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
-        skuPerformItemConfigDO.setAssetCount(4);
-        skuPerformItemConfigDO.setBizType(1);
-        skuPerformItemConfigDO.setCycle(cycle);
-        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
-        skuPerformItemConfigDO.setRightId(32424);
-        skuPerformItemConfigDO.setPeriodCount(31);
-        skuPerformItemConfigDO.setRightType(1);
-        skuPerformItemConfigDO.setProviderId("1");
-        RightViewInfo rightViewInfo = new RightViewInfo();
-        rightViewInfo.setDisplayName("会员立减券权益");
-        skuPerformItemConfigDO.setViewInfo(rightViewInfo);
-
-
-        SkuPerformItemConfigDO skuPerformItemConfigDO2 = new SkuPerformItemConfigDO();
-        skuPerformItemConfigDO2.setAssetCount(4);
-        skuPerformItemConfigDO2.setBizType(1);
-        skuPerformItemConfigDO2.setCycle(cycle);
-        skuPerformItemConfigDO2.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
-        skuPerformItemConfigDO2.setRightId(32423);
-        skuPerformItemConfigDO2.setPeriodCount(31);
-        skuPerformItemConfigDO2.setRightType(2);
-        skuPerformItemConfigDO2.setProviderId("1");
-        rightViewInfo = new RightViewInfo();
-        rightViewInfo.setDisplayName("会员折扣券权益");
-        skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
-
-        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
-        skuInfoDO.setPerformConfig(skuPerformConfigDO);
 
 
         CommonUserInfo userInfo = new CommonUserInfo();
@@ -498,7 +427,7 @@ public class TestDemoMember extends MockBaseTest {
 
         System.out.println("解密后的电话号码： " + EncrptUtils.decrypt(userInfo.getEncryptedPhone(), userInfo.getKey()));
 
-        memberOrder.setSkuDetails(JsonUtils.toJson(skuInfoDOS));
+        //memberOrder.setSkuDetails(JsonUtils.toJson(skuInfoDOS));
         return memberOrder;
     }
 
