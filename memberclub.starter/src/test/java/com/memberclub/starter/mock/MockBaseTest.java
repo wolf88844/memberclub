@@ -14,6 +14,7 @@ import com.memberclub.starter.impl.MockSkuBizService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
 import org.h2.tools.Server;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,6 +57,7 @@ public class MockBaseTest {
         server.start();
     }
 
+    @Test
     public void testBase() {
 
     }
