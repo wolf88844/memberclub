@@ -14,7 +14,7 @@ import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import lombok.Data;
 import org.springframework.util.CollectionUtils;
 
@@ -67,7 +67,7 @@ public class PerformContext {
     /**
      * 只读,不能写
      */
-    private List<MemberPerformHis> hisListFromDb;
+    private List<MemberSubOrder> hisListFromDb;
 
     private List<SkuBuyDetailDO> skuBuyDetails;
 
@@ -95,11 +95,11 @@ public class PerformContext {
         return BizScene.of(bizType.toBizType());
     }
 
-    public MemberPerformHis matchHisFromDb(long skuId) {
+    public MemberSubOrder matchHisFromDb(long skuId) {
         if (!CollectionUtils.isEmpty(hisListFromDb)) {
-            for (MemberPerformHis memberPerformHis : hisListFromDb) {
-                if (memberPerformHis.getSkuId() == skuId) {
-                    return memberPerformHis;
+            for (MemberSubOrder memberSubOrder : hisListFromDb) {
+                if (memberSubOrder.getSkuId() == skuId) {
+                    return memberSubOrder;
                 }
             }
         }

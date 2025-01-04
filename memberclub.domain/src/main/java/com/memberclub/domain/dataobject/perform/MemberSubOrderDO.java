@@ -16,7 +16,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class MemberPerformHisDO {
+public class MemberSubOrderDO {
 
     private BizTypeEnum bizType;
 
@@ -28,7 +28,7 @@ public class MemberPerformHisDO {
 
     private String tradeId;//会员单交易 ID
 
-    private Long performHisToken;
+    private Long subOrderToken;
 
     private int buyCount;
 

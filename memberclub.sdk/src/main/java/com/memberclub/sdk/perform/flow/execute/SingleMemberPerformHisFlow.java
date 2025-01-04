@@ -12,7 +12,7 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformHisExtension;
@@ -41,28 +41,28 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
         context.setCurrentSkuPerformContext(skuPerformContext);
 
         MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
-        MemberPerformHis memberPerformHis = extension.toMemberPerformHis(context, skuPerformContext);
+        MemberSubOrder memberSubOrder = extension.toMemberPerformHis(context, skuPerformContext);
 
-        int cnt = performDomainService.insertMemberPerformHis(memberPerformHis);
+        int cnt = performDomainService.insertMemberPerformHis(memberSubOrder);
         if (cnt > 0) {
-            CommonLog.warn("写入 member_perform_his 成功: {}", memberPerformHis);
+            CommonLog.warn("写入 member_perform_his 成功: {}", memberSubOrder);
             return;
         }
-        MemberPerformHis hisFromDb = memberPerformHisDao.selectBySkuId(context.getUserId(),
+        MemberSubOrder hisFromDb = memberPerformHisDao.selectBySkuId(context.getUserId(),
                 context.getTradeId(), skuPerformContext.getHis().getSkuId());
         if (hisFromDb == null) {
-            CommonLog.error("写入 member_perform_his失败", memberPerformHis);
+            CommonLog.error("写入 member_perform_his失败", memberSubOrder);
             ResultCode.INTERNAL_ERROR.throwException();
         }
 
-        memberPerformHis.setPerformHisToken(hisFromDb.getPerformHisToken());
+        memberSubOrder.setSubOrderToken(hisFromDb.getSubOrderToken());
         if (MemberPerformHisStatusEnum.hasPerformed(hisFromDb.getStatus())) {
 
-            CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberPerformHis);
+            CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberSubOrder);
             // TODO: 2024/12/15 如何处理返回值
             return;
         }
-        CommonLog.error(" member_perform_his已存在,但未履约成功,继续履约:{}", memberPerformHis);
+        CommonLog.error(" member_perform_his已存在,但未履约成功,继续履约:{}", memberSubOrder);
     }
 
 
@@ -70,8 +70,8 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
     public void success(PerformContext context) {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
         MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
-        MemberPerformHis memberPerformHis = extension.toMemberPerformHisWhenPerformSuccess(context, skuPerformContext);
+        MemberSubOrder memberSubOrder = extension.toMemberPerformHisWhenPerformSuccess(context, skuPerformContext);
 
-        performDomainService.performSuccess(memberPerformHis);
+        performDomainService.performSuccess(memberSubOrder);
     }
 }

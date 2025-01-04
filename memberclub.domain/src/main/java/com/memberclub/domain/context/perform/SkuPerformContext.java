@@ -6,7 +6,7 @@
  */
 package com.memberclub.domain.context.perform;
 
-import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class SkuPerformContext {
 
     private SkuBuyDetailDO skuBuyDetail;
 
-    private MemberPerformHisDO his = new MemberPerformHisDO();
+    private MemberSubOrderDO his = new MemberSubOrderDO();
 
     private List<MemberPerformItemDO> immediatePerformItems;
 

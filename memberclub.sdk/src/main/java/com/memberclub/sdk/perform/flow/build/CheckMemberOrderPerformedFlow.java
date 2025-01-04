@@ -12,7 +12,7 @@ import com.memberclub.domain.common.MemberOrderStatusEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
@@ -59,7 +59,7 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
         }
 
         if (memberOrder != null && !context.isSkipPerform()) {
-            List<MemberPerformHis> hisList = performHisDao.selectByTradeId(context.getUserId(), context.getTradeId());
+            List<MemberSubOrder> hisList = performHisDao.selectByTradeId(context.getUserId(), context.getTradeId());
             context.setHisListFromDb(hisList);
         }
     }

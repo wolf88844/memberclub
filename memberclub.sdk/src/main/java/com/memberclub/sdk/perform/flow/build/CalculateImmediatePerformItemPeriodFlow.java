@@ -47,7 +47,7 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
                 context.setImmediatePerformEtime(timeRange.getEtime());
 
                 String itemToken = BizUtils.toItemToken(
-                        skuPerformContext.getHis().getPerformHisToken(),
+                        skuPerformContext.getHis().getSubOrderToken(),
                         immediatePerformItem.getRightId(),
                         immediatePerformItem.getBuyIndex(), immediatePerformItem.getPhase());
                 immediatePerformItem.setItemToken(itemToken);

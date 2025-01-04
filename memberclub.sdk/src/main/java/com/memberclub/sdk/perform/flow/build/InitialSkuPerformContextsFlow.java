@@ -13,11 +13,11 @@ import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.MemberPerformHisStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.id.IdTypeEnum;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -44,7 +44,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         for (SkuBuyDetailDO detail : details) {
             SkuPerformContext skuPerformContext = new SkuPerformContext();
             skuPerformContext.setSkuBuyDetail(detail);
-            MemberPerformHisDO his = PerformConvertor.INSTANCE.toMemberPerformHisDO(context);
+            MemberSubOrderDO his = PerformConvertor.INSTANCE.toMemberPerformHisDO(context);
             skuPerformContext.setHis(his);
 
             his.setStatus(MemberPerformHisStatusEnum.INIT);
@@ -53,7 +53,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             his.setCtime(TimeUtil.now());
             his.setUtime(TimeUtil.now());
             Long hisToken = buildPerformHisToken(context, detail);
-            his.setPerformHisToken(hisToken);
+            his.setSubOrderToken(hisToken);
 
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
@@ -75,14 +75,14 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
     }
 
     private Long buildPerformHisToken(PerformContext context, SkuBuyDetailDO detail) {
-        MemberPerformHis hisFromDb = context.matchHisFromDb(detail.getSkuId());
+        MemberSubOrder hisFromDb = context.matchHisFromDb(detail.getSkuId());
         if (hisFromDb != null) {
-            return hisFromDb.getPerformHisToken();
+            return hisFromDb.getSubOrderToken();
         } else {
             IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
                     IdGenerator.class);
-            Long performHisToken = idGenerator.generateId(IdTypeEnum.PERFORM_HIS);
-            return performHisToken;
+            Long subOrderToken = idGenerator.generateId(IdTypeEnum.PERFORM_HIS);
+            return subOrderToken;
         }
     }
 }

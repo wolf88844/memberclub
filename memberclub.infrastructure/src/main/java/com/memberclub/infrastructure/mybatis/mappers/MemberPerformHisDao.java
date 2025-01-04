@@ -8,7 +8,7 @@ package com.memberclub.infrastructure.mybatis.mappers;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.memberclub.common.annotation.QueryMaster;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -20,25 +20,25 @@ import java.util.List;
  * @author 掘金五阳
  */
 @Mapper
-public interface MemberPerformHisDao extends BaseMapper<MemberPerformHis> {
+public interface MemberPerformHisDao extends BaseMapper<MemberSubOrder> {
 
-    public static final String TABLE_NAME = "member_perform_his";
+    public static final String TABLE_NAME = "member_sub_order";
 
-    Integer insertIgnoreBatch(List<MemberPerformHis> hisList);
+    Integer insertIgnoreBatch(List<MemberSubOrder> hisList);
 
     @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId}")
-    public List<MemberPerformHis> selectByUserId(@Param("userId") long userId);
+    public List<MemberSubOrder> selectByUserId(@Param("userId") long userId);
 
     @QueryMaster
     @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId} AND trade_id=#{tradeId} AND sku_id=#{skuId}")
-    public MemberPerformHis selectBySkuId(@Param("userId") long userId,
-                                          @Param("tradeId") String tradeId,
-                                          @Param("skuId") long skuId);
+    public MemberSubOrder selectBySkuId(@Param("userId") long userId,
+                                        @Param("tradeId") String tradeId,
+                                        @Param("skuId") long skuId);
 
     @QueryMaster
     @Select("SELECT * FROM " + TABLE_NAME + " WHERE user_id = #{userId} AND trade_id=#{tradeId} ")
-    public List<MemberPerformHis> selectByTradeId(@Param("userId") long userId,
-                                                  @Param("tradeId") String tradeId);
+    public List<MemberSubOrder> selectByTradeId(@Param("userId") long userId,
+                                                @Param("tradeId") String tradeId);
 
 
     @Update({"UPDATE " + TABLE_NAME + " SET  status=#{toStatus}, utime=#{utime} "

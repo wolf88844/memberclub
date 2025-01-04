@@ -28,25 +28,25 @@ public class ReversePerformItemFlow extends FlowNode<ReversePerformContext> {
 
     @Override
     public void process(ReversePerformContext context) {
-        List<PerformItemReverseInfo> items = context.getCurrentPerformHisReverseInfo().getCurrentItems();
+        List<PerformItemReverseInfo> items = context.getCurrentSubOrderReverseInfo().getCurrentItems();
         if (items == null) {
-            items = context.getCurrentPerformHisReverseInfo().getItems();
-            context.getCurrentPerformHisReverseInfo().setCurrentItems(items);
+            items = context.getCurrentSubOrderReverseInfo().getItems();
+            context.getCurrentSubOrderReverseInfo().setCurrentItems(items);
         }
 
         if (performDomainService.isFinishReverseMemberPerformItems(context,
-                context.getCurrentPerformHisReverseInfo(), items)) {
+                context.getCurrentSubOrderReverseInfo(), items)) {
             CommonLog.warn("已经完成逆向履约,无需再次重试");
             throw new SkipException("完成逆向履约,无需再次重试");
         }
 
-        performDomainService.startReverseMemberPerformItems(context, context.getCurrentPerformHisReverseInfo(), items);
+        performDomainService.startReverseMemberPerformItems(context, context.getCurrentSubOrderReverseInfo(), items);
     }
 
     @Override
     public void success(ReversePerformContext context) {
         performDomainService.finishReverseMemberPerformItems(context,
-                context.getCurrentPerformHisReverseInfo(),
-                context.getCurrentPerformHisReverseInfo().getCurrentItems());
+                context.getCurrentSubOrderReverseInfo(),
+                context.getCurrentSubOrderReverseInfo().getCurrentItems());
     }
 }

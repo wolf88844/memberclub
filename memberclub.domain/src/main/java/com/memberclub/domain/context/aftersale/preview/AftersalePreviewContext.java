@@ -14,7 +14,7 @@ import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeCalculateTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
 import lombok.Data;
 
@@ -34,7 +34,7 @@ public class AftersalePreviewContext {
 
     private MemberOrder memberOrder;
 
-    List<MemberPerformHis> performHisList;
+    List<MemberSubOrder> performHisList;
 
     List<MemberPerformItem> performItems;
 

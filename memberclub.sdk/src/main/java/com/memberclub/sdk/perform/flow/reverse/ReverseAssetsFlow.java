@@ -28,12 +28,12 @@ public class ReverseAssetsFlow extends FlowNode<ReversePerformContext> {
 
     @Override
     public void process(ReversePerformContext context) {
-        List<PerformItemReverseInfo> items = context.getCurrentPerformHisReverseInfo().getCurrentItems();
+        List<PerformItemReverseInfo> items = context.getCurrentSubOrderReverseInfo().getCurrentItems();
 
 
-        String scene = String.valueOf(context.getCurrentPerformHisReverseInfo().getCurrentRightType());
+        String scene = String.valueOf(context.getCurrentSubOrderReverseInfo().getCurrentRightType());
         extensionManager.getExtension(BizScene.of(context.getBizType(), scene), AssetsReverseExtension.class)
-                .reverse(context, context.getCurrentPerformHisReverseInfo(), items);
+                .reverse(context, context.getCurrentSubOrderReverseInfo(), items);
 
     }
 }

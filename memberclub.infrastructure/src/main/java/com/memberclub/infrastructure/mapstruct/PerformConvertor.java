@@ -12,7 +12,7 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
-import com.memberclub.domain.dataobject.perform.MemberPerformHisDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.PerformHisSettleInfo;
@@ -33,7 +33,7 @@ import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.OnceTask;
 import org.mapstruct.Mapper;
@@ -53,7 +53,7 @@ public interface PerformConvertor {
 
     public PerformContext toPerformContext(PerformCmd cmd);
 
-    public MemberPerformHisDO toMemberPerformHisDO(PerformContext context);
+    public MemberSubOrderDO toMemberPerformHisDO(PerformContext context);
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
@@ -120,7 +120,7 @@ public interface PerformConvertor {
             @Mapping(qualifiedByName = "toMemberPerformHisExtraString", target = "extra"),
             @Mapping(qualifiedByName = "toMemberPerformHisStatusInt", target = "status"),
     })
-    public MemberPerformHis toMemberPerformHis(MemberPerformHisDO his);
+    public MemberSubOrder toMemberPerformHis(MemberSubOrderDO his);
 
 
     public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);

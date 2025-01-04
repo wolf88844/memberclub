@@ -7,7 +7,7 @@
 package com.memberclub.sdk.perform.extension.reverse;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.context.perform.reverse.PerformHisReverseInfo;
+import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.AssetsReverseResponse;
@@ -20,7 +20,7 @@ import java.util.List;
 public interface AssetsReverseExtension extends BaseExtension {
 
     public AssetsReverseResponse reverse(ReversePerformContext context,
-                                         PerformHisReverseInfo reverseInfo,
+                                         SubOrderReverseInfo reverseInfo,
                                          List<PerformItemReverseInfo> items);
 
 }

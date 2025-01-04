@@ -225,7 +225,7 @@ public class ConvertorMethod {
     public static PerformTaskContentDO buildPerformTaskContent(DelayItemContext context, List<MemberPerformItemDO> items) {
         PerformTaskContentDO content = new PerformTaskContentDO();
         content.setBizType(context.getPerformContext().getBizType().toBizType());
-        content.setPerformHisToken(context.getSkuPerformContext().getHis().getPerformHisToken());
+        content.setSubOrderToken(context.getSkuPerformContext().getHis().getSubOrderToken());
         content.setTradeId(context.getPerformContext().getTradeId());
         content.setSkuId(context.getSkuPerformContext().getHis().getSkuId());
 

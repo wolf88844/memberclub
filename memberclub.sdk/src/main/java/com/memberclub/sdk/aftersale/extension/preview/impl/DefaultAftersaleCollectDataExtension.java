@@ -13,7 +13,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
@@ -46,7 +46,7 @@ public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDat
         MemberOrder memberOrder = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setMemberOrder(memberOrder);
 
-        List<MemberPerformHis> performHisList = memberPerformHisDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        List<MemberSubOrder> performHisList = memberPerformHisDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setPerformHisList(performHisList);
 
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());

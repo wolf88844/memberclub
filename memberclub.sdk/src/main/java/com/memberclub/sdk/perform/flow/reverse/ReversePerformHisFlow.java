@@ -24,17 +24,17 @@ public class ReversePerformHisFlow extends FlowNode<ReversePerformContext> {
 
     @Override
     public void process(ReversePerformContext context) {
-        if (context.getCurrentPerformHisReverseInfo() == null) {
-            context.setCurrentPerformHisReverseInfo(context.getReverseInfos().get(0));
+        if (context.getCurrentSubOrderReverseInfo() == null) {
+            context.setCurrentSubOrderReverseInfo(context.getReverseInfos().get(0));
         }
-        if (performDomainService.isFinishReverseMemberPerformHis(context, context.getCurrentPerformHisReverseInfo())) {
+        if (performDomainService.isFinishReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo())) {
             throw new SkipException("已经完成更新履约单,不再重试");
         }
-        performDomainService.startReverseMemberPerformHis(context, context.getCurrentPerformHisReverseInfo());
+        performDomainService.startReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo());
     }
 
     @Override
     public void success(ReversePerformContext context) {
-        performDomainService.finishReverseMemberPerformHis(context, context.getCurrentPerformHisReverseInfo());
+        performDomainService.finishReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo());
     }
 }

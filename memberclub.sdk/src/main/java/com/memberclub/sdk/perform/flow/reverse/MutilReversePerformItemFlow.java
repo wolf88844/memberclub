@@ -28,11 +28,11 @@ public class MutilReversePerformItemFlow extends SubFlowNode<ReversePerformConte
 
     @Override
     public void process(ReversePerformContext context) {
-        Map<Integer, List<PerformItemReverseInfo>> rightType2Items = context.getCurrentPerformHisReverseInfo().getItems().stream()
+        Map<Integer, List<PerformItemReverseInfo>> rightType2Items = context.getCurrentSubOrderReverseInfo().getItems().stream()
                 .collect(Collectors.groupingBy(PerformItemReverseInfo::getRightType));
         for (Map.Entry<Integer, List<PerformItemReverseInfo>> entry : rightType2Items.entrySet()) {
-            context.getCurrentPerformHisReverseInfo().setCurrentRightType(entry.getKey());
-            context.getCurrentPerformHisReverseInfo().setCurrentItems(entry.getValue());
+            context.getCurrentSubOrderReverseInfo().setCurrentRightType(entry.getKey());
+            context.getCurrentSubOrderReverseInfo().setCurrentItems(entry.getValue());
             flowChainService.execute(getSubChain(), context);
         }
     }

@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS once_task (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 
-CREATE TABLE IF NOT EXISTS member_perform_his (
+CREATE TABLE IF NOT EXISTS member_sub_order (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
     user_id BIGINT(20)  NOT NULL COMMENT 'userId',
     order_system_type INT(11)  NOT NULL COMMENT '订单系统类型',
     order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
     trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
-    perform_his_token BIGINT(20)  NOT NULL COMMENT '履约单 token',
+    sub_order_token BIGINT(20)  NOT NULL COMMENT '履约单 token',
     sku_id BIGINT(20)  NOT NULL COMMENT 'skuId',
     buy_count INT(11)  NOT NULL COMMENT '购买数量',
     status INT(11)  NOT NULL COMMENT '状态',
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS member_perform_his (
     utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
     ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (id),
-    UNIQUE KEY uniq_perform_his (user_id, trade_id, sku_id)
+    UNIQUE KEY uniq_sub_order (user_id, trade_id, sku_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 

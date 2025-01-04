@@ -6,7 +6,7 @@
  */
 package com.memberclub.domain.context.perform.reverse;
 
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import lombok.Data;
 
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class PerformHisReverseInfo {
+public class SubOrderReverseInfo {
 
     private long skuId;
 
-    private Long performHisToken;
+    private Long subOrderToken;
 
-    private MemberPerformHis memberPerformHis;
+    private MemberSubOrder memberSubOrder;
 
     private List<PerformItemReverseInfo> items;
 

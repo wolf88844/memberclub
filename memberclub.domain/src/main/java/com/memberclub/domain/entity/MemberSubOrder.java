@@ -14,7 +14,7 @@ import lombok.Data;
  * @author 掘金五阳
  */
 @Data
-public class MemberPerformHis {
+public class MemberSubOrder {
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -29,7 +29,7 @@ public class MemberPerformHis {
 
     private String tradeId;//会员单交易 ID
 
-    private Long performHisToken;
+    private Long subOrderToken;
 
     private int buyCount;
 

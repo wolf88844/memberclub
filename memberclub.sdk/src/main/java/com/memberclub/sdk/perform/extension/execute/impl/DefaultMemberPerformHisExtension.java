@@ -16,7 +16,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
-import com.memberclub.domain.entity.MemberPerformHis;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformHisExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
@@ -35,17 +35,17 @@ public class DefaultMemberPerformHisExtension implements MemberPerformHisExtensi
     private PerformDomainService performDomainService;
 
     @Override
-    public MemberPerformHis toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
-        MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(skuPerformContext.getHis());
-        return memberPerformHis;
+    public MemberSubOrder toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext) {
+        MemberSubOrder memberSubOrder = PerformConvertor.INSTANCE.toMemberPerformHis(skuPerformContext.getHis());
+        return memberSubOrder;
     }
 
     @Override
-    public MemberPerformHis toMemberPerformHisWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext) {
-        MemberPerformHis memberPerformHis = toMemberPerformHis(context, skuPerformContext);
-        memberPerformHis.setStatus(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt());
-        memberPerformHis.setUtime(TimeUtil.now());
-        return memberPerformHis;
+    public MemberSubOrder toMemberPerformHisWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext) {
+        MemberSubOrder memberSubOrder = toMemberPerformHis(context, skuPerformContext);
+        memberSubOrder.setStatus(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt());
+        memberSubOrder.setUtime(TimeUtil.now());
+        return memberSubOrder;
     }
 
     @Override

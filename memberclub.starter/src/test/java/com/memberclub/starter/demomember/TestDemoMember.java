@@ -46,8 +46,8 @@ import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.domain.entity.AftersaleOrder;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberPerformHis;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetStatusEnum;
@@ -267,9 +267,9 @@ public class TestDemoMember extends MockBaseTest {
             Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.toInt(), order.getStatus());
         }
 
-        List<MemberPerformHis> hisAfterApply = memberPerformHisDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
+        List<MemberSubOrder> hisAfterApply = memberPerformHisDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         List<MemberPerformItem> itemsAfterApply = memberPerformItemDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
-        for (MemberPerformHis his : hisAfterApply) {
+        for (MemberSubOrder his : hisAfterApply) {
             Assert.assertEquals(MemberPerformHisStatusEnum.getReversedStatus(completeRefund),
                     his.getStatus());
         }
@@ -352,12 +352,13 @@ public class TestDemoMember extends MockBaseTest {
     }
 
     private void verifyData(PerformCmd cmd, int buyCount) {
-        List<MemberPerformHis> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
-        for (MemberPerformHis memberPerformHis : hisList) {
-            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberPerformHis.getStatus());
+        List<MemberSubOrder> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        for (MemberSubOrder memberSubOrder : hisList) {
+            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberSubOrder.getStatus());
         }
         Assert.assertEquals(1, hisList.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+
         for (MemberPerformItem item : items) {
             Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
         }
@@ -508,7 +509,7 @@ public class TestDemoMember extends MockBaseTest {
     public void test() {
         System.out.println("启动 ok");
         memberPerformHisDao.selectByUserId(1000);
-        MemberPerformHis his = new MemberPerformHis();
+        MemberSubOrder his = new MemberSubOrder();
         his.setBizType(1);
         his.setUserId(1000);
 
@@ -530,13 +531,13 @@ public class TestDemoMember extends MockBaseTest {
 
         int count = memberPerformHisDao.insert(his);
         System.out.println("插入数量" + count);
-        List<MemberPerformHis> hisLists = memberPerformHisDao.selectByUserId(1000);
+        List<MemberSubOrder> hisLists = memberPerformHisDao.selectByUserId(1000);
         System.out.println(hisLists);
     }
 
     @Test
     public void testJson() {
-        MemberPerformHis his = new MemberPerformHis();
+        MemberSubOrder his = new MemberSubOrder();
         his.setBizType(1);
         his.setUserId(1000);
 
@@ -555,7 +556,7 @@ public class TestDemoMember extends MockBaseTest {
 
         String json = JsonUtils.toJson(his);
         System.out.println(json);
-        MemberPerformHis performHis = JsonUtils.fromJson(json, MemberPerformHis.class);
+        MemberSubOrder performHis = JsonUtils.fromJson(json, MemberSubOrder.class);
         System.out.println(performHis);
     }
 
