@@ -12,6 +12,7 @@ package com.memberclub.domain.exception;
 public enum ResultCode {
 
     INTERNAL_ERROR(1, "内部错误"),
+    PARAM_VALID(2, "参数异常"),
     CAN_NOT_PERFORM_RETRY(10, "当前状态不允许再次重试履约"),
     LOCK_ERROR(11, "加锁失败异常"),
     PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败"),
@@ -69,15 +70,15 @@ public enum ResultCode {
         return this.value;
     }
 
-    public void throwException() {
-        throw MemberException.newException(this);
+    public MemberException newException() {
+        return MemberException.newException(this);
     }
 
-    public void throwException(String msg) {
-        throw MemberException.newException(this, msg);
+    public MemberException newException(String msg) {
+        return MemberException.newException(this, msg);
     }
 
-    public void throwException(String msg, Exception e) {
-        throw MemberException.newException(this, msg, e);
+    public MemberException newException(String msg, Exception e) {
+        return MemberException.newException(this, msg, e);
     }
 }

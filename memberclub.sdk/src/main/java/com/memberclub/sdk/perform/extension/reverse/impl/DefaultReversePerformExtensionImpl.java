@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.extension.reverse.impl;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "逆向履约流程扩展", bizScenes = {
+@ExtensionProvider(desc = "逆向履约流程扩展", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT)
 })
 public class DefaultReversePerformExtensionImpl implements ReversePerformExtension {

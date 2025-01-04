@@ -33,7 +33,7 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
 
     @Override
     public void process(PerformContext context) {
-        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
+        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSubOrderPerformContext()
                 .getImmediatePerformItems().stream()
                 .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
 
@@ -45,7 +45,7 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
             itemContext.setTradeId(context.getTradeId());
             itemContext.setRightType(entry.getKey());
             itemContext.setPeriodPerform(false);
-            itemContext.setSkuId(context.getCurrentSkuPerformContext().getHis().getSkuId());
+            itemContext.setSkuId(context.getCurrentSubOrderPerformContext().getSubOrder().getSkuId());
 
             flowChainService.execute(getSubChain(), itemContext);
         }

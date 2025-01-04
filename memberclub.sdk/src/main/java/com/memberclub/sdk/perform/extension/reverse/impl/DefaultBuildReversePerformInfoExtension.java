@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.extension.reverse.impl;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认构建逆向履约信息", bizScenes = {
+@ExtensionProvider(desc = "默认构建逆向履约信息", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT)
 })
 public class DefaultBuildReversePerformInfoExtension implements BuildReverseInfoExtension {

@@ -45,11 +45,11 @@ public class PerformLockService {
         }
 
         boolean locked = distributeLock.lock(key, lockValue,
-                SwitchEnum.LOCK_TIMEOUT_SECONDS.getInt(biztype.toBizType()));
+                SwitchEnum.LOCK_TIMEOUT_SECONDS.getInt(biztype.toCode()));
         if (!locked) {
             CommonLog.error("加锁失败,需要再次重试 key:{}, value:{}", key, lockValue);
             Monitor.PERFORM_EXECUTE.counter(biztype, "lock", false);
-            ResultCode.LOCK_ERROR.throwException();
+            throw ResultCode.LOCK_ERROR.newException();
         }
 
         CommonLog.info("加锁成功 key:{}, value:{}", key, lockValue);
@@ -61,9 +61,9 @@ public class PerformLockService {
         String format = "%s_%s_lock";
         String key = null;
         if (table.getLockMode() == LockMode.LOCK_ORDER) {
-            key = String.format(format, bizType.toBizType(), tradeId);
+            key = String.format(format, bizType.toCode(), tradeId);
         } else if (table.getLockMode() == LockMode.LOCK_USER) {
-            key = String.format(format, bizType.toBizType(), userId);
+            key = String.format(format, bizType.toCode(), userId);
         }
         return key;
     }
@@ -87,7 +87,7 @@ public class PerformLockService {
         if (table.getLockMode() == LockMode.LOCK_ORDER) {
             distributeLock.unlock(key, lockValue);
         } else if (table.getLockMode() == LockMode.LOCK_USER) {
-            if (retryTimes >= SwitchEnum.PERFORM_RETRY_MAX_TIME.getInt(bizType.toBizType())) {
+            if (retryTimes >= SwitchEnum.PERFORM_RETRY_MAX_TIME.getInt(bizType.toCode())) {
                 distributeLock.unlock(key, lockValue);
             } else {
                 CommonLog.warn("用户维度锁,在履约失败时,暂时不释放");

@@ -7,7 +7,7 @@
 package com.memberclub.infrastructure.id.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.infrastructure.id.IdGenerator;
@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认 Id 生成器", bizScenes = {
+@ExtensionProvider(desc = "默认 Id 生成器", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
 @ConditionalOnProperty(name = "memberclub.infrastructure.id", havingValue = "none")

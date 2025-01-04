@@ -6,13 +6,15 @@
  */
 package com.memberclub.domain.context.purchase.common;
 
+import com.memberclub.domain.contants.StringContants;
+
 /**
  * @author yuhaiqiang
  */
 public enum PurchaseSourceEnum {
 
-    HOMEPAGE(1, "主页"),
-    
+    HOMEPAGE(StringContants.HOMEPAGE_VALUE, "主页"),
+
     ;
 
     private int code;
@@ -24,7 +26,7 @@ public enum PurchaseSourceEnum {
         this.name = name;
     }
 
-    public static PurchaseSourceEnum findByInt(int code) throws IllegalArgumentException {
+    public static PurchaseSourceEnum findByCode(int code) throws IllegalArgumentException {
         for (PurchaseSourceEnum item : PurchaseSourceEnum.values()) {
             if (item.code == code) {
                 return item;

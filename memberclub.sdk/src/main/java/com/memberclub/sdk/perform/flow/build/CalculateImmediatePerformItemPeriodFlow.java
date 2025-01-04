@@ -10,7 +10,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import com.memberclub.sdk.uti.BizUtils;
@@ -30,14 +30,14 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
 
     @Override
     public void process(PerformContext context) {
-        for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
-            if (CollectionUtils.isEmpty(skuPerformContext.getImmediatePerformItems())) {
+        for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
+            if (CollectionUtils.isEmpty(subOrderPerformContext.getImmediatePerformItems())) {
                 //设置立即结束时间
                 context.setImmediatePerformEtime(context.getBaseTime());
                 continue;
             }
 
-            for (MemberPerformItemDO immediatePerformItem : skuPerformContext.getImmediatePerformItems()) {
+            for (MemberPerformItemDO immediatePerformItem : subOrderPerformContext.getImmediatePerformItems()) {
                 PerformItemCalculateExtension extension =
                         extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
                 TimeRange timeRange = extension.buildPeriod(context.getBaseTime(), immediatePerformItem);
@@ -47,7 +47,7 @@ public class CalculateImmediatePerformItemPeriodFlow extends FlowNode<PerformCon
                 context.setImmediatePerformEtime(timeRange.getEtime());
 
                 String itemToken = BizUtils.toItemToken(
-                        skuPerformContext.getHis().getSubOrderToken(),
+                        subOrderPerformContext.getSubOrder().getSubOrderToken(),
                         immediatePerformItem.getRightId(),
                         immediatePerformItem.getBuyIndex(), immediatePerformItem.getPhase());
                 immediatePerformItem.setItemToken(itemToken);

@@ -6,16 +6,20 @@
  */
 package com.memberclub.domain.common;
 
+import com.memberclub.domain.contants.StringContants;
+
+import static com.memberclub.domain.contants.StringContants.*;
+
 /**
  * @author 掘金五阳
  */
 public enum SceneEnum {
 
-    DEFAULT_SCENE("1"),
+    DEFAULT_SCENE(StringContants.DEFAULT_SCENE.toString()),
 
-    RIGHT_TYPE_SCENE_COUPON("1"),
+    RIGHT_TYPE_SCENE_COUPON(StringContants.COUPON_RIGHT_TYPE.toString()),
 
-    RIGHT_TYPE_SCENE_DISCOUNT_COUPON("2"),
+    RIGHT_TYPE_SCENE_DISCOUNT_COUPON(DISCOUNT_COUPON_RIGHT_TYPE.toString()),
 
     SCENE_MONTH_CARD("201"),//履约上下文执行 scene, 月卡部分
 
@@ -27,14 +31,17 @@ public enum SceneEnum {
 
     SCENE_AFTERSALE_RENEW("304"),//售后续费
 
-    /*SCENE_AFTERSALE_SOURCE_USER("30" + AftersaleSourceEnum.User.toInt()),//用户渠道
 
-    SCENE_AFTERSALE_SOURCE_CUSTOMER_SERVICE("30" + AftersaleSourceEnum.Customer_Service.toInt()),//客服
+    /*****************************************/
+    //提单部分
+    HOMEPAGE_SUBMIT_SCENE(StringContants.HOMEPAGE_VALUE + ""),
 
-    SCENE_AFTERSALE_SOURCE_ADMIN("30" + AftersaleSourceEnum.Admin.toInt()),//Admin
 
-    SCENE_AFTERSALE_SOURCE_SYSTEM_EXPIRE("30" + AftersaleSourceEnum.System_Expire.toInt()),//系统过期退*/;
+    /*****************************************/
+    ;
 
+
+    /*****************************************/
     private String value;
 
     SceneEnum(String value) {

@@ -36,7 +36,7 @@ public class PerformItemGrantFlow extends FlowNode<PerformItemContext> {
                 .buildPerformItemGrantExtensionScene(context);
 
         PerformItemGrantExtension extension =
-                extensionManager.getExtension(BizScene.of(context.getBizType().toBizType(), scene),
+                extensionManager.getExtension(BizScene.of(context.getBizType().toCode(), scene),
                         PerformItemGrantExtension.class);
         ItemGroupGrantResult result = extension.grant(context, context.getItems());
 

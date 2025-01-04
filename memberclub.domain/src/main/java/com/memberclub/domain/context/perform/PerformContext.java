@@ -71,9 +71,9 @@ public class PerformContext {
 
     private List<SkuInfoDO> skuBuyDetails;
 
-    private List<SkuPerformContext> skuPerformContexts;
+    private List<SubOrderPerformContext> subOrderPerformContexts;
 
-    private SkuPerformContext currentSkuPerformContext;
+    private SubOrderPerformContext currentSubOrderPerformContext;
 
     private long immediatePerformEtime;
 
@@ -92,7 +92,7 @@ public class PerformContext {
     /********************* 重试上下文***************/
 
     public BizScene toDefaultScene() {
-        return BizScene.of(bizType.toBizType());
+        return BizScene.of(bizType.toCode());
     }
 
     public MemberSubOrder matchHisFromDb(long skuId) {

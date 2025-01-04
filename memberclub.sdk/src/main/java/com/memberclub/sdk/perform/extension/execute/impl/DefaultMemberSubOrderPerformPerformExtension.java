@@ -7,14 +7,14 @@
 package com.memberclub.sdk.perform.extension.execute.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)})
+@ExtensionProvider(desc = "默认履约上下文构建", bizScenes = {@Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOrderPerformExtension {
 
     @Autowired
@@ -35,22 +35,22 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     private PerformDomainService performDomainService;
 
     @Override
-    public MemberSubOrder toMemberSubOrder(PerformContext context, SkuPerformContext skuPerformContext) {
-        MemberSubOrder memberSubOrder = PerformConvertor.INSTANCE.toMemberSubOrder(skuPerformContext.getHis());
+    public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+        MemberSubOrder memberSubOrder = PerformConvertor.INSTANCE.toMemberSubOrder(subOrderPerformContext.getSubOrder());
         return memberSubOrder;
     }
 
     @Override
-    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext) {
-        MemberSubOrder memberSubOrder = toMemberSubOrder(context, skuPerformContext);
+    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+        MemberSubOrder memberSubOrder = toMemberSubOrder(context, subOrderPerformContext);
         memberSubOrder.setStatus(SubOrderPerformStatusEnum.PERFORM_SUCC.toInt());
         memberSubOrder.setUtime(TimeUtil.now());
         return memberSubOrder;
     }
 
     @Override
-    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
-        SubOrderExtraInfo extraInfo = performDomainService.buildSubOrderExtraInfo(context, skuPerformContext);
+    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+        SubOrderExtraInfo extraInfo = performDomainService.buildSubOrderExtraInfo(context, subOrderPerformContext);
 
         return extraInfo;
     }

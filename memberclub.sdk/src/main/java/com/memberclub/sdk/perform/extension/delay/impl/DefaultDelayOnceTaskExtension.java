@@ -7,7 +7,7 @@
 package com.memberclub.sdk.perform.extension.delay.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "DemoMember 延迟任务扩展点", bizScenes = {
+@ExtensionProvider(desc = "DemoMember 延迟任务扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
 public class DefaultDelayOnceTaskExtension implements DelayOnceTaskExtension {

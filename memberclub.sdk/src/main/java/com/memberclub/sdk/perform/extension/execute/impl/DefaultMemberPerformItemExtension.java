@@ -8,12 +8,12 @@ package com.memberclub.sdk.perform.extension.execute.impl;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "构建履约项扩展点,默认实现", bizScenes = {
+@ExtensionProvider(desc = "构建履约项扩展点,默认实现", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class DefaultMemberPerformItemExtension implements MemberPerformItemExtension {
@@ -52,7 +52,7 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
     }
 
     @Override
-    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SkuPerformContext context, MemberPerformItemDO item) {
+    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SubOrderPerformContext context, MemberPerformItemDO item) {
         return null;
     }
 }

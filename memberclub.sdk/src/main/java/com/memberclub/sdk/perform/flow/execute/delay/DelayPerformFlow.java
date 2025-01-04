@@ -30,11 +30,11 @@ public class DelayPerformFlow extends SubFlowNode<PerformContext, DelayItemConte
 
     @Override
     public void process(PerformContext context) {
-        if (CollectionUtils.isEmpty(context.getCurrentSkuPerformContext().getDelayPerformItems())) {
+        if (CollectionUtils.isEmpty(context.getCurrentSubOrderPerformContext().getDelayPerformItems())) {
             return;
         }
 
-        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSkuPerformContext()
+        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSubOrderPerformContext()
                 .getDelayPerformItems().stream()
                 .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
 
@@ -43,7 +43,7 @@ public class DelayPerformFlow extends SubFlowNode<PerformContext, DelayItemConte
             itemContext.setItems(entry.getValue());
             itemContext.setPerformContext(context);
             itemContext.setRightType(entry.getKey());
-            itemContext.setSkuPerformContext(context.getCurrentSkuPerformContext());
+            itemContext.setSubOrderPerformContext(context.getCurrentSubOrderPerformContext());
             flowChainService.execute(getSubChain(), itemContext);
         }
     }

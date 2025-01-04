@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Service
-public @interface ExtensionImpl {
+public @interface ExtensionProvider {
 
     public Route[] bizScenes();
 

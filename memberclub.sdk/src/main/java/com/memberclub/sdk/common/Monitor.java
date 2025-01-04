@@ -19,6 +19,7 @@ public enum Monitor {
     PERFORM_EXECUTE("perform_execute"),
     AFTER_SALE_DOAPPLY("aftersale_doapply"),
     AFTER_SALE_APPLY("aftersale_apply"),
+    DEPENDENCY_INVOKE("dependency_invoke"),
     ;
 
     private String name;
@@ -41,6 +42,6 @@ public enum Monitor {
     }
 
     public void counter(BizTypeEnum bizType, Object... tags) {
-        counter(bizType.toBizType(), tags);
+        counter(bizType.toCode(), tags);
     }
 }

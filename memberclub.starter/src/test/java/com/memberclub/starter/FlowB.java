@@ -20,7 +20,7 @@ public class FlowB extends AbstractFlowNode<FlowContext> {
     public void process() throws Exception {
         FlowContext context = this.getContextBean(FlowContext.class);
         CommonLog.warn("执行到 flowB");
-        //ResultCode.CAN_NOT_PERFORM_RETRY.throwException();
+        //ResultCode.CAN_NOT_PERFORM_RETRY.newException();
     }
 
 

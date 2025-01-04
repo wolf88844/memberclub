@@ -7,7 +7,7 @@
 package com.memberclub.plugin.demomember.extension.aftersale.preview;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -29,7 +29,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认售后预览扩展点", bizScenes = {
+@ExtensionProvider(desc = "默认售后预览扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class DefaultAftersalePreviewExtension implements AftersalePreviewExtension {

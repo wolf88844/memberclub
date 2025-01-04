@@ -7,7 +7,7 @@
 package com.memberclub.sdk.perform.extension.build.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -22,7 +22,7 @@ import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "构建履约项扩展点", bizScenes = {
+@ExtensionProvider(desc = "构建履约项扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class DefaultPerformItemCalculateExtension implements PerformItemCalculateExtension {

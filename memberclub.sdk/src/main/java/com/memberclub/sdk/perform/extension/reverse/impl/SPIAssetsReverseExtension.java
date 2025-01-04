@@ -7,14 +7,14 @@
 package com.memberclub.sdk.perform.extension.reverse.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.reverse.AssetsReverseResponse;
-import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetReverseRequestDO;
 import com.memberclub.domain.facade.AssetReverseResponseDO;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "SPI 接口逆向履约项资产", bizScenes = {
+@ExtensionProvider(desc = "SPI 接口逆向履约项资产", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })
 public class SPIAssetsReverseExtension implements AssetsReverseExtension {
@@ -52,14 +52,14 @@ public class SPIAssetsReverseExtension implements AssetsReverseExtension {
                         "right_type", reverseInfo.getCurrentRightType(),
                         "code", "null");
                 CommonLog.error("冻结下游资产返回值为空 req:{}", requestDO);
-                ResultCode.DEPENDENCY_ERROR.throwException("逆向冻结下游资产返回空");
+                throw ResultCode.DEPENDENCY_ERROR.newException("逆向冻结下游资产返回空");
             }
         } catch (Exception e) {
             Monitor.AFTER_SALE_DOAPPLY.counter(context.getBizType(),
                     "right_type", reverseInfo.getCurrentRightType(),
                     "code", "exception");
             CommonLog.error("冻结下游资产异常 req:{}", requestDO, e);
-            ResultCode.DEPENDENCY_ERROR.throwException("逆向冻结下游资产异常", e);
+            throw ResultCode.DEPENDENCY_ERROR.newException("逆向冻结下游资产异常", e);
         }
 
         if (!responseDO.isSuccess()) {
@@ -67,7 +67,7 @@ public class SPIAssetsReverseExtension implements AssetsReverseExtension {
                     "right_type", reverseInfo.getCurrentRightType(),
                     "code", responseDO.getCode());
             CommonLog.error("冻结下游资产失败 req:{}, response:{}", requestDO, responseDO);
-            ResultCode.DEPENDENCY_ERROR.throwException("逆向冻结下游资产失败");
+            throw ResultCode.DEPENDENCY_ERROR.newException("逆向冻结下游资产失败");
         } else {
             Monitor.AFTER_SALE_DOAPPLY.counter(context.getBizType(),
                     "right_type", reverseInfo.getCurrentRightType(),

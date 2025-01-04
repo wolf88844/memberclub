@@ -14,47 +14,36 @@ public enum BizTypeEnum {
     DEFAULT(0, "default_biz"),
     DEMO_MEMBER(1, "demo_member");
 
-    private int value;
+    private int code;
 
     private String name;
 
-    BizTypeEnum(int value, String name) {
-        this.value = value;
+    BizTypeEnum(int code, String name) {
+        this.code = code;
         this.name = name;
     }
 
     public boolean isEqual(int bizType) {
-        return this.value == bizType;
+        return this.code == bizType;
     }
 
 
-    public static BizTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static BizTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (BizTypeEnum item : BizTypeEnum.values()) {
-            if (item.value == value) {
+            if (item.code == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid BizTypeEnum value: " + value);
+        throw new IllegalArgumentException("Invalid BizTypeEnum code: " + value);
     }
-
-    public static BizTypeEnum findByString(String name) throws IllegalArgumentException {
-        for (BizTypeEnum item : BizTypeEnum.values()) {
-            if (item.name.equals(name)) {
-                return item;
-            }
-        }
-
-        throw new IllegalArgumentException("Invalid BizTypeEnum name: " + name);
-    }
-
 
     @Override
     public String toString() {
         return this.name;
     }
 
-    public int toBizType() {
-        return this.value;
+    public int toCode() {
+        return this.code;
     }
 }

@@ -79,16 +79,16 @@ public class AftersaleBizService {
 
     public AftersalePreviewContext doPreview(AfterSalePreviewCmd cmd) {
         AftersaleCollectDataExtension aftersaleCollectDataExtension = extensionManager.getExtension(
-                BizScene.of(cmd.getBizType().toBizType()), AftersaleCollectDataExtension.class);
+                BizScene.of(cmd.getBizType().toCode()), AftersaleCollectDataExtension.class);
         AftersalePreviewContext context = aftersaleCollectDataExtension.collect(cmd);
         context.setCmd(cmd);
 
         BizSceneBuildExtension bizSceneBuildExtension =
-                extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()));
+                extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()));
         String previewExtensionScene = bizSceneBuildExtension.buildAftersalePreviewScene(context);
 
         AftersalePreviewExtension previewExtension = extensionManager.getExtension(
-                BizScene.of(cmd.getBizType().toBizType(), previewExtensionScene),
+                BizScene.of(cmd.getBizType().toCode(), previewExtensionScene),
                 AftersalePreviewExtension.class);
 
         previewExtension.preview(context);
@@ -101,13 +101,13 @@ public class AftersaleBizService {
         AfterSaleApplyContext context = new AfterSaleApplyContext();
         context.setCmd(cmd);
 
-        BizSceneBuildExtension bizSceneBuildExtension = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()));
+        BizSceneBuildExtension bizSceneBuildExtension = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()));
         String applyExtensionScene = bizSceneBuildExtension.buildAftersaleApplyScene(context);
         context.setScene(applyExtensionScene);
         AftersaleApplyResponse response = new AftersaleApplyResponse();
         try {
             //调用受理方法
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), applyExtensionScene),
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), applyExtensionScene),
                     AfterSaleApplyExtension.class).apply(context);
             response.setSuccess(true);
             //response.setRefundWay();

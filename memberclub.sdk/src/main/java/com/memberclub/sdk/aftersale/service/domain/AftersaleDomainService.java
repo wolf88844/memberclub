@@ -58,7 +58,7 @@ public class AftersaleDomainService {
             } else {
                 CommonLog.error("新增售后单失败  orderNew:{}", order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(), "insert", "error");
-                ResultCode.DATA_UPDATE_ERROR.throwException("新增售后单失败");
+                throw ResultCode.DATA_UPDATE_ERROR.newException("新增售后单失败");
             }
         } else {
             CommonLog.info("新增售后单成功:{}", order);
@@ -84,7 +84,7 @@ public class AftersaleDomainService {
                 CommonLog.warn("修改售后单为成功态, 失败 order:{}", order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
                         "update2Succ", "error");
-                ResultCode.DATA_UPDATE_ERROR.throwException("更新售后单为成功态异常");
+                throw ResultCode.DATA_UPDATE_ERROR.newException("更新售后单为成功态异常");
             }
         } else {
             CommonLog.warn("修改售后单为成功态成功 order:{}", order);

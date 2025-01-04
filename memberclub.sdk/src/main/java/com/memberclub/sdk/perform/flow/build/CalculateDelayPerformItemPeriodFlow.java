@@ -11,7 +11,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import com.memberclub.sdk.uti.BizUtils;
@@ -36,14 +36,14 @@ public class CalculateDelayPerformItemPeriodFlow extends FlowNode<PerformContext
 
     @Override
     public void process(PerformContext context) {
-        for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
-            if (CollectionUtils.isEmpty(skuPerformContext.getDelayPerformItems())) {
+        for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
+            if (CollectionUtils.isEmpty(subOrderPerformContext.getDelayPerformItems())) {
                 continue;
             }
 
 
             Map<RightTypeEnum, List<MemberPerformItemDO>> rightType2Items =
-                    skuPerformContext.getDelayPerformItems().stream().collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
+                    subOrderPerformContext.getDelayPerformItems().stream().collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
 
             for (Map.Entry<RightTypeEnum, List<MemberPerformItemDO>> entry : rightType2Items.entrySet()) {
                 long stime = context.getImmediatePerformEtime() + 1;
@@ -59,7 +59,7 @@ public class CalculateDelayPerformItemPeriodFlow extends FlowNode<PerformContext
                     stime = timeRange.getEtime() + 1;
 
                     String itemToken = BizUtils.toItemToken(
-                            skuPerformContext.getHis().getSubOrderToken(),
+                            subOrderPerformContext.getSubOrder().getSubOrderToken(),
                             delayItem.getRightId(),
                             delayItem.getBuyIndex(), delayItem.getPhase());
                     delayItem.setItemToken(itemToken);

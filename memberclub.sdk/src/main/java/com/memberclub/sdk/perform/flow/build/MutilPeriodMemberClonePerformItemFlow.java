@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.springframework.stereotype.Service;
@@ -28,10 +28,10 @@ public class MutilPeriodMemberClonePerformItemFlow extends FlowNode<PerformConte
 
     @Override
     public void process(PerformContext context) {
-        for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
+        for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
 
             Map<RightTypeEnum, List<MemberPerformItemDO>> rightType2Items =
-                    skuPerformContext.getImmediatePerformItems().stream().collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
+                    subOrderPerformContext.getImmediatePerformItems().stream().collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
 
             List<MemberPerformItemDO> performItems = Lists.newArrayList();
             List<MemberPerformItemDO> delayPerformItems = Lists.newArrayList();
@@ -48,8 +48,8 @@ public class MutilPeriodMemberClonePerformItemFlow extends FlowNode<PerformConte
                     }
                 }
             }
-            skuPerformContext.setImmediatePerformItems(performItems);
-            skuPerformContext.setDelayPerformItems(delayPerformItems);
+            subOrderPerformContext.setImmediatePerformItems(performItems);
+            subOrderPerformContext.setDelayPerformItems(delayPerformItems);
         }
     }
 }

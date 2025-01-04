@@ -11,6 +11,7 @@ import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
+import com.memberclub.domain.exception.ResultCode;
 import lombok.Data;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class PurchaseSubmitCmd {
 
     private BizTypeEnum bizType;
 
+    private long userId;
+
     private CommonUserInfo userInfo;
 
     private ClientInfo clientInfo;
@@ -31,7 +34,13 @@ public class PurchaseSubmitCmd {
 
     private PurchaseSourceEnum source;
 
-    private String previewToken;
+    private String submitToken;
 
     private List<PurchaseSkuSubmitCmd> skus;
+
+    public void isValid() {
+        if (source == null) {
+            throw ResultCode.PARAM_VALID.newException("提单来源为空");
+        }
+    }
 }

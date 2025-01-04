@@ -14,5 +14,5 @@ public enum LogDomainEnum {
     PERFORM,
     AFTER_SALE,
     PRE_SETTLE,
-    BUY,
+    PURCHASE,
 }

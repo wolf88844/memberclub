@@ -11,7 +11,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
@@ -37,11 +37,11 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
-        context.setCurrentSkuPerformContext(skuPerformContext);
+        SubOrderPerformContext subOrderPerformContext = context.getSubOrderPerformContexts().get(0);
+        context.setCurrentSubOrderPerformContext(subOrderPerformContext);
 
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberSubOrder(context, skuPerformContext);
+        MemberSubOrder memberSubOrder = extension.toMemberSubOrder(context, subOrderPerformContext);
 
         int cnt = performDomainService.insertMemberSubOrder(memberSubOrder);
         if (cnt > 0) {
@@ -49,10 +49,10 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
             return;
         }
         MemberSubOrder hisFromDb = memberSubOrderDao.selectBySkuId(context.getUserId(),
-                context.getTradeId(), skuPerformContext.getHis().getSkuId());
+                context.getTradeId(), subOrderPerformContext.getSubOrder().getSkuId());
         if (hisFromDb == null) {
             CommonLog.error("写入 member_perform_his失败", memberSubOrder);
-            ResultCode.INTERNAL_ERROR.throwException();
+            ResultCode.INTERNAL_ERROR.newException();
         }
 
         memberSubOrder.setSubOrderToken(hisFromDb.getSubOrderToken());
@@ -68,9 +68,9 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
 
     @Override
     public void success(PerformContext context) {
-        SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
+        SubOrderPerformContext subOrderPerformContext = context.getSubOrderPerformContexts().get(0);
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberSubOrderWhenPerformSuccess(context, skuPerformContext);
+        MemberSubOrder memberSubOrder = extension.toMemberSubOrderWhenPerformSuccess(context, subOrderPerformContext);
 
         performDomainService.performSuccess(memberSubOrder);
     }

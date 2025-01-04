@@ -28,12 +28,12 @@ public class GenerateAftersalePlanDigestFlow extends FlowNode<AftersalePreviewCo
     @Override
     public void process(AftersalePreviewContext context) {
         if (context.getDigestVersion() == null) {
-            int version = SwitchEnum.AFTERSALE_PLAN_GENERATE_DIGEST_VERSION.getInt(context.getCmd().getBizType().toBizType());
+            int version = SwitchEnum.AFTERSALE_PLAN_GENERATE_DIGEST_VERSION.getInt(context.getCmd().getBizType().toCode());
             context.setDigestVersion(version);
         }
 
         extensionManager.getExtension(
-                BizScene.of(context.getCmd().getBizType().toBizType(), String.valueOf(context.getDigestVersion())),
+                BizScene.of(context.getCmd().getBizType().toCode(), String.valueOf(context.getDigestVersion())),
                 GenerateAfterSalePlanDigestExtension.class).generateDigest(context);
     }
 }

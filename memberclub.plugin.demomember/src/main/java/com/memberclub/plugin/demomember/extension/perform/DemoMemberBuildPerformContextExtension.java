@@ -7,7 +7,7 @@
 package com.memberclub.plugin.demomember.extension.perform;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -27,7 +27,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "DemoMember 履约上下文构建", bizScenes = {
+@ExtensionProvider(desc = "DemoMember 履约上下文构建", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD})
 })
 public class DemoMemberBuildPerformContextExtension implements BuildPerformContextExtension {

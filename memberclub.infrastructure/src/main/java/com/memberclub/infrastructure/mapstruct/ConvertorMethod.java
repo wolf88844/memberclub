@@ -22,7 +22,7 @@ import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
@@ -92,12 +92,12 @@ public class ConvertorMethod {
 
     @Named("toBizTypeInt")
     public int toBizTypeInt(BizTypeEnum bizType) {
-        return bizType.toBizType();
+        return bizType.toCode();
     }
 
     @Named("toBizTypeEnum")
     public BizTypeEnum toBizType(int bizType) {
-        return BizTypeEnum.findByInt(bizType);
+        return BizTypeEnum.findByCode(bizType);
     }
 
 
@@ -224,15 +224,15 @@ public class ConvertorMethod {
 
     public static PerformTaskContentDO buildPerformTaskContent(DelayItemContext context, List<MemberPerformItemDO> items) {
         PerformTaskContentDO content = new PerformTaskContentDO();
-        content.setBizType(context.getPerformContext().getBizType().toBizType());
-        content.setSubOrderToken(context.getSkuPerformContext().getHis().getSubOrderToken());
+        content.setBizType(context.getPerformContext().getBizType().toCode());
+        content.setSubOrderToken(context.getSubOrderPerformContext().getSubOrder().getSubOrderToken());
         content.setTradeId(context.getPerformContext().getTradeId());
-        content.setSkuId(context.getSkuPerformContext().getHis().getSkuId());
+        content.setSkuId(context.getSubOrderPerformContext().getSubOrder().getSkuId());
 
         List<PerformTaskContentItemDO> contentItems = Lists.newArrayList();
         for (MemberPerformItemDO item : items) {
             PerformTaskContentItemDO itemPO = ConvertorMethod.toContentItem(item,
-                    context.getPerformContext(), context.getSkuPerformContext());
+                    context.getPerformContext(), context.getSubOrderPerformContext());
             contentItems.add(itemPO);
         }
 
@@ -242,12 +242,12 @@ public class ConvertorMethod {
 
     public static PerformTaskContentItemDO toContentItem(MemberPerformItemDO item,
                                                          PerformContext context,
-                                                         SkuPerformContext skuPerformContext) {
+                                                         SubOrderPerformContext subOrderPerformContext) {
         PerformTaskContentItemDO itemPO = PerformConvertor.INSTANCE.toPerformTaskContentItemDO(item);
-        itemPO.setBizType(context.getBizType().toBizType());
+        itemPO.setBizType(context.getBizType().toCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
-        itemPO.setSkuId(skuPerformContext.getHis().getSkuId());
+        itemPO.setSkuId(subOrderPerformContext.getSubOrder().getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
         itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());
@@ -257,7 +257,7 @@ public class ConvertorMethod {
     public static MemberPerformItem toMemberPerformItem(MemberPerformItemDO item,
                                                         PerformItemContext context) {
         MemberPerformItem itemPO = PerformConvertor.INSTANCE.toMemberPerformItem(item);
-        itemPO.setBizType(context.getBizType().toBizType());
+        itemPO.setBizType(context.getBizType().toCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
         itemPO.setSkuId(context.getSkuId());

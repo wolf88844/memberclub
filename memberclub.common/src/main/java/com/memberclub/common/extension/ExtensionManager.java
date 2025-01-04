@@ -36,14 +36,14 @@ public class ExtensionManager {
 
     @PostConstruct
     public void init() {
-        String[] beanNames = context.getBeanNamesForAnnotation(ExtensionImpl.class);
+        String[] beanNames = context.getBeanNamesForAnnotation(ExtensionProvider.class);
 
 
         for (String beanName : beanNames) {
             Object bean = context.getBean(beanName);
             Set<Class<?>> interfaces =
                     ClassUtils.getAllInterfacesForClassAsSet(bean.getClass());
-            ExtensionImpl extension = AnnotationUtils.findAnnotation(bean.getClass(), ExtensionImpl.class);
+            ExtensionProvider extension = AnnotationUtils.findAnnotation(bean.getClass(), ExtensionProvider.class);
             Route[] routes = extension.bizScenes();
 
 
@@ -51,7 +51,7 @@ public class ExtensionManager {
                 if (BaseExtension.class.isAssignableFrom(anInterface)) {
                     for (Route route : routes) {
                         for (SceneEnum scene : route.scenes()) {
-                            String key = buildKey(anInterface, route.bizType().toBizType(), scene.getValue());
+                            String key = buildKey(anInterface, route.bizType().toCode(), scene.getValue());
                             Object value = extensionBeanMap.put(key, bean);
                             if (value != null) {
                                 CommonLog.error("注册 Extension key:{}冲突", key);
@@ -82,7 +82,7 @@ public class ExtensionManager {
         T value = (T) extensionBeanMap.get(key);
 
         if (value == null) {
-            key = buildKey(tClass, BizTypeEnum.DEFAULT.toBizType(), SceneEnum.DEFAULT_SCENE.getValue());
+            key = buildKey(tClass, BizTypeEnum.DEFAULT.toCode(), SceneEnum.DEFAULT_SCENE.getValue());
             value = (T) extensionBeanMap.get(key);
         }
 

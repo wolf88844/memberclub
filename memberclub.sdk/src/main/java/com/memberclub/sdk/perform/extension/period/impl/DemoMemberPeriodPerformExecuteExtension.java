@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.extension.period.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -29,7 +29,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "周期履约执行扩展点实现", bizScenes = {
+@ExtensionProvider(desc = "周期履约执行扩展点实现", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER)
 })
 public class DemoMemberPeriodPerformExecuteExtension implements PeriodPerformExecuteExtension {

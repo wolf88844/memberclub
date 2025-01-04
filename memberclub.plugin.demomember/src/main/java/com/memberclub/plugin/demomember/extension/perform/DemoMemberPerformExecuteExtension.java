@@ -8,7 +8,7 @@ package com.memberclub.plugin.demomember.extension.perform;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -34,7 +34,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "DemoMember 执行履约扩展点", bizScenes = {
+@ExtensionProvider(desc = "DemoMember 执行履约扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_MONTH_CARD})//Demo会员月卡,多份数
 })
 public class DemoMemberPerformExecuteExtension implements PerformExecuteExtension {

@@ -23,7 +23,7 @@ public class PeriodUtils {
             periodDays = periodDays - 1;//包含当天
         }
         if (periodDays < 0) {
-            ResultCode.CONFIG_DATA_ERROR.throwException();
+            throw ResultCode.CONFIG_DATA_ERROR.newException();
         }
 
         long now = baseTime;

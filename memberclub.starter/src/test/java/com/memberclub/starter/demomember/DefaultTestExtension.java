@@ -7,7 +7,7 @@
 package com.memberclub.starter.demomember;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
@@ -18,7 +18,7 @@ import com.memberclub.domain.context.perform.PerformCmd;
 /**
  * @author 掘金五阳
  */
-@ExtensionImpl(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
+@ExtensionProvider(desc = "默认履约扩展点", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
 public class DefaultTestExtension implements JustTestExtension {
 
     @UserLog(bizType = "bizType", tradeId = "tradeId", userId = "userId", domain = LogDomainEnum.PERFORM)

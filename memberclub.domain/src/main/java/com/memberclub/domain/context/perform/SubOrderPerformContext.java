@@ -17,11 +17,11 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class SkuPerformContext {
+public class SubOrderPerformContext {
 
     private SkuInfoDO skuInfo;
 
-    private MemberSubOrderDO his = new MemberSubOrderDO();
+    private MemberSubOrderDO subOrder = new MemberSubOrderDO();
 
     private List<MemberPerformItemDO> immediatePerformItems;
 

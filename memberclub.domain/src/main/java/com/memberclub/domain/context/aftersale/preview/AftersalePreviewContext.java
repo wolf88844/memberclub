@@ -94,7 +94,7 @@ public class AftersalePreviewContext {
 
 
     public BizScene toDefaultBizScene() {
-        return BizScene.of(getCmd().getBizType().toBizType());
+        return BizScene.of(getCmd().getBizType().toCode());
     }
 
 

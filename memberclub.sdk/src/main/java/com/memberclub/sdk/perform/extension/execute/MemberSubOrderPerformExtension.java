@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.extension.execute;
 
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberSubOrder;
 
@@ -17,10 +17,10 @@ import com.memberclub.domain.entity.MemberSubOrder;
  */
 public interface MemberSubOrderPerformExtension extends BaseExtension {
 
-    public MemberSubOrder toMemberSubOrder(PerformContext context, SkuPerformContext skuPerformContext);
+    public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
-    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext);
+    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
 
-    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext);
+    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 }

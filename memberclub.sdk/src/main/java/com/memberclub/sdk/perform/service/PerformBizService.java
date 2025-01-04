@@ -70,10 +70,10 @@ public class PerformBizService {
     public PerformResp perform(PerformCmd cmd) {
         PerformResp resp = new PerformResp();
         try {
-            String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+            String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
                     .buildPreBuildPerformContextScene(cmd);
 
-            PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), preBuildScene),
+            PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), preBuildScene),
                     PreBuildPerformContextExtension.class).preBuild(cmd);
 
             if (context.isSkipPerform()) {
@@ -90,15 +90,15 @@ public class PerformBizService {
                 return resp;
             }
 
-            String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+            String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
                     .buildBuildPerformContextScene(context);
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), buildScene),
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), buildScene),
                     BuildPerformContextExtension.class).build(context);
 
             //execute Context
-            String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toBizType()))
+            String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
                     .buildPerformContextExecuteScene(context);
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().toBizType(), executeScene),
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), executeScene),
                     PerformExecuteExtension.class).execute(context);
 
             resp.setSuccess(true);

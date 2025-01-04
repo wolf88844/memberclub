@@ -7,7 +7,7 @@
 package com.memberclub.sdk.aftersale.extension.preview.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "价格除法计算售后金额", bizScenes = {
+@ExtensionProvider(desc = "价格除法计算售后金额", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
 public class DefaultPriceDividedAftersaleAmountExtension implements AftersaleAmountExtension {

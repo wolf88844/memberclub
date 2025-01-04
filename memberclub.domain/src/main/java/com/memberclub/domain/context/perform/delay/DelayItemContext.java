@@ -7,7 +7,7 @@
 package com.memberclub.domain.context.perform.delay;
 
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class DelayItemContext {
 
     public PerformContext performContext;
 
-    public SkuPerformContext skuPerformContext;
+    public SubOrderPerformContext subOrderPerformContext;
 
     private int rightType;
 

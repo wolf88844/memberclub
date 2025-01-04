@@ -7,7 +7,7 @@
 package com.memberclub.plugin.demomember.extension.aftersale;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.common.flow.FlowChainService;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -32,7 +32,7 @@ import javax.annotation.PostConstruct;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "示例会员售后受理扩展点", bizScenes = {
+@ExtensionProvider(desc = "示例会员售后受理扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_AFTERSALE_MONTH_CARD})
 })
 public class DemoMemberAfterSaleApplyExtension implements AfterSaleApplyExtension {

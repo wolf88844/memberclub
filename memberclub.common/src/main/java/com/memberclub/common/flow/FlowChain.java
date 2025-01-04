@@ -7,6 +7,7 @@
 package com.memberclub.common.flow;
 
 import com.google.common.collect.Lists;
+import com.memberclub.common.util.ApplicationContextUtils;
 import lombok.Data;
 
 import java.util.List;
@@ -29,6 +30,18 @@ public class FlowChain<T> {
         chain.setContextClass(clazz);
         chain.setFlowChainService(flowChainService);
         return chain;
+    }
+
+
+    public static <T> FlowChain<T> newChain(Class<T> clazz) {
+        FlowChain<T> chain = new FlowChain<>();
+        chain.setContextClass(clazz);
+        chain.setFlowChainService(ApplicationContextUtils.getContext().getBean(FlowChainService.class));
+        return chain;
+    }
+
+    public void execute(T context) {
+        ApplicationContextUtils.getContext().getBean(FlowChainService.class).execute(this, context);
     }
 
 

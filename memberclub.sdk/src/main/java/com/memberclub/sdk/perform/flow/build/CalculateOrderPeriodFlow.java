@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.build;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,17 +19,17 @@ public class CalculateOrderPeriodFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        for (SkuPerformContext skuPerformContext : context.getSkuPerformContexts()) {
+        for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
             long stime = context.getBaseTime();
             long etime = context.getImmediatePerformEtime();
             if (context.getDelayPerformEtime() > 0) {
                 etime = context.getDelayPerformEtime();
             }
 
-            skuPerformContext.getHis().setStime(stime);
-            skuPerformContext.getHis().setEtime(etime);
+            subOrderPerformContext.getSubOrder().setStime(stime);
+            subOrderPerformContext.getSubOrder().setEtime(etime);
         }
-        context.setStime(context.getSkuPerformContexts().get(0).getHis().getStime());
-        context.setEtime(context.getSkuPerformContexts().get(0).getHis().getEtime());
+        context.setStime(context.getSubOrderPerformContexts().get(0).getSubOrder().getStime());
+        context.setEtime(context.getSubOrderPerformContexts().get(0).getSubOrder().getEtime());
     }
 }

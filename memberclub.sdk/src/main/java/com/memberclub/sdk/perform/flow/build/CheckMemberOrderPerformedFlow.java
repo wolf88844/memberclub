@@ -8,9 +8,9 @@ package com.memberclub.sdk.perform.flow.build;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
@@ -49,8 +49,8 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
             }
             if (!MemberOrderStatusEnum.isPerformEnabled(memberOrder.getStatus())) {
                 CommonLog.error("当前履约状态不允许再次履约 status", memberOrder.getStatus());
-                Monitor.PERFORM_EXECUTE.counter(context.getBizType().toBizType(), "curr_status_cant_perform", memberOrder.getStatus());
-                ResultCode.CAN_NOT_PERFORM_RETRY.throwException();
+                Monitor.PERFORM_EXECUTE.counter(context.getBizType().toCode(), "curr_status_cant_perform", memberOrder.getStatus());
+                throw ResultCode.CAN_NOT_PERFORM_RETRY.newException();
             }
         }
 

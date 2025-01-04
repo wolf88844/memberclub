@@ -9,7 +9,7 @@ package com.memberclub.sdk.aftersale.extension.preview.impl;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "默认的售后计划摘要生成", bizScenes = {
+@ExtensionProvider(desc = "默认的售后计划摘要生成", bizScenes = {
         //@Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
 })

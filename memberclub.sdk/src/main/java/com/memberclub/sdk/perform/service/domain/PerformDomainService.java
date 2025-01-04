@@ -19,7 +19,7 @@ import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
 import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
@@ -99,7 +99,7 @@ public class PerformDomainService {
                         item.getItemToken());
                 if (!PerformItemStatusEnum.hasPerformed(itemFromDb.getStatus())) {
                     CommonLog.error("更新 item 失败 itemToken:{}", item.getItemToken());
-                    ResultCode.INTERNAL_ERROR.throwException("更新 member_perform_item失败");
+                    throw ResultCode.INTERNAL_ERROR.newException("更新 member_perform_item失败");
                 }
             }
             CommonLog.info("成功更新 item 到履约完成itemToken:{}, batchCode:{}", item.getItemToken(), item.getBatchCode());
@@ -138,7 +138,7 @@ public class PerformDomainService {
                 MEMBER_ORDER_SUCCESS_PERFORM.getFromStatus(),
                 TimeUtil.now());
         if (count <= 0) {
-            ResultCode.DATA_UPDATE_ERROR.throwException("member_order更新到成功态异常");
+            throw ResultCode.DATA_UPDATE_ERROR.newException("member_order更新到成功态异常");
         }
         return;
     }
@@ -246,10 +246,10 @@ public class PerformDomainService {
         return JsonUtils.fromJson(order.getExtra(), MemberOrderExtraInfo.class);
     }
 
-    public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
+    public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         SubOrderExtraInfo extraInfo = new SubOrderExtraInfo();
 
-        SkuInfoDO skuInfo = skuPerformContext.getSkuInfo();
+        SkuInfoDO skuInfo = subOrderPerformContext.getSkuInfo();
 
         SubOrderViewInfo viewInfo = PerformConvertor.INSTANCE.toSubOrderViewInfo(skuInfo.getViewInfo());
 

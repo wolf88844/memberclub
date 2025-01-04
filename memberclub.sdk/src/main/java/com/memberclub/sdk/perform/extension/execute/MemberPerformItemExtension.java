@@ -9,7 +9,7 @@ package com.memberclub.sdk.perform.extension.execute;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.entity.MemberPerformItem;
 
 import java.util.List;
@@ -21,6 +21,6 @@ public interface MemberPerformItemExtension extends BaseExtension {
 
     public List<MemberPerformItem> toMemberPerformItems(PerformItemContext performItemContext);
 
-    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SkuPerformContext context, MemberPerformItemDO item);
+    public MemberPerformItem toMemberPerformItemWhenPerformSuccess(SubOrderPerformContext context, MemberPerformItemDO item);
 
 }

@@ -19,7 +19,7 @@ public class FlowD extends FlowNode<FlowContext> {
     @Override
     public void process(FlowContext flowContext) {
         CommonLog.info("FlowD process");
-        //ResultCode.CAN_NOT_PERFORM_RETRY.throwException();
+        //ResultCode.CAN_NOT_PERFORM_RETRY.newException();
     }
 
     @Override

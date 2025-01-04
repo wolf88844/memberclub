@@ -11,7 +11,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.domain.context.perform.SkuPerformContext;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
@@ -40,12 +40,12 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
         List<SkuInfoDO> details = context.getSkuBuyDetails();
 
-        List<SkuPerformContext> skuPerformContexts = Lists.newArrayList();
+        List<SubOrderPerformContext> subOrderPerformContexts = Lists.newArrayList();
         for (SkuInfoDO detail : details) {
-            SkuPerformContext skuPerformContext = new SkuPerformContext();
-            skuPerformContext.setSkuInfo(detail);
+            SubOrderPerformContext subOrderPerformContext = new SubOrderPerformContext();
+            subOrderPerformContext.setSkuInfo(detail);
             MemberSubOrderDO his = PerformConvertor.INSTANCE.toSubOrderDO(context);
-            skuPerformContext.setHis(his);
+            subOrderPerformContext.setSubOrder(his);
 
             his.setStatus(SubOrderPerformStatusEnum.INIT);
             his.setSkuId(detail.getSkuId());
@@ -64,10 +64,10 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
                 item.setSkuId(detail.getSkuId());
                 items.add(item);
             }
-            skuPerformContext.setImmediatePerformItems(items);
-            skuPerformContexts.add(skuPerformContext);
+            subOrderPerformContext.setImmediatePerformItems(items);
+            subOrderPerformContexts.add(subOrderPerformContext);
         }
-        context.setSkuPerformContexts(skuPerformContexts);
+        context.setSubOrderPerformContexts(subOrderPerformContexts);
         if (context.getBaseTime() == 0) {
             context.setBaseTime(TimeUtil.now());
             context.getCmd().setBaseTime(context.getBaseTime());

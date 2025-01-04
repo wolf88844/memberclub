@@ -38,7 +38,7 @@ public class CreateDelayPerformOnceTaskFlow extends FlowNode<DelayItemContext> {
         List<OnceTask> tasks = context.getTasks().stream()
                 .map(onceTaskDO -> PerformConvertor.INSTANCE.toOnceTask(onceTaskDO))
                 .collect(Collectors.toList());
-        
+
         int count = performDomainService.createOnceTask(tasks);
         if (count < tasks.size()) {
             List<String> taskTokens = tasks.stream().map(OnceTask::getTaskToken).collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class CreateDelayPerformOnceTaskFlow extends FlowNode<DelayItemContext> {
                 CommonLog.error("新增周期履约任务失败 dbCount:{}, expectCount:{}, dbtasks:{}", taskFromDb.size(), tasks.size(), taskFromDb);
                 Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),
                         "task_create", false);
-                ResultCode.PERIOD_PERFORM_TASK_CREATE_ERROR.throwException();
+                throw ResultCode.PERIOD_PERFORM_TASK_CREATE_ERROR.newException();
             } else {
                 CommonLog.warn("幂等新增周期履约任务 count:{}, tasks:{}", count, tasks);
                 Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),

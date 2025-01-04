@@ -1,5 +1,29 @@
 SET MODE MYSQL;
 
+
+CREATE TABLE IF NOT EXISTS member_order (
+    id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
+    biz_type INT(11)  NOT NULL COMMENT '产品线',
+    user_id BIGINT(20)  NOT NULL COMMENT 'userId',
+    order_system_type INT(11)  NOT NULL COMMENT '订单系统类型',
+    order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
+    trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
+    renew_type INT(11)  NOT NULL COMMENT '续费类型 0 无续费,1 用户续费 2 系统自动续费',
+    sku_details TEXT NOT NULL COMMENT '购买商品信息',
+    act_price_fen VARCHAR(128)  NOT NULL COMMENT '实付金额',
+    origin_price_fen VARCHAR(128)  NOT NULL COMMENT '原价金额',
+    status INT(11)  NOT NULL COMMENT '状态',
+    perform_status INT(11)  NOT NULL COMMENT '履约状态',
+    refund_status INT(11)  NOT NULL COMMENT '退款状态, 0 未退,1 部分退, 2 完全退',
+    extra TEXT NOT NULL COMMENT '扩展属性',
+    stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
+    etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',
+    utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
+    ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_member_order (user_id, trade_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
 CREATE TABLE IF NOT EXISTS once_task (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -67,27 +91,6 @@ CREATE TABLE IF NOT EXISTS member_perform_item (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
 
 
-CREATE TABLE IF NOT EXISTS member_order (
-    id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
-    biz_type INT(11)  NOT NULL COMMENT '产品线',
-    user_id BIGINT(20)  NOT NULL COMMENT 'userId',
-    order_system_type INT(11)  NOT NULL COMMENT '订单系统类型',
-    order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
-    trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
-    renew_type INT(11)  NOT NULL COMMENT '续费类型 0 无续费,1 用户续费 2 系统自动续费',
-    sku_details TEXT NOT NULL COMMENT '购买商品信息',
-    act_price_fen VARCHAR(128)  NOT NULL COMMENT '实付金额',
-    origin_price_fen VARCHAR(128)  NOT NULL COMMENT '原价金额',
-    status INT(11)  NOT NULL COMMENT '状态',
-    refund_status INT(11)  NOT NULL COMMENT '退款状态, 0 未退,1 部分退, 2 完全退',
-    extra TEXT NOT NULL COMMENT '扩展属性',
-    stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
-    etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',
-    utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
-    ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
-    PRIMARY KEY (id),
-    UNIQUE KEY uniq_member_order (user_id, trade_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 
 CREATE TABLE IF NOT EXISTS aftersale_order (

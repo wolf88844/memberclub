@@ -9,7 +9,7 @@ package com.memberclub.sdk.perform.extension.execute.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionImpl;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * author: 掘金五阳
  */
-@ExtensionImpl(desc = "券类型默认发放扩展点实现", bizScenes =
+@ExtensionProvider(desc = "券类型默认发放扩展点实现", bizScenes =
         {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.RIGHT_TYPE_SCENE_COUPON, SceneEnum.RIGHT_TYPE_SCENE_DISCOUNT_COUPON})})
 public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
 
@@ -70,24 +70,24 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
                         "grant_code", "null",
                         "period_perform", context.isPeriodPerform());
 
-                ResultCode.DEPENDENCY_ERROR.throwException("调用下游为空");
+                throw ResultCode.DEPENDENCY_ERROR.newException("调用下游为空");
             }
         } catch (Exception e) {
             monitor(context, "exception");
             CommonLog.error("调用下游异常 request:{} ", request, e);
-            ResultCode.DEPENDENCY_ERROR.throwException(String.format("调用下游异常:%s", e.getMessage()), e);
+            throw ResultCode.DEPENDENCY_ERROR.newException(String.format("调用下游异常:%s", e.getMessage()), e);
         }
 
         if (!response.isSuccess()) {
             monitor(context, response.getCode());
-            ResultCode.DEPENDENCY_ERROR.throwException();
+            throw ResultCode.DEPENDENCY_ERROR.newException();
         }
         monitor(context, response.getCode());
 
         CommonLog.warn("调用权益发放返回值:{}, 入参:{}", response, request);
         if (CollectionUtils.isEmpty(response.getItemToken2AssetsMap())) {
             monitor(context, "empty");
-            ResultCode.DEPENDENCY_ERROR.throwException("下游发券列表为空");
+            throw ResultCode.DEPENDENCY_ERROR.newException("下游发券列表为空");
         }
         monitor(context, "normal");
 

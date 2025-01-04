@@ -11,8 +11,8 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.exception.ResultCode;
@@ -70,7 +70,7 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
                 Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
                         "insert_item", false,
                         "right_type", context.getRightType());
-                ResultCode.INTERNAL_ERROR.throwException("member_perform_item写入失败,稍后重试");
+                throw ResultCode.INTERNAL_ERROR.newException("member_perform_item写入失败,稍后重试");
             }
             if (!PerformItemStatusEnum.hasPerformed(itemInDb.getStatus())) {
                 memberPerformItemDOS.add(item);
