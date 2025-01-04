@@ -11,12 +11,13 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
-import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.common.Monitor;
+import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,22 +35,25 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
     @Autowired
     private MemberSubOrderDao performHisDao;
 
+    @Autowired
+    private MemberOrderDomainService memberOrderDomainService;
+
+
     @Override
     public void process(PerformContext context) {
-        MemberOrder memberOrder = null;
-        memberOrder = memberOrderDao.selectByTradeId(context.getUserId(), context.getTradeId());
+        MemberOrderDO memberOrder = memberOrderDomainService.getMemberOrderDO(context.getUserId(), context.getTradeId());
         context.setMemberOrder(memberOrder);
         if (context.getRetrySource() == RetrySourceEunm.UPSTREAM_RETRY) {
             context.setSkipPerform(true);
         }
 
         if (context.getRetrySource() == RetrySourceEunm.SELF_RETRY) {
-            if (memberOrder.getStatus() == MemberOrderStatusEnum.PERFORMED.toInt()) {
+            if (memberOrder.isPerformed()) {
                 context.setSkipPerform(true);
             }
-            if (!MemberOrderStatusEnum.isPerformEnabled(memberOrder.getStatus())) {
+            if (!MemberOrderStatusEnum.isPerformEnabled(memberOrder.getStatus().getCode())) {
                 CommonLog.error("当前履约状态不允许再次履约 status", memberOrder.getStatus());
-                Monitor.PERFORM_EXECUTE.counter(context.getBizType().toCode(), "curr_status_cant_perform", memberOrder.getStatus());
+                Monitor.PERFORM_EXECUTE.counter(context.getBizType().getCode(), "curr_status_cant_perform", memberOrder.getStatus());
                 throw ResultCode.CAN_NOT_PERFORM_RETRY.newException();
             }
         }

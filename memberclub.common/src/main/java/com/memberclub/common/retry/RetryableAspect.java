@@ -66,8 +66,6 @@ public class RetryableAspect {
                 if (param instanceof RetryableContext) {
                     RetryableContext retryableContext = ((RetryableContext) param);
                     retryableContext.setRetryTimes(retryTimes);
-                } else {
-                    throw e;
                 }
 
                 int initialDelayTime = annotation.initialDelaySeconds();

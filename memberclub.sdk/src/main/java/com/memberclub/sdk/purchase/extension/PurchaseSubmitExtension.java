@@ -6,12 +6,13 @@
  */
 package com.memberclub.sdk.purchase.extension;
 
+import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 
 /**
  * @author yuhaiqiang
  */
-public interface PurchaseSubmitExtension {
+public interface PurchaseSubmitExtension extends BaseExtension {
 
     public void submit(PurchaseSubmitContext context);
 }

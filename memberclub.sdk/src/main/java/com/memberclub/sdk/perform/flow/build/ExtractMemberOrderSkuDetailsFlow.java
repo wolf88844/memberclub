@@ -27,10 +27,11 @@ public class ExtractMemberOrderSkuDetailsFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        List<SkuInfoDO> skuBuyDetails = performDomainService.extractSkuBuyDetail(context.getMemberOrder());
+        List<SkuInfoDO> skuBuyDetails = context.getSkuBuyDetails();
         context.setSkuBuyDetails(skuBuyDetails);
 
-        MemberOrderExtraInfo extraInfo = performDomainService.extractExtraInfO(context.getMemberOrder());
+        //MemberOrderExtraInfo extraInfo = performDomainService.extractExtraInfO(context.getMemberOrder());
+        MemberOrderExtraInfo extraInfo = context.getMemberOrder().getExtra();
         context.setMemberOrderExtraInfo(extraInfo);
         context.setUserInfo(extraInfo.getUserInfo());
     }

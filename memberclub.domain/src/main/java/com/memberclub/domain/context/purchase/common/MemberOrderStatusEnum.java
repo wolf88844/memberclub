@@ -12,6 +12,7 @@ package com.memberclub.domain.context.purchase.common;
 public enum MemberOrderStatusEnum {
 
     INIT(0, "初始化"),
+    FAIL(8, "提单失败"),
     SUBMITED(9, "已提单"),
     CANCELED(19, "已取消"),
     PAYED(29, "已支付"),
@@ -29,30 +30,30 @@ public enum MemberOrderStatusEnum {
     }
 
     public static Boolean isPerformEnabled(int status) {
-        return status < PERFORMED.toInt();
+        return status < PERFORMED.getCode();
     }
 
     public static Boolean isPerformed(int status) {
-        return status == PERFORMED.toInt();
+        return status == PERFORMED.getCode();
     }
 
     public static boolean nonPerformed(int status) {
-        return status < PERFORMED.toInt();
+        return status < PERFORMED.getCode();
     }
 
     public static boolean isRefunded(int status) {
-        return status == MemberOrderStatusEnum.REFUNDED.toInt();
+        return status == MemberOrderStatusEnum.REFUNDED.getCode();
     }
 
 
-    public static MemberOrderStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static MemberOrderStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (MemberOrderStatusEnum item : MemberOrderStatusEnum.values()) {
             if (item.value == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid MemberOrderStatusEnum value: " + value);
+        return null;
     }
 
     @Override
@@ -60,7 +61,7 @@ public enum MemberOrderStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

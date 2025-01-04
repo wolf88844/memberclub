@@ -31,17 +31,18 @@ public class MemberOrder {
 
     private int renewType;
 
-    private String skuDetails;
-
     private String extra;
 
-    private String actPriceFen;
+    private Integer actPriceFen;
 
-    private String originPriceFen;
+    private Integer originPriceFen;
+
+    private Integer salePriceFen;
+
 
     private int status;
 
-    private int refundStatus;
+    private int performStatus;
 
     private long stime;
 

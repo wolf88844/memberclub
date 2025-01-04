@@ -47,7 +47,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             MemberSubOrderDO his = PerformConvertor.INSTANCE.toSubOrderDO(context);
             subOrderPerformContext.setSubOrder(his);
 
-            his.setStatus(SubOrderPerformStatusEnum.INIT);
+            his.setPerformStatus(SubOrderPerformStatusEnum.INIT);
             his.setSkuId(detail.getSkuId());
             his.setBuyCount(detail.getBuyCount());
             his.setCtime(TimeUtil.now());

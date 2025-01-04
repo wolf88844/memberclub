@@ -12,13 +12,13 @@ import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.domain.common.BizScene;
-import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
@@ -70,14 +70,14 @@ public class PerformBizService {
     public PerformResp perform(PerformCmd cmd) {
         PerformResp resp = new PerformResp();
         try {
-            String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
+            String preBuildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))
                     .buildPreBuildPerformContextScene(cmd);
 
-            PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), preBuildScene),
+            PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), preBuildScene),
                     PreBuildPerformContextExtension.class).preBuild(cmd);
 
             if (context.isSkipPerform()) {
-                if (MemberOrderStatusEnum.isPerformed(context.getMemberOrder().getStatus())) {
+                if (MemberOrderStatusEnum.isPerformed(context.getMemberOrder().getStatus().getCode())) {
                     resp.setSuccess(true);
                     resp.setNeedRetry(false);
                 } else {
@@ -90,15 +90,15 @@ public class PerformBizService {
                 return resp;
             }
 
-            String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
+            String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))
                     .buildBuildPerformContextScene(context);
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), buildScene),
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), buildScene),
                     BuildPerformContextExtension.class).build(context);
 
             //execute Context
-            String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().toCode()))
+            String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))
                     .buildPerformContextExecuteScene(context);
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().toCode(), executeScene),
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), executeScene),
                     PerformExecuteExtension.class).execute(context);
 
             resp.setSuccess(true);

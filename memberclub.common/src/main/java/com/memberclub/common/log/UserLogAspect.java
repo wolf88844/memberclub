@@ -61,7 +61,7 @@ public class UserLogAspect {
             String bizType = null;
             if (bizTypeObject != null) {
                 if (bizTypeObject instanceof BizTypeEnum) {
-                    bizType = String.valueOf(((BizTypeEnum) bizTypeObject).toCode());
+                    bizType = String.valueOf(((BizTypeEnum) bizTypeObject).getCode());
                 } else {
                     bizType = String.valueOf(bizTypeObject);
                 }

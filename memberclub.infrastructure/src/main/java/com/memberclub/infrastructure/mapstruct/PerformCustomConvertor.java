@@ -9,26 +9,21 @@ package com.memberclub.infrastructure.mapstruct;
 import com.google.common.collect.Lists;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.context.perform.common.GrantTypeEnum;
-import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
-import com.memberclub.domain.common.OrderSystemTypeEnum;
-import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
-import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
-import com.memberclub.domain.context.perform.common.RightTypeEnum;
-import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
-import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
+import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.common.GrantTypeEnum;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
+import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
+import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.aftersale.ApplySkuDetail;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
@@ -47,7 +42,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
-public class ConvertorMethod {
+public class PerformCustomConvertor {
 
 
     @Named("toAftersaleOrderExtraDO")
@@ -90,26 +85,6 @@ public class ConvertorMethod {
         return RefundTypeEnum.findByInt(source);
     }
 
-    @Named("toBizTypeInt")
-    public int toBizTypeInt(BizTypeEnum bizType) {
-        return bizType.toCode();
-    }
-
-    @Named("toBizTypeEnum")
-    public BizTypeEnum toBizType(int bizType) {
-        return BizTypeEnum.findByCode(bizType);
-    }
-
-
-    @Named("toOrderSystemTypeInt")
-    public int toOrderSystemTypeInt(OrderSystemTypeEnum orderSystemType) {
-        return orderSystemType.toInt();
-    }
-
-    @Named("toMemberSubOrderStatusInt")
-    public int toMemberSubOrderStatusInt(SubOrderPerformStatusEnum status) {
-        return status.toInt();
-    }
 
     @Named("toPeriodTypeInt")
     public int toPeriodTypeInt(PeriodTypeEnum periodType) {
@@ -171,42 +146,12 @@ public class ConvertorMethod {
         return JsonUtils.fromJson(extraInfo, PerformItemExtraInfo.class);
     }
 
-    @Named("toMemberSubOrderExtraString")
-    public String toMemberSubOrderExtraString(SubOrderExtraInfo extraInfo) {
-        return JsonUtils.toJson(extraInfo);
-    }
-
-    @Named("toTaskStatusInt")
-    public int toTaskStatusInt(OnceTaskStatusEnum status) {
-        return status.toInt();
-    }
-
-    @Named("toTaskStatusEnum")
-    public OnceTaskStatusEnum toTaskStatusEnum(int status) {
-        return OnceTaskStatusEnum.findByInt(status);
-    }
-
     @SneakyThrows
     public static TaskContentDO toTaskContentDO(String content, String className) {
         Class<?> clazz = Class.forName(className);
         return (TaskContentDO) JsonUtils.fromJson(content, clazz);
     }
 
-
-    @Named("toTaskTypeInt")
-    public int toTaskTypeInt(TaskTypeEnum taskType) {
-        return taskType.toInt();
-    }
-
-    @Named("toTaskTypeEnum")
-    public TaskTypeEnum toTaskTypeEnum(int taskType) {
-        return TaskTypeEnum.findByInt(taskType);
-    }
-
-    @Named("toTaskContentString")
-    public String toTaskContentString(TaskContentDO content) {
-        return JsonUtils.toJson(content);
-    }
 
     public static OnceTaskDO buildTaskForPeriodPerform(PerformContext context, MemberPerformItemDO item) {
         OnceTaskDO task = new OnceTaskDO();
@@ -224,14 +169,14 @@ public class ConvertorMethod {
 
     public static PerformTaskContentDO buildPerformTaskContent(DelayItemContext context, List<MemberPerformItemDO> items) {
         PerformTaskContentDO content = new PerformTaskContentDO();
-        content.setBizType(context.getPerformContext().getBizType().toCode());
+        content.setBizType(context.getPerformContext().getBizType().getCode());
         content.setSubTradeId(context.getSubOrderPerformContext().getSubOrder().getSubTradeId());
         content.setTradeId(context.getPerformContext().getTradeId());
         content.setSkuId(context.getSubOrderPerformContext().getSubOrder().getSkuId());
 
         List<PerformTaskContentItemDO> contentItems = Lists.newArrayList();
         for (MemberPerformItemDO item : items) {
-            PerformTaskContentItemDO itemPO = ConvertorMethod.toContentItem(item,
+            PerformTaskContentItemDO itemPO = PerformCustomConvertor.toContentItem(item,
                     context.getPerformContext(), context.getSubOrderPerformContext());
             contentItems.add(itemPO);
         }
@@ -244,7 +189,7 @@ public class ConvertorMethod {
                                                          PerformContext context,
                                                          SubOrderPerformContext subOrderPerformContext) {
         PerformTaskContentItemDO itemPO = PerformConvertor.INSTANCE.toPerformTaskContentItemDO(item);
-        itemPO.setBizType(context.getBizType().toCode());
+        itemPO.setBizType(context.getBizType().getCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
         itemPO.setSkuId(subOrderPerformContext.getSubOrder().getSkuId());
@@ -257,7 +202,7 @@ public class ConvertorMethod {
     public static MemberPerformItem toMemberPerformItem(MemberPerformItemDO item,
                                                         PerformItemContext context) {
         MemberPerformItem itemPO = PerformConvertor.INSTANCE.toMemberPerformItem(item);
-        itemPO.setBizType(context.getBizType().toCode());
+        itemPO.setBizType(context.getBizType().getCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
         itemPO.setSkuId(context.getSkuId());

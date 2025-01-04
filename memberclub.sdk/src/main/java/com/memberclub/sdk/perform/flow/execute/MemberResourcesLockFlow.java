@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
-    
+
     @Autowired
     private PerformLockService performLockService;
 
@@ -41,7 +41,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
     }
 
     @Override
-    public void rollback(PerformContext context) {
+    public void rollback(PerformContext context, Exception e) {
         performLockService.rollbackLock(context.getBizType(),
                 context.getUserId(),
                 context.getTradeId(),

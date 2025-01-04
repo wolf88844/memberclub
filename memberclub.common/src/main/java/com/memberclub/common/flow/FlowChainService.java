@@ -51,7 +51,7 @@ public class FlowChainService {
             for (int i = index; i >= 0; i--) {
                 FlowNode<T> node = chain.getNodes().get(i);
                 try {
-                    node.rollback(context);
+                    node.rollback(context, exception);
                 } catch (Exception e) {
                     CommonLog.error("rollback执行异常,忽略 name:{}", node.getClass().getSimpleName(), e);
                 }

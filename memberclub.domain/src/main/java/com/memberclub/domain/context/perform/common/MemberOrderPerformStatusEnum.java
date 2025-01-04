@@ -28,7 +28,7 @@ public enum MemberOrderPerformStatusEnum {
         this.name = name;
     }
 
-    public static MemberOrderPerformStatusEnum findByInt(int code) throws IllegalArgumentException {
+    public static MemberOrderPerformStatusEnum findByCode(int code) throws IllegalArgumentException {
         for (MemberOrderPerformStatusEnum item : MemberOrderPerformStatusEnum.values()) {
             if (item.code == code) {
                 return item;

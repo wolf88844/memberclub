@@ -19,11 +19,11 @@ import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnu
  */
 public enum MemberTradeEvent {
 
-    MEMBER_ORDER_START_PERFORM("member_order_start_perform", PERFORMING.toInt(),
-            ImmutableList.of(PAYED.toInt(), PERFORMING.toInt())),
+    MEMBER_ORDER_START_PERFORM("member_order_start_perform", PERFORMING.getCode(),
+            ImmutableList.of(PAYED.getCode(), PERFORMING.getCode())),
 
-    MEMBER_ORDER_SUCCESS_PERFORM("member_order_success_perform", PERFORMED.toInt(),
-            ImmutableList.of(PERFORMING.toInt(), PERFORMED.toInt()));
+    MEMBER_ORDER_SUCCESS_PERFORM("member_order_success_perform", PERFORMED.getCode(),
+            ImmutableList.of(PERFORMING.getCode(), PERFORMED.getCode()));
 
     private List<Integer> fromStatus;
 

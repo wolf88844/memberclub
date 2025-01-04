@@ -41,6 +41,7 @@ public class PurchaseSubmitContext {
 
     public PurchaseSubmitContext(PurchaseSubmitCmd cmd) {
         this.submitCmd = cmd;
+        this.userId = cmd.getUserId();
         this.bizType = cmd.getBizType();
         this.userInfo = cmd.getUserInfo();
     }

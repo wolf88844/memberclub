@@ -10,14 +10,14 @@ package com.memberclub.common.flow;
  * author: 掘金五阳
  */
 public abstract class FlowNode<T> {
-    
+
 
     public abstract void process(T t);
 
     public void success(T t) {
     }
 
-    public void rollback(T t) {
+    public void rollback(T t, Exception e) {
     }
 
     public void callback(T t, Exception e) {

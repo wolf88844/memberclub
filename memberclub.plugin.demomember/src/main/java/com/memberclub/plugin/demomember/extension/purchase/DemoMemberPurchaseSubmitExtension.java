@@ -13,11 +13,12 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.sdk.purchase.extension.PurchaseSubmitExtension;
-import com.memberclub.sdk.purchase.flow.MemberOrderInitialSubmitFlow;
+import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
 import com.memberclub.sdk.purchase.flow.TradeOrderSubmitFlow;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.annotation.PostConstruct;
 
 /**
  * author: 掘金五阳
@@ -29,12 +30,12 @@ public class DemoMemberPurchaseSubmitExtension implements PurchaseSubmitExtensio
 
     private static FlowChain<PurchaseSubmitContext> flowChain = null;
 
-    @PostMapping
+    @PostConstruct
     public void init() {
         flowChain = FlowChain.newChain(PurchaseSubmitContext.class)
                 .addNode(PurchaseSubmitLockFlow.class)
                 .addNode(SkuInfoInitalSubmitFlow.class)
-                .addNode(MemberOrderInitialSubmitFlow.class)
+                .addNode(MemberOrderSubmitFlow.class)
                 .addNode(TradeOrderSubmitFlow.class)
         ;
     }

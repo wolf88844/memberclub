@@ -15,7 +15,7 @@ import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
-import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
+import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
 import com.memberclub.sdk.perform.extension.delay.DelayOnceTaskExtension;
 
 import java.util.List;
@@ -30,11 +30,11 @@ public class DefaultDelayOnceTaskExtension implements DelayOnceTaskExtension {
 
     @Override
     public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items) {
-        OnceTaskDO task = ConvertorMethod.buildTaskForPeriodPerform(context.getPerformContext(), items.get(0));
+        OnceTaskDO task = PerformCustomConvertor.buildTaskForPeriodPerform(context.getPerformContext(), items.get(0));
         task.setTaskType(TaskTypeEnum.PERIOD_PERFORM);
         task.setTaskContentClassName(PerformTaskContentDO.class.getName());
 
-        PerformTaskContentDO content = ConvertorMethod.buildPerformTaskContent(context, items);
+        PerformTaskContentDO content = PerformCustomConvertor.buildPerformTaskContent(context, items);
 
         task.setContent(content);
         return task;

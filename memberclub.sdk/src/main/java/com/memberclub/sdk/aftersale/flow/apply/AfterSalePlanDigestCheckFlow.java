@@ -22,7 +22,7 @@ public class AfterSalePlanDigestCheckFlow extends FlowNode<AfterSaleApplyContext
 
     @Override
     public void process(AfterSaleApplyContext context) {
-        if (SwitchEnum.AFTERSALE_PLAN_GENERATE_DIGEST_CHECK_DEGRADE.getBoolean(context.getCmd().getBizType().toCode())) {
+        if (SwitchEnum.AFTERSALE_PLAN_GENERATE_DIGEST_CHECK_DEGRADE.getBoolean(context.getCmd().getBizType().getCode())) {
             CommonLog.info("售后摘要降级,跳过校验 preview:{}, apply:{}",
                     context.getPreviewContext().getDigests(),
                     context.getCmd().getDigests());

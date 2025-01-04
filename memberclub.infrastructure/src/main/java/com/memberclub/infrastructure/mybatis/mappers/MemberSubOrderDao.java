@@ -41,11 +41,27 @@ public interface MemberSubOrderDao extends BaseMapper<MemberSubOrder> {
                                                 @Param("tradeId") String tradeId);
 
 
-    @Update({"UPDATE " + TABLE_NAME + " SET  status=#{toStatus}, utime=#{utime} "
-            , " WHERE user_id = #{userId} AND trade_id =#{tradeId} AND sku_id =#{skuId} AND status<#{toStatus}"})
+    @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}, utime=#{utime} "
+            , " WHERE user_id = #{userId} AND trade_id =#{tradeId} AND sku_id =#{skuId} AND status<#{toPerformStatus}"})
     public int updateStatus(@Param("userId") long userId,
                             @Param("tradeId") String tradeId,
                             @Param("skuId") long skuId,
-                            @Param("toStatus") int status,
+                            @Param("toPerformStatus") int toPerformStatus,
                             @Param("utime") long utime);
+
+
+    @Update({
+            "UPDATE ", TABLE_NAME,
+            " SET status=#{status}, extra=#{extra}, utime=#{utime}, order_id=#{orderId}",
+            " ,actprice_fen=#{actPriceFen} WHERE user_id=#{userId} AND sub_trade_id=#{subTradeId} "
+    })
+    public int updateStatusOnSubmitSuccess(
+            @Param("userId") long userId,
+            @Param("subTradeId") Long subTradeId,
+            @Param("status") Integer status,
+            @Param("orderId") String orderId,
+            @Param("actPriceFen") Integer actPriceFen,
+            @Param("extra") String extra,
+            @Param("utime") long utime
+    );
 }

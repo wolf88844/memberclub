@@ -46,14 +46,14 @@ public class RealtimeCalculateUsageAmountFlow extends FlowNode<AftersalePreviewC
             context.setCurrentRightType(entry.getKey());
 
             Map<String, ItemUsage> tempBatchCode2ItemUsage =
-                    extensionManager.getExtension(BizScene.of(context.getCmd().getBizType().toCode(),
+                    extensionManager.getExtension(BizScene.of(context.getCmd().getBizType().getCode(),
                             SceneEnum.buildRightTypeScene(entry.getKey())),
                             RealtimeCalculateUsageExtension.class).calculateItemUsage(context);
             batchCode2ItemUsage.putAll(tempBatchCode2ItemUsage);
         }
 
         int recommendRefundPrice =
-                extensionManager.getExtension(BizScene.of(context.getCmd().getBizType().toCode()),
+                extensionManager.getExtension(BizScene.of(context.getCmd().getBizType().getCode()),
                         AftersaleAmountExtension.class).calculteRecommendRefundPrice(context, batchCode2ItemUsage);
         context.setRecommendRefundPrice(recommendRefundPrice);
     }

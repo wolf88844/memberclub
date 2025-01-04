@@ -16,7 +16,7 @@ import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
+import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class DefaultMemberPerformItemExtension implements MemberPerformItemExten
 
         List<MemberPerformItem> items = Lists.newArrayList();
         for (MemberPerformItemDO item : performItemContext.getItems()) {
-            MemberPerformItem itemPO = ConvertorMethod.toMemberPerformItem(item,
+            MemberPerformItem itemPO = PerformCustomConvertor.toMemberPerformItem(item,
                     performItemContext);
             items.add(itemPO);
         }

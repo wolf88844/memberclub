@@ -37,6 +37,6 @@ public class PerformItemContext {
     private ItemGroupGrantResult result;
 
     public BizScene toDefaultScene() {
-        return BizScene.of(bizType.toCode());
+        return BizScene.of(bizType.getCode());
     }
 }

@@ -19,8 +19,8 @@ import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
  */
 public interface AftersaleBasicCheckExtension extends BaseExtension {
     default void statusCheck(AftersalePreviewContext context) {
-        MemberOrderStatusEnum status = MemberOrderStatusEnum.findByInt(context.getMemberOrder().getStatus());
-        RefundStatusEnum refundStatus = RefundStatusEnum.findByInt(context.getMemberOrder().getRefundStatus());
+        MemberOrderStatusEnum status = MemberOrderStatusEnum.findByCode(context.getMemberOrder().getStatus());
+        RefundStatusEnum refundStatus = RefundStatusEnum.findByInt(context.getMemberOrder().getPerformStatus());
 
 
         CommonLog.info("当前订单状态:{}", status.toString(), refundStatus.toString());
@@ -28,7 +28,7 @@ public interface AftersaleBasicCheckExtension extends BaseExtension {
             AftersaleUnableCode.REFUNDED.throwException();
         }
 
-        if (MemberOrderStatusEnum.nonPerformed(status.toInt())) {
+        if (MemberOrderStatusEnum.nonPerformed(status.getCode())) {
             AftersaleUnableCode.NON_PERFORMED.throwException();
         }
 

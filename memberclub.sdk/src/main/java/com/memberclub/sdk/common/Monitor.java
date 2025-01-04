@@ -42,6 +42,6 @@ public enum Monitor {
     }
 
     public void counter(BizTypeEnum bizType, Object... tags) {
-        counter(bizType.toCode(), tags);
+        counter(bizType.getCode(), tags);
     }
 }

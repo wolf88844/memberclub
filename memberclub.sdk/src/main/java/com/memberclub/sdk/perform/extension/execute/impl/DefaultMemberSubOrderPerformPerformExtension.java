@@ -7,17 +7,17 @@
 package com.memberclub.sdk.perform.extension.execute.impl;
 
 import com.memberclub.common.annotation.Route;
-import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
-import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.infrastructure.mapstruct.PerformConvertor;
+import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.sdk.perform.extension.execute.MemberSubOrderPerformExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +36,14 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
 
     @Override
     public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        MemberSubOrder memberSubOrder = PerformConvertor.INSTANCE.toMemberSubOrder(subOrderPerformContext.getSubOrder());
+        MemberSubOrder memberSubOrder = PurchaseConvertor.INSTANCE.toMemberSubOrder(subOrderPerformContext.getSubOrder());
         return memberSubOrder;
     }
 
     @Override
     public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         MemberSubOrder memberSubOrder = toMemberSubOrder(context, subOrderPerformContext);
-        memberSubOrder.setStatus(SubOrderPerformStatusEnum.PERFORM_SUCC.toInt());
+        memberSubOrder.setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode());
         memberSubOrder.setUtime(TimeUtil.now());
         return memberSubOrder;
     }

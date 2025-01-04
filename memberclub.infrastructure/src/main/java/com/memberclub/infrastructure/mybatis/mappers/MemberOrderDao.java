@@ -50,6 +50,22 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
                                         @Param("fromStatuses") List<Integer> fromStatuses,
                                         @Param("utime") long utime);
 
+    @Update({
+            "UPDATE ", TABLE_NAME,
+            " SET status=#{status}, extra=#{extra}, utime=#{utime}, order_id=#{orderId}",
+            " ,act_price_fen=#{actPriceFen} WHERE user_id=#{userId} AND trade_id=#{tradeId} "
+    })
+    public int updateStatusOnSubmitSuccess(
+            @Param("userId") long userId,
+            @Param("tradeId") String tradeId,
+            @Param("status") Integer status,
+            @Param("orderId") String orderId,
+            @Param("actPriceFen") Integer actPriceFen,
+            @Param("extra") String extra,
+            @Param("utime") long utime
+    );
+
+
     @QueryMaster
     @Select({"SELECT * FROM ", TABLE_NAME,
             " WHERE user_id=#{userId} AND trade_id=#{tradeId} "})

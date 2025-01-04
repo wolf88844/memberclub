@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class MemberOrderInitialSubmitFlow extends FlowNode<PurchaseSubmitContext> {
+public class MemberOrderSubmitFlow extends FlowNode<PurchaseSubmitContext> {
 
     @Autowired
     private MemberOrderBuildFactory memberOrderBuildFactory;
@@ -29,7 +29,21 @@ public class MemberOrderInitialSubmitFlow extends FlowNode<PurchaseSubmitContext
     @Override
     public void process(PurchaseSubmitContext context) {
         MemberOrderDO memberOrderDO = memberOrderBuildFactory.build(context);
+        context.setMemberOrder(memberOrderDO);
 
         memberOrderDomainService.createMemberOrder(memberOrderDO);
+    }
+
+
+    @Override
+    public void success(PurchaseSubmitContext context) {
+        memberOrderBuildFactory.onSubmitSuccess(context);
+        memberOrderDomainService.submitSuccess(context.getMemberOrder());
+    }
+
+    @Override
+    public void rollback(PurchaseSubmitContext context, Exception e) {
+        memberOrderBuildFactory.onSubmitFail(context, e);
+        memberOrderDomainService.submitFail(context.getMemberOrder());
     }
 }

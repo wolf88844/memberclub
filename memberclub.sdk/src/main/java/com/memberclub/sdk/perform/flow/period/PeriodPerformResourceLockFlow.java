@@ -39,7 +39,7 @@ public class PeriodPerformResourceLockFlow extends FlowNode<PeriodPerformContext
     }
 
     @Override
-    public void rollback(PeriodPerformContext context) {
+    public void rollback(PeriodPerformContext context, Exception e) {
         performLockService.unlock(context.getBizType(),
                 context.getUserId(),
                 context.getTradeId(),

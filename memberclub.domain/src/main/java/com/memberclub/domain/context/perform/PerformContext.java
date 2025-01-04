@@ -13,7 +13,7 @@ import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
-import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import lombok.Data;
 import org.springframework.util.CollectionUtils;
@@ -43,15 +43,13 @@ public class PerformContext {
 
     private String tradeId;
 
-    private MemberOrder memberOrder;
-
     private MemberOrderExtraInfo memberOrderExtraInfo;
 
     private OrderSystemTypeEnum orderSystemType;
 
-    private String actPriceFen;
+    private Integer actPriceFen;
 
-    private String originPriceFen;
+    private Integer originPriceFen;
 
     private int memberOrderStartPerformUpdateCount;
 
@@ -63,6 +61,8 @@ public class PerformContext {
 
     /****************** Start 商品和履约配置****************/
 
+
+    private MemberOrderDO memberOrder;
 
     /**
      * 只读,不能写
@@ -92,7 +92,7 @@ public class PerformContext {
     /********************* 重试上下文***************/
 
     public BizScene toDefaultScene() {
-        return BizScene.of(bizType.toCode());
+        return BizScene.of(bizType.getCode());
     }
 
     public MemberSubOrder matchHisFromDb(long skuId) {

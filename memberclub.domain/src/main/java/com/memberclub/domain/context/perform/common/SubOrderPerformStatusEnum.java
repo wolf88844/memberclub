@@ -32,23 +32,23 @@ public enum SubOrderPerformStatusEnum {
         this.name = name;
     }
 
-    public static SubOrderPerformStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static SubOrderPerformStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (SubOrderPerformStatusEnum item : SubOrderPerformStatusEnum.values()) {
             if (item.value == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid SubOrderStatusEnum value: " + value);
+        return null;
     }
 
     public static boolean hasPerformed(int status) {
-        return status >= PERFORM_SUCC.toInt();
+        return status >= PERFORM_SUCC.getCode();
     }
 
 
     public static int getReversedStatus(boolean completed) {
-        return completed ? COMPLETED_REVERSED.toInt() : PORTION_REVERSED.toInt();
+        return completed ? COMPLETED_REVERSED.getCode() : PORTION_REVERSED.getCode();
     }
 
     @Override
@@ -56,7 +56,7 @@ public enum SubOrderPerformStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

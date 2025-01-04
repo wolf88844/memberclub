@@ -43,7 +43,7 @@ public enum BizTypeEnum {
         return this.name;
     }
 
-    public int toCode() {
+    public int getCode() {
         return this.code;
     }
 }

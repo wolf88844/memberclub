@@ -29,11 +29,11 @@ public class BizScene {
     }
 
     public static BizScene of(BizTypeEnum bizType, String scene) {
-        return new BizScene(bizType.toCode(), scene);
+        return new BizScene(bizType.getCode(), scene);
     }
 
     public static BizScene of(BizTypeEnum bizType) {
-        return of(bizType.toCode(), SceneEnum.DEFAULT_SCENE.getValue());
+        return of(bizType.getCode(), SceneEnum.DEFAULT_SCENE.getValue());
     }
 
     public String getKey() {

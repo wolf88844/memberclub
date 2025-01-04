@@ -31,11 +31,17 @@ public class MemberSubOrder {
 
     private Long subTradeId;
 
+    private Integer actPriceFen;
+
+    private Integer originPriceFen;
+
+    private Integer salePriceFen;
+
     private int buyCount;
 
     private long skuId;
 
-    private int status;
+    private int performStatus;
 
     private String extra;
 

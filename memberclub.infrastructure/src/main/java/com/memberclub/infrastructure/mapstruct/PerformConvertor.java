@@ -6,8 +6,6 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
-import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
-import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
@@ -15,17 +13,11 @@ import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
-import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
-import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
-import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
@@ -34,8 +26,8 @@ import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
+import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -44,7 +36,7 @@ import org.mapstruct.factory.Mappers;
 /**
  * @author 掘金五阳
  */
-@Mapper(uses = ConvertorMethod.class)
+@Mapper(uses = {PerformCustomConvertor.class, CommonCustomConvertor.class})
 public interface PerformConvertor {
 
     PerformConvertor INSTANCE = Mappers.getMapper(PerformConvertor.class);
@@ -114,19 +106,6 @@ public interface PerformConvertor {
     public OnceTask toOnceTask(OnceTaskDO task);
 
 
-    @Mappings(value = {
-            @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),
-            @Mapping(qualifiedByName = "toOrderSystemTypeInt", target = "orderSystemType"),
-            @Mapping(qualifiedByName = "toMemberSubOrderExtraString", target = "extra"),
-            @Mapping(qualifiedByName = "toMemberSubOrderStatusInt", target = "status"),
-    })
-    public MemberSubOrder toMemberSubOrder(MemberSubOrderDO his);
-
-
-    public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
-
-    public AftersaleApplyCmd toApplyCmd(AfterSalePreviewCmd cmd);
-
     public PerformItemViewInfo toViewInfo(RightViewInfo viewInfo);
 
     public PerformItemSettleInfo toSettleInfo(RightSettleInfo settleInfo);
@@ -134,10 +113,4 @@ public interface PerformConvertor {
     public PerformItemSaleInfo toSaleInfo(RightSaleInfo saleInfo);
 
     public PerformItemGrantInfo toGrantInfo(RightGrantInfo grantInfo);
-
-    public SubOrderViewInfo toSubOrderViewInfo(SkuViewInfo viewInfo);
-
-    public SubOrderSettleInfo toSubOrderSettleInfo(SkuSettleInfo settleInfo);
-
-    public SubOrderSaleInfo toSubOrderSaleInfo(SkuSaleInfo saleInfo);
 }

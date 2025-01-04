@@ -13,6 +13,7 @@ public enum ResultCode {
 
     INTERNAL_ERROR(1, "内部错误"),
     PARAM_VALID(2, "参数异常"),
+    ORDER_CREATE_ERROR(3, "会员单生成失败"),
     CAN_NOT_PERFORM_RETRY(10, "当前状态不允许再次重试履约"),
     LOCK_ERROR(11, "加锁失败异常"),
     PERFORM_ITEM_GRANT_ERROR(12, "履约项发放失败"),

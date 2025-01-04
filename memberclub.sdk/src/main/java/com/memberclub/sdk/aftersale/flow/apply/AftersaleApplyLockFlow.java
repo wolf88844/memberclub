@@ -36,7 +36,7 @@ public class AftersaleApplyLockFlow extends FlowNode<AfterSaleApplyContext> {
     }
 
     @Override
-    public void rollback(AfterSaleApplyContext context) {
+    public void rollback(AfterSaleApplyContext context, Exception e) {
 
 
     }

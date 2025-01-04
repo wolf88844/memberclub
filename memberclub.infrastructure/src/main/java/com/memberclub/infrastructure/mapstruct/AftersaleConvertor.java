@@ -11,6 +11,7 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 import com.memberclub.domain.entity.AftersaleOrder;
+import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -19,12 +20,17 @@ import org.mapstruct.factory.Mappers;
 /**
  * author: 掘金五阳
  */
-@Mapper(uses = ConvertorMethod.class)
+@Mapper(uses = {PerformCustomConvertor.class, CommonCustomConvertor.class})
 public interface AftersaleConvertor {
 
     AftersaleConvertor INSTANCE = Mappers.getMapper(AftersaleConvertor.class);
 
     public AftersaleOrderDO toAftersaleOrderDO(AftersaleApplyCmd cmd);
+
+
+    public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
+
+    public AftersaleApplyCmd toApplyCmd(AfterSalePreviewCmd cmd);
 
     @Mappings({
             @Mapping(target = "bizType", qualifiedByName = "toBizTypeInt"),
