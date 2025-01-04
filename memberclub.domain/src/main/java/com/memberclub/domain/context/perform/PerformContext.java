@@ -13,7 +13,6 @@ import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import lombok.Data;
 
@@ -33,16 +32,12 @@ public class PerformContext {
 
     private BizTypeEnum bizType;
 
-    private CommonUserInfo userInfo;
-
     private long userId;
 
     /******************订单信息****************/
     private String orderId;
 
     private String tradeId;
-
-    private MemberOrderExtraInfo memberOrderExtraInfo;
 
     private OrderSystemTypeEnum orderSystemType;
 
@@ -58,17 +53,15 @@ public class PerformContext {
 
     /******************订单信息****************/
 
-    /****************** Start 商品和履约配置****************/
+    /****************** Start 主单,子单和上下文 核心****************/
 
+    private CommonUserInfo userInfo;
 
     private MemberOrderDO memberOrder;
 
-    /**
-     * 只读,不能写
-     */
-    private List<MemberSubOrderDO> memberSubOrders;
+    private MemberOrderExtraInfo memberOrderExtraInfo;
 
-    private List<SkuInfoDO> skuBuyDetails;
+    private List<MemberSubOrderDO> memberSubOrders;
 
     private List<SubOrderPerformContext> subOrderPerformContexts;
 
@@ -78,7 +71,7 @@ public class PerformContext {
 
     private long delayPerformEtime;
 
-    /******************商品和履约配置****************/
+    /******************主单,子单和上下文 核心****************/
 
 
     /********************* Start 重试上下文***************/
@@ -92,15 +85,5 @@ public class PerformContext {
 
     public BizScene toDefaultScene() {
         return BizScene.of(bizType.getCode());
-    }
-
-    public MemberSubOrderDO getSubOrder(long skuId) {
-        for (MemberSubOrderDO subOrder : memberOrder.getSubOrders()) {
-            if (subOrder.getSkuId() == skuId) {
-                return subOrder;
-            }
-        }
-
-        return null;
     }
 }

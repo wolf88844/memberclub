@@ -19,8 +19,8 @@ import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
  */
 public interface AftersaleBasicCheckExtension extends BaseExtension {
     default void statusCheck(AftersalePreviewContext context) {
-        MemberOrderStatusEnum status = MemberOrderStatusEnum.findByCode(context.getMemberOrder().getStatus());
-        MemberOrderPerformStatusEnum performStatus = MemberOrderPerformStatusEnum.findByCode(context.getMemberOrder().getPerformStatus());
+        MemberOrderStatusEnum status = context.getMemberOrder().getStatus();
+        MemberOrderPerformStatusEnum performStatus = context.getMemberOrder().getPerformStatus();
 
 
         CommonLog.info("当前订单状态:{}", status.toString(), performStatus.toString());

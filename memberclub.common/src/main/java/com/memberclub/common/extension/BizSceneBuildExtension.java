@@ -19,7 +19,7 @@ import com.memberclub.domain.context.perform.PerformItemContext;
 public interface BizSceneBuildExtension extends BaseExtension {
 
     default String buildPerformItemGrantExtensionScene(PerformItemContext context) {
-        return String.valueOf(context.getItems().get(0).getRightType().toInt());
+        return String.valueOf(context.getItems().get(0).getRightType().getCode());
     }
 
     default String buildPreBuildPerformContextScene(PerformCmd cmd) {

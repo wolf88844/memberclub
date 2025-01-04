@@ -36,7 +36,7 @@ public class DelayPerformFlow extends SubFlowNode<PerformContext, DelayItemConte
 
         Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSubOrderPerformContext()
                 .getDelayPerformItems().stream()
-                .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
+                .collect(Collectors.groupingBy((item) -> item.getRightType().getCode()));
 
         for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {
             DelayItemContext itemContext = new DelayItemContext();

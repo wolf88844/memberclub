@@ -13,9 +13,9 @@ import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeCalculateTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import lombok.Data;
 
 import java.util.List;
@@ -32,11 +32,11 @@ public class AftersalePreviewContext {
     /***************** 基础履约数据 *********************/
     private AfterSalePreviewCmd cmd;
 
-    private MemberOrder memberOrder;
+    private MemberOrderDO memberOrder;
 
-    List<MemberSubOrder> subOrderList;
+    List<MemberSubOrderDO> subOrders;
 
-    List<MemberPerformItem> performItems;
+    List<MemberPerformItemDO> performItems;
 
     /******************售后预览中间数据****************************/
 
@@ -47,7 +47,7 @@ public class AftersalePreviewContext {
 
 
     /******************临时数据****************************/
-    List<MemberPerformItem> currentPerformItemsGroupByRightType;
+    List<MemberPerformItemDO> currentPerformItemsGroupByRightType;
 
     int currentRightType;
 

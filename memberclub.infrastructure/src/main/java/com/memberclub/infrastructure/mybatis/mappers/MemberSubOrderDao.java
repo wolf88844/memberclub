@@ -42,14 +42,6 @@ public interface MemberSubOrderDao extends BaseMapper<MemberSubOrder> {
 
 
     @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}, utime=#{utime} "
-            , " WHERE user_id = #{userId} AND trade_id =#{tradeId} AND sku_id =#{skuId} AND status<#{toPerformStatus}"})
-    public int updateStatusDeprecate(@Param("userId") long userId,
-                                     @Param("tradeId") String tradeId,
-                                     @Param("skuId") long skuId,
-                                     @Param("toPerformStatus") int toPerformStatus,
-                                     @Param("utime") long utime);
-
-    @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}, utime=#{utime} "
             , " WHERE user_id = #{userId} AND sub_trade_id =#{subTradeId} AND status<#{toPerformStatus}"})
     public int updateStatus(@Param("userId") long userId,
                             @Param("subTradeId") Long subTradeId,

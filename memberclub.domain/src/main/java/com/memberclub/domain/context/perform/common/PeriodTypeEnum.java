@@ -23,7 +23,7 @@ public enum PeriodTypeEnum {
         this.name = name;
     }
 
-    public static PeriodTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static PeriodTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (PeriodTypeEnum item : PeriodTypeEnum.values()) {
             if (item.value == value) {
                 return item;

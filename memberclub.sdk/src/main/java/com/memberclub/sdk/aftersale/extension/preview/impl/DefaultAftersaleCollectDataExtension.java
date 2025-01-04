@@ -12,13 +12,14 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.aftersale.extension.preview.AftersaleCollectDataExtension;
+import com.memberclub.sdk.perform.service.domain.PerformDomainService;
+import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -40,18 +41,24 @@ public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDat
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
 
+    @Autowired
+    private MemberOrderDomainService memberOrderDomainService;
+
+    @Autowired
+    private PerformDomainService performDomainService;
+
     @Override
     public AftersalePreviewContext collect(AfterSalePreviewCmd cmd) {
         AftersalePreviewContext context = new AftersalePreviewContext();
-        MemberOrder memberOrder = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+
+        MemberOrderDO memberOrder = memberOrderDomainService.getMemberOrderDO(cmd.getUserId(), cmd.getTradeId());
+
         context.setMemberOrder(memberOrder);
+        context.setSubOrders(memberOrder.getSubOrders());
 
-        List<MemberSubOrder> performHisList = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        context.setSubOrderList(performHisList);
-
-        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        List<MemberPerformItemDO> items = performDomainService.queryByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setPerformItems(items);
-        context.setPayPriceFen(Integer.valueOf(memberOrder.getActPriceFen()));
+        context.setPayPriceFen(memberOrder.getActPriceFen());
         context.setDigestVersion(cmd.getDigestVersion());
 
         return context;

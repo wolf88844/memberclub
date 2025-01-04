@@ -23,7 +23,7 @@ public enum GrantTypeEnum {
         this.name = name;
     }
 
-    public static GrantTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static GrantTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (GrantTypeEnum item : GrantTypeEnum.values()) {
             if (item.value == value) {
                 return item;

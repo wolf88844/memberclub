@@ -90,7 +90,6 @@ public class MemberOrderDomainService {
 
     }
 
-
     public MemberOrderDO getMemberOrderDO(long userId, String tradeId) {
         MemberOrder order = memberOrderDao.selectByTradeId(userId, tradeId);
 

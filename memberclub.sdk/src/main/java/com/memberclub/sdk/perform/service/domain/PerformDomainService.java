@@ -24,6 +24,7 @@ import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -62,6 +63,9 @@ public class PerformDomainService {
 
     @Autowired
     private OnceTaskDao taskDao;
+
+    @Autowired
+    private PerformDataObjectBuildFactory performDataObjectBuildFactory;
 
     @Transactional
     public int createOnceTask(List<OnceTask> tasks) {
@@ -159,8 +163,8 @@ public class PerformDomainService {
     @Transactional
     public void startReversePerformMemberSubOrder(ReversePerformContext context,
                                                   SubOrderReverseInfo info) {
-        int cnt = memberSubOrderDao.updateStatusDeprecate(context.getUserId(), context.getTradeId(),
-                info.getSkuId(), SubOrderPerformStatusEnum.REVEREING.getCode(), TimeUtil.now());
+        int cnt = memberSubOrderDao.updateStatus(context.getUserId(), info.getSubTradeId(),
+                SubOrderPerformStatusEnum.REVEREING.getCode(), TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约中:{}", cnt);
     }
 
@@ -169,8 +173,8 @@ public class PerformDomainService {
                                                    SubOrderReverseInfo info) {
         int status = generateMemberSubOrderFinishReverseStatus(context);
 
-        memberSubOrderDao.updateStatusDeprecate(context.getUserId(), context.getTradeId(),
-                info.getSkuId(), status, TimeUtil.now());
+        memberSubOrderDao.updateStatus(context.getUserId(), info.getSubTradeId(),
+                status, TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约完成");
     }
 
@@ -234,21 +238,16 @@ public class PerformDomainService {
                 PerformItemStatusEnum.PORTION_REVERSED.toInt();
     }
 
-    /*
-    public List<SkuInfoDO> extractSkuBuyDetail(MemberOrder order) {
-        List<SkuInfoDO> skuBuyDetails = JsonUtils.fromJson(order.getSkuDetails()
-                , new TypeReference<List<SkuInfoDO>>() {
-                });
-        return skuBuyDetails;
-    }
-
-    public MemberOrderExtraInfo extractExtraInfO(MemberOrder order) {
-        return JsonUtils.fromJson(order.getExtra(), MemberOrderExtraInfo.class);
-    }*/
 
     public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         //补充
         return subOrderPerformContext.getSubOrder().getExtra();
+    }
+
+
+    public List<MemberPerformItemDO> queryByTradeId(long userId, String tradeId) {
+        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(userId, tradeId);
+        return performDataObjectBuildFactory.toMemberPerformItemDOs(items);
     }
 
 
@@ -265,7 +264,7 @@ public class PerformDomainService {
         List<PerformItemReverseInfo> items = Lists.newArrayList();
 
         for (Map.Entry<String, ItemUsage> entry : context.getAfterSaleApplyContext().getPreviewContext().getBatchCode2ItemUsage().entrySet()) {
-            for (MemberPerformItem performItem : context.getAfterSaleApplyContext().getPreviewContext().getPerformItems()) {
+            for (MemberPerformItemDO performItem : context.getAfterSaleApplyContext().getPreviewContext().getPerformItems()) {
                 if (StringUtils.equals(performItem.getBatchCode(), entry.getKey())) {
                     PerformItemReverseInfo info = null;
                     if (entry.getValue().getUsageType() == UsageTypeEnum.UNUSE) {
@@ -277,7 +276,7 @@ public class PerformDomainService {
                         info.setRefundType(RefundTypeEnum.PORTION_RFUND);
                     }
                     if (info != null) {
-                        info.setRightType(performItem.getRightType());
+                        info.setRightType(performItem.getRightType().getCode());
                         info.setItemToken(performItem.getItemToken());
                         info.setBatchCode(performItem.getBatchCode());
                         info.setSkuId(performItem.getSkuId());
@@ -289,7 +288,7 @@ public class PerformDomainService {
 
         Map<Long, SubOrderReverseInfo> skuId2HisInfos = Maps.newHashMap();
         for (PerformItemReverseInfo item : items) {
-            for (MemberSubOrder memberSubOrder : context.getAfterSaleApplyContext().getPreviewContext().getSubOrderList()) {
+            for (MemberSubOrderDO memberSubOrder : context.getAfterSaleApplyContext().getPreviewContext().getSubOrders()) {
                 if (memberSubOrder.getSkuId() == item.getSkuId()) {
                     if (skuId2HisInfos.containsKey(item.getSkuId())) {
                         skuId2HisInfos.get(item.getSkuId()).getItems().add(item);

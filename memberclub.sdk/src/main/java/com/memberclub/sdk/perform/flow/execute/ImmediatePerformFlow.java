@@ -35,7 +35,7 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
     public void process(PerformContext context) {
         Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSubOrderPerformContext()
                 .getImmediatePerformItems().stream()
-                .collect(Collectors.groupingBy((item) -> item.getRightType().toInt()));
+                .collect(Collectors.groupingBy((item) -> item.getRightType().getCode()));
 
         for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {
             PerformItemContext itemContext = new PerformItemContext();

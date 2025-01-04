@@ -93,7 +93,7 @@ public class PerformCustomConvertor {
 
     @Named("toPeriodTypeEnum")
     public PeriodTypeEnum toPeriodTypeEnum(int periodType) {
-        return PeriodTypeEnum.findByInt(periodType);
+        return PeriodTypeEnum.findByCode(periodType);
     }
 
     @Named("toRightTypeEnum")
@@ -103,7 +103,7 @@ public class PerformCustomConvertor {
 
     @Named("toRightTypeInt")
     public int toRightTypeInt(RightTypeEnum rightType) {
-        return rightType.toInt();
+        return rightType.getCode();
     }
 
     @Named("toGrantTypeInt")
@@ -113,7 +113,7 @@ public class PerformCustomConvertor {
 
     @Named("toGrantTypeEnum")
     public GrantTypeEnum toGrantTypeEnum(int grantType) {
-        return GrantTypeEnum.findByInt(grantType);
+        return GrantTypeEnum.findByCode(grantType);
     }
 
     @Named("toGrantInfoString")

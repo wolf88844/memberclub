@@ -11,7 +11,6 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
@@ -45,8 +44,6 @@ public interface PerformConvertor {
 
     public PerformContext toPerformContext(PerformCmd cmd);
 
-    public MemberSubOrderDO toSubOrderDO(PerformContext context);
-
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
             @Mapping(target = "periodType", source = "periodType", qualifiedByName = "toPeriodTypeEnum"),
@@ -54,6 +51,8 @@ public interface PerformConvertor {
             @Mapping(target = "extra.viewInfo", source = "viewInfo"),
             @Mapping(target = "extra.saleInfo", source = "saleInfo"),
             @Mapping(target = "extra.settleInfo", source = "settleInfo"),
+            @Mapping(target = "extra.grantInfo.periodCount", source = "periodCount"),
+            @Mapping(target = "extra.grantInfo.periodType", source = "periodType"),
 
     })
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);

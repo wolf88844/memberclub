@@ -6,7 +6,7 @@
  */
 package com.memberclub.domain.context.perform.reverse;
 
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import lombok.Data;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class SubOrderReverseInfo {
 
     private Long subTradeId;
 
-    private MemberSubOrder memberSubOrder;
+    private MemberSubOrderDO memberSubOrder;
 
     private List<PerformItemReverseInfo> items;
 

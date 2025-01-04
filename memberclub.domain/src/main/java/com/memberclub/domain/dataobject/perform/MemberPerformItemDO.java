@@ -42,7 +42,7 @@ public class MemberPerformItemDO implements Comparable {
      */
     private GrantTypeEnum grantType;
 
-    private String providerId;
+    private int providerId;
 
     private PerformItemExtraInfo extra = new PerformItemExtraInfo();
 

@@ -56,7 +56,7 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
             grantItemDO.setChannelKey(String.valueOf(item.getRightId()));
             grantItemDO.setStime(item.getStime());
             grantItemDO.setEtime(item.getEtime());
-            grantItemDO.setRightType(item.getRightType().toInt());
+            grantItemDO.setRightType(item.getRightType().getCode());
             grantItemDOS.add(grantItemDO);
         }
 

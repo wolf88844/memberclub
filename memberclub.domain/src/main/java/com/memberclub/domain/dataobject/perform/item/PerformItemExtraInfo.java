@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 public class PerformItemExtraInfo {
-
+    
     private PerformItemGrantInfo grantInfo = new PerformItemGrantInfo();
 
     private PerformItemViewInfo viewInfo = new PerformItemViewInfo();

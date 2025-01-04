@@ -13,4 +13,8 @@ import lombok.Data;
  */
 @Data
 public class PerformItemGrantInfo {
+
+    private Integer periodCount;
+
+    private Integer periodType;
 }
