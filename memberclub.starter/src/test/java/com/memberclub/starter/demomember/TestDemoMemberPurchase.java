@@ -11,6 +11,8 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
+import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
@@ -22,14 +24,19 @@ import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
+import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * author: 掘金五阳
@@ -44,6 +51,23 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     @Test
     public void testSubmit() {
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(doubleRightsSku.getSkuId(), 1);
+        PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
+
+        Assert.assertEquals(true, response.isSuccess());
+
+        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), response.getMemberOrderDO().getTradeId());
+
+        MemberOrder order = memberOrderDao.selectByTradeId(cmd.getUserId(), response.getMemberOrderDO().getTradeId());
+        Assert.assertEquals(MemberOrderStatusEnum.SUBMITED.getCode(), order.getStatus());
+
+        for (MemberSubOrder subOrder : subOrders) {
+            //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
+        }
+    }
+
+
+    private PurchaseSubmitCmd buildPurchaseSubmitCmd(long skuId, int buyCount) {
         PurchaseSubmitCmd cmd = new PurchaseSubmitCmd();
         LocationInfo locationInfo = new LocationInfo();
         ClientInfo clientInfo = new ClientInfo();
@@ -64,14 +88,13 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
 
         PurchaseSkuSubmitCmd sku = new PurchaseSkuSubmitCmd();
-        sku.setSkuId(doubleRightsSku.getSkuId());
-        sku.setBuyCount(1);
+        sku.setSkuId(skuId);
+        sku.setBuyCount(buyCount);
         cmd.setSkus(Lists.newArrayList(sku));
 
         cmd.setSource(PurchaseSourceEnum.HOMEPAGE);
         cmd.setSubmitToken(RandomStringUtils.randomAscii(10));
-
-        purchaseBizService.submit(cmd);
+        return cmd;
     }
 
 

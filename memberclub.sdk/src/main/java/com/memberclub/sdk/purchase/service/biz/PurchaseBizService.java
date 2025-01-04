@@ -11,6 +11,8 @@ import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.exception.MemberException;
 import com.memberclub.sdk.purchase.extension.PurchaseSubmitExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,24 @@ public class PurchaseBizService {
     private ExtensionManager extensionManager;
 
     @UserLog(domain = LogDomainEnum.PURCHASE)
-    public void submit(PurchaseSubmitCmd cmd) {
+    public PurchaseSubmitResponse submit(PurchaseSubmitCmd cmd) {
         cmd.isValid();
 
         PurchaseSubmitContext context = new PurchaseSubmitContext(cmd);
-
+        PurchaseSubmitResponse response = new PurchaseSubmitResponse();
         try {
-            extensionManager.getExtension(context.toDefaultBizScene(),
-                    PurchaseSubmitExtension.class).submit(context);
-
+            extensionManager.getExtension(
+                    context.toDefaultBizScene(), PurchaseSubmitExtension.class).submit(context);
             context.monitor();
+
+            if (context.getMemberOrder().getStatus() == MemberOrderStatusEnum.SUBMITED) {
+                response.setSuccess(true);
+                response.setMemberOrderDO(context.getMemberOrder());
+                return response;
+            }
+            // TODO: 2025/1/4 补充错误信息
+            response.setSuccess(false);
+            return response;
         } catch (MemberException e) {
             context.monitorException(e);
             throw e;

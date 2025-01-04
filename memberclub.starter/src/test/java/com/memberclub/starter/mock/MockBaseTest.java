@@ -6,6 +6,8 @@
  */
 package com.memberclub.starter.mock;
 
+import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.starter.AppStarter;
 import com.memberclub.starter.impl.MockAssetsFacade;
 import com.memberclub.starter.impl.MockSkuBizService;
@@ -33,6 +35,12 @@ public class MockBaseTest {
 
     @Autowired
     public MockSkuBizService mockSkuBizService;
+
+    @Autowired
+    public MemberOrderDao memberOrderDao;
+
+    @Autowired
+    public MemberSubOrderDao memberSubOrderDao;
 
     public AtomicLong userIdGenerator = new AtomicLong(RandomUtils.nextInt());
 

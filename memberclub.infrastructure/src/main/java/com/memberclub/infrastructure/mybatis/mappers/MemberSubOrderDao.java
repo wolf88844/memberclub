@@ -53,7 +53,7 @@ public interface MemberSubOrderDao extends BaseMapper<MemberSubOrder> {
     @Update({
             "UPDATE ", TABLE_NAME,
             " SET status=#{status}, extra=#{extra}, utime=#{utime}, order_id=#{orderId}",
-            " ,actprice_fen=#{actPriceFen} WHERE user_id=#{userId} AND sub_trade_id=#{subTradeId} "
+            " ,act_price_fen=#{actPriceFen} WHERE user_id=#{userId} AND sub_trade_id=#{subTradeId} "
     })
     public int updateStatusOnSubmitSuccess(
             @Param("userId") long userId,
