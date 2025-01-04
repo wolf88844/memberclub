@@ -7,8 +7,8 @@
 package com.memberclub.domain.dataobject.task;
 
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.common.TaskTypeEnum;
-import com.memberclub.domain.common.status.OnceTaskStatusEnum;
+import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
+import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import lombok.Data;
 
 /**

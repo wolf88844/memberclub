@@ -13,8 +13,6 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.SubOrderPerformStatusEnum;
-import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
@@ -22,26 +20,27 @@ import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
-import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -236,9 +235,9 @@ public class PerformDomainService {
     }
 
 
-    public List<SkuBuyDetailDO> extractSkuBuyDetail(MemberOrder order) {
-        List<SkuBuyDetailDO> skuBuyDetails = JsonUtils.fromJson(order.getSkuDetails()
-                , new TypeReference<List<SkuBuyDetailDO>>() {
+    public List<SkuInfoDO> extractSkuBuyDetail(MemberOrder order) {
+        List<SkuInfoDO> skuBuyDetails = JsonUtils.fromJson(order.getSkuDetails()
+                , new TypeReference<List<SkuInfoDO>>() {
                 });
         return skuBuyDetails;
     }
@@ -250,13 +249,13 @@ public class PerformDomainService {
     public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
         SubOrderExtraInfo extraInfo = new SubOrderExtraInfo();
 
-        MemberSkuSnapshotDO snapshot = skuPerformContext.getSkuBuyDetail().getSkuSnapshot();
+        SkuInfoDO skuInfo = skuPerformContext.getSkuInfo();
 
-        SubOrderViewInfo viewInfo = PerformConvertor.INSTANCE.toSubOrderViewInfo(snapshot.getViewInfo());
+        SubOrderViewInfo viewInfo = PerformConvertor.INSTANCE.toSubOrderViewInfo(skuInfo.getViewInfo());
 
-        SubOrderSettleInfo settleInfo = PerformConvertor.INSTANCE.toSubOrderSettleInfo(snapshot.getSettleInfo());
+        SubOrderSettleInfo settleInfo = PerformConvertor.INSTANCE.toSubOrderSettleInfo(skuInfo.getSettleInfo());
 
-        SubOrderSaleInfo saleInfo = PerformConvertor.INSTANCE.toSubOrderSaleInfo(snapshot.getSaleInfo());
+        SubOrderSaleInfo saleInfo = PerformConvertor.INSTANCE.toSubOrderSaleInfo(skuInfo.getSaleInfo());
         extraInfo.setSettleInfo(settleInfo);
         extraInfo.setViewInfo(viewInfo);
         extraInfo.setUserInfo(context.getUserInfo());

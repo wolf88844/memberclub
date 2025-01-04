@@ -15,11 +15,7 @@ import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.common.MemberOrderStatusEnum;
-import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
-import com.memberclub.domain.common.PerformItemStatusEnum;
-import com.memberclub.domain.common.PeriodTypeEnum;
 import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
 import com.memberclub.domain.context.aftersale.apply.AftersaleApplyResponse;
 import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
@@ -29,12 +25,15 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
+import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
+import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
-import com.memberclub.domain.dataobject.order.MemberOrderLocationInfo;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
-import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
@@ -56,8 +55,8 @@ import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import com.memberclub.sdk.aftersale.service.AftersaleBizService;
 import com.memberclub.sdk.perform.service.PerformBizService;
@@ -413,36 +412,34 @@ public class TestDemoMember extends MockBaseTest {
         memberOrder.setStatus(MemberOrderStatusEnum.PAYED.toInt());
         memberOrder.setTradeId(String.format("%s_%s", memberOrder.getOrderSystemType(), memberOrder.getOrderId()));
 
-        List<SkuBuyDetailDO> skuBuyDetailDOS = Lists.newArrayList();
-        SkuBuyDetailDO skuBuyDetailDO = new SkuBuyDetailDO();
-        skuBuyDetailDOS.add(skuBuyDetailDO);
-        skuBuyDetailDO.setBuyCount(buyCount);
-        skuBuyDetailDO.setSkuId(439434);
-        MemberSkuSnapshotDO snapshotDO = new MemberSkuSnapshotDO();
-        skuBuyDetailDO.setSkuSnapshot(snapshotDO);
+        List<SkuInfoDO> skuInfoDOS = Lists.newArrayList();
+        SkuInfoDO skuInfoDO = new SkuInfoDO();
+        skuInfoDOS.add(skuInfoDO);
+        skuInfoDO.setBuyCount(buyCount);
+        skuInfoDO.setSkuId(439434);
 
         SkuSaleInfo skuSaleInfo = new SkuSaleInfo();
         skuSaleInfo.setOriginPriceFen(3000);
         skuSaleInfo.setSalePriceFen(699);
 
-        snapshotDO.setSaleInfo(skuSaleInfo);
+        skuInfoDO.setSaleInfo(skuSaleInfo);
 
         SkuSettleInfo settleInfo = new SkuSettleInfo();
         settleInfo.setContractorId("438098434");
         settleInfo.setSettlePriceFen(300);
 
-        snapshotDO.setSettleInfo(settleInfo);
+        skuInfoDO.setSettleInfo(settleInfo);
 
         SkuViewInfo viewInfo = new SkuViewInfo();
         viewInfo.setDisplayDesc("大额红包");
         viewInfo.setDisplayName("大额红包");
         viewInfo.setInternalDesc("大额红包 5 元");
         viewInfo.setInternalName("大额红包 5 元");
-        snapshotDO.setViewInfo(viewInfo);
+        skuInfoDO.setViewInfo(viewInfo);
 
 
         SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
-        snapshotDO.setPerformConfig(skuPerformConfigDO);
+        skuInfoDO.setPerformConfig(skuPerformConfigDO);
 
 
         SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
@@ -473,7 +470,7 @@ public class TestDemoMember extends MockBaseTest {
         skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
-        snapshotDO.setPerformConfig(skuPerformConfigDO);
+        skuInfoDO.setPerformConfig(skuPerformConfigDO);
 
 
         CommonUserInfo userInfo = new CommonUserInfo();
@@ -487,7 +484,7 @@ public class TestDemoMember extends MockBaseTest {
         userInfo.setKey(key);
         userInfo.setEncryptedPhone(EncrptUtils.encryptAES(userInfo.getPhone(), key));
 
-        MemberOrderLocationInfo locationInfo = new MemberOrderLocationInfo();
+        LocationInfo locationInfo = new LocationInfo();
         locationInfo.setActualLatitude("8493458355");
         locationInfo.setActualLongitude("48934834");
         locationInfo.setActualSecondCityId("110100");
@@ -501,7 +498,7 @@ public class TestDemoMember extends MockBaseTest {
 
         System.out.println("解密后的电话号码： " + EncrptUtils.decrypt(userInfo.getEncryptedPhone(), userInfo.getKey()));
 
-        memberOrder.setSkuDetails(JsonUtils.toJson(skuBuyDetailDOS));
+        memberOrder.setSkuDetails(JsonUtils.toJson(skuInfoDOS));
         return memberOrder;
     }
 

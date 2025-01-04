@@ -9,8 +9,8 @@ package com.memberclub.sdk.aftersale.extension.preview;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.MemberOrderStatusEnum;
-import com.memberclub.domain.common.RefundStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.aftersale.common.RefundStatusEnum;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 

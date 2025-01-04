@@ -9,7 +9,7 @@ package com.memberclub.sdk.perform.flow.execute;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberSubOrder;

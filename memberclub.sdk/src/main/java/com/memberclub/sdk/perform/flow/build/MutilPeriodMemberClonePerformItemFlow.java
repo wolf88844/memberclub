@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.build;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.domain.common.RightTypeEnum;
+import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;

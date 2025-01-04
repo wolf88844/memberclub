@@ -12,7 +12,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class MemberOrderLocationInfo {
+public class LocationInfo {
 
     /**
      * 实际定位二级城市 Id

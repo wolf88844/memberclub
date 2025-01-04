@@ -8,7 +8,7 @@ package com.memberclub.domain.context.perform;
 
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import lombok.Data;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 public class SkuPerformContext {
 
-    private SkuBuyDetailDO skuBuyDetail;
+    private SkuInfoDO skuInfo;
 
     private MemberSubOrderDO his = new MemberSubOrderDO();
 

@@ -12,7 +12,7 @@ import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
 import lombok.Data;
@@ -69,7 +69,7 @@ public class PerformContext {
      */
     private List<MemberSubOrder> hisListFromDb;
 
-    private List<SkuBuyDetailDO> skuBuyDetails;
+    private List<SkuInfoDO> skuBuyDetails;
 
     private List<SkuPerformContext> skuPerformContexts;
 

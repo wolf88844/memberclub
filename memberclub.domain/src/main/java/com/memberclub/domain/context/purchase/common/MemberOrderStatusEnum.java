@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.common;
+package com.memberclub.domain.context.purchase.common;
 
 /**
  * @author yuhaiqiang

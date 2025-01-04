@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.build;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.common.RetrySourceEunm;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.entity.MemberOrder;

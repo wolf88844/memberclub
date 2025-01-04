@@ -25,4 +25,6 @@ public class CommonUserInfo {
     private String wxOpenId;
 
     private String key;
+
+    private String ip;
 }

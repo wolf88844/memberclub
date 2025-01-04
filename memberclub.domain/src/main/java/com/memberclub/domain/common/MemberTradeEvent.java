@@ -10,9 +10,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.memberclub.domain.common.MemberOrderStatusEnum.PAYED;
-import static com.memberclub.domain.common.MemberOrderStatusEnum.PERFORMED;
-import static com.memberclub.domain.common.MemberOrderStatusEnum.PERFORMING;
+import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PAYED;
+import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PERFORMED;
+import static com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum.PERFORMING;
 
 /**
  * @author yuhaiqiang

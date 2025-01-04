@@ -10,12 +10,12 @@ import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.id.IdGenerator;
@@ -38,12 +38,12 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        List<SkuBuyDetailDO> details = context.getSkuBuyDetails();
+        List<SkuInfoDO> details = context.getSkuBuyDetails();
 
         List<SkuPerformContext> skuPerformContexts = Lists.newArrayList();
-        for (SkuBuyDetailDO detail : details) {
+        for (SkuInfoDO detail : details) {
             SkuPerformContext skuPerformContext = new SkuPerformContext();
-            skuPerformContext.setSkuBuyDetail(detail);
+            skuPerformContext.setSkuInfo(detail);
             MemberSubOrderDO his = PerformConvertor.INSTANCE.toSubOrderDO(context);
             skuPerformContext.setHis(his);
 
@@ -59,7 +59,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
 
             List<MemberPerformItemDO> items = Lists.newArrayList();
-            for (SkuPerformItemConfigDO config : detail.getSkuSnapshot().getPerformConfig().getConfigs()) {
+            for (SkuPerformItemConfigDO config : detail.getPerformConfig().getConfigs()) {
                 MemberPerformItemDO item = calculateExtension.toPerformItem(config);
                 item.setSkuId(detail.getSkuId());
                 items.add(item);
@@ -74,7 +74,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         }
     }
 
-    private Long buildSubOrderToken(PerformContext context, SkuBuyDetailDO detail) {
+    private Long buildSubOrderToken(PerformContext context, SkuInfoDO detail) {
         MemberSubOrder hisFromDb = context.matchHisFromDb(detail.getSkuId());
         if (hisFromDb != null) {
             return hisFromDb.getSubOrderToken();

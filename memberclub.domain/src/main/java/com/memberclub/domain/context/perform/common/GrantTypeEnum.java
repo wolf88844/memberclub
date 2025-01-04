@@ -1,38 +1,38 @@
 /**
- * @(#)RightTypeEnum.java, 十二月 22, 2024.
+ * @(#)GrantTypeEnum.java, 十二月 28, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.common;
+package com.memberclub.domain.context.perform.common;
 
 /**
  * @author yuhaiqiang
  */
-public enum RightTypeEnum {
+public enum GrantTypeEnum {
 
-    COUPON(1, "会员立减券"),
-    DISCOUNT_COUPON(2, "会员折扣券"),
-    ;
+    GRANT(0, "发放"),
+    ACTIVATE(1, "激活");
 
     private int value;
 
     private String name;
 
-    RightTypeEnum(int value, String name) {
+    GrantTypeEnum(int value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public static RightTypeEnum findByInt(int value) throws IllegalArgumentException {
-        for (RightTypeEnum item : RightTypeEnum.values()) {
+    public static GrantTypeEnum findByInt(int value) throws IllegalArgumentException {
+        for (GrantTypeEnum item : GrantTypeEnum.values()) {
             if (item.value == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid RightTypeEnum value: " + value);
+        throw new IllegalArgumentException("Invalid GrantTypeEnum value: " + value);
     }
+
 
     @Override
     public String toString() {

@@ -6,14 +6,17 @@
  */
 package com.memberclub.domain.dataobject.buy;
 
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author 掘金五阳
  */
 @Data
 public class MemberOrderDO {
-    
+
     private int bizType;
 
     private long userId;
@@ -39,4 +42,6 @@ public class MemberOrderDO {
     private long utime;
 
     private long ctime;
+
+    private List<MemberSubOrderDO> subOrders;
 }

@@ -14,15 +14,5 @@ import lombok.Data;
 @Data
 public class MemberSkuSnapshotDO {
 
-    private int bizType;
 
-    private long skuId;
-
-    private SkuViewInfo viewInfo;
-
-    private SkuSettleInfo settleInfo;
-
-    private SkuSaleInfo saleInfo;
-
-    private SkuPerformConfigDO performConfig;
 }

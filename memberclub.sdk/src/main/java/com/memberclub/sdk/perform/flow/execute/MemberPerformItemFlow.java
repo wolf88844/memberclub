@@ -11,7 +11,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.common.PerformItemStatusEnum;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.entity.MemberPerformItem;

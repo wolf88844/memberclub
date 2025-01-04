@@ -6,9 +6,9 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
-import com.memberclub.domain.common.GrantTypeEnum;
-import com.memberclub.domain.common.PeriodTypeEnum;
-import com.memberclub.domain.common.RightTypeEnum;
+import com.memberclub.domain.context.perform.common.GrantTypeEnum;
+import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
+import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import lombok.Data;
 

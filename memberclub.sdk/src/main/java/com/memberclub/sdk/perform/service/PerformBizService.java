@@ -12,7 +12,7 @@ import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.domain.common.BizScene;
-import com.memberclub.domain.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;

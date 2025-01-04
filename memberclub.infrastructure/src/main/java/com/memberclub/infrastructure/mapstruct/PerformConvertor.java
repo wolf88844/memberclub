@@ -12,8 +12,9 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
@@ -21,7 +22,6 @@ import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
-import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
@@ -33,8 +33,8 @@ import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
-import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -49,7 +49,7 @@ public interface PerformConvertor {
 
     PerformConvertor INSTANCE = Mappers.getMapper(PerformConvertor.class);
 
-    public MemberSkuSnapshotDO toMemberSkuDO(MemberSkuDTO dto);
+    public SkuInfoDO toMemberSkuInfoDO(MemberSkuDTO dto);
 
     public PerformContext toPerformContext(PerformCmd cmd);
 

@@ -25,7 +25,7 @@ public class DemoMemberBizSceneBuildExtension implements BizSceneBuildExtension 
 
     @Override
     public String buildBuildPerformContextScene(PerformContext context) {
-        if (context.getSkuBuyDetails().get(0).getSkuSnapshot().getPerformConfig().getConfigs().get(0).getCycle() > 1) {
+        if (context.getSkuBuyDetails().get(0).getPerformConfig().getConfigs().get(0).getCycle() > 1) {
             return SceneEnum.SCENE_MUTIL_PERIOD_CARD.getValue();
         }
         return SceneEnum.SCENE_MONTH_CARD.getValue();

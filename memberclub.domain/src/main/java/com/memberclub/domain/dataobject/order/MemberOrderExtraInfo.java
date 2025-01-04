@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class MemberOrderExtraInfo {
 
-    private MemberOrderLocationInfo locationInfo;
+    private LocationInfo locationInfo;
 
     private CommonUserInfo userInfo;
 
