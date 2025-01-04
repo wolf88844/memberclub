@@ -55,7 +55,7 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
             ResultCode.INTERNAL_ERROR.newException();
         }
 
-        memberSubOrder.setSubOrderToken(hisFromDb.getSubOrderToken());
+        memberSubOrder.setSubTradeId(hisFromDb.getSubTradeId());
         if (SubOrderPerformStatusEnum.hasPerformed(hisFromDb.getStatus())) {
 
             CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberSubOrder);

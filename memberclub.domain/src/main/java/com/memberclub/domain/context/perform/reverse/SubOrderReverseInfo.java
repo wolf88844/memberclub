@@ -19,7 +19,7 @@ public class SubOrderReverseInfo {
 
     private long skuId;
 
-    private Long subOrderToken;
+    private Long subTradeId;
 
     private MemberSubOrder memberSubOrder;
 

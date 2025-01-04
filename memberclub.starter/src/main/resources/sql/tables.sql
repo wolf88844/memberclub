@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS member_sub_order (
     order_system_type INT(11)  NOT NULL COMMENT '订单系统类型',
     order_id VARCHAR(128)  NOT NULL COMMENT '订单  id',
     trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
-    sub_order_token BIGINT(20)  NOT NULL COMMENT '履约单 token',
+    sub_trade_id BIGINT(20)  NOT NULL COMMENT '子单交易 id',
     sku_id BIGINT(20)  NOT NULL COMMENT 'skuId',
     buy_count INT(11)  NOT NULL COMMENT '购买数量',
     status INT(11)  NOT NULL COMMENT '状态',

@@ -308,7 +308,7 @@ public class PerformDomainService {
                     } else {
                         SubOrderReverseInfo subOrderReverseInfo = new SubOrderReverseInfo();
                         subOrderReverseInfo.setSkuId(item.getSkuId());
-                        subOrderReverseInfo.setSubOrderToken(memberSubOrder.getSubOrderToken());
+                        subOrderReverseInfo.setSubTradeId(memberSubOrder.getSubTradeId());
                         subOrderReverseInfo.setMemberSubOrder(memberSubOrder);
                         subOrderReverseInfo.setItems(Lists.newArrayList(item));
                         skuId2HisInfos.put(item.getSkuId(), subOrderReverseInfo);

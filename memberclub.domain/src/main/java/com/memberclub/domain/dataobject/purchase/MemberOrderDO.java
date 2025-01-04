@@ -28,6 +28,8 @@ public class MemberOrderDO {
 
     private long userId;
 
+    private String tradeId;
+
     private OrderInfoDO orderInfo;
 
     private LocationInfo locationInfo;

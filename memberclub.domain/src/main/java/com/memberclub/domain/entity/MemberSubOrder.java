@@ -29,7 +29,7 @@ public class MemberSubOrder {
 
     private String tradeId;//会员单交易 ID
 
-    private Long subOrderToken;
+    private Long subTradeId;
 
     private int buyCount;
 

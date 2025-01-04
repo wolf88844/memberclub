@@ -59,7 +59,7 @@ public class CalculateDelayPerformItemPeriodFlow extends FlowNode<PerformContext
                     stime = timeRange.getEtime() + 1;
 
                     String itemToken = BizUtils.toItemToken(
-                            subOrderPerformContext.getSubOrder().getSubOrderToken(),
+                            subOrderPerformContext.getSubOrder().getSubTradeId(),
                             delayItem.getRightId(),
                             delayItem.getBuyIndex(), delayItem.getPhase());
                     delayItem.setItemToken(itemToken);

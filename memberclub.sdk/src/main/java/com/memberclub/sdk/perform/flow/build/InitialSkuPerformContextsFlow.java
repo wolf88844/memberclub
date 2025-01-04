@@ -52,8 +52,8 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             his.setBuyCount(detail.getBuyCount());
             his.setCtime(TimeUtil.now());
             his.setUtime(TimeUtil.now());
-            Long subOrderToken = buildSubOrderToken(context, detail);
-            his.setSubOrderToken(subOrderToken);
+            Long subTradeId = buildSubTradeId(context, detail);
+            his.setSubTradeId(subTradeId);
 
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
@@ -74,15 +74,15 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         }
     }
 
-    private Long buildSubOrderToken(PerformContext context, SkuInfoDO detail) {
+    private Long buildSubTradeId(PerformContext context, SkuInfoDO detail) {
         MemberSubOrder hisFromDb = context.matchHisFromDb(detail.getSkuId());
         if (hisFromDb != null) {
-            return hisFromDb.getSubOrderToken();
+            return hisFromDb.getSubTradeId();
         } else {
             IdGenerator idGenerator = extensionManager.getExtension(context.toDefaultScene(),
                     IdGenerator.class);
-            Long subOrderToken = idGenerator.generateId(IdTypeEnum.PERFORM_HIS);
-            return subOrderToken;
+            Long subTradeId = idGenerator.generateId(IdTypeEnum.PERFORM_HIS);
+            return subTradeId;
         }
     }
 }
