@@ -9,7 +9,7 @@ package com.memberclub.domain.common;
 /**
  * @author yuhaiqiang
  */
-public enum MemberPerformHisStatusEnum {
+public enum SubOrderPerformStatusEnum {
 
     INIT(0, "init"),
     IMMEDIATE_PERFORMING(10, "immediate_performing"),
@@ -27,19 +27,19 @@ public enum MemberPerformHisStatusEnum {
 
     private String name;
 
-    MemberPerformHisStatusEnum(int value, String name) {
+    SubOrderPerformStatusEnum(int value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public static MemberPerformHisStatusEnum findByInt(int value) throws IllegalArgumentException {
-        for (MemberPerformHisStatusEnum item : MemberPerformHisStatusEnum.values()) {
+    public static SubOrderPerformStatusEnum findByInt(int value) throws IllegalArgumentException {
+        for (SubOrderPerformStatusEnum item : SubOrderPerformStatusEnum.values()) {
             if (item.value == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid PerformHisStatusEnum value: " + value);
+        throw new IllegalArgumentException("Invalid SubOrderStatusEnum value: " + value);
     }
 
     public static boolean hasPerformed(int status) {

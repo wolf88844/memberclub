@@ -15,7 +15,7 @@ import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.common.Monitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class CheckMemberOrderPerformedFlow extends FlowNode<PerformContext> {
     private MemberOrderDao memberOrderDao;
 
     @Autowired
-    private MemberPerformHisDao performHisDao;
+    private MemberSubOrderDao performHisDao;
 
     @Override
     public void process(PerformContext context) {

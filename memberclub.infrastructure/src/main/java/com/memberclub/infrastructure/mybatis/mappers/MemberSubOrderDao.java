@@ -20,7 +20,7 @@ import java.util.List;
  * @author 掘金五阳
  */
 @Mapper
-public interface MemberPerformHisDao extends BaseMapper<MemberSubOrder> {
+public interface MemberSubOrderDao extends BaseMapper<MemberSubOrder> {
 
     public static final String TABLE_NAME = "member_sub_order";
 

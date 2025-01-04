@@ -34,7 +34,7 @@ public class AftersalePreviewContext {
 
     private MemberOrder memberOrder;
 
-    List<MemberSubOrder> performHisList;
+    List<MemberSubOrder> subOrderList;
 
     List<MemberPerformItem> performItems;
 

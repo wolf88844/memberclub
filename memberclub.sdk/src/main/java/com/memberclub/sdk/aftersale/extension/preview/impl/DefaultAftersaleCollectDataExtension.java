@@ -16,7 +16,7 @@ import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.sdk.aftersale.extension.preview.AftersaleCollectDataExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDat
     private MemberOrderDao memberOrderDao;
 
     @Autowired
-    private MemberPerformHisDao memberPerformHisDao;
+    private MemberSubOrderDao memberSubOrderDao;
 
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
@@ -46,8 +46,8 @@ public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDat
         MemberOrder memberOrder = memberOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setMemberOrder(memberOrder);
 
-        List<MemberSubOrder> performHisList = memberPerformHisDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
-        context.setPerformHisList(performHisList);
+        List<MemberSubOrder> performHisList = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        context.setSubOrderList(performHisList);
 
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         context.setPerformItems(items);

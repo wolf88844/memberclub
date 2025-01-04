@@ -16,7 +16,7 @@ import com.memberclub.common.util.TimeRange;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.MemberOrderStatusEnum;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
@@ -56,7 +56,7 @@ import com.memberclub.infrastructure.mapstruct.ConvertorMethod;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import com.memberclub.sdk.aftersale.service.AftersaleBizService;
@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
 public class TestDemoMember extends MockBaseTest {
 
     @Autowired
-    private MemberPerformHisDao memberPerformHisDao;
+    private MemberSubOrderDao memberSubOrderDao;
 
     @Autowired
     private AftersaleOrderDao aftersaleOrderDao;
@@ -267,10 +267,10 @@ public class TestDemoMember extends MockBaseTest {
             Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.toInt(), order.getStatus());
         }
 
-        List<MemberSubOrder> hisAfterApply = memberPerformHisDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
+        List<MemberSubOrder> hisAfterApply = memberSubOrderDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         List<MemberPerformItem> itemsAfterApply = memberPerformItemDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
         for (MemberSubOrder his : hisAfterApply) {
-            Assert.assertEquals(MemberPerformHisStatusEnum.getReversedStatus(completeRefund),
+            Assert.assertEquals(SubOrderPerformStatusEnum.getReversedStatus(completeRefund),
                     his.getStatus());
         }
         for (MemberPerformItem item : itemsAfterApply) {
@@ -352,9 +352,9 @@ public class TestDemoMember extends MockBaseTest {
     }
 
     private void verifyData(PerformCmd cmd, int buyCount) {
-        List<MemberSubOrder> hisList = memberPerformHisDao.selectByUserId(cmd.getUserId());
+        List<MemberSubOrder> hisList = memberSubOrderDao.selectByUserId(cmd.getUserId());
         for (MemberSubOrder memberSubOrder : hisList) {
-            Assert.assertEquals(MemberPerformHisStatusEnum.PERFORM_SUCC.toInt(), memberSubOrder.getStatus());
+            Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.toInt(), memberSubOrder.getStatus());
         }
         Assert.assertEquals(1, hisList.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
@@ -508,7 +508,7 @@ public class TestDemoMember extends MockBaseTest {
     @Test
     public void test() {
         System.out.println("启动 ok");
-        memberPerformHisDao.selectByUserId(1000);
+        memberSubOrderDao.selectByUserId(1000);
         MemberSubOrder his = new MemberSubOrder();
         his.setBizType(1);
         his.setUserId(1000);
@@ -529,9 +529,9 @@ public class TestDemoMember extends MockBaseTest {
         his.setCtime(TimeUtil.now());
         his.setUtime(TimeUtil.now());
 
-        int count = memberPerformHisDao.insert(his);
+        int count = memberSubOrderDao.insert(his);
         System.out.println("插入数量" + count);
-        List<MemberSubOrder> hisLists = memberPerformHisDao.selectByUserId(1000);
+        List<MemberSubOrder> hisLists = memberSubOrderDao.selectByUserId(1000);
         System.out.println(hisLists);
     }
 

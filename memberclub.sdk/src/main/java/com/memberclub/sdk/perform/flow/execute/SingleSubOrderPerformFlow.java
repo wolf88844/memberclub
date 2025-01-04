@@ -9,13 +9,13 @@ package com.memberclub.sdk.perform.flow.execute;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
-import com.memberclub.sdk.perform.extension.execute.MemberPerformHisExtension;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.sdk.perform.extension.execute.MemberSubOrderPerformExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,13 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
+public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
 
     @Autowired
     private ExtensionManager extensionManager;
 
     @Autowired
-    private MemberPerformHisDao memberPerformHisDao;
+    private MemberSubOrderDao memberSubOrderDao;
 
     @Autowired
     private PerformDomainService performDomainService;
@@ -40,15 +40,15 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
         context.setCurrentSkuPerformContext(skuPerformContext);
 
-        MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberPerformHis(context, skuPerformContext);
+        MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
+        MemberSubOrder memberSubOrder = extension.toMemberSubOrder(context, skuPerformContext);
 
-        int cnt = performDomainService.insertMemberPerformHis(memberSubOrder);
+        int cnt = performDomainService.insertMemberSubOrder(memberSubOrder);
         if (cnt > 0) {
             CommonLog.warn("写入 member_perform_his 成功: {}", memberSubOrder);
             return;
         }
-        MemberSubOrder hisFromDb = memberPerformHisDao.selectBySkuId(context.getUserId(),
+        MemberSubOrder hisFromDb = memberSubOrderDao.selectBySkuId(context.getUserId(),
                 context.getTradeId(), skuPerformContext.getHis().getSkuId());
         if (hisFromDb == null) {
             CommonLog.error("写入 member_perform_his失败", memberSubOrder);
@@ -56,7 +56,7 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
         }
 
         memberSubOrder.setSubOrderToken(hisFromDb.getSubOrderToken());
-        if (MemberPerformHisStatusEnum.hasPerformed(hisFromDb.getStatus())) {
+        if (SubOrderPerformStatusEnum.hasPerformed(hisFromDb.getStatus())) {
 
             CommonLog.error(" member_perform_his已履约完成,无需再次履约:{}", memberSubOrder);
             // TODO: 2024/12/15 如何处理返回值
@@ -69,8 +69,8 @@ public class SingleMemberPerformHisFlow extends FlowNode<PerformContext> {
     @Override
     public void success(PerformContext context) {
         SkuPerformContext skuPerformContext = context.getSkuPerformContexts().get(0);
-        MemberPerformHisExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberPerformHisExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberPerformHisWhenPerformSuccess(context, skuPerformContext);
+        MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
+        MemberSubOrder memberSubOrder = extension.toMemberSubOrderWhenPerformSuccess(context, skuPerformContext);
 
         performDomainService.performSuccess(memberSubOrder);
     }

@@ -9,18 +9,18 @@ package com.memberclub.sdk.perform.extension.execute;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
-import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberSubOrder;
 
 /**
  * author: 掘金五阳
  */
-public interface MemberPerformHisExtension extends BaseExtension {
+public interface MemberSubOrderPerformExtension extends BaseExtension {
 
-    public MemberSubOrder toMemberPerformHis(PerformContext context, SkuPerformContext skuPerformContext);
+    public MemberSubOrder toMemberSubOrder(PerformContext context, SkuPerformContext skuPerformContext);
 
-    public MemberSubOrder toMemberPerformHisWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext);
+    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SkuPerformContext skuPerformContext);
 
 
-    public PerformHisExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext);
+    public SubOrderExtraInfo toCommonExtraInfo(PerformContext context, SkuPerformContext skuPerformContext);
 }

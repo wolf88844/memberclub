@@ -7,9 +7,9 @@
 package com.memberclub.domain.dataobject.perform;
 
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
-import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import lombok.Data;
 
 /**
@@ -34,9 +34,9 @@ public class MemberSubOrderDO {
 
     private long skuId;
 
-    private MemberPerformHisStatusEnum status;
+    private SubOrderPerformStatusEnum status;
 
-    private PerformHisExtraInfo extra = new PerformHisExtraInfo();
+    private SubOrderExtraInfo extra = new SubOrderExtraInfo();
 
     private long stime;
 

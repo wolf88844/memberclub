@@ -1,5 +1,5 @@
 /**
- * @(#)PerformHisSettleINfo.java, 十二月 28, 2024.
+ * @(#)SubOrderSettleINfo.java, 十二月 28, 2024.
  * <p>
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -12,7 +12,7 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class PerformHisSettleInfo {
+public class SubOrderSettleInfo {
     /**
      * 承包商 Id
      */

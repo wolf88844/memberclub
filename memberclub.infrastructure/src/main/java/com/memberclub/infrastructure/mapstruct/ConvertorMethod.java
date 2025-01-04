@@ -11,7 +11,7 @@ import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.GrantTypeEnum;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.common.PeriodTypeEnum;
@@ -28,7 +28,7 @@ import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.aftersale.ApplySkuDetail;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
@@ -106,8 +106,8 @@ public class ConvertorMethod {
         return orderSystemType.toInt();
     }
 
-    @Named("toMemberPerformHisStatusInt")
-    public int toMemberPerformHisStatusInt(MemberPerformHisStatusEnum status) {
+    @Named("toMemberSubOrderStatusInt")
+    public int toMemberSubOrderStatusInt(SubOrderPerformStatusEnum status) {
         return status.toInt();
     }
 
@@ -171,8 +171,8 @@ public class ConvertorMethod {
         return JsonUtils.fromJson(extraInfo, PerformItemExtraInfo.class);
     }
 
-    @Named("toMemberPerformHisExtraString")
-    public String toMemberPerformHisExtraString(PerformHisExtraInfo extraInfo) {
+    @Named("toMemberSubOrderExtraString")
+    public String toMemberSubOrderExtraString(SubOrderExtraInfo extraInfo) {
         return JsonUtils.toJson(extraInfo);
     }
 

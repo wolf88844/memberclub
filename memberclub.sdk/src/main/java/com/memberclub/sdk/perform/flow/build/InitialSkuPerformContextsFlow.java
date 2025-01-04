@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SkuPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
@@ -44,16 +44,16 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         for (SkuBuyDetailDO detail : details) {
             SkuPerformContext skuPerformContext = new SkuPerformContext();
             skuPerformContext.setSkuBuyDetail(detail);
-            MemberSubOrderDO his = PerformConvertor.INSTANCE.toMemberPerformHisDO(context);
+            MemberSubOrderDO his = PerformConvertor.INSTANCE.toSubOrderDO(context);
             skuPerformContext.setHis(his);
 
-            his.setStatus(MemberPerformHisStatusEnum.INIT);
+            his.setStatus(SubOrderPerformStatusEnum.INIT);
             his.setSkuId(detail.getSkuId());
             his.setBuyCount(detail.getBuyCount());
             his.setCtime(TimeUtil.now());
             his.setUtime(TimeUtil.now());
-            Long hisToken = buildPerformHisToken(context, detail);
-            his.setSubOrderToken(hisToken);
+            Long subOrderToken = buildSubOrderToken(context, detail);
+            his.setSubOrderToken(subOrderToken);
 
             PerformItemCalculateExtension calculateExtension =
                     extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
@@ -74,7 +74,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         }
     }
 
-    private Long buildPerformHisToken(PerformContext context, SkuBuyDetailDO detail) {
+    private Long buildSubOrderToken(PerformContext context, SkuBuyDetailDO detail) {
         MemberSubOrder hisFromDb = context.matchHisFromDb(detail.getSkuId());
         if (hisFromDb != null) {
             return hisFromDb.getSubOrderToken();

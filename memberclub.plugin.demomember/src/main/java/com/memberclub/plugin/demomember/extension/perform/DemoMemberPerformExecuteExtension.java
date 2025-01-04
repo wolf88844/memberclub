@@ -23,7 +23,7 @@ import com.memberclub.sdk.perform.flow.execute.MemberOrderSuccessFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberPerformItemFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberResourcesLockFlow;
 import com.memberclub.sdk.perform.flow.execute.PerformItemGrantFlow;
-import com.memberclub.sdk.perform.flow.execute.SingleMemberPerformHisFlow;
+import com.memberclub.sdk.perform.flow.execute.SingleSubOrderPerformFlow;
 import com.memberclub.sdk.perform.flow.execute.delay.BuildDelayPerformOnceTaskFlow;
 import com.memberclub.sdk.perform.flow.execute.delay.CreateDelayPerformOnceTaskFlow;
 import com.memberclub.sdk.perform.flow.execute.delay.DelayPerformFlow;
@@ -49,7 +49,7 @@ public class DemoMemberPerformExecuteExtension implements PerformExecuteExtensio
                 .addNode(MemberResourcesLockFlow.class)
                 .addNode(MemberOrderSuccessFlow.class)
                 .addNode(MemberPerformMessageFlow.class)
-                .addNode(SingleMemberPerformHisFlow.class)
+                .addNode(SingleSubOrderPerformFlow.class)
                 .addNodeWithSubNodes(ImmediatePerformFlow.class, PerformItemContext.class,
                         // 构建 MemberPerformItem, 发放权益
                         ImmutableList.of(MemberPerformItemFlow.class, PerformItemGrantFlow.class))

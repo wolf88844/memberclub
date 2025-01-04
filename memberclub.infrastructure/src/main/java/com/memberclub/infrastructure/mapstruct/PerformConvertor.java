@@ -14,9 +14,9 @@ import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.PerformHisSettleInfo;
-import com.memberclub.domain.dataobject.perform.his.PerformHisViewInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
@@ -53,7 +53,7 @@ public interface PerformConvertor {
 
     public PerformContext toPerformContext(PerformCmd cmd);
 
-    public MemberSubOrderDO toMemberPerformHisDO(PerformContext context);
+    public MemberSubOrderDO toSubOrderDO(PerformContext context);
 
     @Mappings(value = {
             @Mapping(qualifiedByName = "toRightTypeEnum", target = "rightType"),
@@ -117,10 +117,10 @@ public interface PerformConvertor {
     @Mappings(value = {
             @Mapping(qualifiedByName = "toBizTypeInt", target = "bizType"),
             @Mapping(qualifiedByName = "toOrderSystemTypeInt", target = "orderSystemType"),
-            @Mapping(qualifiedByName = "toMemberPerformHisExtraString", target = "extra"),
-            @Mapping(qualifiedByName = "toMemberPerformHisStatusInt", target = "status"),
+            @Mapping(qualifiedByName = "toMemberSubOrderExtraString", target = "extra"),
+            @Mapping(qualifiedByName = "toMemberSubOrderStatusInt", target = "status"),
     })
-    public MemberSubOrder toMemberPerformHis(MemberSubOrderDO his);
+    public MemberSubOrder toMemberSubOrder(MemberSubOrderDO his);
 
 
     public AfterSalePreviewCmd toPreviewCmd(AftersaleApplyCmd cmd);
@@ -135,9 +135,9 @@ public interface PerformConvertor {
 
     public PerformItemGrantInfo toGrantInfo(RightGrantInfo grantInfo);
 
-    public PerformHisViewInfo toPerformHisViewInfo(SkuViewInfo viewInfo);
+    public SubOrderViewInfo toSubOrderViewInfo(SkuViewInfo viewInfo);
 
-    public PerformHisSettleInfo toPerformHisSettleInfo(SkuSettleInfo settleInfo);
+    public SubOrderSettleInfo toSubOrderSettleInfo(SkuSettleInfo settleInfo);
 
-    public PerformHisSaleInfo toPerformHisSaleInfo(SkuSaleInfo saleInfo);
+    public SubOrderSaleInfo toSubOrderSaleInfo(SkuSaleInfo saleInfo);
 }

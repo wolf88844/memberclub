@@ -17,7 +17,7 @@ import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
 import com.memberclub.sdk.perform.flow.reverse.BuildReversePerformInfosFlow;
 import com.memberclub.sdk.perform.flow.reverse.MutilReversePerformItemFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReverseAssetsFlow;
-import com.memberclub.sdk.perform.flow.reverse.ReversePerformHisFlow;
+import com.memberclub.sdk.perform.flow.reverse.ReversePerformSubOrderFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReversePerformItemFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +40,7 @@ public class DefaultReversePerformExtensionImpl implements ReversePerformExtensi
     public void init() {
         reversePerformChain = FlowChain.newChain(flowChainService, ReversePerformContext.class)
                 .addNode(BuildReversePerformInfosFlow.class)//构建逆向履约信息
-                .addNode(ReversePerformHisFlow.class)//逆向履约单
+                .addNode(ReversePerformSubOrderFlow.class)//逆向履约单
                 .addNodeWithSubNodes(MutilReversePerformItemFlow.class, ReversePerformContext.class,
                         Lists.newArrayList(ReversePerformItemFlow.class,//逆向履约项
                                 ReverseAssetsFlow.class))//// 逆向资产

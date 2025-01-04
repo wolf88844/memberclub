@@ -13,7 +13,7 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.common.MemberPerformHisStatusEnum;
+import com.memberclub.domain.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
@@ -28,10 +28,10 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.SkuBuyDetailDO;
-import com.memberclub.domain.dataobject.perform.his.PerformHisExtraInfo;
-import com.memberclub.domain.dataobject.perform.his.PerformHisSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.PerformHisSettleInfo;
-import com.memberclub.domain.dataobject.perform.his.PerformHisViewInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.sku.MemberSkuSnapshotDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -40,7 +40,7 @@ import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformHisDao;
+import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import org.apache.commons.lang.StringUtils;
@@ -65,7 +65,7 @@ public class PerformDomainService {
     private MemberOrderDao memberOrderDao;
 
     @Autowired
-    private MemberPerformHisDao memberPerformHisDao;
+    private MemberSubOrderDao memberSubOrderDao;
 
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
@@ -81,7 +81,7 @@ public class PerformDomainService {
     @Transactional
     public void performSuccess(MemberSubOrder his) {
         // TODO: 2024/12/15
-        memberPerformHisDao.updateStatus(his.getUserId(),
+        memberSubOrderDao.updateStatus(his.getUserId(),
                 his.getTradeId(),
                 his.getSkuId(),
                 his.getStatus(),
@@ -118,8 +118,8 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public int insertMemberPerformHis(MemberSubOrder memberSubOrder) {
-        int cnt = memberPerformHisDao.insertIgnoreBatch(Lists.newArrayList(memberSubOrder));
+    public int insertMemberSubOrder(MemberSubOrder memberSubOrder) {
+        int cnt = memberSubOrderDao.insertIgnoreBatch(Lists.newArrayList(memberSubOrder));
         return cnt;
     }
 
@@ -144,11 +144,11 @@ public class PerformDomainService {
         return;
     }
 
-    public boolean isFinishReverseMemberPerformHis(ReversePerformContext context,
-                                                   SubOrderReverseInfo info) {
-        int status = generateMemberPerformHisFinishReverseStatus(context);
+    public boolean isFinishReverseMemberSubOrder(ReversePerformContext context,
+                                                 SubOrderReverseInfo info) {
+        int status = generateMemberSubOrderFinishReverseStatus(context);
 
-        MemberSubOrder his = memberPerformHisDao.selectBySkuId(context.getUserId(), context.getTradeId(), info.getSkuId());
+        MemberSubOrder his = memberSubOrderDao.selectBySkuId(context.getUserId(), context.getTradeId(), info.getSkuId());
         if (his.getStatus() == status) {
             CommonLog.info("已经完成更新履约单 [{}]", his);
             return true;
@@ -158,27 +158,27 @@ public class PerformDomainService {
 
 
     @Transactional
-    public void startReverseMemberPerformHis(ReversePerformContext context,
-                                             SubOrderReverseInfo info) {
-        int cnt = memberPerformHisDao.updateStatus(context.getUserId(), context.getTradeId(),
-                info.getSkuId(), MemberPerformHisStatusEnum.REVEREING.toInt(), TimeUtil.now());
+    public void startReversePerformMemberSubOrder(ReversePerformContext context,
+                                                  SubOrderReverseInfo info) {
+        int cnt = memberSubOrderDao.updateStatus(context.getUserId(), context.getTradeId(),
+                info.getSkuId(), SubOrderPerformStatusEnum.REVEREING.toInt(), TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约中:{}", cnt);
     }
 
     @Transactional
-    public void finishReverseMemberPerformHis(ReversePerformContext context,
-                                              SubOrderReverseInfo info) {
-        int status = generateMemberPerformHisFinishReverseStatus(context);
+    public void finishReversePerformMemberSubOrder(ReversePerformContext context,
+                                                   SubOrderReverseInfo info) {
+        int status = generateMemberSubOrderFinishReverseStatus(context);
 
-        memberPerformHisDao.updateStatus(context.getUserId(), context.getTradeId(),
+        memberSubOrderDao.updateStatus(context.getUserId(), context.getTradeId(),
                 info.getSkuId(), status, TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约完成");
     }
 
-    private int generateMemberPerformHisFinishReverseStatus(ReversePerformContext context) {
+    private int generateMemberSubOrderFinishReverseStatus(ReversePerformContext context) {
         boolean allRefund = context.getCurrentSubOrderReverseInfo().isAllRefund();
-        return allRefund ? MemberPerformHisStatusEnum.COMPLETED_REVERSED.toInt() :
-                MemberPerformHisStatusEnum.PORTION_REVERSED.toInt();
+        return allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED.toInt() :
+                SubOrderPerformStatusEnum.PORTION_REVERSED.toInt();
     }
 
     public boolean isFinishReverseMemberPerformItems(ReversePerformContext context,
@@ -247,16 +247,16 @@ public class PerformDomainService {
         return JsonUtils.fromJson(order.getExtra(), MemberOrderExtraInfo.class);
     }
 
-    public PerformHisExtraInfo buildPerformHisExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
-        PerformHisExtraInfo extraInfo = new PerformHisExtraInfo();
+    public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SkuPerformContext skuPerformContext) {
+        SubOrderExtraInfo extraInfo = new SubOrderExtraInfo();
 
         MemberSkuSnapshotDO snapshot = skuPerformContext.getSkuBuyDetail().getSkuSnapshot();
 
-        PerformHisViewInfo viewInfo = PerformConvertor.INSTANCE.toPerformHisViewInfo(snapshot.getViewInfo());
+        SubOrderViewInfo viewInfo = PerformConvertor.INSTANCE.toSubOrderViewInfo(snapshot.getViewInfo());
 
-        PerformHisSettleInfo settleInfo = PerformConvertor.INSTANCE.toPerformHisSettleInfo(snapshot.getSettleInfo());
+        SubOrderSettleInfo settleInfo = PerformConvertor.INSTANCE.toSubOrderSettleInfo(snapshot.getSettleInfo());
 
-        PerformHisSaleInfo saleInfo = PerformConvertor.INSTANCE.toPerformHisSaleInfo(snapshot.getSaleInfo());
+        SubOrderSaleInfo saleInfo = PerformConvertor.INSTANCE.toSubOrderSaleInfo(snapshot.getSaleInfo());
         extraInfo.setSettleInfo(settleInfo);
         extraInfo.setViewInfo(viewInfo);
         extraInfo.setUserInfo(context.getUserInfo());
@@ -274,7 +274,7 @@ public class PerformDomainService {
         return reversePerformContext;
     }
 
-    public Map<Long, SubOrderReverseInfo> buildPerformHisReverseInfoMapBaseAssets(ReversePerformContext context) {
+    public Map<Long, SubOrderReverseInfo> buildSubOrderReversePerformInfoMapBaseAssets(ReversePerformContext context) {
         List<PerformItemReverseInfo> items = Lists.newArrayList();
 
         for (Map.Entry<String, ItemUsage> entry : context.getAfterSaleApplyContext().getPreviewContext().getBatchCode2ItemUsage().entrySet()) {
@@ -302,7 +302,7 @@ public class PerformDomainService {
 
         Map<Long, SubOrderReverseInfo> skuId2HisInfos = Maps.newHashMap();
         for (PerformItemReverseInfo item : items) {
-            for (MemberSubOrder memberSubOrder : context.getAfterSaleApplyContext().getPreviewContext().getPerformHisList()) {
+            for (MemberSubOrder memberSubOrder : context.getAfterSaleApplyContext().getPreviewContext().getSubOrderList()) {
                 if (memberSubOrder.getSkuId() == item.getSkuId()) {
                     if (skuId2HisInfos.containsKey(item.getSkuId())) {
                         skuId2HisInfos.get(item.getSkuId()).getItems().add(item);

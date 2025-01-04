@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class ReversePerformHisFlow extends FlowNode<ReversePerformContext> {
+public class ReversePerformSubOrderFlow extends FlowNode<ReversePerformContext> {
 
     @Autowired
     private PerformDomainService performDomainService;
@@ -27,14 +27,14 @@ public class ReversePerformHisFlow extends FlowNode<ReversePerformContext> {
         if (context.getCurrentSubOrderReverseInfo() == null) {
             context.setCurrentSubOrderReverseInfo(context.getReverseInfos().get(0));
         }
-        if (performDomainService.isFinishReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo())) {
+        if (performDomainService.isFinishReverseMemberSubOrder(context, context.getCurrentSubOrderReverseInfo())) {
             throw new SkipException("已经完成更新履约单,不再重试");
         }
-        performDomainService.startReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo());
+        performDomainService.startReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
     }
 
     @Override
     public void success(ReversePerformContext context) {
-        performDomainService.finishReverseMemberPerformHis(context, context.getCurrentSubOrderReverseInfo());
+        performDomainService.finishReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
     }
 }

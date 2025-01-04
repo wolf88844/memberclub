@@ -13,13 +13,13 @@ import lombok.Data;
  * author: 掘金五阳
  */
 @Data
-public class PerformHisExtraInfo {
+public class SubOrderExtraInfo {
 
-    private PerformHisSaleInfo saleInfo = new PerformHisSaleInfo();
+    private SubOrderSaleInfo saleInfo = new SubOrderSaleInfo();
 
-    private PerformHisSettleInfo settleInfo = new PerformHisSettleInfo();
+    private SubOrderSettleInfo settleInfo = new SubOrderSettleInfo();
 
-    private PerformHisViewInfo viewInfo = new PerformHisViewInfo();
+    private SubOrderViewInfo viewInfo = new SubOrderViewInfo();
 
     private CommonUserInfo userInfo = new CommonUserInfo();
 }

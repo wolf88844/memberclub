@@ -38,7 +38,7 @@ public enum PerformItemStatusEnum {
             }
         }
 
-        throw new IllegalArgumentException("Invalid PerformHisStatusEnum value: " + value);
+        throw new IllegalArgumentException("Invalid SubOrderStatusEnum value: " + value);
     }
 
     public static boolean hasPerformed(int status) {

@@ -9,7 +9,7 @@ package com.memberclub.domain.common;
 /**
  * @author yuhaiqiang
  */
-public enum MemberPerformHisReverseStatusEnum {
+public enum MemberSubOrderReverseStatusEnum {
 
 
     INIT(0, "init"),
@@ -25,19 +25,19 @@ public enum MemberPerformHisReverseStatusEnum {
 
     private String name;
 
-    MemberPerformHisReverseStatusEnum(int value, String name) {
+    MemberSubOrderReverseStatusEnum(int value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public static MemberPerformHisReverseStatusEnum findByInt(int value) throws IllegalArgumentException {
-        for (MemberPerformHisReverseStatusEnum item : MemberPerformHisReverseStatusEnum.values()) {
+    public static MemberSubOrderReverseStatusEnum findByInt(int value) throws IllegalArgumentException {
+        for (MemberSubOrderReverseStatusEnum item : MemberSubOrderReverseStatusEnum.values()) {
             if (item.value == value) {
                 return item;
             }
         }
 
-        throw new IllegalArgumentException("Invalid MemberPerformHisReverseStatusEnum value: " + value);
+        throw new IllegalArgumentException("Invalid SubOrderReverseStatusEnum value: " + value);
     }
 
     @Override

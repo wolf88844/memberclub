@@ -38,7 +38,5 @@ public class MemberSkuTest {
 
         context.setBizType(BizTypeEnum.DEMO_MEMBER);
         context.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
-        //MemberPerformHis memberPerformHis = PerformConvertor.INSTANCE.toMemberPerformHis(context, skuPerformContext);
-        //System.out.println(memberPerformHis);
     }
 }
