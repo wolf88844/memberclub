@@ -38,7 +38,7 @@ public interface AftersaleConvertor {
             @Mapping(target = "status", qualifiedByName = "toAftersaleOrderStatusInt"),
             @Mapping(target = "refundType", qualifiedByName = "toRefundTypeInt"),
             @Mapping(target = "extra", qualifiedByName = "toAftersaleOrderExtraDO"),
-            @Mapping(target = "applySkuDetails", qualifiedByName = "toApplySkuDetails"),
+            @Mapping(target = "refundWay", qualifiedByName = "toRefundWayEnumInt"),
     })
     public AftersaleOrder toAftersaleOrder(AftersaleOrderDO orderDO);
 

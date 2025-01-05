@@ -47,4 +47,15 @@ public interface AftersaleOrderDao extends BaseMapper<AftersaleOrder> {
     })
     public int updateStatus(@Param("userId") long userId, @Param("id") Long id,
                             @Param("status") int status, @Param("utime") long utime);
+
+    @Update({
+            "UPDATE ", TABLE_NAME, " SET status=#{status} ",
+            " , act_refund_price_fen = #{actRefundPriceFen} ",
+            " ,extra=#{extra}, utime=#{utime} ",
+            " WHERE user_id=#{userId} AND id=#{id} "
+    })
+    public int updateStatusAndRefundPrice(@Param("userId") long userId, @Param("id") Long id,
+                                          @Param("actRefundPriceFen") int actRefundPriceFen,
+                                          @Param("extra") String extra,
+                                          @Param("status") int status, @Param("utime") long utime);
 }

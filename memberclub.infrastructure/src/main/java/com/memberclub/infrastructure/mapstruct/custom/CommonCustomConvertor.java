@@ -9,6 +9,7 @@ package com.memberclub.infrastructure.mapstruct.custom;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
@@ -129,6 +130,16 @@ public class CommonCustomConvertor {
     @Named("toMemberOrderPerformStatusEnum")
     public com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum toMemberOrderPerformStatusEnumEnum(int code) {
         return com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.findByCode(code);
+    }
+
+    @Named("toRefundWayEnumInt")
+    public int toRefundWayEnumInt(RefundWayEnum e) {
+        return e.getCode();
+    }
+
+    @Named("toRefundWayEnum")
+    public RefundWayEnum toRefundWayEnumEnum(int code) {
+        return RefundWayEnum.findByCode(code);
     }
 
 }

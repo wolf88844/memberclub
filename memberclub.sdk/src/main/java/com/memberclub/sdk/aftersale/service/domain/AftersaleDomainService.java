@@ -7,7 +7,6 @@
 package com.memberclub.sdk.aftersale.service.domain;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
@@ -45,13 +44,15 @@ public class AftersaleDomainService {
         AftersaleOrderDO order = AftersaleConvertor.INSTANCE.toAftersaleOrderDO(context.getCmd());
         order.setActPayPriceFen(context.getPreviewContext().getPayPriceFen());
         order.setActRefundPriceFen(context.getPreviewContext().getActRefundPrice());
-        order.setApplySkuInfoDOS(Lists.newArrayList());
+        order.setApplySkuInfos(context.getCmd().getApplySkus());
         order.setStatus(AftersaleOrderStatusEnum.INIT);
         order.setCtime(TimeUtil.now());
         order.setExtra(new AftersaleOrderExtraDO());
         order.getExtra().setReason(context.getCmd().getReason());
-        order.getExtra().setApplySkus(context.getCmd().getApplySkus());
+        order.getExtra().setApplySkus(order.getApplySkuInfos());
         order.setRefundType(context.getPreviewContext().getRefundType());
+        order.setRecommendRefundPriceFen(context.getPreviewContext().getRecommendRefundPrice());
+        order.setRefundWay(context.getPreviewContext().getRefundWay());
         return order;
     }
 
@@ -112,8 +113,10 @@ public class AftersaleDomainService {
         AftersaleOrderDO order = context.getAftersaleOrderDO();
         order.onOrderRefunfSuccess(context);
         // TODO: 2025/1/1
-        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
+        int cnt = aftersaleOrderDao.updateStatusAndRefundPrice(order.getUserId(),
                 order.getId(),
+                order.getActRefundPriceFen(),
+                JsonUtils.toJson(order.getExtra()),
                 order.getStatus().getCode(),
                 TimeUtil.now());
     }

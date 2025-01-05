@@ -20,4 +20,8 @@ public interface CommonOrderFacadeSPI {
 
     @RequestMapping(method = RequestMethod.POST, value = "/order/submit")
     public SubmitOrderResponseDTO submit(SubmitOrderRequestDTO request);
+
+
+    @RequestMapping(method = RequestMethod.POST, value = "/order/submit")
+    public RefundOrderResponseDTO refund(RefundOrderRequestDTO request);
 }

@@ -26,8 +26,6 @@ public class AftersaleOrder {
 
     private String tradeId;
 
-    private String applySkuDetails;
-
     private String extra;
 
     private Integer actPayPriceFen;
@@ -35,6 +33,8 @@ public class AftersaleOrder {
     private Integer actRefundPriceFen;
 
     private Integer recommendRefundPriceFen;
+
+    private Integer refundWay;
 
     private int status;
 

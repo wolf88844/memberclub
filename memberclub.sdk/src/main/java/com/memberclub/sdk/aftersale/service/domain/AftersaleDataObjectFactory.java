@@ -30,7 +30,7 @@ public class AftersaleDataObjectFactory {
         orderDO.setBizType(BizTypeEnum.findByCode(order.getBizType()));
         orderDO.setCtime(order.getCtime());
         orderDO.setExtra(JsonUtils.fromJson(order.getExtra(), AftersaleOrderExtraDO.class));
-        orderDO.setApplySkuInfoDOS(orderDO.getExtra().getApplySkus());
+        orderDO.setApplySkuInfos(orderDO.getExtra().getApplySkus());
         orderDO.setId(order.getId());
         orderDO.setOperator(order.getOperator());
         orderDO.setReason(orderDO.getExtra().getReason());

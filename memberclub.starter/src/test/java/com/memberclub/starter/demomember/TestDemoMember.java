@@ -321,10 +321,11 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         AftersaleApplyCmd applyCmd = new AftersaleApplyCmd();
         applyCmd = AftersaleConvertor.INSTANCE.toApplyCmd(previewCmd);
         applyCmd.setDigests(respose.getDigests());
+        applyCmd.setReason("不想要了!");
         applyCmd.setDigestVersion(respose.getDigestVersion());
         //applyCmd.setDigestVersion(0);
         AftersaleApplyResponse aftersaleApplyResponse = aftersaleBizService.apply(applyCmd);
-        waitH2();
+        //waitH2();
 
         verifyOrderRefund(applyCmd, false);
         Assert.assertTrue(aftersaleApplyResponse.isSuccess());

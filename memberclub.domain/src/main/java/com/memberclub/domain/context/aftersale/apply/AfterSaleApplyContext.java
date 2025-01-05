@@ -37,8 +37,15 @@ public class AfterSaleApplyContext implements RetryableContext {
 
     private AftersaleOrderDO aftersaleOrderDO;
 
+    private Integer orderRefundPriceFen;
+
     /******************************************/
 
+    private int errorCode;
+
+    private String errorMsg;
+
+    /****************************************/
 
     public BizScene toBizScene() {
         return BizScene.of(cmd.getBizType(), scene);

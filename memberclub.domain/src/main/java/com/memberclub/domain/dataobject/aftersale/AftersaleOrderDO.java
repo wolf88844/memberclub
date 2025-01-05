@@ -10,6 +10,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
+import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import lombok.Data;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class AftersaleOrderDO {
 
     private String tradeId;
 
-    private List<ApplySkuInfoDO> applySkuInfoDOS;
+    private List<ApplySkuInfoDO> applySkuInfos;
 
     private AftersaleOrderExtraDO extra;
 
@@ -47,6 +48,8 @@ public class AftersaleOrderDO {
     private AftersaleOrderStatusEnum status;
 
     private RefundTypeEnum refundType;
+
+    private RefundWayEnum refundWay;
 
     private long utime;
 

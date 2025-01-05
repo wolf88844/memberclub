@@ -12,13 +12,17 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.dataobject.purchase.facade.CommonOrderRefundResult;
 import com.memberclub.domain.dataobject.purchase.facade.CommonOrderSubmitResult;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.order.context.SkuBuyInfoDTO;
 import com.memberclub.infrastructure.order.context.SubmitOrderRequestDTO;
 import com.memberclub.infrastructure.order.context.SubmitOrderResponseDTO;
 import com.memberclub.infrastructure.order.facade.CommonOrderFacadeSPI;
+import com.memberclub.infrastructure.order.facade.RefundOrderRequestDTO;
+import com.memberclub.infrastructure.order.facade.RefundOrderResponseDTO;
 import com.memberclub.sdk.purchase.extension.CommonOrderExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -79,5 +83,28 @@ public class SPICommonOrderExtension implements CommonOrderExtension {
         throw ResultCode.COMMON_ORDER_SUBMIT_ERROR.newException(String.format("调用订单提单失败 errorCode:%s, msg:%s",
                 response.getErrorCode(), response.getMsg()
         ));
+    }
+
+    @Override
+    public CommonOrderRefundResult refund(AfterSaleApplyContext context) {
+        RefundOrderRequestDTO request = new RefundOrderRequestDTO();
+        request.setOrderId(context.getPreviewContext().getMemberOrder().getOrderInfo().getOrderId());
+        request.setRefundPriceFen(context.getOrderRefundPriceFen());
+        request.setRefundType(context.getAftersaleOrderDO().getRefundType().getCode());
+        request.setUserId(context.getAftersaleOrderDO().getUserId());
+        RefundOrderResponseDTO response = commonOrderFacadeSPI.refund(request);
+        if (response.isSuccess()) {
+            CommonOrderRefundResult result = new CommonOrderRefundResult();
+            result.setOrderRefundId(response.getOrderRefundId());
+            return result;
+        }
+
+        context.setErrorCode(response.getErrorCode());
+        context.setErrorMsg(response.getErrorMsg());
+
+        throw ResultCode.COMMON_ORDER_SUBMIT_ERROR.newException(
+                String.format("调用订单退款失败 errorCode:%s, msg:%s",
+                        response.getErrorCode(), response.getErrorMsg()
+                ));
     }
 }

@@ -7,9 +7,12 @@
 package com.memberclub.sdk.order;
 
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.log.CommonLog;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.purchase.facade.CommonOrderRefundResult;
 import com.memberclub.domain.dataobject.purchase.facade.CommonOrderSubmitResult;
 import com.memberclub.domain.dataobject.purchase.facade.SkuBuyResultDO;
 import com.memberclub.sdk.purchase.extension.CommonOrderExtension;
@@ -25,7 +28,15 @@ public class OrderDomainService {
     private ExtensionManager extensionManager;
 
     public void refundOrder(AfterSaleApplyContext context) {
+        context.setOrderRefundPriceFen(context.getPreviewContext().getRecommendRefundPrice());
         // TODO: 2025/1/5
+        CommonOrderExtension extension = extensionManager.getExtension(
+                BizScene.of(context.getCmd().getBizType()), CommonOrderExtension.class);
+
+        CommonOrderRefundResult result = extension.refund(context);
+        context.getAftersaleOrderDO().getExtra().setOrderRefundId(result.getOrderRefundId());
+        context.getAftersaleOrderDO().setActRefundPriceFen(context.getOrderRefundPriceFen());
+        CommonLog.info("调用订单退款 orderRefundId:{}", result.getOrderRefundId());
     }
 
 

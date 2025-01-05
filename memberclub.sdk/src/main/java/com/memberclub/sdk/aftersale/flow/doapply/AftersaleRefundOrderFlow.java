@@ -9,6 +9,7 @@ package com.memberclub.sdk.aftersale.flow.doapply;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import com.memberclub.sdk.aftersale.service.domain.AftersaleDomainService;
 import com.memberclub.sdk.order.OrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,15 @@ public class AftersaleRefundOrderFlow extends FlowNode<AfterSaleApplyContext> {
             CommonLog.info("当前状态已完成退款,不再重复执行");
             return;
         }
+        CommonLog.info("当前退款渠道为:{}", context.getPreviewContext().getRefundWay());
+        if (context.getPreviewContext().getRefundWay() != RefundWayEnum.ORDER_BACKSTRACK) {
+            return;
+        }
+
 
         CommonLog.info("开始订单退款流程");
         orderDomainService.refundOrder(context);
-        
+
         aftersaleDomainService.onOrderRefunded(context);
     }
 }

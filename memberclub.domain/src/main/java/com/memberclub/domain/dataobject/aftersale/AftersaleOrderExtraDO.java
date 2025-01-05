@@ -19,4 +19,6 @@ public class AftersaleOrderExtraDO {
     private List<ApplySkuInfoDO> applySkus;
 
     private String reason;
+
+    private String orderRefundId;
 }
