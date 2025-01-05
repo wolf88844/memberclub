@@ -38,7 +38,7 @@ public class MemberOrderSubmitFlow extends FlowNode<PurchaseSubmitContext> {
     @Override
     public void success(PurchaseSubmitContext context) {
         memberOrderBuildFactory.onSubmitSuccess(context);
-        memberOrderDomainService.submitSuccess(context.getMemberOrder());
+        memberOrderDomainService.onSubmitSuccess(context.getMemberOrder());
     }
 
     @Override

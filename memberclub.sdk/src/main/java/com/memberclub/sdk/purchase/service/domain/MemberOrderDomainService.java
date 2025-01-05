@@ -63,7 +63,7 @@ public class MemberOrderDomainService {
 
     @Transactional
     @Retryable
-    public void submitSuccess(MemberOrderDO order) {
+    public void onSubmitSuccess(MemberOrderDO order) {
         int cnt = memberOrderDao.updateStatusOnSubmitSuccess(order.getUserId(),
                 order.getTradeId(),
                 order.getStatus().getCode(),

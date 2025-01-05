@@ -8,6 +8,7 @@ package com.memberclub.sdk.perform.service.domain;
 
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.context.perform.common.GrantTypeEnum;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
@@ -46,6 +47,7 @@ public class PerformDataObjectBuildFactory {
         itemDO.setRightType(RightTypeEnum.findByCode(item.getRightType()));
         itemDO.setSkuId(item.getSkuId());
         itemDO.setStime(item.getStime());
+        itemDO.setStatus(PerformItemStatusEnum.findByCode(item.getStatus()));
         return itemDO;
     }
 

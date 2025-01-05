@@ -21,7 +21,7 @@ public enum AftersaleUnableCode {
     EXPIRE_ERROR(1003, "已过期,不能退"),
     USE_OUT_ERROR(1004, "已用尽,不能退"),
     USE_ERROR(1005, "已使用,不能退"),
-    REFUNDED(1006, "已退款"),
+    REFUNDED(1006, "已退款完成"),
     NON_PERFORMED(1007, "还未履约成功,不能退"),
     CONDITION_OCCUR(1008, "券包使用情况变化,请刷新重试"),
 
@@ -56,14 +56,14 @@ public enum AftersaleUnableCode {
         return this.value;
     }
 
-    public void throwException(String msg, Throwable cause) {
+    public AfterSaleUnableException newException(String msg, Throwable cause) {
         msg = StringUtils.isEmpty(msg) ? this.toString() : msg;
         AfterSaleUnableException e = new AfterSaleUnableException(this, msg, cause);
-        throw e;
+        return e;
     }
 
-    public void throwException() {
+    public AfterSaleUnableException newException() {
         AfterSaleUnableException e = new AfterSaleUnableException(this, this.toString(), null);
-        throw e;
+        return e;
     }
 }

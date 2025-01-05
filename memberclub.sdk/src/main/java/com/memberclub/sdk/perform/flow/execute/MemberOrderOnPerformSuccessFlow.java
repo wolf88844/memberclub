@@ -30,8 +30,6 @@ public class MemberOrderOnPerformSuccessFlow extends FlowNode<PerformContext> {
 
     @Override
     public void success(PerformContext context) {
-        context.getMemberOrder().setStatus(MemberOrderStatusEnum.PERFORMED);
-        context.getMemberOrder().setPerformStatus(MemberOrderPerformStatusEnum.PERFORMED);
         performDomainService.finishMemberOrderPerformOnSuccess(context);
     }
 }

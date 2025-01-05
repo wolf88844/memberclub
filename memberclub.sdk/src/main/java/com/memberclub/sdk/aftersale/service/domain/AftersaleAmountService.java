@@ -6,6 +6,8 @@
  */
 package com.memberclub.sdk.aftersale.service.domain;
 
+import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
@@ -13,6 +15,8 @@ import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 import com.memberclub.domain.facade.AssetDO;
+import com.memberclub.sdk.aftersale.extension.preview.AftersaleAmountExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,6 +29,16 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AftersaleAmountService {
+
+    @Autowired
+    private ExtensionManager extensionManager;
+
+    public Integer recommendRefundPrice(AftersalePreviewContext context) {
+        int recommendRefundPrice = extensionManager.getExtension(
+                BizScene.of(context.getCmd().getBizType().getCode()), AftersaleAmountExtension.class)
+                .calculteRecommendRefundPrice(context, context.getBatchCode2ItemUsage());
+        return recommendRefundPrice;
+    }
 
     public ItemUsage summingPrice(List<AssetDO> assets) {
         // TODO: 2024/12/22
@@ -69,10 +83,10 @@ public class AftersaleAmountService {
 
     public void calculateUsageTypeByAmount(AftersalePreviewContext context) {
         if (context.getRecommendRefundPrice() < 0) {
-            AftersaleUnableCode.INTERNAL_ERROR.throwException("退款金额内部计算错误", null);
+            throw AftersaleUnableCode.INTERNAL_ERROR.newException("退款金额内部计算错误", null);
         } else if (context.getRecommendRefundPrice() == 0) {
             context.setUsageType(UsageTypeEnum.USEOUT);
-            AftersaleUnableCode.USE_OUT_ERROR.throwException();
+            throw AftersaleUnableCode.USE_OUT_ERROR.newException();
         } else if (context.getRecommendRefundPrice() > 0 && context.getRecommendRefundPrice() < context.getPayPriceFen()) {
             context.setUsageType(UsageTypeEnum.USED);
             context.setRefundType(RefundTypeEnum.PORTION_RFUND);
@@ -80,7 +94,7 @@ public class AftersaleAmountService {
             context.setUsageType(UsageTypeEnum.UNUSE);
             context.setRefundType(RefundTypeEnum.ALL_REFUND);
         } else {
-            AftersaleUnableCode.INTERNAL_ERROR.throwException("退款金额内部计算错误", null);
+            throw AftersaleUnableCode.INTERNAL_ERROR.newException("退款金额内部计算错误", null);
         }
     }
 
@@ -88,8 +102,7 @@ public class AftersaleAmountService {
         if (context.getUsageType() == UsageTypeEnum.USED || context.getUsageType() == UsageTypeEnum.UNUSE) {
             return RefundWayEnum.ORDER_BACKSTRACK;
         }
-        AftersaleUnableCode.INTERNAL_ERROR.throwException("不应该走到这里,已用尽应在上层拦截", null);
-        return null;
+        throw AftersaleUnableCode.INTERNAL_ERROR.newException("不应该走到这里,已用尽应在上层拦截", null);
     }
 
     public RefundWayEnum calculateRefundWayUnSupportPortionRefund(AftersalePreviewContext context) {
@@ -98,7 +111,6 @@ public class AftersaleAmountService {
         } else if (context.getUsageType() == UsageTypeEnum.USED) {
             return RefundWayEnum.CUSTOMER_REFUND;
         }
-        AftersaleUnableCode.INTERNAL_ERROR.throwException("不应该走到这里,已用尽应在上层拦截", null);
-        return null;
+        throw AftersaleUnableCode.INTERNAL_ERROR.newException("不应该走到这里,已用尽应在上层拦截", null);
     }
 }

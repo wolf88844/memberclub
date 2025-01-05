@@ -42,7 +42,7 @@ public class DefaultAftersalePreviewExtension implements AftersalePreviewExtensi
 
     @PostConstruct
     public void init() {
-        previewChain = FlowChain.newChain(flowChainService, AftersalePreviewContext.class)
+        previewChain = FlowChain.newChain(AftersalePreviewContext.class)
                 .addNode(AftersalePreviewDegradeFlow.class)
                 // TODO: 2025/1/1  //增加售后单 进行中校验,当前存在生效中受理单,不允许预览(数据处于不一致状态,无法获得准确的预览结果),返回特殊错误码
                 .addNode(AftersaleStatusCheckFlow.class)

@@ -20,7 +20,7 @@ public class SubOrderPerformContext {
 
     private PerformContext performContext;
 
-    private MemberSubOrderDO subOrder = new MemberSubOrderDO();
+    private MemberSubOrderDO subOrder;
 
     private List<MemberPerformItemDO> immediatePerformItems;
 

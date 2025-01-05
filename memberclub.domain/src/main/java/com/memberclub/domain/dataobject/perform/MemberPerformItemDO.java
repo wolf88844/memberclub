@@ -6,7 +6,9 @@
  */
 package com.memberclub.domain.dataobject.perform;
 
+import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.common.GrantTypeEnum;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
@@ -54,9 +56,15 @@ public class MemberPerformItemDO implements Comparable {
 
     private long etime;
 
+    PerformItemStatusEnum status;
+
 
     @Override
     public int compareTo(Object o) {
         return phase < ((MemberPerformItemDO) o).getPhase() ? -1 : 1;
+    }
+
+    public void onFinishPerform(PerformItemContext context) {
+        status = PerformItemStatusEnum.PERFORM_SUCCESS;
     }
 }

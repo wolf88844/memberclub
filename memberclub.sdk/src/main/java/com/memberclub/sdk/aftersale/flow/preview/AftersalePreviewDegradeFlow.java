@@ -22,12 +22,11 @@ public class AftersalePreviewDegradeFlow extends FlowNode<AftersalePreviewContex
 
     @Override
     public void process(AftersalePreviewContext context) {
-        
         boolean degrade = SwitchEnum.AFTERSALE_DEGRADE.getBoolean(context.getCmd().getBizType().getCode(),
                 String.valueOf(context.getCmd().getSource().getCode()));
         if (degrade) {
             CommonLog.warn("渠道{} 已经降级,不能发起售后", context.getCmd().getSource().toString());
-            AftersaleUnableCode.DEGRADE_AFTERSALE_ERROR.throwException(null, null);
+            throw AftersaleUnableCode.DEGRADE_AFTERSALE_ERROR.newException(null, null);
         }
     }
 }

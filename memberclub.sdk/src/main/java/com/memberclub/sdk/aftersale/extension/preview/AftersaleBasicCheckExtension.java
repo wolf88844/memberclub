@@ -22,14 +22,13 @@ public interface AftersaleBasicCheckExtension extends BaseExtension {
         MemberOrderStatusEnum status = context.getMemberOrder().getStatus();
         MemberOrderPerformStatusEnum performStatus = context.getMemberOrder().getPerformStatus();
 
-
         CommonLog.info("当前订单状态:{}", status.toString(), performStatus.toString());
         if (status == MemberOrderStatusEnum.COMPLETE_REFUNDED) {
-            AftersaleUnableCode.REFUNDED.throwException();
+            throw AftersaleUnableCode.REFUNDED.newException();
         }
 
         if (MemberOrderStatusEnum.nonPerformed(status.getCode())) {
-            AftersaleUnableCode.NON_PERFORMED.throwException();
+            throw AftersaleUnableCode.NON_PERFORMED.newException();
         }
 
         if (MemberOrderStatusEnum.PORTION_REFUNDED == status) {
@@ -42,7 +41,7 @@ public interface AftersaleBasicCheckExtension extends BaseExtension {
         context.setEtime(context.getMemberOrder().getEtime());
         if (context.getEtime() < TimeUtil.now()) {
             CommonLog.info("当前订单已过期不能退 stime:{}, etime:{}", context.getStime(), context.getEtime());
-            AftersaleUnableCode.EXPIRE_ERROR.throwException();
+            throw AftersaleUnableCode.EXPIRE_ERROR.newException();
         }
         CommonLog.info("当前订单有效期 stime:{}, etime:{}", context.getStime(), context.getEtime());
     }

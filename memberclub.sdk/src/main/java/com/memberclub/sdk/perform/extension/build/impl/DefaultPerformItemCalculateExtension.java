@@ -11,9 +11,10 @@ import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.util.PeriodUtils;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.context.perform.common.GrantTypeEnum;
-import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.context.perform.common.GrantTypeEnum;
+import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
+import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -32,6 +33,7 @@ public class DefaultPerformItemCalculateExtension implements PerformItemCalculat
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO) {
         MemberPerformItemDO item = PerformConvertor.INSTANCE.toPerformItem(performConfigDO);
         item.setGrantType(GrantTypeEnum.GRANT);
+        item.setStatus(PerformItemStatusEnum.INIT);
         return item;
     }
 

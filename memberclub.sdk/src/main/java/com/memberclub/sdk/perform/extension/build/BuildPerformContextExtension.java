@@ -13,5 +13,7 @@ import com.memberclub.domain.context.perform.PerformContext;
  * author: 掘金五阳
  */
 public interface BuildPerformContextExtension extends BaseExtension {
+
     public void build(PerformContext context);
+
 }

@@ -37,11 +37,10 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             SubOrderPerformContext subOrderPerformContext = new SubOrderPerformContext();
             subOrderPerformContext.setPerformContext(context);
             subOrderPerformContext.setSubOrder(subOrder);
-
             subOrder.setUtime(TimeUtil.now());
 
-            PerformItemCalculateExtension calculateExtension =
-                    extensionManager.getExtension(context.toDefaultScene(), PerformItemCalculateExtension.class);
+            PerformItemCalculateExtension calculateExtension = extensionManager.getExtension(
+                    context.toDefaultScene(), PerformItemCalculateExtension.class);
 
             List<MemberPerformItemDO> items = Lists.newArrayList();
             for (SkuPerformItemConfigDO config : subOrder.getPerformConfig().getConfigs()) {

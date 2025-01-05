@@ -14,7 +14,7 @@ public enum PerformItemStatusEnum {
     INIT(0, "init"),
     IMMEDIATE_PERFORMING(10, "immediate_performing"),
     PERFORM_FAIL(36, "perform_fail"),
-    PERFORM_SUCC(35, "perform_succ"),
+    PERFORM_SUCCESS(35, "perform_succ"),
     REVEREING(40, "reversing"),
     PORTION_REVERSED(44, "portion_reversed"),
     COMPLETED_REVERSED(45, "completed_reversed"),
@@ -42,7 +42,7 @@ public enum PerformItemStatusEnum {
     }
 
     public static boolean hasPerformed(int status) {
-        return status >= PERFORM_SUCC.getCode();
+        return status >= PERFORM_SUCCESS.getCode();
     }
 
     public static int getReversedStatus(boolean completed) {

@@ -63,6 +63,7 @@ public interface PerformConvertor {
             @Mapping(qualifiedByName = "toGrantTypeEnum", target = "grantType"),
             @Mapping(qualifiedByName = "toPerformItemExtraInfo", target = "extra"),
             @Mapping(qualifiedByName = "toPeriodTypeEnum", target = "periodType"),
+            @Mapping(qualifiedByName = "toPerformItemStatusEnum", target = "status"),
 
     })
     public MemberPerformItemDO toMemberPerformItemDOForPeriodPerform(PerformTaskContentItemDO item);
@@ -71,6 +72,7 @@ public interface PerformConvertor {
             @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
             @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
             @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
+            @Mapping(qualifiedByName = "toPerformItemStatusEnumInt", target = "status"),
     })
     public MemberPerformItem toMemberPerformItem(MemberPerformItemDO item);
 
@@ -91,6 +93,7 @@ public interface PerformConvertor {
             @Mapping(qualifiedByName = "toRightTypeInt", target = "rightType"),
             @Mapping(qualifiedByName = "toGrantTypeInt", target = "grantType"),
             @Mapping(qualifiedByName = "toExtraInfoString", target = "extra"),
+            @Mapping(qualifiedByName = "toPerformItemStatusEnumInt", target = "status"),
     })
     public PerformTaskContentItemDO toPerformTaskContentItemDO(MemberPerformItemDO item);
 

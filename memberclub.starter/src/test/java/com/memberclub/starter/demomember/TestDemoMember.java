@@ -357,7 +357,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
 
         for (MemberPerformItem item : items) {
-            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.getCode(), item.getStatus());
+            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCCESS.getCode(), item.getStatus());
         }
         Assert.assertEquals(buyCount * 2, items.size());
 

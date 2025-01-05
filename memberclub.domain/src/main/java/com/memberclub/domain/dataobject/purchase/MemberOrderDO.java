@@ -8,6 +8,7 @@ package com.memberclub.domain.dataobject.purchase;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
@@ -120,4 +121,10 @@ public class MemberOrderDO {
             }
         }
     }
+
+    public void onPerformSuccess(PerformContext context) {
+        setStatus(MemberOrderStatusEnum.PERFORMED);
+        setPerformStatus(MemberOrderPerformStatusEnum.PERFORMED);
+    }
+
 }

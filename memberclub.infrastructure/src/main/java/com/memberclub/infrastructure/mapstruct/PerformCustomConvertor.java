@@ -146,6 +146,17 @@ public class PerformCustomConvertor {
         return JsonUtils.fromJson(extraInfo, PerformItemExtraInfo.class);
     }
 
+    @Named("toPerformItemStatusEnumInt")
+    public int toPerformItemStatusEnumInt(PerformItemStatusEnum e) {
+        return e.getCode();
+    }
+
+    @Named("toPerformItemStatusEnum")
+    public PerformItemStatusEnum toPerformItemStatusEnum(int code) {
+        return PerformItemStatusEnum.findByCode(code);
+    }
+
+
     @SneakyThrows
     public static TaskContentDO toTaskContentDO(String content, String className) {
         Class<?> clazz = Class.forName(className);
@@ -195,7 +206,6 @@ public class PerformCustomConvertor {
         itemPO.setSkuId(subOrderPerformContext.getSubOrder().getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
-        itemPO.setStatus(PerformItemStatusEnum.INIT.getCode());
         return itemPO;
     }
 
@@ -208,7 +218,6 @@ public class PerformCustomConvertor {
         itemPO.setSkuId(context.getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
-        itemPO.setStatus(PerformItemStatusEnum.INIT.getCode());
         return itemPO;
     }
 }
