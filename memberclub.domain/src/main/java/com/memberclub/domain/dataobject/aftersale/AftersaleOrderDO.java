@@ -7,6 +7,7 @@
 package com.memberclub.domain.dataobject.aftersale;
 
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.AftersaleSourceEnum;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class AftersaleOrderDO {
 
     private String tradeId;
 
-    private List<ApplySkuDetail> applySkuDetails;
+    private List<ApplySkuInfoDO> applySkuInfoDOS;
 
     private AftersaleOrderExtraDO extra;
 
@@ -50,4 +51,21 @@ public class AftersaleOrderDO {
     private long utime;
 
     private long ctime;
+
+
+    public void onAfterSaleSuccess(AfterSaleApplyContext context) {
+        status = AftersaleOrderStatusEnum.AFTERSALE_SUCCESS;
+    }
+
+    public void onPerformReversed(AfterSaleApplyContext context) {
+        status = AftersaleOrderStatusEnum.REVERSE_PERFORM_SUCCESS;
+    }
+
+    public void onPurchaseReversed(AfterSaleApplyContext context) {
+        status = AftersaleOrderStatusEnum.REVERSE_PURCHASE_SUCCESS;
+    }
+
+    public void onOrderRefunfSuccess(AfterSaleApplyContext context) {
+        status = AftersaleOrderStatusEnum.REFUND_ORDER_SUCCESS;
+    }
 }

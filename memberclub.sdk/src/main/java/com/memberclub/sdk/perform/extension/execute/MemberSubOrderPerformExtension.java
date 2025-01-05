@@ -9,17 +9,16 @@ package com.memberclub.sdk.perform.extension.execute;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
-import com.memberclub.domain.entity.MemberSubOrder;
 
 /**
  * author: 掘金五阳
  */
 public interface MemberSubOrderPerformExtension extends BaseExtension {
 
-    public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext);
+    public void buildMemberSubOrderOnStartPerform(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
     public void buildMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
 
-    public void buildCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext);
+    public void buildCommonExtraInfoOnPrePerform(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 }

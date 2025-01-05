@@ -6,8 +6,13 @@
  */
 package com.memberclub.domain.dataobject.aftersale;
 
+import lombok.Data;
+
 /**
  * author: 掘金五阳
  */
-public class ApplySkuDetail {
+@Data
+public class ApplySkuInfoDO {
+
+    private long skuId;
 }

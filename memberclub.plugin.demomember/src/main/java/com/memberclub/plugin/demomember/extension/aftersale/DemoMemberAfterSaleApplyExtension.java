@@ -22,10 +22,10 @@ import com.memberclub.sdk.aftersale.flow.apply.AftersaleDoApplyFlow;
 import com.memberclub.sdk.aftersale.flow.apply.AftersaleGenerateOrderFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleAsyncRollbackFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleOrderFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.AftersaleRefundFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReverseBuyFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleRefundOrderFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePurchaseFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePerformFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.MemberOrderCompleteRefundFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.MemberOrderRefundFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -60,11 +60,11 @@ public class DemoMemberAfterSaleApplyExtension implements AfterSaleApplyExtensio
 
         doApplyFlowChain = FlowChain.newChain(flowChainService, AfterSaleApplyContext.class)
                 .addNode(AftersaleOrderFlow.class)
+                .addNode(MemberOrderRefundFlow.class)
                 .addNode(AftersaleAsyncRollbackFlow.class)
                 .addNode(AftersaleReversePerformFlow.class)
-                .addNode(AftersaleReverseBuyFlow.class)
-                .addNode(AftersaleRefundFlow.class)
-                .addNode(MemberOrderCompleteRefundFlow.class)
+                .addNode(AftersaleReversePurchaseFlow.class)
+                .addNode(AftersaleRefundOrderFlow.class)
         //.addNode()
         ;
 

@@ -8,9 +8,15 @@ package com.memberclub.domain.dataobject.aftersale;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * author: 掘金五阳
  */
 @Data
 public class AftersaleOrderExtraDO {
+
+    private List<ApplySkuInfoDO> applySkus;
+
+    private String reason;
 }

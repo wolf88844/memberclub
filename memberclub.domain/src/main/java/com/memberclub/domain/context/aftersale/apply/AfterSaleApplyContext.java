@@ -7,16 +7,18 @@
 package com.memberclub.domain.context.aftersale.apply;
 
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.RetryableContext;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
-import com.memberclub.domain.entity.AftersaleOrder;
 import lombok.Data;
 
 /**
  * author: 掘金五阳
  */
 @Data
-public class AfterSaleApplyContext {
+public class AfterSaleApplyContext implements RetryableContext {
+
+    private int retryTimes = 0;
 
     private String scene;
 
@@ -35,12 +37,11 @@ public class AfterSaleApplyContext {
 
     private AftersaleOrderDO aftersaleOrderDO;
 
-    AftersaleOrder order;
-
     /******************************************/
 
 
     public BizScene toBizScene() {
         return BizScene.of(cmd.getBizType(), scene);
     }
+
 }

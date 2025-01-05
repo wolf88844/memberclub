@@ -14,7 +14,6 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
         List<SubOrderPerformContext> subOrderPerformContexts = Lists.newArrayList();
         for (MemberSubOrderDO subOrder : context.getMemberSubOrders()) {
             SubOrderPerformContext subOrderPerformContext = new SubOrderPerformContext();
-            //subOrderPerformContext.setSkuInfo(subOrder);
+            subOrderPerformContext.setPerformContext(context);
             subOrderPerformContext.setSubOrder(subOrder);
 
             subOrder.setUtime(TimeUtil.now());

@@ -9,6 +9,7 @@ package com.memberclub.sdk.purchase.service.biz;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
@@ -26,6 +27,12 @@ public class PurchaseBizService {
 
     @Autowired
     private ExtensionManager extensionManager;
+
+
+    public void reverse(AfterSaleApplyContext context) {
+        // TODO: 2025/1/5
+    }
+
 
     @UserLog(domain = LogDomainEnum.PURCHASE)
     public PurchaseSubmitResponse submit(PurchaseSubmitCmd cmd) {

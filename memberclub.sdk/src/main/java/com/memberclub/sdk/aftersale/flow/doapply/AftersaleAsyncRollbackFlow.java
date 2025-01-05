@@ -22,4 +22,9 @@ public class AftersaleAsyncRollbackFlow extends FlowNode<AfterSaleApplyContext> 
     public void process(AfterSaleApplyContext context) {
 
     }
+
+    @Override
+    public void rollback(AfterSaleApplyContext context, Exception e) {
+        // TODO: 2025/1/5 确定是否是最后一次重试,那么就开启回滚
+    }
 }

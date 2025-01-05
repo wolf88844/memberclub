@@ -45,6 +45,6 @@ public interface AftersaleOrderDao extends BaseMapper<AftersaleOrder> {
             "UPDATE ", TABLE_NAME, " SET status=#{status} ,utime=#{utime} ",
             " WHERE user_id=#{userId} AND id=#{id} "
     })
-    public int updateStatus2Succ(@Param("userId") long userId, @Param("id") Long id,
-                                 @Param("status") int status, @Param("utime") long utime);
+    public int updateStatus(@Param("userId") long userId, @Param("id") Long id,
+                            @Param("status") int status, @Param("utime") long utime);
 }

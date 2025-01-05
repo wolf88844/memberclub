@@ -16,9 +16,6 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
-import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
-import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.sdk.perform.extension.execute.MemberSubOrderPerformExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +33,8 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     private PerformDomainService performDomainService;
 
     @Override
-    public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        MemberSubOrder memberSubOrder = PurchaseConvertor.INSTANCE.toMemberSubOrder(subOrderPerformContext.getSubOrder());
-        return memberSubOrder;
+    public void buildMemberSubOrderOnStartPerform(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+
     }
 
     @Override
@@ -50,8 +46,8 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     }
 
     @Override
-    public void buildCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        SubOrderExtraInfo extraInfo = performDomainService.buildSubOrderExtraInfo(context, subOrderPerformContext);
+    public void buildCommonExtraInfoOnPrePerform(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+        performDomainService.buildSubOrderExtraInfo(context, subOrderPerformContext);
     }
 
 

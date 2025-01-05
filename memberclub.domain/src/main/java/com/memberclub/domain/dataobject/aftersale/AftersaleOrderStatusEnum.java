@@ -13,12 +13,12 @@ public enum AftersaleOrderStatusEnum {
 
     INIT(1, "初始化"),
     REVERSE_PERFORM_ING(10, "逆向履约中"),
-    REVERSE_PERFORM_SUCC(15, "逆向履约成功"),
+    REVERSE_PERFORM_SUCCESS(15, "逆向履约成功"),
     REVERSE_BUY_ING(20, "逆向购买中"),
-    REVERSE_BUY_SUCC(25, "逆向购买成功"),
+    REVERSE_PURCHASE_SUCCESS(25, "逆向购买成功"),
     REVERSE_REFUND_ING(30, "逆向退款中"),
-    REVERSE_REFUND_SUCC(35, "逆向退款成功"),
-    AFTERSALE_SUCC(55, "售后成功"),
+    REFUND_ORDER_SUCCESS(35, "逆向退款成功"),
+    AFTERSALE_SUCCESS(55, "售后成功"),
 
     ;
 
@@ -30,6 +30,18 @@ public enum AftersaleOrderStatusEnum {
     AftersaleOrderStatusEnum(int value, String name) {
         this.value = value;
         this.name = name;
+    }
+
+    public boolean isPerformReversed() {
+        return value >= REVERSE_PERFORM_SUCCESS.getCode();
+    }
+
+    public boolean isOrderRefund() {
+        return value >= REFUND_ORDER_SUCCESS.getCode();
+    }
+
+    public boolean isPurchaseReversed() {
+        return value >= REVERSE_PURCHASE_SUCCESS.getCode();
     }
 
     public static AftersaleOrderStatusEnum findByCode(int value) throws IllegalArgumentException {

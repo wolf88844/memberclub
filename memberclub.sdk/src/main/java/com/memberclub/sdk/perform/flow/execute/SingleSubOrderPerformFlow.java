@@ -12,6 +12,7 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
@@ -41,7 +42,10 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
         context.setCurrentSubOrderPerformContext(subOrderPerformContext);
 
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberSubOrder(context, subOrderPerformContext);
+        extension.buildMemberSubOrderOnStartPerform(context, subOrderPerformContext);
+
+        MemberSubOrderDO memberSubOrder = subOrderPerformContext.getSubOrder();
+        memberSubOrder.onStartPerform(subOrderPerformContext);
 
         int cnt = performDomainService.startPerformSubOrder(memberSubOrder);
         if (cnt > 0) {

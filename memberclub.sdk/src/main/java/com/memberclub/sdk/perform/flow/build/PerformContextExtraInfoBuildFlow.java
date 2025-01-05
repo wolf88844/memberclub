@@ -27,7 +27,7 @@ public class PerformContextExtraInfoBuildFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
         for (SubOrderPerformContext subOrderPerformContext : context.getSubOrderPerformContexts()) {
             extensionManager.getExtension(context.toDefaultScene(),
-                    MemberSubOrderPerformExtension.class).buildCommonExtraInfo(context, subOrderPerformContext);
+                    MemberSubOrderPerformExtension.class).buildCommonExtraInfoOnPrePerform(context, subOrderPerformContext);
         }
     }
 }

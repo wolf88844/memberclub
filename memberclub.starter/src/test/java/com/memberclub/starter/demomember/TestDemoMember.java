@@ -232,7 +232,6 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         previewCmd.setOrderId(cmd.getOrderId());
         previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
 
-
         AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
 
         Assert.assertEquals(true, response.isAftersaleEnabled());
@@ -258,7 +257,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Assert.assertEquals(1, orders.size());
 
         for (AftersaleOrder order : orders) {
-            Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.getCode(), order.getStatus());
+            Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCCESS.getCode(), order.getStatus());
         }
 
         List<MemberSubOrder> hisAfterApply = memberSubOrderDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
@@ -325,6 +324,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         applyCmd.setDigestVersion(respose.getDigestVersion());
         //applyCmd.setDigestVersion(0);
         AftersaleApplyResponse aftersaleApplyResponse = aftersaleBizService.apply(applyCmd);
+        waitH2();
 
         verifyOrderRefund(applyCmd, false);
         Assert.assertTrue(aftersaleApplyResponse.isSuccess());

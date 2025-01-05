@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class MemberOrderSuccessFlow extends FlowNode<PerformContext> {
+public class MemberOrderOnPerformSuccessFlow extends FlowNode<PerformContext> {
 
     @Autowired
     private PerformDomainService performDomainService;

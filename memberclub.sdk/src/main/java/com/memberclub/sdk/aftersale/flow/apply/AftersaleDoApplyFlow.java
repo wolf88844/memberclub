@@ -30,8 +30,8 @@ public class AftersaleDoApplyFlow extends FlowNode<AfterSaleApplyContext> {
     @Override
     public void process(AfterSaleApplyContext context) {
         try {
-            extensionManager.getExtension(context.toBizScene(), AfterSaleApplyExtension.class)
-                    .doApply(context);
+            extensionManager.getExtension(context.toBizScene(),
+                    AfterSaleApplyExtension.class).doApply(context);
         } catch (Exception e) {
             throw new AftersaleDoApplyException(AFTERSALE_DO_APPLY_ERROR, e);
         }

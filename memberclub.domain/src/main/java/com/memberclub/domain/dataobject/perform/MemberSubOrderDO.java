@@ -8,6 +8,7 @@ package com.memberclub.domain.dataobject.perform;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
+import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
@@ -62,5 +63,9 @@ public class MemberSubOrderDO {
         SubOrderPerformStatusEnum newPerformStatus = allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED :
                 SubOrderPerformStatusEnum.PORTION_REVERSED;
         performStatus = newPerformStatus;
+    }
+
+    public void onStartPerform(SubOrderPerformContext subOrderPerformContext) {
+        performStatus = SubOrderPerformStatusEnum.PERFORMING;
     }
 }

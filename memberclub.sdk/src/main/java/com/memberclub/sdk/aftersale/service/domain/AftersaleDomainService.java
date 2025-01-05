@@ -37,21 +37,27 @@ public class AftersaleDomainService {
     @Autowired
     private AftersaleOrderDao aftersaleOrderDao;
 
+    @Autowired
+    private AftersaleDataObjectFactory aftersaleDataObjectFactory;
+
 
     public AftersaleOrderDO generateOrder(AfterSaleApplyContext context) {
         AftersaleOrderDO order = AftersaleConvertor.INSTANCE.toAftersaleOrderDO(context.getCmd());
         order.setActPayPriceFen(context.getPreviewContext().getPayPriceFen());
         order.setActRefundPriceFen(context.getPreviewContext().getActRefundPrice());
-        order.setApplySkuDetails(Lists.newArrayList());
+        order.setApplySkuInfoDOS(Lists.newArrayList());
         order.setStatus(AftersaleOrderStatusEnum.INIT);
         order.setCtime(TimeUtil.now());
         order.setExtra(new AftersaleOrderExtraDO());
+        order.getExtra().setReason(context.getCmd().getReason());
+        order.getExtra().setApplySkus(context.getCmd().getApplySkus());
         order.setRefundType(context.getPreviewContext().getRefundType());
         return order;
     }
 
     @Transactional
-    public AftersaleOrder insertOrder(AftersaleOrder order) {
+    public void createAfterSaleOrder(AftersaleOrderDO orderDO) {
+        AftersaleOrder order = AftersaleConvertor.INSTANCE.toAftersaleOrder(orderDO);
         int cnt = aftersaleOrderDao.insertIgnoreBatch(ImmutableList.of(order));
 
         if (cnt < 1) {
@@ -59,7 +65,7 @@ public class AftersaleDomainService {
             if (orderFromDb != null) {
                 CommonLog.warn("新增售后单幂等成功 orderFromDb:{}, orderNew:{}", orderFromDb, order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(), "insert", "duplicated");
-                return orderFromDb;
+                return;
             } else {
                 CommonLog.error("新增售后单失败  orderNew:{}", order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(), "insert", "error");
@@ -69,33 +75,73 @@ public class AftersaleDomainService {
             CommonLog.info("新增售后单成功:{}", order);
             Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(), "insert", "succ");
         }
-        return order;
+        return;
+    }
+
+    public AftersaleOrderDO queryAftersaleOrder(long userId, Long afterSaleId) {
+        AftersaleOrder order = aftersaleOrderDao.queryById(userId, afterSaleId);
+        if (order == null) {
+            return null;
+        }
+        return aftersaleDataObjectFactory.buildAftersaleOrderDO(order);
     }
 
     @Transactional
-    public void completeAftersaleOrder(AftersaleOrder order) {
-        // TODO: 2025/1/1
-        int cnt = aftersaleOrderDao.updateStatus2Succ(order.getUserId(),
+    public void onPerformReversed(AfterSaleApplyContext context) {
+        AftersaleOrderDO order = context.getAftersaleOrderDO();
+        order.onPerformReversed(context);
+        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
                 order.getId(),
-                AftersaleOrderStatusEnum.AFTERSALE_SUCC.getCode(),
+                order.getStatus().getCode(),
                 TimeUtil.now());
-        if (cnt < 1) {
+    }
+
+
+    @Transactional
+    public void onPurchaseReversed(AfterSaleApplyContext context) {
+        AftersaleOrderDO order = context.getAftersaleOrderDO();
+        order.onPurchaseReversed(context);
+        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
+                order.getId(),
+                order.getStatus().getCode(),
+                TimeUtil.now());
+    }
+
+    @Transactional
+    public void onOrderRefunded(AfterSaleApplyContext context) {
+        AftersaleOrderDO order = context.getAftersaleOrderDO();
+        order.onOrderRefunfSuccess(context);
+        // TODO: 2025/1/1
+        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
+                order.getId(),
+                order.getStatus().getCode(),
+                TimeUtil.now());
+    }
+
+    @Transactional
+    public void onAftersaleSuccess(AftersaleOrderDO order) {
+        // TODO: 2025/1/1
+        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
+                order.getId(),
+                order.getStatus().getCode(),
+                TimeUtil.now());
+        /*if (cnt < 1) {
             AftersaleOrder orderFromDb = aftersaleOrderDao.queryById(order.getUserId(), order.getId());
-            if (order != null && AftersaleOrderStatusEnum.AFTERSALE_SUCC.isEquals(order.getStatus())) {
+            if (order != null && AftersaleOrderStatusEnum.AFTERSALE_SUCCESS.equals(order.getStatus())) {
                 CommonLog.warn("修改售后单为成功态,幂等成功 order:{}", order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                        "updateStatus2Succ", "duplicated");
+                        "onAftersaleSuccess", "duplicated");
             } else {
                 CommonLog.warn("修改售后单为成功态, 失败 order:{}", order);
                 Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                        "updateStatus2Succ", "error");
+                        "onAftersaleSuccess", "error");
                 throw ResultCode.DATA_UPDATE_ERROR.newException("更新售后单为成功态异常");
             }
         } else {
             CommonLog.warn("修改售后单为成功态成功 order:{}", order);
             Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                    "updateStatus2Succ", "succ");
-        }
+                    "onAftersaleSuccess", "succ");
+        }*/
     }
 
     @Autowired

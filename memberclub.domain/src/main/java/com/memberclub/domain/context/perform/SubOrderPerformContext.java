@@ -17,7 +17,9 @@ import java.util.List;
  */
 @Data
 public class SubOrderPerformContext {
-    
+
+    private PerformContext performContext;
+
     private MemberSubOrderDO subOrder = new MemberSubOrderDO();
 
     private List<MemberPerformItemDO> immediatePerformItems;

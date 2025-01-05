@@ -7,6 +7,7 @@
 package com.memberclub.sdk.order;
 
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.facade.CommonOrderSubmitResult;
@@ -22,6 +23,11 @@ import org.springframework.stereotype.Service;
 public class OrderDomainService {
     @Autowired
     private ExtensionManager extensionManager;
+
+    public void refundOrder(AfterSaleApplyContext context) {
+        // TODO: 2025/1/5
+    }
+
 
     public void submitOrder(PurchaseSubmitContext context) {
         CommonOrderExtension extension = extensionManager.getExtension(

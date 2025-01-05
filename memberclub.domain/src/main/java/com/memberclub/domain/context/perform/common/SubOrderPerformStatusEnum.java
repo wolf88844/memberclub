@@ -12,8 +12,10 @@ package com.memberclub.domain.context.perform.common;
 public enum SubOrderPerformStatusEnum {
 
     INIT(0, "init"),
-    IMMEDIATE_PERFORMING(10, "immediate_performing"),
-    IMMEDIATE_PERFORED(15, "immediate_performed"),
+    
+    PERFORMING(12, "performing"),
+    IMMEDIATE_PERFORMING(15, "immediate_performing"),
+    IMMEDIATE_PERFORED(17, "immediate_performed"),
     DELAY_PERFORMING(20, "delay_performing"),
     DELAY_PERFORMED(25, "delay_performed"),
     PERFORM_FAIL(36, "perform_fail"),

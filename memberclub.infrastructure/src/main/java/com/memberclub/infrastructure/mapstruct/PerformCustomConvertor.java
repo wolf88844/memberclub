@@ -22,7 +22,7 @@ import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
-import com.memberclub.domain.dataobject.aftersale.ApplySkuDetail;
+import com.memberclub.domain.dataobject.aftersale.ApplySkuInfoDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
@@ -51,7 +51,7 @@ public class PerformCustomConvertor {
     }
 
     @Named("toApplySkuDetails")
-    public String toApplySkuDetails(List<ApplySkuDetail> details) {
+    public String toApplySkuDetails(List<ApplySkuInfoDO> details) {
         return JsonUtils.toJson(details);
     }
 

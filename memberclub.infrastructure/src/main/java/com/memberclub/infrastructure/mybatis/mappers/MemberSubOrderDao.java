@@ -41,14 +41,29 @@ public interface MemberSubOrderDao extends BaseMapper<MemberSubOrder> {
                                                 @Param("tradeId") String tradeId);
 
 
-    @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}, utime=#{utime} "
+    // TODO: 2025/1/5 待确认是否同步更新 extra
+    @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}",
+            ",utime=#{utime} "
             , " WHERE user_id = #{userId} AND sub_trade_id =#{subTradeId} AND status<#{toPerformStatus}"})
     public int updatePerformStatus(@Param("userId") long userId,
                                    @Param("subTradeId") Long subTradeId,
                                    @Param("toPerformStatus") int toPerformStatus,
                                    @Param("utime") long utime);
 
-    @Update({"UPDATE " + TABLE_NAME + " SET  status=#{status}, perform_status=#{toPerformStatus}, utime=#{utime} "
+    // TODO: 2025/1/5 待确认是否同步更新 extra
+    @Update({"UPDATE " + TABLE_NAME + " SET  perform_status=#{toPerformStatus}",
+            ", extra=#{extra} ",
+            ",utime=#{utime} "
+            , " WHERE user_id = #{userId} AND sub_trade_id =#{subTradeId} AND status<#{toPerformStatus}"})
+    public int updatePerformStatusAndExtra(@Param("userId") long userId,
+                                           @Param("subTradeId") Long subTradeId,
+                                           @Param("extra") String extra,
+                                           @Param("toPerformStatus") int toPerformStatus,
+                                           @Param("utime") long utime);
+
+    @Update({"UPDATE ", TABLE_NAME,
+            " SET  status=#{status}, perform_status=#{toPerformStatus} ",
+            ", utime=#{utime} "
             , " WHERE user_id = #{userId} AND sub_trade_id =#{subTradeId} AND status<#{toPerformStatus}"})
     public int updateStatusAndPerformStatus(@Param("userId") long userId,
                                             @Param("subTradeId") Long subTradeId,

@@ -1,5 +1,5 @@
 /**
- * @(#)AftersaleReversePerformFlow.java, 一月 01, 2025.
+ * @(#)AftersaleReverseBuyFlow.java, 一月 01, 2025.
  * <p>
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -10,7 +10,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.sdk.aftersale.service.domain.AftersaleDomainService;
-import com.memberclub.sdk.perform.service.PerformBizService;
+import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +18,23 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class AftersaleReversePerformFlow extends FlowNode<AfterSaleApplyContext> {
-
-    @Autowired
-    private PerformBizService performBizService;
+public class AftersaleReversePurchaseFlow extends FlowNode<AfterSaleApplyContext> {
 
     @Autowired
     private AftersaleDomainService aftersaleDomainService;
 
+    @Autowired
+    private PurchaseBizService purchaseBizService;
+
     @Override
     public void process(AfterSaleApplyContext context) {
-        if (context.getAftersaleOrderDO().getStatus().isPerformReversed()) {
-            CommonLog.info("当前售后状态已完成逆向履约,不再重复执行");
+        if (context.getAftersaleOrderDO().getStatus().isPurchaseReversed()) {
+            CommonLog.info("当前售后状态已完成逆向购买,不再重复执行");
             return;
         }
-        CommonLog.info("开始执行逆向履约");
+        CommonLog.info("开始逆向购买流程");
+        purchaseBizService.reverse(context);
 
-        performBizService.reversePerform(context);
-
-        aftersaleDomainService.onPerformReversed(context);
+        aftersaleDomainService.onPurchaseReversed(context);
     }
 }

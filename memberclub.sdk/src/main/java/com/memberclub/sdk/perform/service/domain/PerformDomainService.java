@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
@@ -83,11 +84,11 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public int startPerformSubOrder(MemberSubOrder subOrder) {
+    public int startPerformSubOrder(MemberSubOrderDO subOrder) {
         // TODO: 2024/12/15
         return memberSubOrderDao.updatePerformStatus(subOrder.getUserId(),
                 subOrder.getSubTradeId(),
-                subOrder.getPerformStatus(),
+                subOrder.getPerformStatus().getCode(),
                 subOrder.getUtime());
     }
 
@@ -164,7 +165,9 @@ public class PerformDomainService {
     @Transactional
     public void startReversePerformMemberSubOrder(ReversePerformContext context,
                                                   SubOrderReverseInfo info) {
-        int cnt = memberSubOrderDao.updatePerformStatus(context.getUserId(), info.getSubTradeId(),
+        int cnt = memberSubOrderDao.updatePerformStatusAndExtra(context.getUserId(),
+                info.getSubTradeId(),
+                JsonUtils.toJson(info.getMemberSubOrder().getExtra()),
                 SubOrderPerformStatusEnum.REVEREING.getCode(), TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约中:{}", cnt);
     }
@@ -172,7 +175,8 @@ public class PerformDomainService {
     @Transactional
     public void onFinishReversePerformMemberSubOrder(ReversePerformContext context,
                                                      SubOrderReverseInfo info) {
-        memberSubOrderDao.updatePerformStatus(context.getUserId(), info.getSubTradeId(),
+        memberSubOrderDao.updatePerformStatusAndExtra(context.getUserId(), info.getSubTradeId(),
+                JsonUtils.toJson(info.getMemberSubOrder().getExtra()),
                 info.getMemberSubOrder().getPerformStatus().getCode(), TimeUtil.now());
         CommonLog.info("更新子单状态为逆向履约完成");
     }

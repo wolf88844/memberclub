@@ -19,7 +19,7 @@ import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.sdk.perform.extension.execute.PerformExecuteExtension;
 import com.memberclub.sdk.perform.flow.complete.MemberPerformMessageFlow;
 import com.memberclub.sdk.perform.flow.execute.ImmediatePerformFlow;
-import com.memberclub.sdk.perform.flow.execute.MemberOrderSuccessFlow;
+import com.memberclub.sdk.perform.flow.execute.MemberOrderOnPerformSuccessFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberPerformItemFlow;
 import com.memberclub.sdk.perform.flow.execute.MemberResourcesLockFlow;
 import com.memberclub.sdk.perform.flow.execute.PerformItemGrantFlow;
@@ -47,7 +47,7 @@ public class DemoMemberPerformExecuteExtension implements PerformExecuteExtensio
     public void init() {
         flowChain = FlowChain.newChain(flowChainService, PerformContext.class)
                 .addNode(MemberResourcesLockFlow.class)
-                .addNode(MemberOrderSuccessFlow.class)
+                .addNode(MemberOrderOnPerformSuccessFlow.class)
                 .addNode(MemberPerformMessageFlow.class)
                 .addNode(SingleSubOrderPerformFlow.class)
                 .addNodeWithSubNodes(ImmediatePerformFlow.class, PerformItemContext.class,
