@@ -235,7 +235,6 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
         AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
 
-        //Thread.sleep(10000000);
         Assert.assertEquals(true, response.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.ALL_REFUND, response.getRefundType());
 
@@ -244,7 +243,10 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         applyCmd.setDigestVersion(response.getDigestVersion());
 
         AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
+        waitH2();
+
         Assert.assertTrue(applyResponse.isSuccess());
+
 
         verifyOrderRefund(applyCmd, true);
 

@@ -75,7 +75,7 @@ public class MemberOrderDomainService {
         for (MemberSubOrderDO subOrder : order.getSubOrders()) {
             memberSubOrderDao.updateStatusOnSubmitSuccess(order.getUserId(),
                     subOrder.getSubTradeId(),
-                    subOrder.getPerformStatus().getCode(),
+                    subOrder.getStatus().getCode(),
                     subOrder.getOrderId(),
                     subOrder.getActPriceFen(),
                     JsonUtils.toJson(subOrder.getExtra()),

@@ -40,6 +40,6 @@ public class ReversePerformSubOrderFlow extends FlowNode<ReversePerformContext> 
 
         subOrder.finishReversePerform(context.getCurrentSubOrderReverseInfo().isAllRefund());
 
-        performDomainService.finishReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
+        performDomainService.onFinishReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
     }
 }

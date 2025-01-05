@@ -34,6 +34,8 @@ public class DefaultBuildReversePerformInfoExtension implements BuildReverseInfo
         Map<Long, SubOrderReverseInfo> skuId2HisInfos = performDomainService.buildSubOrderReversePerformInfoMapBaseAssets(context);
 
         context.setReverseInfos(Lists.newArrayList(skuId2HisInfos.values()));
+
+        context.setMemberOrderDO(performDomainService.extractMemberOrderDOFromReversePerformContext(context));
     }
 
     @Override

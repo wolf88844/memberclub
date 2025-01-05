@@ -25,6 +25,7 @@ import com.memberclub.sdk.aftersale.flow.doapply.AftersaleOrderFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleRefundFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReverseBuyFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePerformFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.MemberOrderCompleteRefundFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -63,6 +64,7 @@ public class DemoMemberAfterSaleApplyExtension implements AfterSaleApplyExtensio
                 .addNode(AftersaleReversePerformFlow.class)
                 .addNode(AftersaleReverseBuyFlow.class)
                 .addNode(AftersaleRefundFlow.class)
+                .addNode(MemberOrderCompleteRefundFlow.class)
         //.addNode()
         ;
 

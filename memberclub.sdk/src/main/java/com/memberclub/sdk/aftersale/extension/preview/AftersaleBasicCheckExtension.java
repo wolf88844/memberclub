@@ -24,7 +24,7 @@ public interface AftersaleBasicCheckExtension extends BaseExtension {
 
 
         CommonLog.info("当前订单状态:{}", status.toString(), performStatus.toString());
-        if (status == MemberOrderStatusEnum.REFUNDED) {
+        if (status == MemberOrderStatusEnum.COMPLETE_REFUNDED) {
             AftersaleUnableCode.REFUNDED.throwException();
         }
 

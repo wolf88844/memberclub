@@ -8,6 +8,7 @@ package com.memberclub.domain.context.perform.reverse;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import lombok.Data;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class ReversePerformContext {
     private long userId;
 
     private String tradeId;
+
+    private MemberOrderDO memberOrderDO;
 
     private AfterSaleApplyContext afterSaleApplyContext;
 

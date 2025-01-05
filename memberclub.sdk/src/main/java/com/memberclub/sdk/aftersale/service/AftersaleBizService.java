@@ -35,9 +35,6 @@ public class AftersaleBizService {
     @Autowired
     private ExtensionManager extensionManager;
 
-    @Autowired
-    private AftersaleBizService aftersaleBizService;
-
     @UserLog(domain = LogDomainEnum.AFTER_SALE)
     public AfterSalePreviewResponse preview(AfterSalePreviewCmd cmd) {
         AfterSalePreviewResponse respose = new AfterSalePreviewResponse();

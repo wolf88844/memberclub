@@ -26,6 +26,7 @@ import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
@@ -169,11 +170,22 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public void finishReversePerformMemberSubOrder(ReversePerformContext context,
-                                                   SubOrderReverseInfo info) {
+    public void onFinishReversePerformMemberSubOrder(ReversePerformContext context,
+                                                     SubOrderReverseInfo info) {
         memberSubOrderDao.updatePerformStatus(context.getUserId(), info.getSubTradeId(),
                 info.getMemberSubOrder().getPerformStatus().getCode(), TimeUtil.now());
         CommonLog.info("更新子单状态为逆向履约完成");
+    }
+
+    @Transactional
+    public void onFinishReversePerformMemberOrder(ReversePerformContext context) {
+        MemberOrderDO memberOrderDO = context.getMemberOrderDO();
+        memberOrderDO.onReversePerformSuccess(context);
+
+        memberOrderDao.updatePerformStatus2ReverseSuccess(
+                memberOrderDO.getUserId(), memberOrderDO.getTradeId(),
+                memberOrderDO.getPerformStatus().getCode(), TimeUtil.now());
+        CommonLog.info("更新主单的履约状态为逆向履约完成");
     }
 
     private SubOrderPerformStatusEnum generateMemberSubOrderFinishReverseStatus(ReversePerformContext context) {
@@ -257,6 +269,10 @@ public class PerformDomainService {
         reversePerformContext.setUserId(context.getCmd().getUserId());
         reversePerformContext.setAfterSaleApplyContext(context);
         return reversePerformContext;
+    }
+
+    public MemberOrderDO extractMemberOrderDOFromReversePerformContext(ReversePerformContext context) {
+        return context.getAfterSaleApplyContext().getPreviewContext().getMemberOrder();
     }
 
     public Map<Long, SubOrderReverseInfo> buildSubOrderReversePerformInfoMapBaseAssets(ReversePerformContext context) {

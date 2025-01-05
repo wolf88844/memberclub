@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -52,14 +53,28 @@ public class MockBaseTest {
 
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
+    static boolean isRunH2Servier = false;
+
     @SneakyThrows
     //@BeforeClass
     public static void startH2() {
         Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-ifNotExists", "-tcpPort",
                 "9092");
-
+        isRunH2Servier = true;
         server.start();
     }
+
+
+    public static void waitH2() {
+        if (isRunH2Servier) {
+            new Scanner(System.in).nextLine();
+        }
+    }
+
+    public static void main(String[] args) {
+        startH2();
+    }
+
 
     @Test
     public void testBase() {

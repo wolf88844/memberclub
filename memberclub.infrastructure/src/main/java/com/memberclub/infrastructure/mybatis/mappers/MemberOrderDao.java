@@ -53,6 +53,29 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
                                         @Param("fromPerformStatuses") List<Integer> fromPerformStatuses,
                                         @Param("utime") long utime);
 
+
+    @Update({
+            "UPDATE ", TABLE_NAME,
+            " SET status=#{status}, utime=#{utime} ",
+            " WHERE user_id=#{userId} AND trade_id=#{tradeId} "
+    })
+    public int updateStatus2RefundSuccess(@Param("userId") long userId,
+                                          @Param("tradeId") String tradeId,
+                                          @Param("status") int status,
+                                          @Param("utime") long utime);
+
+
+    @Update({
+            "UPDATE ", TABLE_NAME,
+            " SET perform_status=#{performStatus}, utime=#{utime} ",
+            " WHERE user_id=#{userId} AND trade_id=#{tradeId} "
+    })
+    public int updatePerformStatus2ReverseSuccess(@Param("userId") long userId,
+                                                  @Param("tradeId") String tradeId,
+                                                  @Param("performStatus") int performStatus,
+                                                  @Param("utime") long utime);
+
+
     // 更新主状态到提单完成
     @Update({
             "UPDATE ", TABLE_NAME,

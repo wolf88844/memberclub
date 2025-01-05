@@ -7,6 +7,10 @@
 package com.memberclub.domain.dataobject.purchase;
 
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
+import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
@@ -16,6 +20,7 @@ import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderSaleInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderSettleInfo;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.exception.ResultCode;
 import lombok.Data;
 
 import java.util.List;
@@ -79,6 +84,40 @@ public class MemberOrderDO {
         status = MemberOrderStatusEnum.FAIL;
         for (MemberSubOrderDO subOrder : subOrders) {
             subOrder.setStatus(SubOrderStatusEnum.FAIL);
+        }
+    }
+
+    public void onReversePerformSuccess(ReversePerformContext context) {
+        boolean hasPortionReverse = false;
+        for (MemberSubOrderDO subOrder : subOrders) {
+            if (subOrder.getPerformStatus() == SubOrderPerformStatusEnum.PORTION_REVERSED) {
+                hasPortionReverse = true;
+            }
+        }
+        if (hasPortionReverse) {
+            performStatus = MemberOrderPerformStatusEnum.PORTION_REVERSED;
+        } else {
+            performStatus = MemberOrderPerformStatusEnum.COMPLETED_REVERSED;
+        }
+    }
+
+    public void onRefundSuccess(AfterSaleApplyContext context) {
+        if (performStatus == MemberOrderPerformStatusEnum.COMPLETED_REVERSED) {
+            status = MemberOrderStatusEnum.COMPLETE_REFUNDED;
+        } else if (performStatus == MemberOrderPerformStatusEnum.PORTION_REVERSED) {
+            status = MemberOrderStatusEnum.PORTION_REFUNDED;
+        } else {
+            throw ResultCode.INTERNAL_ERROR.newException(String.format("更新主单状态为退款成功时 未预期的履约状态:%s", performStatus));
+        }
+
+        for (MemberSubOrderDO subOrder : subOrders) {
+            if (subOrder.getPerformStatus() == SubOrderPerformStatusEnum.COMPLETED_REVERSED) {
+                subOrder.setStatus(SubOrderStatusEnum.REFUNDED);
+            } else if (subOrder.getPerformStatus() == SubOrderPerformStatusEnum.PORTION_REVERSED) {
+                subOrder.setStatus(SubOrderStatusEnum.PORTION_REFUNDED);
+            } else {
+                throw ResultCode.INTERNAL_ERROR.newException(String.format("更新子单状态为退款成功时 未预期的履约状态:%s", subOrder.getPerformStatus()));
+            }
         }
     }
 }

@@ -53,6 +53,7 @@ public class MemberOrderBuildFactory {
         extensionManager.getExtension(context.toDefaultBizScene(),
                 PurchaseOrderBuildExtension.class).onSubmitSuccess(context.getMemberOrder(), context);
 
+
     }
 
 
@@ -115,8 +116,8 @@ public class MemberOrderBuildFactory {
             subOrder.setStatus(SubOrderStatusEnum.INIT);
             subOrder.setPerformStatus(SubOrderPerformStatusEnum.INIT);
             subOrder.setSubTradeId(idGenerator.generateId(IdTypeEnum.PURCHASE_SUB_TRADE));
-            subOrder.setOriginPriceFen(skuInfo.getSaleInfo().getOriginPriceFen());
-            subOrder.setSalePriceFen(skuInfo.getSaleInfo().getSalePriceFen());
+            subOrder.setOriginPriceFen(skuInfo.getSaleInfo().getOriginPriceFen() * skuInfo.getBuyCount());
+            subOrder.setSalePriceFen(skuInfo.getSaleInfo().getSalePriceFen() * skuInfo.getBuyCount());
 
             extensionManager.getExtension(context.toDefaultBizScene(),
                     PurchaseOrderBuildExtension.class).buildSubOrder(order, subOrder, context, skuInfo);

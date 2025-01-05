@@ -19,7 +19,7 @@ public enum MemberOrderStatusEnum {
     PERFORMING(30, "履约中"),
     PERFORMED(35, "已履约"),
     PORTION_REFUNDED(40, "部分退"),
-    REFUNDED(49, "已退款");
+    COMPLETE_REFUNDED(49, "已退款");
 
     private int value;
 
@@ -43,7 +43,7 @@ public enum MemberOrderStatusEnum {
     }
 
     public static boolean isRefunded(int status) {
-        return status == MemberOrderStatusEnum.REFUNDED.getCode();
+        return status == MemberOrderStatusEnum.COMPLETE_REFUNDED.getCode();
     }
 
 

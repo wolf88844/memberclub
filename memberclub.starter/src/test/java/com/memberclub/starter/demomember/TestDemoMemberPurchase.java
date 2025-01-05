@@ -28,6 +28,7 @@ import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
@@ -52,8 +53,9 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     public PurchaseBizService purchaseBizService;
 
     @Test
+    @SneakyThrows
     public void testSubmit() {
-        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(doubleRightsSku.getSkuId(), 1);
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(doubleRightsSku.getSkuId(), 2);
         PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
 
         Assert.assertEquals(true, response.isSuccess());
@@ -66,6 +68,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         for (MemberSubOrder subOrder : subOrders) {
             //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
         }
+        waitH2();
     }
 
     public PurchaseSubmitResponse submit(SkuInfoDO skuInfoDO, int buyCount) {
