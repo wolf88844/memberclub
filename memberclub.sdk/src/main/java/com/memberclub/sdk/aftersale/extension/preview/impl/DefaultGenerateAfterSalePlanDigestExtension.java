@@ -37,8 +37,8 @@ public class DefaultGenerateAfterSalePlanDigestExtension implements GenerateAfte
         List<Object> keys = Lists.newArrayList();
         keys.add(context.getCmd().getTradeId());
         keys.add(context.getRecommendRefundPrice());
-        keys.add(context.getRefundType().toInt());
-        keys.add(context.getRefundWay().toInt());
+        keys.add(context.getRefundType().getCode());
+        keys.add(context.getRefundWay().getCode());
 
         String value = StringUtils.join(keys, ",");
 

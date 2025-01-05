@@ -10,7 +10,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.*;
+import static com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.INIT;
+import static com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.PERFORMED;
+import static com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.PERFORMING;
 
 /**
  * @author yuhaiqiang
@@ -35,7 +37,7 @@ public enum MemberTradeEvent {
         this.fromStatus = fromStatus;
     }
 
-    public static MemberTradeEvent findByInt(int value) throws IllegalArgumentException {
+    public static MemberTradeEvent findByCode(int value) throws IllegalArgumentException {
         for (MemberTradeEvent item : MemberTradeEvent.values()) {
             if (item.toStatus == value) {
                 return item;
@@ -48,10 +50,6 @@ public enum MemberTradeEvent {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    public int toInt() {
-        return this.toStatus;
     }
 
     public List<Integer> getFromStatus() {

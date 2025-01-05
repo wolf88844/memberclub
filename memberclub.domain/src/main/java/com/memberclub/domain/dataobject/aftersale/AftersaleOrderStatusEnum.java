@@ -32,7 +32,7 @@ public enum AftersaleOrderStatusEnum {
         this.name = name;
     }
 
-    public static AftersaleOrderStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static AftersaleOrderStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (AftersaleOrderStatusEnum item : AftersaleOrderStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -51,7 +51,7 @@ public enum AftersaleOrderStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

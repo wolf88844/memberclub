@@ -25,7 +25,7 @@ public enum TaskTypeEnum {
         this.name = name;
     }
 
-    public static TaskTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static TaskTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (TaskTypeEnum item : TaskTypeEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -40,7 +40,7 @@ public enum TaskTypeEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

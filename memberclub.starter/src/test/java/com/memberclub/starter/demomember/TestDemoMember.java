@@ -253,7 +253,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Assert.assertEquals(1, orders.size());
 
         for (AftersaleOrder order : orders) {
-            Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.toInt(), order.getStatus());
+            Assert.assertEquals(AftersaleOrderStatusEnum.AFTERSALE_SUCC.getCode(), order.getStatus());
         }
 
         List<MemberSubOrder> hisAfterApply = memberSubOrderDao.selectByTradeId(applyCmd.getUserId(), applyCmd.getTradeId());
@@ -268,7 +268,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
                 if (StringUtils.equals(item.getBatchCode(), entry.getKey())) {
                     boolean hasReverse = entry.getValue().stream().anyMatch(v ->
-                            v.getStatus() == AssetStatusEnum.FREEZE.toInt());
+                            v.getStatus() == AssetStatusEnum.FREEZE.getCode());
                     Assert.assertTrue(hasReverse);
                 }
             }
@@ -307,7 +307,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
         /*******************部分使用,结果为部分退********/
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
-            entry.getValue().get(0).setStatus(AssetStatusEnum.USED.toInt());
+            entry.getValue().get(0).setStatus(AssetStatusEnum.USED.getCode());
         }
         respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(true, respose.isAftersaleEnabled());
@@ -328,12 +328,12 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
         for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
             for (AssetDO assetDO : entry.getValue()) {
-                assetDO.setStatus(AssetStatusEnum.USED.toInt());
+                assetDO.setStatus(AssetStatusEnum.USED.getCode());
             }
         }
         respose = aftersaleBizService.preview(previewCmd);
         Assert.assertEquals(false, respose.isAftersaleEnabled());
-        Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.toInt(), respose.getUnableCode());
+        Assert.assertEquals(AftersaleUnableCode.USE_OUT_ERROR.getCode(), respose.getUnableCode());
         //Thread.sleep(10000000);
     }
 
@@ -351,7 +351,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
 
         for (MemberPerformItem item : items) {
-            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.toInt(), item.getStatus());
+            Assert.assertEquals(PerformItemStatusEnum.PERFORM_SUCC.getCode(), item.getStatus());
         }
         Assert.assertEquals(buyCount * 2, items.size());
 

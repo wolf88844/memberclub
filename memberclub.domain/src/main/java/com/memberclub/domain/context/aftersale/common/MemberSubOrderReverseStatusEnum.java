@@ -30,7 +30,7 @@ public enum MemberSubOrderReverseStatusEnum {
         this.name = name;
     }
 
-    public static MemberSubOrderReverseStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static MemberSubOrderReverseStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (MemberSubOrderReverseStatusEnum item : MemberSubOrderReverseStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -45,7 +45,7 @@ public enum MemberSubOrderReverseStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

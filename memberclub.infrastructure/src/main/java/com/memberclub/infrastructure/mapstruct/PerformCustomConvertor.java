@@ -57,38 +57,38 @@ public class PerformCustomConvertor {
 
     @Named("toAftersaleSourceInt")
     public int toAftersaleSourceInt(AftersaleSourceEnum source) {
-        return source.toInt();
+        return source.getCode();
     }
 
     @Named("toAftersaleSourceEnum")
     public AftersaleSourceEnum toAftersaleSourceEnum(int source) {
-        return AftersaleSourceEnum.findByInt(source);
+        return AftersaleSourceEnum.findByCode(source);
     }
 
     @Named("toAftersaleOrderStatusInt")
     public int toAftersaleOrderStatusInt(AftersaleOrderStatusEnum status) {
-        return status.toInt();
+        return status.getCode();
     }
 
     @Named("toAftersaleOrderStatusEnum")
     public AftersaleOrderStatusEnum toAftersaleOrderStatusEnum(int status) {
-        return AftersaleOrderStatusEnum.findByInt(status);
+        return AftersaleOrderStatusEnum.findByCode(status);
     }
 
     @Named("toRefundTypeInt")
     public int toRefundTypeInt(RefundTypeEnum source) {
-        return source.toInt();
+        return source.getCode();
     }
 
     @Named("toRefundTypeEnum")
     public RefundTypeEnum toRefundTypeEnum(int source) {
-        return RefundTypeEnum.findByInt(source);
+        return RefundTypeEnum.findByCode(source);
     }
 
 
     @Named("toPeriodTypeInt")
     public int toPeriodTypeInt(PeriodTypeEnum periodType) {
-        return periodType.toInt();
+        return periodType.getCode();
     }
 
     @Named("toPeriodTypeEnum")
@@ -98,7 +98,7 @@ public class PerformCustomConvertor {
 
     @Named("toRightTypeEnum")
     public RightTypeEnum toRightTypeEnum(int rightType) {
-        return RightTypeEnum.findByInt(rightType);
+        return RightTypeEnum.findByCode(rightType);
     }
 
     @Named("toRightTypeInt")
@@ -108,7 +108,7 @@ public class PerformCustomConvertor {
 
     @Named("toGrantTypeInt")
     public int toGrantTypeInt(GrantTypeEnum grantTypeEnum) {
-        return grantTypeEnum.toInt();
+        return grantTypeEnum.getCode();
     }
 
     @Named("toGrantTypeEnum")
@@ -195,7 +195,7 @@ public class PerformCustomConvertor {
         itemPO.setSkuId(subOrderPerformContext.getSubOrder().getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
-        itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());
+        itemPO.setStatus(PerformItemStatusEnum.INIT.getCode());
         return itemPO;
     }
 
@@ -208,7 +208,7 @@ public class PerformCustomConvertor {
         itemPO.setSkuId(context.getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
-        itemPO.setStatus(PerformItemStatusEnum.INIT.toInt());
+        itemPO.setStatus(PerformItemStatusEnum.INIT.getCode());
         return itemPO;
     }
 }

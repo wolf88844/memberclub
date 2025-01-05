@@ -72,7 +72,7 @@ public class AftersaleDomainService {
         // TODO: 2025/1/1
         int cnt = aftersaleOrderDao.update2Succ(order.getUserId(),
                 order.getId(),
-                AftersaleOrderStatusEnum.AFTERSALE_SUCC.toInt(),
+                AftersaleOrderStatusEnum.AFTERSALE_SUCC.getCode(),
                 TimeUtil.now());
         if (cnt < 1) {
             AftersaleOrder orderFromDb = aftersaleOrderDao.queryById(order.getUserId(), order.getId());

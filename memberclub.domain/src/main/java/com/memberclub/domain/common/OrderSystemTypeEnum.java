@@ -41,7 +41,7 @@ public enum OrderSystemTypeEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

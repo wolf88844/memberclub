@@ -36,6 +36,6 @@ public class AfterSaleUnableException extends MemberException {
         if (cause != null) {
             super.initCause(cause);
         }
-        this.unableCode = code.toInt();
+        this.unableCode = code.getCode();
     }
 }

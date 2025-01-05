@@ -43,7 +43,7 @@ public class PerformDataObjectBuildFactory {
         itemDO.setPhase(item.getPhase());
         itemDO.setProviderId(item.getProviderId());
         itemDO.setRightId(item.getRightId());
-        itemDO.setRightType(RightTypeEnum.findByInt(item.getRightType()));
+        itemDO.setRightType(RightTypeEnum.findByCode(item.getRightType()));
         itemDO.setSkuId(item.getSkuId());
         itemDO.setStime(item.getStime());
         return itemDO;

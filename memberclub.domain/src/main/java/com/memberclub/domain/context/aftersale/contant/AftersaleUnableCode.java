@@ -36,7 +36,7 @@ public enum AftersaleUnableCode {
         this.name = name;
     }
 
-    public static AftersaleUnableCode findByInt(int value) throws IllegalArgumentException {
+    public static AftersaleUnableCode findByCode(int value) throws IllegalArgumentException {
         for (AftersaleUnableCode item : AftersaleUnableCode.values()) {
             if (item.value == value) {
                 return item;
@@ -52,7 +52,7 @@ public enum AftersaleUnableCode {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 

@@ -26,7 +26,7 @@ public enum OnceTaskStatusEnum {
         this.name = name;
     }
 
-    public static OnceTaskStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static OnceTaskStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (OnceTaskStatusEnum item : OnceTaskStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -41,7 +41,7 @@ public enum OnceTaskStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

@@ -25,7 +25,7 @@ public enum AssetStatusEnum {
         this.name = name;
     }
 
-    public static AssetStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static AssetStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (AssetStatusEnum item : AssetStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -41,7 +41,7 @@ public enum AssetStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

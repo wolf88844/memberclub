@@ -150,7 +150,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuPerformItemConfigDO.setAssetCount(4);
         skuPerformItemConfigDO.setBizType(1);
         skuPerformItemConfigDO.setCycle(cycle);
-        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
+        skuPerformItemConfigDO.setPeriodType(PeriodTypeEnum.FIX_DAY.getCode());
         skuPerformItemConfigDO.setRightId(32424);
         skuPerformItemConfigDO.setPeriodCount(31);
         skuPerformItemConfigDO.setRightType(1);
@@ -164,7 +164,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuPerformItemConfigDO2.setAssetCount(4);
         skuPerformItemConfigDO2.setBizType(1);
         skuPerformItemConfigDO2.setCycle(cycle);
-        skuPerformItemConfigDO2.setPeriodType(PeriodTypeEnum.FIX_DAY.toInt());
+        skuPerformItemConfigDO2.setPeriodType(PeriodTypeEnum.FIX_DAY.getCode());
         skuPerformItemConfigDO2.setRightId(32423);
         skuPerformItemConfigDO2.setPeriodCount(31);
         skuPerformItemConfigDO2.setRightType(2);

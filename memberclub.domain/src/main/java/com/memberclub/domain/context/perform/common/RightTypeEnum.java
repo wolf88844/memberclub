@@ -24,7 +24,7 @@ public enum RightTypeEnum {
         this.name = name;
     }
 
-    public static RightTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static RightTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (RightTypeEnum item : RightTypeEnum.values()) {
             if (item.value == value) {
                 return item;

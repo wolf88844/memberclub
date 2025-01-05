@@ -83,8 +83,8 @@ public class MockAssetsFacade implements AssetsFacade {
         for (String assetBatch : request.getAssetBatchs()) {
             List<AssetDO> assets = assetBatchCode2Assets.get(assetBatch);
             for (AssetDO asset : assets) {
-                if (asset.getStatus() == AssetStatusEnum.UNUSE.toInt()) {
-                    asset.setStatus(AssetStatusEnum.FREEZE.toInt());
+                if (asset.getStatus() == AssetStatusEnum.UNUSE.getCode()) {
+                    asset.setStatus(AssetStatusEnum.FREEZE.getCode());
                 }
             }
             map.put(assetBatch, assets);

@@ -37,7 +37,7 @@ public class CommonCustomConvertor {
 
     @Named("toOrderSystemTypeInt")
     public int toOrderSystemTypeInt(OrderSystemTypeEnum orderSystemType) {
-        return orderSystemType.toInt();
+        return orderSystemType.getCode();
     }
 
     @Named("toSubOrderPerformStatusEnumInt")
@@ -68,22 +68,22 @@ public class CommonCustomConvertor {
 
     @Named("toTaskStatusInt")
     public int toTaskStatusInt(OnceTaskStatusEnum status) {
-        return status.toInt();
+        return status.getCode();
     }
 
     @Named("toTaskStatusEnum")
     public OnceTaskStatusEnum toTaskStatusEnum(int status) {
-        return OnceTaskStatusEnum.findByInt(status);
+        return OnceTaskStatusEnum.findByCode(status);
     }
 
     @Named("toTaskTypeInt")
     public int toTaskTypeInt(TaskTypeEnum taskType) {
-        return taskType.toInt();
+        return taskType.getCode();
     }
 
     @Named("toTaskTypeEnum")
     public TaskTypeEnum toTaskTypeEnum(int taskType) {
-        return TaskTypeEnum.findByInt(taskType);
+        return TaskTypeEnum.findByCode(taskType);
     }
 
     @Named("toTaskContentString")

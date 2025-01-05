@@ -25,7 +25,7 @@ public enum UsageTypeCalculateTypeEnum {
         this.name = name;
     }
 
-    public static UsageTypeCalculateTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static UsageTypeCalculateTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (UsageTypeCalculateTypeEnum item : UsageTypeCalculateTypeEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -41,7 +41,7 @@ public enum UsageTypeCalculateTypeEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

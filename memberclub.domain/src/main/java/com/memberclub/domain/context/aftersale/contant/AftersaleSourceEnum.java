@@ -25,7 +25,7 @@ public enum AftersaleSourceEnum {
         this.name = name;
     }
 
-    public static AftersaleSourceEnum findByInt(int value) throws IllegalArgumentException {
+    public static AftersaleSourceEnum findByCode(int value) throws IllegalArgumentException {
         for (AftersaleSourceEnum item : AftersaleSourceEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -40,7 +40,7 @@ public enum AftersaleSourceEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 

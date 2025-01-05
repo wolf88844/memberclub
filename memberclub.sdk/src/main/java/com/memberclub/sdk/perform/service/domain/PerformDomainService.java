@@ -96,7 +96,7 @@ public class PerformDomainService {
             int cnt = memberPerformItemDao.updateAssetbatchAndStatus(context.getUserId(),
                     item.getItemToken(),
                     item.getBatchCode(),
-                    PerformItemStatusEnum.PERFORM_SUCC.toInt());
+                    PerformItemStatusEnum.PERFORM_SUCC.getCode());
             if (cnt <= 0) {
                 MemberPerformItem itemFromDb = memberPerformItemDao.queryByItemToken(context.getUserId(),
                         item.getItemToken());
@@ -215,7 +215,7 @@ public class PerformDomainService {
                                                List<PerformItemReverseInfo> infos) {
         for (PerformItemReverseInfo info : infos) {
             memberPerformItemDao.updateStatus(context.getUserId(),
-                    info.getItemToken(), PerformItemStatusEnum.REVEREING.toInt(), TimeUtil.now());
+                    info.getItemToken(), PerformItemStatusEnum.REVEREING.getCode(), TimeUtil.now());
         }
         CommonLog.info("更新履约项状态为逆向履约中");
     }
@@ -234,8 +234,8 @@ public class PerformDomainService {
     }
 
     private int generatePerformItemFinishReverseStatus(PerformItemReverseInfo info) {
-        return info.getRefundType() == RefundTypeEnum.ALL_REFUND ? PerformItemStatusEnum.COMPLETED_REVERSED.toInt() :
-                PerformItemStatusEnum.PORTION_REVERSED.toInt();
+        return info.getRefundType() == RefundTypeEnum.ALL_REFUND ? PerformItemStatusEnum.COMPLETED_REVERSED.getCode() :
+                PerformItemStatusEnum.PORTION_REVERSED.getCode();
     }
 
 

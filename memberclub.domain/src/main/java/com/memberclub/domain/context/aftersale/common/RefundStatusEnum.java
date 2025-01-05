@@ -25,7 +25,7 @@ public enum RefundStatusEnum {
         this.name = name;
     }
 
-    public static RefundStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static RefundStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (RefundStatusEnum item : RefundStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -40,7 +40,7 @@ public enum RefundStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

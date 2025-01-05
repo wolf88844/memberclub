@@ -60,7 +60,7 @@ public class AftersaleBizService {
             } else {
                 CommonLog.error("售后预览流程异常", e);
                 respose.setSuccess(false);
-                respose.setUnableCode(AftersaleUnableCode.INTERNAL_ERROR.toInt());
+                respose.setUnableCode(AftersaleUnableCode.INTERNAL_ERROR.getCode());
                 respose.setUnableTip(AftersaleUnableCode.INTERNAL_ERROR.toString());
             }
         }
@@ -122,7 +122,7 @@ public class AftersaleBizService {
             } else {
                 CommonLog.error("售后受理流程异常", e);
                 response.setSuccess(false);
-                response.setUnableCode(AftersaleUnableCode.INTERNAL_ERROR.toInt());
+                response.setUnableCode(AftersaleUnableCode.INTERNAL_ERROR.getCode());
                 response.setUnableTip(AftersaleUnableCode.INTERNAL_ERROR.toString());
             }
         }

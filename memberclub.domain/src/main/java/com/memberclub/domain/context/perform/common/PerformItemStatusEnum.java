@@ -31,7 +31,7 @@ public enum PerformItemStatusEnum {
         this.name = name;
     }
 
-    public static PerformItemStatusEnum findByInt(int value) throws IllegalArgumentException {
+    public static PerformItemStatusEnum findByCode(int value) throws IllegalArgumentException {
         for (PerformItemStatusEnum item : PerformItemStatusEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -42,11 +42,11 @@ public enum PerformItemStatusEnum {
     }
 
     public static boolean hasPerformed(int status) {
-        return status >= PERFORM_SUCC.toInt();
+        return status >= PERFORM_SUCC.getCode();
     }
 
     public static int getReversedStatus(boolean completed) {
-        return completed ? COMPLETED_REVERSED.toInt() : PORTION_REVERSED.toInt();
+        return completed ? COMPLETED_REVERSED.getCode() : PORTION_REVERSED.getCode();
     }
 
     @Override
@@ -54,7 +54,7 @@ public enum PerformItemStatusEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

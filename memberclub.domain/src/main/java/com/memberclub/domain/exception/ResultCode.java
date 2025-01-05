@@ -34,7 +34,7 @@ public enum ResultCode {
         this.msg = msg;
     }
 
-    public static ResultCode findByInt(int value) throws IllegalArgumentException {
+    public static ResultCode findByCode(int value) throws IllegalArgumentException {
         for (ResultCode item : ResultCode.values()) {
             if (item.value == value) {
                 return item;
@@ -48,16 +48,7 @@ public enum ResultCode {
     public String toString() {
         return this.msg;
     }
-
-    public int getValue() {
-        return value;
-    }
-
-    public ResultCode setValue(int value) {
-        this.value = value;
-        return this;
-    }
-
+    
     public String getMsg() {
         return msg;
     }
@@ -67,7 +58,7 @@ public enum ResultCode {
         return this;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 

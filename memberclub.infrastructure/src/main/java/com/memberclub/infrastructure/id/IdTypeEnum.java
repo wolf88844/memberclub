@@ -26,7 +26,7 @@ public enum IdTypeEnum {
         this.name = name;
     }
 
-    public static IdTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static IdTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (IdTypeEnum item : IdTypeEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -41,7 +41,7 @@ public enum IdTypeEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }

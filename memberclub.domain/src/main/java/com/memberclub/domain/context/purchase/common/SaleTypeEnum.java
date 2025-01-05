@@ -25,7 +25,7 @@ public enum SaleTypeEnum {
         this.name = name;
     }
 
-    public static SaleTypeEnum findByInt(int value) throws IllegalArgumentException {
+    public static SaleTypeEnum findByCode(int value) throws IllegalArgumentException {
         for (SaleTypeEnum item : SaleTypeEnum.values()) {
             if (item.value == value) {
                 return item;
@@ -41,7 +41,7 @@ public enum SaleTypeEnum {
         return this.name;
     }
 
-    public int toInt() {
+    public int getCode() {
         return this.value;
     }
 }
