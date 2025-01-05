@@ -17,7 +17,7 @@ import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
-import com.memberclub.infrastructure.facade.AssetsFacade;
+import com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.util.Lists;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * author: 掘金五阳
  */
-public class MockAssetsFacade implements AssetsFacade {
+public class MockAssetsFacadeSPI implements AssetsFacadeSPI {
 
     private AtomicLong couponIdGenerator = new AtomicLong(System.currentTimeMillis());
 

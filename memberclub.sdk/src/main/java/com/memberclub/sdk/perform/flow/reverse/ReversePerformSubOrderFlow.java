@@ -9,6 +9,7 @@ package com.memberclub.sdk.perform.flow.reverse;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,10 @@ public class ReversePerformSubOrderFlow extends FlowNode<ReversePerformContext> 
 
     @Override
     public void success(ReversePerformContext context) {
+        MemberSubOrderDO subOrder = context.getCurrentSubOrderReverseInfo().getMemberSubOrder();
+
+        subOrder.finishReversePerform(context.getCurrentSubOrderReverseInfo().isAllRefund());
+
         performDomainService.finishReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
     }
 }

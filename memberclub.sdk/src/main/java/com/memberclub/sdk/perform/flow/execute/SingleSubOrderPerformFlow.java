@@ -69,8 +69,8 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
     public void success(PerformContext context) {
         SubOrderPerformContext subOrderPerformContext = context.getSubOrderPerformContexts().get(0);
         MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
-        MemberSubOrder memberSubOrder = extension.toMemberSubOrderWhenPerformSuccess(context, subOrderPerformContext);
+        extension.buildMemberSubOrderWhenPerformSuccess(context, subOrderPerformContext);
 
-        performDomainService.finishSubOrderPerformOnSuccess(memberSubOrder);
+        performDomainService.finishSubOrderPerformOnSuccess(subOrderPerformContext.getSubOrder());
     }
 }

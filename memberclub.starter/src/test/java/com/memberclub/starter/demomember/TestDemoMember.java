@@ -208,6 +208,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     }
 
 
+    @SneakyThrows
     @Test
     public void testDefaultMemberRefundAndApply() {
         PurchaseSubmitResponse submitResponse = submit(doubleRightsSku, 3);
@@ -233,6 +234,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
 
         AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
+
+        //Thread.sleep(10000000);
         Assert.assertEquals(true, response.isAftersaleEnabled());
         Assert.assertEquals(RefundTypeEnum.ALL_REFUND, response.getRefundType());
 

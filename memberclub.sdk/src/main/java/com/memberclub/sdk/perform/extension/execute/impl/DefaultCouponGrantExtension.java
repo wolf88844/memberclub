@@ -22,7 +22,7 @@ import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
-import com.memberclub.infrastructure.facade.AssetsFacade;
+import com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.execute.PerformItemGrantExtension;
 import org.springframework.util.CollectionUtils;
@@ -40,7 +40,7 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
 
     //@Qualifier("couponGrantFacade")
     @Resource()
-    private AssetsFacade assetsFacade;
+    private AssetsFacadeSPI assetsFacadeSPI;
 
     @Override
     public ItemGroupGrantResult grant(PerformItemContext context, List<MemberPerformItemDO> items) {
@@ -64,7 +64,7 @@ public class DefaultCouponGrantExtension implements PerformItemGrantExtension {
 
         GrantResponseDO response = null;
         try {
-            response = assetsFacade.grant(request);
+            response = assetsFacadeSPI.grant(request);
             if (response == null) {
                 Monitor.PERFORM_EXECUTE.counter(context.getBizType(),
                         "grant_code", "null",

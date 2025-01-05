@@ -18,7 +18,7 @@ import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetReverseRequestDO;
 import com.memberclub.domain.facade.AssetReverseResponseDO;
-import com.memberclub.infrastructure.facade.AssetsFacade;
+import com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.reverse.AssetsReverseExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class SPIAssetsReverseExtension implements AssetsReverseExtension {
 
     @Autowired
-    private AssetsFacade assetsFacade;
+    private AssetsFacadeSPI assetsFacadeSPI;
 
     @Override
     public AssetsReverseResponse reverse(ReversePerformContext context, SubOrderReverseInfo reverseInfo, List<PerformItemReverseInfo> items) {
@@ -46,7 +46,7 @@ public class SPIAssetsReverseExtension implements AssetsReverseExtension {
         requestDO.setAssetBatchs(items.stream().map(PerformItemReverseInfo::getBatchCode).collect(Collectors.toList()));
         AssetReverseResponseDO responseDO = null;
         try {
-            responseDO = assetsFacade.reverse(requestDO);
+            responseDO = assetsFacadeSPI.reverse(requestDO);
             if (responseDO == null) {
                 Monitor.AFTER_SALE_DOAPPLY.counter(context.getBizType(),
                         "right_type", reverseInfo.getCurrentRightType(),

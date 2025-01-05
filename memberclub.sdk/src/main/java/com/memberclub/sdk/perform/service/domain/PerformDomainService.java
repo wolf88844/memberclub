@@ -73,18 +73,18 @@ public class PerformDomainService {
     }
 
     @Transactional
-    public void finishSubOrderPerformOnSuccess(MemberSubOrder subOrder) {
+    public void finishSubOrderPerformOnSuccess(MemberSubOrderDO subOrder) {
         // TODO: 2024/12/15
-        memberSubOrderDao.updateStatus(subOrder.getUserId(),
+        memberSubOrderDao.updatePerformStatus(subOrder.getUserId(),
                 subOrder.getSubTradeId(),
-                subOrder.getPerformStatus(),
+                subOrder.getPerformStatus().getCode(),
                 subOrder.getUtime());
     }
 
     @Transactional
     public int startPerformSubOrder(MemberSubOrder subOrder) {
         // TODO: 2024/12/15
-        return memberSubOrderDao.updateStatus(subOrder.getUserId(),
+        return memberSubOrderDao.updatePerformStatus(subOrder.getUserId(),
                 subOrder.getSubTradeId(),
                 subOrder.getPerformStatus(),
                 subOrder.getUtime());
@@ -149,10 +149,10 @@ public class PerformDomainService {
 
     public boolean isFinishReverseMemberSubOrder(ReversePerformContext context,
                                                  SubOrderReverseInfo info) {
-        int status = generateMemberSubOrderFinishReverseStatus(context);
+        SubOrderPerformStatusEnum status = generateMemberSubOrderFinishReverseStatus(context);
 
         MemberSubOrder his = memberSubOrderDao.selectBySkuId(context.getUserId(), context.getTradeId(), info.getSkuId());
-        if (his.getPerformStatus() == status) {
+        if (his.getPerformStatus() == status.getCode()) {
             CommonLog.info("已经完成更新履约单 [{}]", his);
             return true;
         }
@@ -163,7 +163,7 @@ public class PerformDomainService {
     @Transactional
     public void startReversePerformMemberSubOrder(ReversePerformContext context,
                                                   SubOrderReverseInfo info) {
-        int cnt = memberSubOrderDao.updateStatus(context.getUserId(), info.getSubTradeId(),
+        int cnt = memberSubOrderDao.updatePerformStatus(context.getUserId(), info.getSubTradeId(),
                 SubOrderPerformStatusEnum.REVEREING.getCode(), TimeUtil.now());
         CommonLog.info("更新履约单状态为逆向履约中:{}", cnt);
     }
@@ -171,17 +171,16 @@ public class PerformDomainService {
     @Transactional
     public void finishReversePerformMemberSubOrder(ReversePerformContext context,
                                                    SubOrderReverseInfo info) {
-        int status = generateMemberSubOrderFinishReverseStatus(context);
-
-        memberSubOrderDao.updateStatus(context.getUserId(), info.getSubTradeId(),
-                status, TimeUtil.now());
-        CommonLog.info("更新履约单状态为逆向履约完成");
+        memberSubOrderDao.updatePerformStatus(context.getUserId(), info.getSubTradeId(),
+                info.getMemberSubOrder().getPerformStatus().getCode(), TimeUtil.now());
+        CommonLog.info("更新子单状态为逆向履约完成");
     }
 
-    private int generateMemberSubOrderFinishReverseStatus(ReversePerformContext context) {
+    private SubOrderPerformStatusEnum generateMemberSubOrderFinishReverseStatus(ReversePerformContext context) {
         boolean allRefund = context.getCurrentSubOrderReverseInfo().isAllRefund();
-        return allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED.getCode() :
-                SubOrderPerformStatusEnum.PORTION_REVERSED.getCode();
+
+        return allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED :
+                SubOrderPerformStatusEnum.PORTION_REVERSED;
     }
 
     public boolean isFinishReverseMemberPerformItems(ReversePerformContext context,

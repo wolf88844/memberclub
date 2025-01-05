@@ -17,4 +17,7 @@ public class OrderInfoDO {
     private OrderSystemTypeEnum orderSystemType;
 
     private String orderId;
+
+    private Integer orderType;
+
 }

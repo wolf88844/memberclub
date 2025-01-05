@@ -19,7 +19,7 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetFetchRequestDO;
 import com.memberclub.domain.facade.AssetFetchResponseDO;
-import com.memberclub.infrastructure.facade.AssetsFacade;
+import com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI;
 import com.memberclub.sdk.aftersale.extension.preview.RealtimeCalculateUsageExtension;
 import com.memberclub.sdk.aftersale.service.domain.AftersaleAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculateUsageExtension {
 
     @Autowired
-    private AssetsFacade assetsFacade;
+    private AssetsFacadeSPI assetsFacadeSPI;
 
     @Autowired
     private AftersaleAmountService aftersaleAmountService;
@@ -53,7 +53,7 @@ public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculate
 
         request.setRightType(context.getCurrentRightType());
         request.setAssetBatchs(assetBatchCodes);
-        AssetFetchResponseDO responseDO = assetsFacade.fetch(request);
+        AssetFetchResponseDO responseDO = assetsFacadeSPI.fetch(request);
 
         CommonLog.info("调用下游查询资产状态, 结果:{}, 请求:{}", responseDO, request);
         if (!responseDO.isSuccess()) {

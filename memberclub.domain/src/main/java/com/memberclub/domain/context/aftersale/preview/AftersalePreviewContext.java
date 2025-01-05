@@ -47,7 +47,12 @@ public class AftersalePreviewContext {
 
 
     /******************临时数据****************************/
+
+    private MemberSubOrderDO currentSubOrderDO;
+
     List<MemberPerformItemDO> currentPerformItemsGroupByRightType;
+
+    private Map<String, ItemUsage> currentBatchCode2ItemUsage;
 
     int currentRightType;
 

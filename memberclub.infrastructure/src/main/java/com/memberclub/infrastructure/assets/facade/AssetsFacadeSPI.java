@@ -4,7 +4,7 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.facade;
+package com.memberclub.infrastructure.assets.facade;
 
 import com.memberclub.domain.facade.AssetFetchRequestDO;
 import com.memberclub.domain.facade.AssetFetchResponseDO;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author yuhaiqiang
  */
 @FeignClient("downstream-examples")
-public interface AssetsFacade {
+public interface AssetsFacadeSPI {
 
     @RequestMapping(method = RequestMethod.POST, value = "/items/grant")
     public GrantResponseDO grant(@RequestBody GrantRequestDO requestDO);

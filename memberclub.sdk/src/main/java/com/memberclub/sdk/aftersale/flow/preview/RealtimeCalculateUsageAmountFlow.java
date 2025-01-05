@@ -37,11 +37,17 @@ public class RealtimeCalculateUsageAmountFlow extends FlowNode<AftersalePreviewC
 
     @Override
     public void process(AftersalePreviewContext context) {
+        if (context.getCurrentSubOrderDO() == null) {
+            context.setCurrentSubOrderDO(context.getSubOrders().get(0));
+        }
+
         context.setUsageTypeCalculateType(UsageTypeCalculateTypeEnum.USE_AMOUNT);
         Map<RightTypeEnum, List<MemberPerformItemDO>> rightType2Items = context.getPerformItems()
-                .stream().collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
+                .stream().filter(p -> p.getSkuId() == context.getCurrentSubOrderDO().getSkuId())
+                .collect(Collectors.groupingBy(MemberPerformItemDO::getRightType));
 
         Map<String, ItemUsage> batchCode2ItemUsage = Maps.newHashMap();
+
         for (Map.Entry<RightTypeEnum, List<MemberPerformItemDO>> entry : rightType2Items.entrySet()) {
             context.setCurrentPerformItemsGroupByRightType(entry.getValue());
             context.setCurrentRightType(entry.getKey().getCode());
@@ -52,6 +58,8 @@ public class RealtimeCalculateUsageAmountFlow extends FlowNode<AftersalePreviewC
                             RealtimeCalculateUsageExtension.class).calculateItemUsage(context);
             batchCode2ItemUsage.putAll(tempBatchCode2ItemUsage);
         }
+
+        context.setCurrentBatchCode2ItemUsage(batchCode2ItemUsage);
 
         int recommendRefundPrice =
                 extensionManager.getExtension(BizScene.of(context.getCmd().getBizType().getCode()),

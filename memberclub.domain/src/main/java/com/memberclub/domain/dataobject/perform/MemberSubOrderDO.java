@@ -57,4 +57,10 @@ public class MemberSubOrderDO {
     private long utime;
 
     private long ctime;
+
+    public void finishReversePerform(boolean allRefund) {
+        SubOrderPerformStatusEnum newPerformStatus = allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED :
+                SubOrderPerformStatusEnum.PORTION_REVERSED;
+        performStatus = newPerformStatus;
+    }
 }

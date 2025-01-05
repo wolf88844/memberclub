@@ -39,6 +39,16 @@ public class PurchaseSubmitContext {
 
     private List<SkuInfoDO> skuInfos;
 
+    /********************************************/
+    //临时数据
+
+    int orderSubmitErrorCode;
+
+    String orderSubmitMsg;
+
+
+    /********************************************/
+    //
     public PurchaseSubmitContext(PurchaseSubmitCmd cmd) {
         this.submitCmd = cmd;
         this.userId = cmd.getUserId();

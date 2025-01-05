@@ -32,7 +32,8 @@ public class DefaultPriceDividedAftersaleAmountExtension implements AftersaleAmo
 
     @Override
     public int calculteRecommendRefundPrice(AftersalePreviewContext context, Map<String, ItemUsage> batchCode2ItemUsageMap) {
-        return aftersaleAmountService.unusePriceDividePayPriceToCacluateRefundPrice(context.getPayPriceFen(), batchCode2ItemUsageMap);
+        return aftersaleAmountService.unusePriceDividePayPriceToCacluateRefundPrice(
+                context.getCurrentSubOrderDO().getActPriceFen(), batchCode2ItemUsageMap);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
@@ -41,11 +42,11 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     }
 
     @Override
-    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        MemberSubOrder memberSubOrder = toMemberSubOrder(context, subOrderPerformContext);
-        memberSubOrder.setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode());
-        memberSubOrder.setUtime(TimeUtil.now());
-        return memberSubOrder;
+    public void buildMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
+        subOrderPerformContext.getSubOrder().setStatus(SubOrderStatusEnum.PERFORMED);
+        subOrderPerformContext.getSubOrder().setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        subOrderPerformContext.getSubOrder().setUtime(TimeUtil.now());
+        return;
     }
 
     @Override

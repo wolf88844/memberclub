@@ -16,7 +16,7 @@ import com.memberclub.sdk.purchase.extension.PurchaseSubmitExtension;
 import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
-import com.memberclub.sdk.purchase.flow.TradeOrderSubmitFlow;
+import com.memberclub.sdk.purchase.flow.CommonOrderSubmitFlow;
 
 import javax.annotation.PostConstruct;
 
@@ -36,7 +36,7 @@ public class DemoMemberPurchaseSubmitExtension implements PurchaseSubmitExtensio
                 .addNode(PurchaseSubmitLockFlow.class)
                 .addNode(SkuInfoInitalSubmitFlow.class)
                 .addNode(MemberOrderSubmitFlow.class)
-                .addNode(TradeOrderSubmitFlow.class)
+                .addNode(CommonOrderSubmitFlow.class)
         ;
     }
 

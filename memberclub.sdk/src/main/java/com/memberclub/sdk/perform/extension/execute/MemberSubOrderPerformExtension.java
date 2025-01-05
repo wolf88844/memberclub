@@ -18,7 +18,7 @@ public interface MemberSubOrderPerformExtension extends BaseExtension {
 
     public MemberSubOrder toMemberSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
-    public MemberSubOrder toMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext);
+    public void buildMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext);
 
 
     public void buildCommonExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext);

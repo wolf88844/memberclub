@@ -7,7 +7,7 @@
 package com.memberclub.starter.nonmock;
 
 import com.memberclub.starter.AppStarter;
-import com.memberclub.starter.impl.MockAssetsFacade;
+import com.memberclub.starter.impl.MockAssetsFacadeSPI;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = AppStarter.class)
 public abstract class NonMockBaseTest {
     @SpyBean
-    private MockAssetsFacade couponGrantFacade;
+    private MockAssetsFacadeSPI couponGrantFacade;
 
     /*@Test
     public void test() {
