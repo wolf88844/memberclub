@@ -1,7 +1,7 @@
 /**
- * @(#)DistributedIdEnum.java, 十二月 31, 2024.
+ * @(#)DistributedRetryEnum.java, 一月 05, 2025.
  * <p>
- * Copyright 2024 fenbi.com. All rights reserved.
+ * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.starter.config;
@@ -9,8 +9,9 @@ package com.memberclub.starter.config;
 /**
  * @author yuhaiqiang
  */
-public enum DistributedIdEnum {
+public enum DistributedRetryEnum {
 
     local,
-    redis,
+    rabbitmq,
+    ;
 }

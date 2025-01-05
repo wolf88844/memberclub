@@ -21,8 +21,9 @@ logging:
 
 memberclub:
   infrastructure:
-    config: none
-    id: none
-    lock: none
+    config: local
+    id: local
+    lock: local
     feign:
       enabled: false
+    retry: local

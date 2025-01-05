@@ -40,6 +40,7 @@ memberclub:
     config: apollo
     id: redis
     lock: redis
+    retry: rabbitmq
 
 
 

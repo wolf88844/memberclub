@@ -41,10 +41,6 @@ public class PerformContext {
 
     private OrderSystemTypeEnum orderSystemType;
 
-    private Integer actPriceFen;
-
-    private Integer originPriceFen;
-
     private int memberOrderStartPerformUpdateCount;
 
     private long stime;

@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 /**
  * author: 掘金五阳
  */
-@ConditionalOnProperty(name = "memberclub.infrastructure.config", havingValue = "none", matchIfMissing = false)
+@ConditionalOnProperty(name = "memberclub.infrastructure.config", havingValue = "local", matchIfMissing = false)
 @Service
-public class NoneDynamicConfig implements DynamicConfig {
+public class LocalDynamicConfig implements DynamicConfig {
 
     @Override
     public boolean getBoolean(String key, Boolean value) {

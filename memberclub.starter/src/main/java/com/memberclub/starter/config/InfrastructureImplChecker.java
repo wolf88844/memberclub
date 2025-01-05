@@ -41,12 +41,18 @@ public class InfrastructureImplChecker {
     /**
      * 分布式锁类型,none 为不加锁,默认是 redis
      */
-    private String lock;
+    private DistributedLockEnum lock;
 
     /**
      * 配置中心类型,none为取默认值; 默认类型为apollo(携程开源配置中心)
      */
-    private String config;
+    private DistributedConfigEnum config;
+
+
+    /***
+     * 自动重试注解 延迟重试能力依赖的组件
+     */
+    private DistributedRetryEnum retry;
 
     @NestedConfigurationProperty()
     private Feign feign;

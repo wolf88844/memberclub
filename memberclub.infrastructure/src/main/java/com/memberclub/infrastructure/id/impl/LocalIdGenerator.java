@@ -21,8 +21,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 @ExtensionProvider(desc = "默认 Id 生成器", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
-@ConditionalOnProperty(name = "memberclub.infrastructure.id", havingValue = "none")
-public class DefaultIdGenerator implements IdGenerator {
+@ConditionalOnProperty(name = "memberclub.infrastructure.id", havingValue = "local")
+public class LocalIdGenerator implements IdGenerator {
 
     @Override
     public Long generateId(IdTypeEnum idTypeEnum) {

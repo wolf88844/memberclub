@@ -40,6 +40,7 @@ public interface PerformConvertor {
 
     PerformConvertor INSTANCE = Mappers.getMapper(PerformConvertor.class);
 
+    @Deprecated
     public SkuInfoDO toMemberSkuInfoDO(MemberSkuDTO dto);
 
     public PerformContext toPerformContext(PerformCmd cmd);

@@ -10,20 +10,27 @@ import com.memberclub.infrastructure.lock.DistributeLock;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * author: 掘金五阳
  */
-@ConditionalOnProperty(name = "memberclub.infrastructure.lock", havingValue = "none")
+@ConditionalOnProperty(name = "memberclub.infrastructure.lock", havingValue = "local")
 @Service
-public class NoneDistributedLock implements DistributeLock {
+public class LocalDistributedLock implements DistributeLock {
+
+    private ConcurrentMap<String, String> lockMap = new ConcurrentHashMap<>();
 
     @Override
     public boolean lock(String key, String value, int timeSeconds) {
-        return true;
+        String oldValue = lockMap.putIfAbsent(key, value);
+
+        return oldValue == null;
     }
 
     @Override
     public boolean unlock(String key, String value) {
-        return true;
+        return lockMap.remove(key, value);
     }
 }

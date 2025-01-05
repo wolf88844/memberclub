@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 /**
  * author: 掘金五阳
  */
-@ConditionalOnProperty(name = "memberclub.infrastructure.retry", havingValue = "none", matchIfMissing = true)
+@ConditionalOnProperty(name = "memberclub.infrastructure.retry", havingValue = "local", matchIfMissing = false)
 @Service
 public class LocalRetryService extends AbstractRetryService {
 

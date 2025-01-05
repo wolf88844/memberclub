@@ -28,11 +28,13 @@ eureka.client.fetch-registry: false
 logging:
   config: classpath:log/log4j2-ut.xml
 
+## 单元测试模式下尽可能不依赖外部中间件,因此均使用本地模式.
 memberclub:
   infrastructure:
-    config: none
-    lock: none
+    config: local
+    lock: local
     feign:
       enabled: false
-    id: none
+    id: local
+    retry: local
 
