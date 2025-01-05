@@ -24,6 +24,7 @@ import static org.springframework.util.Assert.notNull;
 
 /**
  * author: 掘金五阳
+ * 添加配置项,编译完成后, IDE可以在 yml 文件中推荐该配置项
  */
 
 @Configuration
