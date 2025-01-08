@@ -13,3 +13,14 @@ password: dean
 切换到用户目录下,删除 h2 数据库文件名
  1) cd ~;
  2) rm member_db.*;
+ 
+ 
+5. Domain 扩展点
+    onPreSubmit
+    onSubmitSuccess
+    onStartPerform
+    onPerformSuccess
+    onStartReversePerform
+    onReversePerformSuccess
+    onStartRefund
+    onRefundSuccess
