@@ -9,7 +9,7 @@ package com.memberclub.sdk.purchase.flow;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
 import com.memberclub.sdk.sku.service.MemberOrderBuildFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

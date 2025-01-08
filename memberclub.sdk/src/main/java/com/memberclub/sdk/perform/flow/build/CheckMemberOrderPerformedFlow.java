@@ -15,7 +15,7 @@ import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.sdk.common.Monitor;
-import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

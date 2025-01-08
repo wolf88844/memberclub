@@ -11,7 +11,7 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.RefundWayEnum;
 import com.memberclub.sdk.aftersale.service.domain.AftersaleDomainService;
-import com.memberclub.sdk.order.OrderDomainService;
+import com.memberclub.sdk.ordercenter.OrderCenterDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class AftersaleRefundOrderFlow extends FlowNode<AfterSaleApplyContext> {
     private AftersaleDomainService aftersaleDomainService;
 
     @Autowired
-    private OrderDomainService orderDomainService;
+    private OrderCenterDomainService orderCenterDomainService;
 
     @Override
     public void process(AfterSaleApplyContext context) {
@@ -40,7 +40,7 @@ public class AftersaleRefundOrderFlow extends FlowNode<AfterSaleApplyContext> {
 
 
         CommonLog.info("开始订单退款流程");
-        orderDomainService.refundOrder(context);
+        orderCenterDomainService.refundOrder(context);
 
         aftersaleDomainService.onOrderRefunded(context);
     }

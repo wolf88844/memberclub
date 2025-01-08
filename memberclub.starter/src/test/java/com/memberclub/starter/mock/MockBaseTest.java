@@ -23,7 +23,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -55,11 +54,12 @@ public class MockBaseTest {
 
     static boolean isRunH2Servier = false;
 
+
     @SneakyThrows
     //@BeforeClass
     public static void startH2() {
-        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-ifNotExists", "-tcpPort",
-                "9092");
+        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-webAllowOthers", "-ifNotExists", "-tcpPort",
+                "9093");
         isRunH2Servier = true;
         server.start();
     }
@@ -67,7 +67,8 @@ public class MockBaseTest {
 
     public static void waitH2() {
         if (isRunH2Servier) {
-            new Scanner(System.in).nextLine();
+            System.out.println("等待输入");
+            //new Scanner(System.in).nextLine();
         }
     }
 

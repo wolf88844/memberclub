@@ -19,7 +19,7 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.aftersale.extension.preview.AftersaleCollectDataExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
-import com.memberclub.sdk.purchase.service.domain.MemberOrderDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

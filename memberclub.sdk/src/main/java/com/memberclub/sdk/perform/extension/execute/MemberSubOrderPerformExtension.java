@@ -13,6 +13,7 @@ import com.memberclub.domain.context.perform.SubOrderPerformContext;
 /**
  * author: 掘金五阳
  */
+@Deprecated
 public interface MemberSubOrderPerformExtension extends BaseExtension {
 
     public void buildMemberSubOrderOnStartPerform(PerformContext context, SubOrderPerformContext subOrderPerformContext);

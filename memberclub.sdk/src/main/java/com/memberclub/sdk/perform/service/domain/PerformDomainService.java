@@ -31,7 +31,6 @@ import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberPerformItem;
 import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
@@ -67,6 +66,9 @@ public class PerformDomainService {
 
     @Autowired
     private OnceTaskDao onceTaskDao;
+    
+    @Autowired
+    private ExtensionManager extensionManager;
 
     @Autowired
     private PerformDataObjectBuildFactory performDataObjectBuildFactory;
@@ -86,8 +88,6 @@ public class PerformDomainService {
                 subOrder.getUtime());
     }
 
-    @Autowired
-    private ExtensionManager extensionManager;
 
     @Transactional(rollbackFor = Exception.class)
     public void onStartPerformSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext) {

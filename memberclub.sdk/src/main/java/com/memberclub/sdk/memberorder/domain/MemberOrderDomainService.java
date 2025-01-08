@@ -4,13 +4,15 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.purchase.service.domain;
+package com.memberclub.sdk.memberorder.domain;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -18,6 +20,7 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
 import com.memberclub.sdk.sku.service.MemberOrderDataObjectBuildFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,12 @@ public class MemberOrderDomainService {
 
     @Autowired
     private MemberSubOrderDao memberSubOrderDao;
+
+    @Autowired
+    private ExtensionManager extensionManager;
+
+    @Autowired
+    private MemberSubOrderDomainService memberSubOrderDomainService;
 
     @Autowired
     private MemberOrderDataObjectBuildFactory memberOrderDataObjectBuildFactory;
@@ -61,26 +70,22 @@ public class MemberOrderDomainService {
         CommonLog.info("生成会员单数据成功");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Retryable
     public void onSubmitSuccess(MemberOrderDO order) {
-        int cnt = memberOrderDao.updateStatusOnSubmitSuccess(order.getUserId(),
-                order.getTradeId(),
-                order.getStatus().getCode(),
-                order.getOrderInfo().getOrderId(),
-                order.getActPriceFen(),
-                JsonUtils.toJson(order.getExtra()),
-                TimeUtil.now());
+        LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(MemberOrder::getUserId, order.getUserId())
+                .eq(MemberOrder::getTradeId, order.getTradeId())
+                .set(MemberOrder::getStatus, order.getStatus().getCode())
+                .set(MemberOrder::getActPriceFen, order.getActPriceFen())
+                .set(MemberOrder::getExtra, JsonUtils.toJson(order.getExtra()))
+                .set(MemberOrder::getOrderId, order.getOrderInfo().getOrderId())
+                .set(MemberOrder::getUtime, TimeUtil.now());
 
-        for (MemberSubOrderDO subOrder : order.getSubOrders()) {
-            memberSubOrderDao.updateStatusOnSubmitSuccess(order.getUserId(),
-                    subOrder.getSubTradeId(),
-                    subOrder.getStatus().getCode(),
-                    subOrder.getOrderId(),
-                    subOrder.getActPriceFen(),
-                    JsonUtils.toJson(subOrder.getExtra()),
-                    TimeUtil.now());
-        }
+        extensionManager.getExtension(BizScene.of(order.getBizType()),
+                MemberOrderDomainExtension.class).onSubmitSuccess(order, wrapper);
+
+        memberSubOrderDomainService.onSubmitSuccess(order);
     }
 
     @Retryable
