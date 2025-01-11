@@ -6,17 +6,14 @@
  */
 package com.memberclub.sdk.perform.extension.reverse.impl;
 
-import com.google.common.collect.Lists;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
-import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
+import com.memberclub.sdk.oncetask.periodperform.service.PeriodPerformTaskDomainService;
 import com.memberclub.sdk.perform.extension.reverse.BuildReverseInfoExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Map;
 
 /**
  * author: 掘金五阳
@@ -29,17 +26,16 @@ public class DefaultBuildReversePerformInfoExtension implements BuildReverseInfo
     @Autowired
     private PerformDomainService performDomainService;
 
+    @Autowired
+    private PeriodPerformTaskDomainService periodPerformTaskDomainService;
+
     @Override
     public void buildAssets(ReversePerformContext context) {
-        Map<Long, SubOrderReversePerformContext> skuId2HisInfos = performDomainService.buildSubOrderReversePerformContextMapBaseAssets(context);
-
-        context.setReverseInfos(Lists.newArrayList(skuId2HisInfos.values()));
-
-        context.setMemberOrderDO(performDomainService.extractMemberOrderDOFromReversePerformContext(context));
+        performDomainService.buildReversePerformAssetsInfo(context, context.getSubTradeId2SubOrderReversePerformContext());
     }
 
     @Override
     public void buildTasks(ReversePerformContext context) {
-
+        periodPerformTaskDomainService.buildActivePeriodTasks(context, context.getSubTradeId2SubOrderReversePerformContext());
     }
 }

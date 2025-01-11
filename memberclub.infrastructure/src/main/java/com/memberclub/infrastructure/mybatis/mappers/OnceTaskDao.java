@@ -38,4 +38,9 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
             "WHERE user_id=#{userId} ",
             "</script>"})
     public List<OnceTask> queryTasksByUserId(@Param("userId") long userId);
+
+    @Select({"<script> SELECT * FROM ", TABLE_NAME,
+            "WHERE user_id=#{userId} AND task_group_id = #{taskGroupId}",
+            "</script>"})
+    public List<OnceTask> queryTasksByUserIdAndGroupId(@Param("userId") long userId, @Param("taskGroupId") String taskGroupId);
 }

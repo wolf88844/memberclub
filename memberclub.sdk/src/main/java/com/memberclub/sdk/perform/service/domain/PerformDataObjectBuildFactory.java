@@ -13,7 +13,13 @@ import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.dataobject.task.TaskContentDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.OnceTask;
+import com.memberclub.infrastructure.mapstruct.PerformConvertor;
+import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,4 +57,12 @@ public class PerformDataObjectBuildFactory {
         return itemDO;
     }
 
+
+    public OnceTaskDO toOnceTaskDO(OnceTask task) {
+        OnceTaskDO taskDO = PerformConvertor.INSTANCE.toOnceTaskDO(task);
+        TaskContentDO contentDO = PerformCustomConvertor.toTaskContentDO(task.getContent(), task.getTaskContentClassName());
+        taskDO.setTradeId(((PerformTaskContentDO) contentDO).getTradeId());
+        taskDO.setContent(contentDO);
+        return taskDO;
+    }
 }

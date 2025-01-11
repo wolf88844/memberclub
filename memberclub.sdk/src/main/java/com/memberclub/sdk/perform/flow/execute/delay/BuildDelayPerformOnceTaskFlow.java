@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
-import com.memberclub.sdk.perform.extension.delay.DelayOnceTaskExtension;
+import com.memberclub.sdk.perform.extension.delay.DelayPerformTaskExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class BuildDelayPerformOnceTaskFlow extends FlowNode<DelayItemContext> {
 
         for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : phase2Item.entrySet()) {
             OnceTaskDO task = extensionManager.getExtension(context.getPerformContext().toDefaultScene(),
-                    DelayOnceTaskExtension.class).buildTask(context, entry.getValue());
+                    DelayPerformTaskExtension.class).buildTask(context, entry.getValue());
             tasks.add(task);
         }
         context.setTasks(tasks);

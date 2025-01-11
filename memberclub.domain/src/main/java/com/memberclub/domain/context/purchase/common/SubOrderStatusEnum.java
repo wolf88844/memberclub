@@ -18,7 +18,7 @@ public enum SubOrderStatusEnum {
     PAYED(29, "已支付"),
     PERFORMING(30, "履约中"),
     PERFORMED(35, "已履约"),
-    PORTION_REFUNDED(40, "部分退"),
+    PORTION_REFUNDED(44, "部分退"),
     REFUNDED(49, "已退款");
 
     private int code;

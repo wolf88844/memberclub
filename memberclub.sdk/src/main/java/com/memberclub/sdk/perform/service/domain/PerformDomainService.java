@@ -69,7 +69,22 @@ public class PerformDomainService {
         return context.getAfterSaleApplyContext().getPreviewContext().getMemberOrder();
     }
 
-    public Map<Long, SubOrderReversePerformContext> buildSubOrderReversePerformContextMapBaseAssets(ReversePerformContext context) {
+    public Map<String, SubOrderReversePerformContext> buildReverseContextMap(ReversePerformContext context) {
+        Map<String, SubOrderReversePerformContext> skuId2SubOrderReversePerformContext = Maps.newHashMap();
+        for (MemberSubOrderDO subOrder : context.getAfterSaleApplyContext().getPreviewContext().getSubOrders()) {
+            SubOrderReversePerformContext subOrderReversePerformContext = new SubOrderReversePerformContext();
+            subOrderReversePerformContext.setSkuId(subOrder.getSkuId());
+            subOrderReversePerformContext.setSubTradeId(subOrder.getSubTradeId());
+            subOrderReversePerformContext.setMemberSubOrder(subOrder);
+            subOrderReversePerformContext.setItems(Lists.newArrayList());
+            skuId2SubOrderReversePerformContext.put(String.valueOf(subOrder.getSubTradeId()), subOrderReversePerformContext);
+        }
+        return skuId2SubOrderReversePerformContext;
+    }
+
+
+    public void buildReversePerformAssetsInfo(ReversePerformContext context,
+                                              Map<String, SubOrderReversePerformContext> subTradeId2SubOrderReversePerformContext) {
         List<PerformItemReverseInfo> items = Lists.newArrayList();
 
         for (Map.Entry<String, ItemUsage> entry : context.getAfterSaleApplyContext().getPreviewContext().getBatchCode2ItemUsage().entrySet()) {
@@ -95,28 +110,19 @@ public class PerformDomainService {
             }
         }
 
-        Map<Long, SubOrderReversePerformContext> skuId2HisInfos = Maps.newHashMap();
+
         for (PerformItemReverseInfo item : items) {
             for (MemberSubOrderDO memberSubOrder : context.getAfterSaleApplyContext().getPreviewContext().getSubOrders()) {
                 if (memberSubOrder.getSkuId() == item.getSkuId()) {
-                    if (skuId2HisInfos.containsKey(item.getSkuId())) {
-                        skuId2HisInfos.get(item.getSkuId()).getItems().add(item);
-                    } else {
-                        SubOrderReversePerformContext subOrderReversePerformContext = new SubOrderReversePerformContext();
-                        subOrderReversePerformContext.setSkuId(item.getSkuId());
-                        subOrderReversePerformContext.setSubTradeId(memberSubOrder.getSubTradeId());
-                        subOrderReversePerformContext.setMemberSubOrder(memberSubOrder);
-                        subOrderReversePerformContext.setItems(Lists.newArrayList(item));
-                        skuId2HisInfos.put(item.getSkuId(), subOrderReversePerformContext);
-                    }
+                    subTradeId2SubOrderReversePerformContext.get(String.valueOf(memberSubOrder.getSubTradeId())).getItems().add(item);
                 }
             }
         }
-        for (Map.Entry<Long, SubOrderReversePerformContext> entry : skuId2HisInfos.entrySet()) {
+        for (Map.Entry<String, SubOrderReversePerformContext> entry : subTradeId2SubOrderReversePerformContext.entrySet()) {
             boolean allRefund = entry.getValue().getItems().stream().allMatch(item -> item.getRefundType() == RefundTypeEnum.ALL_REFUND);
             entry.getValue().setAllRefund(allRefund);
         }
 
-        return skuId2HisInfos;
+        return;
     }
 }

@@ -22,6 +22,7 @@ import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
+import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
@@ -171,6 +172,63 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
     @SneakyThrows
     @Test
+    public void testDefaultMemberAndMutilPeriodCardAndRefund() {
+        PurchaseSubmitResponse response = submit(cycle3Sku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+
+        verifyTaskData(cmd, 4);
+
+
+        AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
+        previewCmd.setUserId(cmd.getUserId());
+        previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        previewCmd.setTradeId(cmd.getTradeId());
+        previewCmd.setSource(AftersaleSourceEnum.User);
+        previewCmd.setOperator(String.valueOf(cmd.getUserId()));
+        previewCmd.setOrderId(cmd.getOrderId());
+        previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
+
+
+        AfterSalePreviewResponse respose = aftersaleBizService.preview(previewCmd);
+        Assert.assertEquals(true, respose.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.ALL_REFUND, respose.getRefundType());
+
+        /*******************部分使用,结果为部分退********/
+        for (Map.Entry<String, List<AssetDO>> entry : couponGrantFacade.assetBatchCode2Assets.entrySet()) {
+            entry.getValue().get(0).setStatus(AssetStatusEnum.USED.getCode());
+        }
+        respose = aftersaleBizService.preview(previewCmd);
+        Assert.assertEquals(true, respose.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.PORTION_RFUND, respose.getRefundType());
+
+
+        AftersaleApplyCmd applyCmd = new AftersaleApplyCmd();
+        applyCmd = AftersaleConvertor.INSTANCE.toApplyCmd(previewCmd);
+        applyCmd.setDigests(respose.getDigests());
+        applyCmd.setReason("不想要了!");
+        applyCmd.setDigestVersion(respose.getDigestVersion());
+        //applyCmd.setDigestVersion(0);
+        AftersaleApplyResponse aftersaleApplyResponse = aftersaleBizService.apply(applyCmd);
+        //waitH2();
+
+        verifyOrderRefund(applyCmd, false);
+        Assert.assertTrue(aftersaleApplyResponse.isSuccess());
+
+
+    }
+
+
+    @SneakyThrows
+    @Test
     public void testDefaultMemberAndBuyCount() {
         int buyCount = 3;
         PurchaseSubmitResponse response = submit(doubleRightsSku, buyCount);
@@ -277,6 +335,20 @@ public class TestDemoMember extends TestDemoMemberPurchase {
                 }
             }
         }
+        for (MemberSubOrder memberSubOrder : hisAfterApply) {
+            List<OnceTask> tasks =
+                    onceTaskDao.queryTasksByUserIdAndGroupId(memberSubOrder.getUserId(), String.valueOf(memberSubOrder.getSubTradeId()));
+
+            for (OnceTask task : tasks) {
+                if (task.getStatus() == OnceTaskStatusEnum.CANCEL.getCode() ||
+                        task.getStatus() == OnceTaskStatusEnum.SUCC.getCode()) {
+
+                } else {
+                    Assert.fail("任务状态异常:" + task.getStatus());
+                }
+            }
+        }
+
     }
 
 
@@ -370,6 +442,10 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     private void verifyTaskData(PerformCmd cmd, int taskSize) {
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
         Assert.assertEquals(taskSize, tasks.size());
+
+        for (OnceTask task : tasks) {
+            Assert.assertNotNull(task.getTaskGroupId());
+        }
     }
 
 

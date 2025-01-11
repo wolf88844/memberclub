@@ -24,6 +24,8 @@ public class OnceTask {
     private int taskType;
 
     private long userId;
+    
+    private String taskGroupId;
 
     private String taskToken;
 

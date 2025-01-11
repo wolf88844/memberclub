@@ -164,13 +164,14 @@ public class PerformCustomConvertor {
     }
 
 
-    public static OnceTaskDO buildTaskForPeriodPerform(PerformContext context, MemberPerformItemDO item) {
+    public static OnceTaskDO buildTaskForPeriodPerform(DelayItemContext itemContext, PerformContext context, MemberPerformItemDO item) {
         OnceTaskDO task = new OnceTaskDO();
         task.setUserId(context.getUserId());
         task.setBizType(context.getBizType());
         task.setStime(item.getStime());
         task.setEtime(item.getEtime());
         task.setStatus(OnceTaskStatusEnum.INIT);
+        task.setTaskGroupId(String.valueOf(itemContext.getSubOrderPerformContext().getSubOrder().getSubTradeId()));
         task.setTaskToken(String.format("%s", item.getItemToken()));
         task.setCtime(TimeUtil.now());
         task.setUtime(TimeUtil.now());

@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.perform.flow.reverse;
 
+import com.google.common.collect.Lists;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
@@ -18,14 +19,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReversePerformSubOrderFlow extends FlowNode<ReversePerformContext> {
-    
+
     @Autowired
     private MemberSubOrderDomainService memberSubOrderDomainService;
 
     @Override
     public void process(ReversePerformContext context) {
         if (context.getCurrentSubOrderReversePerformContext() == null) {
-            context.setCurrentSubOrderReversePerformContext(context.getReverseInfos().get(0));
+            context.setCurrentSubOrderReversePerformContext(
+                    Lists.newArrayList(context.getSubTradeId2SubOrderReversePerformContext().values()).get(0));
         }
         if (memberSubOrderDomainService.isFinishReverseMemberSubOrder(context, context.getCurrentSubOrderReversePerformContext())) {
             throw new SkipException("已经完成更新履约单,不再重试");

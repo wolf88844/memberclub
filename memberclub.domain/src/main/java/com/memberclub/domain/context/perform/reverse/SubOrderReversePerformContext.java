@@ -7,6 +7,7 @@
 package com.memberclub.domain.context.perform.reverse;
 
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import lombok.Data;
 
 import java.util.List;
@@ -28,7 +29,9 @@ public class SubOrderReversePerformContext {
     private boolean allRefund;
 
     //如果有待取消的任务,也一并取消掉!
+    private List<OnceTaskDO> activeTasks;
 
+    List<String> activeTaskTokens;
 
     /************************************/
     //临时数据
@@ -37,4 +40,6 @@ public class SubOrderReversePerformContext {
     private int currentRightType;
 
     /************************************/
+
+
 }

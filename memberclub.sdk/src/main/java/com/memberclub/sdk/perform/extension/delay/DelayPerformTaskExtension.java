@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author yuhaiqiang
  */
-public interface DelayOnceTaskExtension extends BaseExtension {
+public interface DelayPerformTaskExtension extends BaseExtension {
 
     public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items);
 }

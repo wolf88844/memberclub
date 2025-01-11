@@ -11,7 +11,7 @@ import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * author: 掘金五阳
@@ -29,7 +29,7 @@ public class ReversePerformContext {
 
     private AfterSaleApplyContext afterSaleApplyContext;
 
-    private List<SubOrderReversePerformContext> reverseInfos;
+    private Map<String, SubOrderReversePerformContext> subTradeId2SubOrderReversePerformContext;
     /**************************************/
     //临时数据
 

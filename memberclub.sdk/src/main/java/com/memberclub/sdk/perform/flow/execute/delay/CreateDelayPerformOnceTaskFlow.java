@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.execute.delay;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
-import com.memberclub.sdk.oncetask.service.OnceTaskDomainService;
+import com.memberclub.sdk.oncetask.periodperform.service.PeriodPerformTaskDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 public class CreateDelayPerformOnceTaskFlow extends FlowNode<DelayItemContext> {
 
     @Autowired
-    private OnceTaskDomainService onceTaskDomainService;
+    private PeriodPerformTaskDomainService periodPerformTaskDomainService;
 
     @Override
     public void process(DelayItemContext context) {
-        onceTaskDomainService.onCreatePeriodPerformTask(context);
+        periodPerformTaskDomainService.onCreatePeriodPerformTask(context);
     }
 }

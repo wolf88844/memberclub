@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS member_sub_order (
 CREATE TABLE IF NOT EXISTS once_task (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
+    task_group_id VARCHAR(128)  NOT NULL COMMENT '任务群组 id,由业务自定义',
     task_token VARCHAR(128)  NOT NULL COMMENT 'taskToken',
     user_id BIGINT(20)  NOT NULL COMMENT 'userId',
     task_type INT(11)  NOT NULL COMMENT '任务类型',

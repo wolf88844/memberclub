@@ -12,17 +12,17 @@ package com.memberclub.domain.context.perform.common;
 public enum SubOrderPerformStatusEnum {
 
     INIT(0, "init"),
-    
+
     PERFORMING(12, "performing"),
     IMMEDIATE_PERFORMING(15, "immediate_performing"),
     IMMEDIATE_PERFORED(17, "immediate_performed"),
     DELAY_PERFORMING(20, "delay_performing"),
     DELAY_PERFORMED(25, "delay_performed"),
     PERFORM_FAIL(36, "perform_fail"),
-    PERFORM_SUCC(35, "perform_succ"),
+    PERFORM_SUCC(35, "perform_success"),
     REVEREING(40, "reversing"),
     PORTION_REVERSED(44, "portion_reversed"),
-    COMPLETED_REVERSED(45, "completed_reversed"),
+    COMPLETED_REVERSED(49, "completed_reversed"),
     ;
 
     private int value;

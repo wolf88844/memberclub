@@ -16,7 +16,7 @@ import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
-import com.memberclub.sdk.perform.extension.delay.DelayOnceTaskExtension;
+import com.memberclub.sdk.perform.extension.delay.DelayPerformTaskExtension;
 
 import java.util.List;
 
@@ -26,11 +26,11 @@ import java.util.List;
 @ExtensionProvider(desc = "DemoMember 延迟任务扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEFAULT, scenes = SceneEnum.DEFAULT_SCENE)
 })
-public class DefaultDelayOnceTaskExtension implements DelayOnceTaskExtension {
+public class DefaultDelayPerformTaskExtension implements DelayPerformTaskExtension {
 
     @Override
     public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items) {
-        OnceTaskDO task = PerformCustomConvertor.buildTaskForPeriodPerform(context.getPerformContext(), items.get(0));
+        OnceTaskDO task = PerformCustomConvertor.buildTaskForPeriodPerform(context, context.getPerformContext(), items.get(0));
         task.setTaskType(TaskTypeEnum.PERIOD_PERFORM);
         task.setTaskContentClassName(PerformTaskContentDO.class.getName());
 
