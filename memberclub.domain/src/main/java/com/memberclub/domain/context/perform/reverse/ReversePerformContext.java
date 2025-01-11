@@ -29,11 +29,11 @@ public class ReversePerformContext {
 
     private AfterSaleApplyContext afterSaleApplyContext;
 
-    private List<SubOrderReverseInfo> reverseInfos;
+    private List<SubOrderReversePerformContext> reverseInfos;
     /**************************************/
     //临时数据
 
-    private SubOrderReverseInfo currentSubOrderReverseInfo;
+    private SubOrderReversePerformContext currentSubOrderReversePerformContext;
 
     /**************************************/
 

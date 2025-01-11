@@ -22,7 +22,6 @@ public enum AftersaleOrderStatusEnum {
 
     ;
 
-
     private int value;
 
     private String name;

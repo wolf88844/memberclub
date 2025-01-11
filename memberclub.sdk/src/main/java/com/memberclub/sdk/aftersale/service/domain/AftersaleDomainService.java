@@ -6,10 +6,13 @@
  */
 package com.memberclub.sdk.aftersale.service.domain;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.ImmutableList;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
@@ -22,6 +25,7 @@ import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.sdk.aftersale.extension.domain.AftersaleDomainExtension;
 import com.memberclub.sdk.common.Monitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +42,15 @@ public class AftersaleDomainService {
 
     @Autowired
     private AftersaleDataObjectFactory aftersaleDataObjectFactory;
+
+    @Autowired
+    private ExtensionManager extensionManager;
+
+    @Autowired
+    private MemberOrderDao memberOrderDao;
+
+    @Autowired
+    private MemberSubOrderDao memberSubOrderDao;
 
 
     public AftersaleOrderDO generateOrder(AfterSaleApplyContext context) {
@@ -56,7 +69,7 @@ public class AftersaleDomainService {
         return order;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createAfterSaleOrder(AftersaleOrderDO orderDO) {
         AftersaleOrder order = AftersaleConvertor.INSTANCE.toAftersaleOrder(orderDO);
         int cnt = aftersaleOrderDao.insertIgnoreBatch(ImmutableList.of(order));
@@ -108,50 +121,38 @@ public class AftersaleDomainService {
                 TimeUtil.now());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void onOrderRefunded(AfterSaleApplyContext context) {
         AftersaleOrderDO order = context.getAftersaleOrderDO();
         order.onOrderRefunfSuccess(context);
-        // TODO: 2025/1/1
-        int cnt = aftersaleOrderDao.updateStatusAndRefundPrice(order.getUserId(),
-                order.getId(),
-                order.getActRefundPriceFen(),
-                JsonUtils.toJson(order.getExtra()),
-                order.getStatus().getCode(),
-                TimeUtil.now());
+
+        LambdaUpdateWrapper<AftersaleOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(AftersaleOrder::getUserId, order.getUserId())
+                .eq(AftersaleOrder::getId, order.getId())
+                .set(AftersaleOrder::getActRefundPriceFen, order.getActRefundPriceFen())
+                .set(AftersaleOrder::getExtra, JsonUtils.toJson(order.getExtra()))
+                .set(AftersaleOrder::getStatus, order.getStatus().getCode())
+                .set(AftersaleOrder::getUtime, order.getUtime())
+        ;
+
+        extensionManager.getExtension(BizScene.of(order.getBizType()),
+                AftersaleDomainExtension.class).onRefundSuccess(context, order, wrapper);
     }
 
-    @Transactional
-    public void onAftersaleSuccess(AftersaleOrderDO order) {
-        // TODO: 2025/1/1
-        int cnt = aftersaleOrderDao.updateStatus(order.getUserId(),
-                order.getId(),
-                order.getStatus().getCode(),
-                TimeUtil.now());
-        /*if (cnt < 1) {
-            AftersaleOrder orderFromDb = aftersaleOrderDao.queryById(order.getUserId(), order.getId());
-            if (order != null && AftersaleOrderStatusEnum.AFTERSALE_SUCCESS.equals(order.getStatus())) {
-                CommonLog.warn("修改售后单为成功态,幂等成功 order:{}", order);
-                Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                        "onAftersaleSuccess", "duplicated");
-            } else {
-                CommonLog.warn("修改售后单为成功态, 失败 order:{}", order);
-                Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                        "onAftersaleSuccess", "error");
-                throw ResultCode.DATA_UPDATE_ERROR.newException("更新售后单为成功态异常");
-            }
-        } else {
-            CommonLog.warn("修改售后单为成功态成功 order:{}", order);
-            Monitor.AFTER_SALE_DOAPPLY.counter(order.getBizType(),
-                    "onAftersaleSuccess", "succ");
-        }*/
+    @Transactional(rollbackFor = Exception.class)
+    public void onAftersaleSuccess(AfterSaleApplyContext context, AftersaleOrderDO order) {
+        order.onAfterSaleSuccess(context);
+        LambdaUpdateWrapper<AftersaleOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(AftersaleOrder::getUserId, order.getUserId())
+                .eq(AftersaleOrder::getId, order.getId())
+                .set(AftersaleOrder::getStatus, order.getStatus().getCode())
+                .set(AftersaleOrder::getUtime, order.getUtime())
+        ;
+
+        extensionManager.getExtension(BizScene.of(order.getBizType()),
+                AftersaleDomainExtension.class).onSuccess(context, order, wrapper);
     }
 
-    @Autowired
-    private MemberOrderDao memberOrderDao;
-
-    @Autowired
-    private MemberSubOrderDao memberSubOrderDao;
 
     public void onRefundSuccessForMemberOrder(AfterSaleApplyContext context) {
         MemberOrderDO memberOrder = context.getPreviewContext().getMemberOrder();

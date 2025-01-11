@@ -15,6 +15,8 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
@@ -71,5 +73,25 @@ public class DefaultMemberSubOrderDomainExtension implements MemberSubOrderDomai
                                  MemberSubOrderDO memberSubOrderDO,
                                  LambdaUpdateWrapper<MemberSubOrder> wrapper) {
         memberSubOrderDao.update(null, wrapper);
+    }
+
+    @Override
+    public void onStartReversePerform(ReversePerformContext context, SubOrderReversePerformContext subOrderReversePerformContext, MemberSubOrderDO subOrder,
+                                      LambdaUpdateWrapper<MemberSubOrder> wrapper) {
+        int cnt = memberSubOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onStartReversePerform 更新异常");
+        }
+        CommonLog.info("更新履约单状态为逆向履约中 status:{}, cnt:{}", subOrder.getPerformStatus(), cnt);
+    }
+
+    @Override
+    public void onReversePerformSuccess(ReversePerformContext context, SubOrderReversePerformContext subOrderReversePerformContext, MemberSubOrderDO subOrder,
+                                        LambdaUpdateWrapper<MemberSubOrder> wrapper) {
+        int cnt = memberSubOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onReversePerformSuccess 更新异常");
+        }
+        CommonLog.info("更新子单状态为逆向履约完成 status:{}, cnt:{}", subOrder.getPerformStatus(), cnt);
     }
 }

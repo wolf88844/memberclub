@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.reverse;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class ReversePerformMemberOrderFlow extends FlowNode<ReversePerformContext> {
+public class MemberOrderReverseDomainFlow extends FlowNode<ReversePerformContext> {
 
     @Autowired
-    private PerformDomainService performDomainService;
+    private MemberOrderDomainService memberOrderDomainService;
 
     @Override
     public void process(ReversePerformContext context) {
@@ -28,6 +28,6 @@ public class ReversePerformMemberOrderFlow extends FlowNode<ReversePerformContex
 
     @Override
     public void success(ReversePerformContext context) {
-        performDomainService.onFinishReversePerformMemberOrder(context);
+        memberOrderDomainService.onReversePerformSuccess(context);
     }
 }

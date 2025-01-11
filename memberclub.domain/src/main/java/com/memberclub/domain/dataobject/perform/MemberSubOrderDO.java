@@ -10,6 +10,8 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
@@ -59,11 +61,6 @@ public class MemberSubOrderDO {
 
     private long ctime;
 
-    public void finishReversePerform(boolean allRefund) {
-        SubOrderPerformStatusEnum newPerformStatus = allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED :
-                SubOrderPerformStatusEnum.PORTION_REVERSED;
-        performStatus = newPerformStatus;
-    }
 
     public void onStartPerform(SubOrderPerformContext subOrderPerformContext) {
         performStatus = SubOrderPerformStatusEnum.PERFORMING;
@@ -73,6 +70,19 @@ public class MemberSubOrderDO {
     public void onPerformSuccess(SubOrderPerformContext subOrderPerformContext) {
         setStatus(SubOrderStatusEnum.PERFORMED);
         setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        setUtime(System.currentTimeMillis());
+    }
+
+    public void onStartReversePerform(ReversePerformContext context, SubOrderReversePerformContext subOrderReversePerformContext) {
+        performStatus = SubOrderPerformStatusEnum.REVEREING;
+        setUtime(System.currentTimeMillis());
+    }
+
+
+    public void onReversePerformSuccess(boolean allRefund) {
+        SubOrderPerformStatusEnum newPerformStatus = allRefund ? SubOrderPerformStatusEnum.COMPLETED_REVERSED :
+                SubOrderPerformStatusEnum.PORTION_REVERSED;
+        performStatus = newPerformStatus;
         setUtime(System.currentTimeMillis());
     }
 }

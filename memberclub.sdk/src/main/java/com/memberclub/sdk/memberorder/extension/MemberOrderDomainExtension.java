@@ -9,6 +9,7 @@ package com.memberclub.sdk.memberorder.extension;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberOrder;
 
@@ -22,4 +23,6 @@ public interface MemberOrderDomainExtension extends BaseExtension {
     public int onStartPerform(PerformContext context, LambdaUpdateWrapper<MemberOrder> wrapper);
 
     public void onPerformSuccess(PerformContext context, MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper);
+
+    public void onReversePerformSuccess(ReversePerformContext context, MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper);
 }

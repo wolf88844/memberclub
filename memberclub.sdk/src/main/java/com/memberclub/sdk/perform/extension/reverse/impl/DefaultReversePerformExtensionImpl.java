@@ -15,10 +15,10 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
 import com.memberclub.sdk.perform.flow.reverse.BuildReversePerformInfosFlow;
+import com.memberclub.sdk.perform.flow.reverse.MemberOrderReverseDomainFlow;
 import com.memberclub.sdk.perform.flow.reverse.MutilReversePerformItemFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReverseAssetsFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReversePerformItemFlow;
-import com.memberclub.sdk.perform.flow.reverse.ReversePerformMemberOrderFlow;
 import com.memberclub.sdk.perform.flow.reverse.ReversePerformSubOrderFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +41,7 @@ public class DefaultReversePerformExtensionImpl implements ReversePerformExtensi
     public void init() {
         reversePerformChain = FlowChain.newChain(flowChainService, ReversePerformContext.class)
                 .addNode(BuildReversePerformInfosFlow.class)//构建逆向履约信息
-                .addNode(ReversePerformMemberOrderFlow.class)//修改主单 的履约状态)
+                .addNode(MemberOrderReverseDomainFlow.class)//修改主单 的履约状态)
                 .addNode(ReversePerformSubOrderFlow.class)//修改子单的履约状态
                 .addNodeWithSubNodes(MutilReversePerformItemFlow.class, ReversePerformContext.class,
                         Lists.newArrayList(ReversePerformItemFlow.class,//逆向履约项

@@ -14,6 +14,7 @@ import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -129,6 +130,22 @@ public class MemberOrderDomainService {
     public void submitFail(MemberOrderDO order) {
         // TODO: 2025/1/4
 
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void onReversePerformSuccess(ReversePerformContext context) {
+        MemberOrderDO order = context.getMemberOrderDO();
+        order.onReversePerformSuccess(context);
+
+        LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(MemberOrder::getUserId, order.getUserId())
+                .eq(MemberOrder::getTradeId, order.getTradeId())
+                .set(MemberOrder::getPerformStatus, order.getPerformStatus().getCode())
+                .set(MemberOrder::getUtime, order.getUtime())
+        ;
+
+        extensionManager.getExtension(BizScene.of(context.getBizType()),
+                MemberOrderDomainExtension.class).onReversePerformSuccess(context, order, wrapper);
     }
 
     public MemberOrderDO getMemberOrderDO(long userId, String tradeId) {

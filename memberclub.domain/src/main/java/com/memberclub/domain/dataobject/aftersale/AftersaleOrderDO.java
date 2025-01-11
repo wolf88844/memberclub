@@ -58,6 +58,7 @@ public class AftersaleOrderDO {
 
     public void onAfterSaleSuccess(AfterSaleApplyContext context) {
         status = AftersaleOrderStatusEnum.AFTERSALE_SUCCESS;
+        setUtime(System.currentTimeMillis());
     }
 
     public void onPerformReversed(AfterSaleApplyContext context) {

@@ -11,7 +11,7 @@ import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
-import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
+import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.sdk.perform.extension.reverse.BuildReverseInfoExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DefaultBuildReversePerformInfoExtension implements BuildReverseInfo
 
     @Override
     public void buildAssets(ReversePerformContext context) {
-        Map<Long, SubOrderReverseInfo> skuId2HisInfos = performDomainService.buildSubOrderReversePerformInfoMapBaseAssets(context);
+        Map<Long, SubOrderReversePerformContext> skuId2HisInfos = performDomainService.buildSubOrderReversePerformContextMapBaseAssets(context);
 
         context.setReverseInfos(Lists.newArrayList(skuId2HisInfos.values()));
 

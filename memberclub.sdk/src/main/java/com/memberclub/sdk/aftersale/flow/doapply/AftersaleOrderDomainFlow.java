@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class AftersaleOrderFlow extends FlowNode<AfterSaleApplyContext> {
+public class AftersaleOrderDomainFlow extends FlowNode<AfterSaleApplyContext> {
 
     @Autowired
     private AftersaleDomainService aftersaleDomainService;
@@ -35,11 +35,11 @@ public class AftersaleOrderFlow extends FlowNode<AfterSaleApplyContext> {
 
     @Override
     public void success(AfterSaleApplyContext context) {
-        context.getAftersaleOrderDO().onAfterSaleSuccess(context);
-        aftersaleDomainService.onAftersaleSuccess(context.getAftersaleOrderDO());
+        aftersaleDomainService.onAftersaleSuccess(context, context.getAftersaleOrderDO());
     }
 
     @Override
     public void rollback(AfterSaleApplyContext context, Exception e) {
+
     }
 }

@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 
@@ -38,4 +40,14 @@ public interface MemberSubOrderDomainExtension extends BaseExtension {
                                  SubOrderPerformContext subOrderPerformContext,
                                  MemberSubOrderDO memberSubOrderDO,
                                  LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
+    public void onStartReversePerform(ReversePerformContext context,
+                                      SubOrderReversePerformContext subOrderReversePerformContext,
+                                      MemberSubOrderDO subOrder,
+                                      LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
+    public void onReversePerformSuccess(ReversePerformContext context,
+                                        SubOrderReversePerformContext subOrderReversePerformContext,
+                                        MemberSubOrderDO subOrder,
+                                        LambdaUpdateWrapper<MemberSubOrder> wrapper);
 }

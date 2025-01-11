@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class MemberOrderRefundFlow extends FlowNode<AfterSaleApplyContext> {
+public class MemberOrderRefundSuccessFlow extends FlowNode<AfterSaleApplyContext> {
 
     @Autowired
     private AftersaleDomainService aftersaleDomainService;

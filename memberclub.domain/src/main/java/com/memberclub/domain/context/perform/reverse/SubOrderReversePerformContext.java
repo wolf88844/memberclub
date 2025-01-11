@@ -15,7 +15,7 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class SubOrderReverseInfo {
+public class SubOrderReversePerformContext {
 
     private long skuId;
 

@@ -14,7 +14,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.reverse.AssetsReverseResponse;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
-import com.memberclub.domain.context.perform.reverse.SubOrderReverseInfo;
+import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.domain.facade.AssetReverseRequestDO;
 import com.memberclub.domain.facade.AssetReverseResponseDO;
@@ -38,7 +38,7 @@ public class SPIAssetsReverseExtension implements AssetsReverseExtension {
     private AssetsFacadeSPI assetsFacadeSPI;
 
     @Override
-    public AssetsReverseResponse reverse(ReversePerformContext context, SubOrderReverseInfo reverseInfo, List<PerformItemReverseInfo> items) {
+    public AssetsReverseResponse reverse(ReversePerformContext context, SubOrderReversePerformContext reverseInfo, List<PerformItemReverseInfo> items) {
         AssetsReverseResponse response = new AssetsReverseResponse();
         AssetReverseRequestDO requestDO = new AssetReverseRequestDO();
         requestDO.setUserId(context.getUserId());

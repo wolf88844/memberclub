@@ -9,8 +9,7 @@ package com.memberclub.sdk.perform.flow.reverse;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
-import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberSubOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +18,24 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReversePerformSubOrderFlow extends FlowNode<ReversePerformContext> {
-
+    
     @Autowired
-    private PerformDomainService performDomainService;
+    private MemberSubOrderDomainService memberSubOrderDomainService;
 
     @Override
     public void process(ReversePerformContext context) {
-        if (context.getCurrentSubOrderReverseInfo() == null) {
-            context.setCurrentSubOrderReverseInfo(context.getReverseInfos().get(0));
+        if (context.getCurrentSubOrderReversePerformContext() == null) {
+            context.setCurrentSubOrderReversePerformContext(context.getReverseInfos().get(0));
         }
-        if (performDomainService.isFinishReverseMemberSubOrder(context, context.getCurrentSubOrderReverseInfo())) {
+        if (memberSubOrderDomainService.isFinishReverseMemberSubOrder(context, context.getCurrentSubOrderReversePerformContext())) {
             throw new SkipException("已经完成更新履约单,不再重试");
         }
-        performDomainService.startReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
+        memberSubOrderDomainService.onStartReversePerform(context, context.getCurrentSubOrderReversePerformContext());
     }
 
     @Override
     public void success(ReversePerformContext context) {
-        MemberSubOrderDO subOrder = context.getCurrentSubOrderReverseInfo().getMemberSubOrder();
 
-        subOrder.finishReversePerform(context.getCurrentSubOrderReverseInfo().isAllRefund());
-
-        performDomainService.onFinishReversePerformMemberSubOrder(context, context.getCurrentSubOrderReverseInfo());
+        memberSubOrderDomainService.onReversePerformSuccess(context, context.getCurrentSubOrderReversePerformContext());
     }
 }

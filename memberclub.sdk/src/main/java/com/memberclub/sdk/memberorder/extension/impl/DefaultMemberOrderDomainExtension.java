@@ -9,9 +9,11 @@ package com.memberclub.sdk.memberorder.extension.impl;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionProvider;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
+import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.exception.ResultCode;
@@ -48,5 +50,16 @@ public class DefaultMemberOrderDomainExtension implements MemberOrderDomainExten
         if (cnt <= 0) {
             throw ResultCode.DATA_UPDATE_ERROR.newException("member_order 更新到履约成功异常");
         }
+    }
+
+
+    @Override
+    public void onReversePerformSuccess(ReversePerformContext context, MemberOrderDO memberOrderDO,
+                                        LambdaUpdateWrapper<MemberOrder> wrapper) {
+        int cnt = memberOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberOrder onReversePerformSuccess 更新异常");
+        }
+        CommonLog.info("更新主单的履约状态为逆向履约完成 status:{} cnt:{}", memberOrderDO.getPerformStatus(), cnt);
     }
 }

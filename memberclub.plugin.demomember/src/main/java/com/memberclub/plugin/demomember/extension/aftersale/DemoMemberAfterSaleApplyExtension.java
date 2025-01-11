@@ -21,11 +21,11 @@ import com.memberclub.sdk.aftersale.flow.apply.AftersaleApplyPreviewFlow;
 import com.memberclub.sdk.aftersale.flow.apply.AftersaleDoApplyFlow;
 import com.memberclub.sdk.aftersale.flow.apply.AftersaleGenerateOrderFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleAsyncRollbackFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.AftersaleOrderFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleOrderDomainFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleRefundOrderFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePurchaseFlow;
 import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePerformFlow;
-import com.memberclub.sdk.aftersale.flow.doapply.MemberOrderRefundFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.AftersaleReversePurchaseFlow;
+import com.memberclub.sdk.aftersale.flow.doapply.MemberOrderRefundSuccessFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -59,8 +59,8 @@ public class DemoMemberAfterSaleApplyExtension implements AfterSaleApplyExtensio
         ;
 
         doApplyFlowChain = FlowChain.newChain(flowChainService, AfterSaleApplyContext.class)
-                .addNode(AftersaleOrderFlow.class)
-                .addNode(MemberOrderRefundFlow.class)
+                .addNode(AftersaleOrderDomainFlow.class)
+                .addNode(MemberOrderRefundSuccessFlow.class) //售后成功后, 更新主单子单的状态为成功
                 .addNode(AftersaleAsyncRollbackFlow.class)
                 .addNode(AftersaleReversePerformFlow.class)
                 .addNode(AftersaleReversePurchaseFlow.class)
