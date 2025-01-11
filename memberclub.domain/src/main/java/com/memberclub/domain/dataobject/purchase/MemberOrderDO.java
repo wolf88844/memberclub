@@ -125,6 +125,8 @@ public class MemberOrderDO {
     public void onPerformSuccess(PerformContext context) {
         setStatus(MemberOrderStatusEnum.PERFORMED);
         setPerformStatus(MemberOrderPerformStatusEnum.PERFORMED);
+        setUtime(System.currentTimeMillis());
+        setStime(context.getStime());
+        setEtime(context.getEtime());
     }
-
 }

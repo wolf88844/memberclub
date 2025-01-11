@@ -66,6 +66,7 @@ public class MemberSubOrderDomainService {
                 .onPerformSuccess(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void onStartPerform(PerformContext performContext, SubOrderPerformContext subOrderPerformContext) {
 
         MemberSubOrderDO subOrder = subOrderPerformContext.getSubOrder();

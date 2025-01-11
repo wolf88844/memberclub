@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.build;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StartPerformUpdteMemberOrderFlow extends FlowNode<PerformContext> {
-
+    
     @Autowired
-    private PerformDomainService performDomainService;
+    private MemberOrderDomainService memberOrderDomainService;
 
     @Override
     public void process(PerformContext context) {
-        int count = performDomainService.startPerformMemberOrder(context);
+        int count = memberOrderDomainService.onStartPerform(context);
         context.setMemberOrderStartPerformUpdateCount(count);
     }
 }

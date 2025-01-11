@@ -19,6 +19,7 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemExtension;
+import com.memberclub.sdk.perform.service.domain.MemberPerformItemDomainService;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
 
     @Autowired
     private PerformDomainService performDomainService;
+
+    @Autowired
+    private MemberPerformItemDomainService memberPerformItemDomainService;
 
     @Override
 
@@ -92,6 +96,6 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
     @Override
     public void success(PerformItemContext context) {
         //下游保证批量发放成功
-        performDomainService.onFinishPerformItem(context);
+        memberPerformItemDomainService.onPerformStatus(context);
     }
 }

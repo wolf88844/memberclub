@@ -56,6 +56,8 @@ public class MemberPerformItemDO implements Comparable {
 
     private long etime;
 
+    private long utime;
+
     PerformItemStatusEnum status;
 
 
@@ -66,5 +68,6 @@ public class MemberPerformItemDO implements Comparable {
 
     public void onFinishPerform(PerformItemContext context) {
         status = PerformItemStatusEnum.PERFORM_SUCCESS;
+        utime = System.currentTimeMillis();
     }
 }

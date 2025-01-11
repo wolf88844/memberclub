@@ -13,6 +13,7 @@ import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberOrder;
 import com.memberclub.domain.entity.MemberSubOrder;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.memberclub.domain.common.MemberTradeEvent.MEMBER_ORDER_START_PERFORM;
 
 /**
  * author: 掘金五阳
@@ -88,8 +91,41 @@ public class MemberOrderDomainService {
         memberSubOrderDomainService.onSubmitSuccess(order);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public Integer onStartPerform(PerformContext context) {
+        LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(MemberOrder::getUserId, context.getUserId())
+                .eq(MemberOrder::getTradeId, context.getTradeId())
+                .lt(MemberOrder::getPerformStatus, MEMBER_ORDER_START_PERFORM.getToStatus())
+                .set(MemberOrder::getPerformStatus, MEMBER_ORDER_START_PERFORM.getToStatus())
+                .set(MemberOrder::getUtime, TimeUtil.now());
+
+        int cnt = extensionManager.getExtension(BizScene.of(context.getBizType()),
+                MemberOrderDomainExtension.class).onStartPerform(context, wrapper);
+        return cnt;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void onPerformSuccess(PerformContext context, MemberOrderDO order) {
+        order.onPerformSuccess(context);
+
+        LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(MemberOrder::getUserId, order.getUserId())
+                .eq(MemberOrder::getTradeId, order.getTradeId())
+                .set(MemberOrder::getStatus, order.getStatus().getCode())
+                .set(MemberOrder::getPerformStatus, order.getPerformStatus().getCode())
+                .set(MemberOrder::getStime, order.getStime())
+                .set(MemberOrder::getEtime, order.getEtime())
+                .set(MemberOrder::getUtime, order.getUtime())
+        ;
+
+        extensionManager.getExtension(BizScene.of(context.getBizType()),
+                MemberOrderDomainExtension.class).onPerformSuccess(context, order, wrapper);
+    }
+
+
     @Retryable
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void submitFail(MemberOrderDO order) {
         // TODO: 2025/1/4
 

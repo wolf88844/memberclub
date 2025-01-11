@@ -36,7 +36,6 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
-import com.memberclub.sdk.perform.extension.execute.MemberSubOrderPerformExtension;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.memberclub.domain.common.MemberTradeEvent.MEMBER_ORDER_START_PERFORM;
-import static com.memberclub.domain.common.MemberTradeEvent.MEMBER_ORDER_SUCCESS_PERFORM;
 
 /**
  * author: 掘金五阳
@@ -66,7 +62,7 @@ public class PerformDomainService {
 
     @Autowired
     private OnceTaskDao onceTaskDao;
-    
+
     @Autowired
     private ExtensionManager extensionManager;
 
@@ -75,66 +71,9 @@ public class PerformDomainService {
 
 
     /************************************************************/
+
     //修改履约状态
-    @Transactional(rollbackFor = Exception.class)
-    public void onFinishSubOrderPerformOnSuccess(MemberSubOrderDO subOrder) {
-        // TODO: 2024/12/15
-        memberSubOrderDao.updatePerformStatusAndTimeAndExtra(subOrder.getUserId(),
-                subOrder.getSubTradeId(),
-                subOrder.getPerformStatus().getCode(),
-                JsonUtils.toJson(subOrder.getExtra()),
-                subOrder.getStime(),
-                subOrder.getEtime(),
-                subOrder.getUtime());
-    }
 
-
-    @Transactional(rollbackFor = Exception.class)
-    public void onStartPerformSubOrder(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
-        MemberSubOrderPerformExtension extension = extensionManager.getExtension(context.toDefaultScene(), MemberSubOrderPerformExtension.class);
-        extension.buildMemberSubOrderOnStartPerform(context, subOrderPerformContext);
-
-        MemberSubOrderDO subOrder = subOrderPerformContext.getSubOrder();
-        subOrder.onStartPerform(subOrderPerformContext);
-
-        // TODO: 2024/12/15
-        int cnt = memberSubOrderDao.updatePerformStatusAndTimeAndExtra(subOrder.getUserId(),
-                subOrder.getSubTradeId(),
-                subOrder.getPerformStatus().getCode(),
-                JsonUtils.toJson(subOrder.getExtra()),
-                subOrder.getStime(),
-                subOrder.getEtime(),
-                subOrder.getUtime());
-
-        if (cnt > 0) {
-            CommonLog.warn("修改会员子单履约状态为履约中: {}", subOrder);
-            return;
-        }
-        MemberSubOrder subOrderFromDb = memberSubOrderDao.selectBySkuId(context.getUserId(),
-                context.getTradeId(), subOrderPerformContext.getSubOrder().getSkuId());
-        if (subOrderFromDb == null) {
-            CommonLog.error("member_sub_order缺失!", subOrder);
-            throw ResultCode.INTERNAL_ERROR.newException(String.format("找不到 member_sub_order subTradeId:%s", subOrder.getSubTradeId()));
-        }
-
-        if (SubOrderPerformStatusEnum.hasPerformed(subOrderFromDb.getPerformStatus())) {
-            CommonLog.error(" member_sub_order 已履约完成,无需再次履约:{}", subOrder);
-            // TODO: 2024/12/15 如何处理返回值
-            return;
-        }
-        CommonLog.error("重试请求,继续履约子单:{}", subOrder);
-    }
-
-
-    @Transactional(rollbackFor = Exception.class)
-    public int startPerformMemberOrder(PerformContext context) {
-        int count = memberOrderDao.updatePerformStatus(context.getUserId(),
-                context.getTradeId(),
-                MEMBER_ORDER_START_PERFORM.getToStatus(),
-                MEMBER_ORDER_START_PERFORM.getFromStatus(),
-                TimeUtil.now());
-        return count;
-    }
     // 履约状态修改结束
 
     /************************************************************/
@@ -159,36 +98,11 @@ public class PerformDomainService {
         }
     }
 
-
-    @Transactional(rollbackFor = Exception.class)
-    public int insertMemberSubOrder(MemberSubOrder memberSubOrder) {
-        int cnt = memberSubOrderDao.insertIgnoreBatch(Lists.newArrayList(memberSubOrder));
-        return cnt;
-    }
-
-
+    
     @Transactional(rollbackFor = Exception.class)
     public int insertMemberPerformItems(List<MemberPerformItem> items) {
         int count = memberPerformItemDao.insertIgnoreBatch(items);
         return count;
-    }
-
-
-    @Transactional(rollbackFor = Exception.class)
-    public void finishMemberOrderPerformOnSuccess(PerformContext context) {
-        context.getMemberOrder().onPerformSuccess(context);
-        int count = memberOrderDao.updateStatus2PerformSucc(context.getUserId(),
-                context.getTradeId(),
-                context.getStime(),
-                context.getEtime(),
-                context.getMemberOrder().getStatus().getCode(),
-                context.getMemberOrder().getPerformStatus().getCode(),
-                MEMBER_ORDER_SUCCESS_PERFORM.getFromStatus(),
-                TimeUtil.now());
-        if (count <= 0) {
-            throw ResultCode.DATA_UPDATE_ERROR.newException("member_order 更新到履约成功异常");
-        }
-        return;
     }
 
     public boolean isFinishReverseMemberSubOrder(ReversePerformContext context,
