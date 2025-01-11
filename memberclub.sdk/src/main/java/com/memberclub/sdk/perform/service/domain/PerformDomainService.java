@@ -8,7 +8,6 @@ package com.memberclub.sdk.perform.service.domain;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.contant.UsageTypeEnum;
@@ -23,17 +22,13 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -41,34 +36,13 @@ import java.util.stream.Collectors;
 @Service
 public class PerformDomainService {
 
-    @Autowired
-    private MemberOrderDao memberOrderDao;
-
-    @Autowired
-    private MemberSubOrderDao memberSubOrderDao;
 
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
 
-    @Autowired
-    private OnceTaskDao onceTaskDao;
-
-    @Autowired
-    private ExtensionManager extensionManager;
 
     @Autowired
     private PerformDataObjectBuildFactory performDataObjectBuildFactory;
-
-
-    /************************************************************/
-
-    //修改履约状态
-
-    // 履约状态修改结束
-
-    /************************************************************/
-
-
 
     public SubOrderExtraInfo buildSubOrderExtraInfo(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         //补充
