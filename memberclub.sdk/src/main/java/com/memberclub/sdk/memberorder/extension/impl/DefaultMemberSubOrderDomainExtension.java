@@ -9,12 +9,15 @@ package com.memberclub.sdk.memberorder.extension.impl;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionProvider;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.memberorder.extension.MemberSubOrderDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,33 @@ public class DefaultMemberSubOrderDomainExtension implements MemberSubOrderDomai
     @Override
     public void onSubmitSuccess(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper) {
         memberSubOrderDao.update(null, wrapper);
+    }
+
+
+    @Override
+    public void onStartPerform(PerformContext context,
+                               SubOrderPerformContext subOrderPerformContext,
+                               MemberSubOrderDO subOrder,
+                               LambdaUpdateWrapper<MemberSubOrder> wrapper) {
+        int cnt = memberSubOrderDao.update(null, wrapper);
+
+        if (cnt > 0) {
+            CommonLog.warn("修改会员子单履约状态为履约中: {}", subOrder);
+            return;
+        }
+        MemberSubOrder subOrderFromDb = memberSubOrderDao.selectBySkuId(context.getUserId(),
+                context.getTradeId(), subOrderPerformContext.getSubOrder().getSkuId());
+        if (subOrderFromDb == null) {
+            CommonLog.error("member_sub_order缺失!", subOrder);
+            throw ResultCode.INTERNAL_ERROR.newException(String.format("找不到 member_sub_order subTradeId:%s", subOrder.getSubTradeId()));
+        }
+
+        if (SubOrderPerformStatusEnum.hasPerformed(subOrderFromDb.getPerformStatus())) {
+            CommonLog.error(" member_sub_order 已履约完成,无需再次履约:{}", subOrder);
+            // TODO: 2024/12/15 外层已经过滤,一般不会走到这里.
+            return;
+        }
+        CommonLog.error("重试请求,继续履约子单:{}", subOrder);
     }
 
     @Override

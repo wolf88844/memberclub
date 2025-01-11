@@ -22,8 +22,8 @@ import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
-import com.memberclub.sdk.perform.extension.build.BuildPerformContextExtension;
-import com.memberclub.sdk.perform.extension.build.PreBuildPerformContextExtension;
+import com.memberclub.sdk.perform.extension.build.PerformAcceptOrderExtension;
+import com.memberclub.sdk.perform.extension.build.PerformSeparateOrderExtension;
 import com.memberclub.sdk.perform.extension.execute.PerformExecuteExtension;
 import com.memberclub.sdk.perform.extension.period.PeriodPerformExecuteExtension;
 import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
@@ -74,7 +74,7 @@ public class PerformBizService {
                     .buildPreBuildPerformContextScene(cmd);
 
             PerformContext context = extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), preBuildScene),
-                    PreBuildPerformContextExtension.class).preBuild(cmd);
+                    PerformAcceptOrderExtension.class).acceptOrder(cmd);
 
             if (context.isSkipPerform()) {
                 if (MemberOrderStatusEnum.isPerformed(context.getMemberOrder().getStatus().getCode())) {
@@ -90,10 +90,10 @@ public class PerformBizService {
                 return resp;
             }
 
-            String buildScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))
-                    .buildBuildPerformContextScene(context);
-            extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), buildScene),
-                    BuildPerformContextExtension.class).build(context);
+            String separtateOrderScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))
+                    .buildSeparateOrderScene(context);
+            extensionManager.getExtension(BizScene.of(cmd.getBizType().getCode(), separtateOrderScene),
+                    PerformSeparateOrderExtension.class).separateOrder(context);
 
             //execute Context
             String executeScene = extensionManager.getSceneExtension(BizScene.of(cmd.getBizType().getCode()))

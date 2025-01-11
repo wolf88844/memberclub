@@ -26,7 +26,7 @@ public interface BizSceneBuildExtension extends BaseExtension {
         return SceneEnum.DEFAULT_SCENE.getValue();
     }
 
-    default String buildBuildPerformContextScene(PerformContext context) {
+    default String buildSeparateOrderScene(PerformContext context) {
         return SceneEnum.SCENE_MONTH_CARD.getValue();
     }
 

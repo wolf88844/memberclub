@@ -24,7 +24,7 @@ public class DemoMemberBizSceneBuildExtension implements BizSceneBuildExtension 
 
 
     @Override
-    public String buildBuildPerformContextScene(PerformContext context) {
+    public String buildSeparateOrderScene(PerformContext context) {
         if (context.getMemberSubOrders().get(0).getPerformConfig().getConfigs().get(0).getCycle() > 1) {
             return SceneEnum.SCENE_MUTIL_PERIOD_CARD.getValue();
         }

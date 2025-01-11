@@ -66,5 +66,24 @@ public class MemberSubOrderDomainService {
                 .onPerformSuccess(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
     }
 
+    public void onStartPerform(PerformContext performContext, SubOrderPerformContext subOrderPerformContext) {
+
+        MemberSubOrderDO subOrder = subOrderPerformContext.getSubOrder();
+        subOrder.onStartPerform(subOrderPerformContext);
+
+        LambdaUpdateWrapper<MemberSubOrder> subOrderWrapper = new LambdaUpdateWrapper<>();
+        subOrderWrapper.eq(MemberSubOrder::getUserId, subOrder.getUserId())
+                .eq(MemberSubOrder::getSubTradeId, subOrder.getSubTradeId())
+                .set(MemberSubOrder::getStatus, subOrder.getStatus().getCode())
+                .set(MemberSubOrder::getPerformStatus, subOrder.getPerformStatus().getCode())
+                .set(MemberSubOrder::getStime, subOrder.getStime())
+                .set(MemberSubOrder::getEtime, subOrder.getEtime())
+                .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
+                .set(MemberSubOrder::getUtime, TimeUtil.now());
+
+        extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
+                .onStartPerform(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
+    }
+
 
 }

@@ -15,7 +15,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
-import com.memberclub.sdk.perform.extension.build.PreBuildPerformContextExtension;
+import com.memberclub.sdk.perform.extension.build.PerformAcceptOrderExtension;
 import com.memberclub.sdk.perform.flow.build.CalculateRetrySourceFlow;
 import com.memberclub.sdk.perform.flow.build.CheckMemberOrderPerformedFlow;
 import com.memberclub.sdk.perform.flow.build.StartPerformUpdteMemberOrderFlow;
@@ -27,9 +27,9 @@ import org.springframework.boot.ApplicationRunner;
  * author: 掘金五阳
  */
 @ExtensionProvider(desc = "DemoMember 履约上下文前置构建", bizScenes = {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = SceneEnum.DEFAULT_SCENE)})
-public class DemoMemberPreBuildPerformContextExtension implements PreBuildPerformContextExtension, ApplicationRunner {
+public class DemoMemberPerformAcceptOrderExtension implements PerformAcceptOrderExtension, ApplicationRunner {
 
-    FlowChain<PerformContext> preBuidPerformContextChain = null;
+    FlowChain<PerformContext> performAcceptOrderChain = null;
 
 
     @Autowired
@@ -37,7 +37,7 @@ public class DemoMemberPreBuildPerformContextExtension implements PreBuildPerfor
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        preBuidPerformContextChain = FlowChain.newChain(flowChainService, PerformContext.class)
+        performAcceptOrderChain = FlowChain.newChain(flowChainService, PerformContext.class)
                 .addNode(StartPerformUpdteMemberOrderFlow.class)
                 .addNode(CalculateRetrySourceFlow.class)
                 .addNode(CheckMemberOrderPerformedFlow.class)
@@ -45,11 +45,11 @@ public class DemoMemberPreBuildPerformContextExtension implements PreBuildPerfor
     }
 
     @Override
-    public PerformContext preBuild(PerformCmd cmd) {
+    public PerformContext acceptOrder(PerformCmd cmd) {
         PerformContext context = PerformConvertor.INSTANCE.toPerformContext(cmd);
         context.setCmd(cmd);
 
-        flowChainService.execute(preBuidPerformContextChain, context);
+        flowChainService.execute(performAcceptOrderChain, context);
 
         return context;
     }

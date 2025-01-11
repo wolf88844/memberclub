@@ -41,7 +41,7 @@ public class TestFlow extends MockBaseTest {
 
     @Before
     public void init() {
-        //LiteFlowChainELBuilder.createChain().setChainId("test_chain").setEL("THEN(FlowA, FlowB)").preBuild();
+        //LiteFlowChainELBuilder.createChain().setChainId("test_chain").setEL("THEN(FlowA, FlowB)").acceptOrder();
         liteFlowChain = liteFlowChainService.newChain(FlowContext.class).addNode(FlowA.class)
                 .addNode(FlowB.class)
                 .build("test_chain");

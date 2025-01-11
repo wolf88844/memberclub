@@ -30,16 +30,15 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
     public void process(PerformContext context) {
         SubOrderPerformContext subOrderPerformContext = context.getSubOrderPerformContexts().get(0);
         context.setCurrentSubOrderPerformContext(subOrderPerformContext);
-        // TODO: 2025/1/8 更新为新的代码编写方式
 
-        performDomainService.onStartPerformSubOrder(context, context.getCurrentSubOrderPerformContext());
+        memberSubOrderDomainService.onStartPerform(context, context.getCurrentSubOrderPerformContext());
     }
 
 
     @Override
     public void success(PerformContext context) {
         /***
-         * todo 注意这里 应该把扩展点 全部放在 MemberSubOrderDomainExtension
+         * 注意这里 应该把扩展点 全部放在 MemberSubOrderDomainExtension
          *
          */
         SubOrderPerformContext subOrderPerformContext = context.getCurrentSubOrderPerformContext();

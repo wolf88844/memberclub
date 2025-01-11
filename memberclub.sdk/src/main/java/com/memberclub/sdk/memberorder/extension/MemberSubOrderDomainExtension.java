@@ -20,6 +20,20 @@ public interface MemberSubOrderDomainExtension extends BaseExtension {
 
     public void onSubmitSuccess(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper);
 
+
+    /**
+     * 开始履约 会员子单
+     *
+     * @param performContext
+     * @param subOrderPerformContext
+     * @param memberSubOrderDO
+     * @param wrapper
+     */
+    public void onStartPerform(PerformContext performContext,
+                               SubOrderPerformContext subOrderPerformContext,
+                               MemberSubOrderDO memberSubOrderDO,
+                               LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
     public void onPerformSuccess(PerformContext performContext,
                                  SubOrderPerformContext subOrderPerformContext,
                                  MemberSubOrderDO memberSubOrderDO,
