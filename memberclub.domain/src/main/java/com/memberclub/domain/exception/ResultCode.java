@@ -24,6 +24,7 @@ public enum ResultCode {
     CONFIG_DATA_ERROR(16, "配置数据有误"),
     PERIOD_PERFORM_TASK_CREATE_ERROR(17, "周期履约任务创建失败"),
     AFTERSALE_DO_APPLY_ERROR(18, "售后受理执行失败"),
+    EXTRACT_MESSAGE_ERROR(19, "解析消息异常"),
     ;
 
     private int value;

@@ -8,6 +8,8 @@ package com.memberclub.sdk.oncetask.periodperform.extension;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.entity.OnceTask;
@@ -15,6 +17,7 @@ import com.memberclub.domain.entity.OnceTask;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "履约周期任务 Domain 层扩展点", type = ExtensionType.PERIOD_PERFORM)
 public interface PeriodPerformTaskDomainExtension extends BaseExtension {
 
     public void onCancel(ReversePerformContext reversePerformContext,

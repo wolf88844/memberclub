@@ -7,11 +7,15 @@
 package com.memberclub.sdk.config.extension;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.sdk.common.LockMode;
 
 /**
  * author: 掘金五阳
  */
+
+@ExtensionConfig(desc = "通用配置扩展点", type = ExtensionType.COMMON)
 public interface BizConfigTable extends BaseExtension {
 
     default LockMode getLockMode() {

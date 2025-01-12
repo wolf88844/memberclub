@@ -7,6 +7,8 @@
 package com.memberclub.sdk.perform.extension.reverse;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.reverse.AssetsReverseResponse;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
@@ -17,6 +19,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "资产逆向冻结扩展点", type = ExtensionType.REVERSE_PERFORM)
 public interface AssetsReverseExtension extends BaseExtension {
 
     public AssetsReverseResponse reverse(ReversePerformContext context,

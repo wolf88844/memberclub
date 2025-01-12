@@ -7,6 +7,8 @@
 package com.memberclub.sdk.purchase.extension;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.SkuInfoDO;
@@ -15,6 +17,7 @@ import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "默认购买订单扩展属性构建 扩展点", type = ExtensionType.PURCHASE)
 public interface PurchaseOrderBuildExtension extends BaseExtension {
 
     public void buildOrder(MemberOrderDO order, PurchaseSubmitContext context);

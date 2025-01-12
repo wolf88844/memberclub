@@ -16,6 +16,7 @@ import com.memberclub.domain.context.perform.PerformItemContext;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "构建BizScene 通用扩展点", type = ExtensionType.COMMON)
 public interface BizSceneBuildExtension extends BaseExtension {
 
     default String buildPerformItemGrantExtensionScene(PerformItemContext context) {

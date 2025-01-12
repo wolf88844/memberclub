@@ -14,12 +14,9 @@ import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.aftersale.extension.preview.AftersaleCollectDataExtension;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import com.memberclub.sdk.memberorder.domain.MemberOrderDomainService;
+import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -32,14 +29,6 @@ import java.util.List;
 })
 public class DefaultAftersaleCollectDataExtension implements AftersaleCollectDataExtension {
 
-    @Autowired
-    private MemberOrderDao memberOrderDao;
-
-    @Autowired
-    private MemberSubOrderDao memberSubOrderDao;
-
-    @Autowired
-    private MemberPerformItemDao memberPerformItemDao;
 
     @Autowired
     private MemberOrderDomainService memberOrderDomainService;

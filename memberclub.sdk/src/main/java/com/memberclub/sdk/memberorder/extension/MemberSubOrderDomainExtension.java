@@ -8,6 +8,8 @@ package com.memberclub.sdk.memberorder.extension;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
@@ -19,6 +21,7 @@ import com.memberclub.domain.entity.MemberSubOrder;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "MemberSubOrder domain 层数据修改扩展点", type = ExtensionType.PURCHASE)
 public interface MemberSubOrderDomainExtension extends BaseExtension {
 
     public void onSubmitSuccess(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper);

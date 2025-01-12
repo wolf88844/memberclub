@@ -7,6 +7,8 @@
 package com.memberclub.sdk.event.trade.extension;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
@@ -18,6 +20,7 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 /**
  * @author yuhaiqiang
  */
+@ExtensionConfig(desc = "TradeEvent 事件构建扩展点", type = ExtensionType.COMMON)
 public interface TradeEventDomainExtension extends BaseExtension {
 
     public String onPerformSuccessForSubOrder(PerformContext performContext,

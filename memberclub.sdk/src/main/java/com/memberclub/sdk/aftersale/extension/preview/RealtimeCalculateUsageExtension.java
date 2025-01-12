@@ -7,14 +7,17 @@
 package com.memberclub.sdk.aftersale.extension.preview;
 
 import com.memberclub.common.extension.BaseExtension;
-import com.memberclub.domain.context.aftersale.preview.ItemUsage;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
+import com.memberclub.domain.context.aftersale.preview.ItemUsage;
 
 import java.util.Map;
 
 /**
  * @author yuhaiqiang
  */
+@ExtensionConfig(desc = "实时计算售后金额 扩展点", type = ExtensionType.AFTERSALE)
 public interface RealtimeCalculateUsageExtension extends BaseExtension {
 
     public Map<String, ItemUsage> calculateItemUsage(AftersalePreviewContext context);

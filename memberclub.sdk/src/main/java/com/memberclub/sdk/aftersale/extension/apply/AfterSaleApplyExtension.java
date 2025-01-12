@@ -7,12 +7,15 @@
 package com.memberclub.sdk.aftersale.extension.apply;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "售后受理扩展点", type = ExtensionType.AFTERSALE)
 public interface AfterSaleApplyExtension extends BaseExtension {
     public void apply(AfterSaleApplyContext context);
 

@@ -7,10 +7,21 @@
 package com.memberclub.sdk.prefinance.service;
 
 import com.google.common.collect.Sets;
+import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.util.JsonUtils;
+import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.dataobject.event.trade.TradeEvent;
+import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
+import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
+import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
+import com.memberclub.domain.exception.ResultCode;
+import com.memberclub.infrastructure.mapstruct.CommonConvertor;
 import com.memberclub.infrastructure.mq.MQEventEnum;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
+import com.memberclub.sdk.prefinance.extension.PreFinanceHandleExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -23,10 +34,29 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
 
     public static final Logger LOG = LoggerFactory.getLogger(PreFinanceOnTradeEventConsumer.class);
 
+    @Autowired
+    private ExtensionManager extensionManager;
 
     @Override
-    public void consume(MQEventEnum event, String message) {
-        LOG.info("收到 event:{}, message:{}", event, message);
+    public void consume(MQEventEnum eventType, String message) {
+        LOG.info("收到 event:{}, message:{}", eventType, message);
+        TradeEventDO event = buildEvent(message);
+        extensionManager.getExtension(BizScene.of(event.getDetail().getBizType()),
+                PreFinanceHandleExtension.class).handle(event);
+    }
+
+    private TradeEventDO buildEvent(String message) {
+        try {
+            TradeEvent event = JsonUtils.fromJson(message, TradeEvent.class);
+            TradeEventDetailDO detail = CommonConvertor.INSTANCE.toTradeEventDetailDO(event.getDetail());
+            TradeEventDO eventDO = new TradeEventDO();
+            eventDO.setEventType(TradeEventEnum.findByCode(event.getEventType()));
+            eventDO.setDetail(detail);
+            return eventDO;
+        } catch (Exception e) {
+            LOG.info("解析构建 TradeEventDO 异常:{}", message, e);
+            throw ResultCode.EXTRACT_MESSAGE_ERROR.newException("解析TradeEventDO异常", e);
+        }
     }
 
     @Override

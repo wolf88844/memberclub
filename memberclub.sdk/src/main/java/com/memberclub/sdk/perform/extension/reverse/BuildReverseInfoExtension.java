@@ -7,11 +7,14 @@
 package com.memberclub.sdk.perform.extension.reverse;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "构建逆向履约上下文扩展点", type = ExtensionType.REVERSE_PERFORM)
 public interface BuildReverseInfoExtension extends BaseExtension {
 
     public void buildAssets(ReversePerformContext context);

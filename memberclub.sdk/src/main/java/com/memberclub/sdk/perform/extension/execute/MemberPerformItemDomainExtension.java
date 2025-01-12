@@ -8,6 +8,8 @@ package com.memberclub.sdk.perform.extension.execute;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
@@ -19,6 +21,7 @@ import com.memberclub.domain.entity.MemberPerformItem;
  * author: 掘金五阳
  * 数据库层扩展点
  */
+@ExtensionConfig(desc = "MemberPerformItem Domain 层扩展点", type = ExtensionType.PERFORM_MAIN)
 public interface MemberPerformItemDomainExtension extends BaseExtension {
 
     /**

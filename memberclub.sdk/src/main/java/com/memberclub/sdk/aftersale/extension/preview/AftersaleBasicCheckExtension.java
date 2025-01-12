@@ -7,6 +7,8 @@
 package com.memberclub.sdk.aftersale.extension.preview;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
@@ -17,6 +19,7 @@ import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "售后预览基础校验扩展点", type = ExtensionType.AFTERSALE)
 public interface AftersaleBasicCheckExtension extends BaseExtension {
     default void statusCheck(AftersalePreviewContext context) {
         MemberOrderStatusEnum status = context.getMemberOrder().getStatus();

@@ -29,4 +29,11 @@ public interface CommonConvertor {
     public TradeEventDetail toTradeEvent(TradeEventDetailDO detail);
 
 
+    @Mappings(value = {
+            @Mapping(qualifiedByName = "toBizTypeEnum", target = "bizType"),
+            @Mapping(qualifiedByName = "toSubOrderPerformStatusEnum", target = "performStatus"),
+
+    })
+    public TradeEventDetailDO toTradeEventDetailDO(TradeEventDetail detail);
+
 }

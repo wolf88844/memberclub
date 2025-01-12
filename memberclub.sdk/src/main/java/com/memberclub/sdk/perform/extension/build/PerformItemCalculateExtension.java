@@ -7,6 +7,8 @@
 package com.memberclub.sdk.perform.extension.build;
 
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.common.extension.ExtensionConfig;
+import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.common.util.TimeRange;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
@@ -14,6 +16,7 @@ import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 /**
  * author: 掘金五阳
  */
+@ExtensionConfig(desc = "MemberPerformItem 构建扩展点", type = ExtensionType.PERFORM_MAIN)
 public interface PerformItemCalculateExtension extends BaseExtension {
 
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);
