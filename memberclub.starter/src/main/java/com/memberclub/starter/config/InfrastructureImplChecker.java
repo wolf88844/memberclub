@@ -10,6 +10,7 @@ import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.lock.DistributeLock;
+import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import lombok.Data;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -55,6 +56,8 @@ public class InfrastructureImplChecker {
      */
     private DistributedRetryEnum retry;
 
+    private DistributedMQEnum mq;
+
     @NestedConfigurationProperty()
     private Feign feign;
 
@@ -81,6 +84,9 @@ public class InfrastructureImplChecker {
 
         check(() -> applicationContext.getBean(IdGenerator.class),
                 "IdGenerator 未获取到实现类,请关注 配置项 memberclub.infrastructure.id,默认 redis ");
+
+        check(() -> applicationContext.getBean(MessageQuenePublishFacade.class),
+                "MessageQuenePublishFacade 未获取到实现类,请关注 配置项 memberclub.infrastructure.mq,默认 rabbitmq ");
 
     }
 

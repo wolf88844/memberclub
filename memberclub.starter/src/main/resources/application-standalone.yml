@@ -27,3 +27,4 @@ memberclub:
     feign:
       enabled: false
     retry: local
+    mq: local

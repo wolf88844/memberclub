@@ -41,6 +41,7 @@ memberclub:
     id: redis
     lock: redis
     retry: rabbitmq
+    mq: rabbitmq
 
 
 

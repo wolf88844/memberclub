@@ -27,6 +27,8 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.sdk.aftersale.extension.domain.AftersaleDomainExtension;
 import com.memberclub.sdk.common.Monitor;
+import com.memberclub.sdk.event.trade.service.domain.TradeEventDomainService;
+import com.memberclub.sdk.memberorder.domain.MemberSubOrderDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +53,9 @@ public class AftersaleDomainService {
 
     @Autowired
     private MemberSubOrderDao memberSubOrderDao;
+
+    @Autowired
+    private TradeEventDomainService tradeEventDomainService;
 
 
     public AftersaleOrderDO generateOrder(AfterSaleApplyContext context) {
@@ -153,8 +158,17 @@ public class AftersaleDomainService {
                 AftersaleDomainExtension.class).onSuccess(context, order, wrapper);
     }
 
+    @Autowired
+    private MemberSubOrderDomainService memberSubOrderDomainService;
+
 
     public void onRefundSuccessForMemberOrder(AfterSaleApplyContext context) {
+        if (!Boolean.TRUE.equals(context.getOrderRefundInvokeSuccess())) {
+            CommonLog.info("没有调用订单退款,因此不修改主状态");
+            return;
+        }
+        CommonLog.info("调用成功订单退款, 开始修改 MemberOrder/MemberSubOrder 主状态");
+
         MemberOrderDO memberOrder = context.getPreviewContext().getMemberOrder();
         memberOrder.onRefundSuccess(context);
         memberOrderDao.updateStatus2RefundSuccess(memberOrder.getUserId(),
@@ -165,14 +179,7 @@ public class AftersaleDomainService {
 
         CommonLog.info("修改主单的主状态为{}", memberOrder.getStatus());
         for (MemberSubOrderDO subOrder : context.getPreviewContext().getSubOrders()) {
-            memberSubOrderDao.updateStatusOnRefundSuccess(subOrder.getUserId(),
-                    subOrder.getSubTradeId(),
-                    subOrder.getStatus().getCode(),
-                    JsonUtils.toJson(subOrder.getExtra()),
-                    TimeUtil.now()
-            );
-
-            CommonLog.info("修改子单的主状态为{}", subOrder.getStatus());
+            memberSubOrderDomainService.onRefundSuccess(context, subOrder);
         }
     }
 }

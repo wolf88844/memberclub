@@ -14,7 +14,7 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
-import com.memberclub.sdk.uti.BizUtils;
+import com.memberclub.sdk.util.BizUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

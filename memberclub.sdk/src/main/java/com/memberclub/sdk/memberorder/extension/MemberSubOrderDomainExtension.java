@@ -8,6 +8,7 @@ package com.memberclub.sdk.memberorder.extension;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.BaseExtension;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
@@ -50,4 +51,10 @@ public interface MemberSubOrderDomainExtension extends BaseExtension {
                                         SubOrderReversePerformContext subOrderReversePerformContext,
                                         MemberSubOrderDO subOrder,
                                         LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
+    public void onRefundSuccess(AfterSaleApplyContext context,
+                                MemberSubOrderDO subOrder,
+                                LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
+
 }

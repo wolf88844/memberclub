@@ -12,6 +12,7 @@ import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
@@ -93,5 +94,14 @@ public class DefaultMemberSubOrderDomainExtension implements MemberSubOrderDomai
             throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onReversePerformSuccess 更新异常");
         }
         CommonLog.info("更新子单状态为逆向履约完成 status:{}, cnt:{}", subOrder.getPerformStatus(), cnt);
+    }
+
+    @Override
+    public void onRefundSuccess(AfterSaleApplyContext context, MemberSubOrderDO subOrder, LambdaUpdateWrapper<MemberSubOrder> wrapper) {
+        int cnt = memberSubOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onRefundSuccess 更新异常");
+        }
+        CommonLog.info("更新子单状态为退款完成 status:{}, cnt:{}", subOrder.getStatus(), cnt);
     }
 }

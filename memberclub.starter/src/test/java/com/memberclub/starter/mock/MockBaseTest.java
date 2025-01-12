@@ -15,7 +15,6 @@ import com.memberclub.starter.impl.MockSkuBizService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
 import org.h2.tools.Server;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class MockBaseTest {
 
 
     @SneakyThrows
-    @BeforeClass
+    //@BeforeClass
     public static void startH2() {
         Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-webAllowOthers", "-ifNotExists", "-tcpPort",
                 "9092");

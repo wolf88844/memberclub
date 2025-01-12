@@ -22,7 +22,7 @@ public enum SubOrderPerformStatusEnum {
     PERFORM_SUCC(35, "perform_success"),
     REVEREING(40, "reversing"),
     PORTION_REVERSED(44, "portion_reversed"),
-    COMPLETED_REVERSED(49, "completed_reversed"),
+    COMPLETED_REVERSED(45, "completed_reversed"),
     ;
 
     private int value;

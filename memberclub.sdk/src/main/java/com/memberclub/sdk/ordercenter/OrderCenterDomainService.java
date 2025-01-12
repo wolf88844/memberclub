@@ -36,6 +36,7 @@ public class OrderCenterDomainService {
         CommonOrderRefundResult result = extension.refund(context);
         context.getAftersaleOrderDO().getExtra().setOrderRefundId(result.getOrderRefundId());
         context.getAftersaleOrderDO().setActRefundPriceFen(context.getOrderRefundPriceFen());
+        context.setOrderRefundInvokeSuccess(true);
         CommonLog.info("调用订单退款 orderRefundId:{}", result.getOrderRefundId());
     }
 

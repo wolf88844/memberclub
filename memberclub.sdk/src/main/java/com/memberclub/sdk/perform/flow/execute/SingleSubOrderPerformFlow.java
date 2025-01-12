@@ -10,7 +10,6 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.sdk.memberorder.domain.MemberSubOrderDomainService;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
-
-    @Autowired
-    private PerformDomainService performDomainService;
 
     @Autowired
     private MemberSubOrderDomainService memberSubOrderDomainService;
@@ -44,6 +40,5 @@ public class SingleSubOrderPerformFlow extends FlowNode<PerformContext> {
         SubOrderPerformContext subOrderPerformContext = context.getCurrentSubOrderPerformContext();
 
         memberSubOrderDomainService.onPerformSuccess(context, subOrderPerformContext, subOrderPerformContext.getSubOrder());
-
     }
 }

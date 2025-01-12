@@ -12,6 +12,7 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
@@ -21,7 +22,9 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.sdk.event.trade.service.domain.TradeEventDomainService;
 import com.memberclub.sdk.memberorder.extension.MemberSubOrderDomainExtension;
+import com.memberclub.sdk.util.TransactionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +51,33 @@ public class MemberSubOrderDomainService {
                     .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
                     .set(MemberSubOrder::getOrderId, subOrder.getOrderId())
                     .set(MemberSubOrder::getUtime, TimeUtil.now());
+
             extensionManager.getExtension(BizScene.of(subOrder.getBizType()),
                     MemberSubOrderDomainExtension.class).onSubmitSuccess(subOrder, subOrderWrapper);
         }
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void onStartPerform(PerformContext performContext, SubOrderPerformContext subOrderPerformContext) {
+        MemberSubOrderDO subOrder = subOrderPerformContext.getSubOrder();
+        subOrder.onStartPerform(subOrderPerformContext);
+
+        LambdaUpdateWrapper<MemberSubOrder> subOrderWrapper = new LambdaUpdateWrapper<>();
+        subOrderWrapper.eq(MemberSubOrder::getUserId, subOrder.getUserId())
+                .eq(MemberSubOrder::getSubTradeId, subOrder.getSubTradeId())
+                .set(MemberSubOrder::getStatus, subOrder.getStatus().getCode())
+                .set(MemberSubOrder::getPerformStatus, subOrder.getPerformStatus().getCode())
+                .set(MemberSubOrder::getStime, subOrder.getStime())
+                .set(MemberSubOrder::getEtime, subOrder.getEtime())
+                .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
+                .set(MemberSubOrder::getUtime, TimeUtil.now());
+
+        extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
+                .onStartPerform(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
+    }
+
+    @Autowired
+    private TradeEventDomainService tradeEventDomainService;
 
     @Transactional(rollbackFor = Exception.class)
     public void onPerformSuccess(PerformContext performContext,
@@ -71,26 +97,10 @@ public class MemberSubOrderDomainService {
 
         extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
                 .onPerformSuccess(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
-    }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void onStartPerform(PerformContext performContext, SubOrderPerformContext subOrderPerformContext) {
-
-        MemberSubOrderDO subOrder = subOrderPerformContext.getSubOrder();
-        subOrder.onStartPerform(subOrderPerformContext);
-
-        LambdaUpdateWrapper<MemberSubOrder> subOrderWrapper = new LambdaUpdateWrapper<>();
-        subOrderWrapper.eq(MemberSubOrder::getUserId, subOrder.getUserId())
-                .eq(MemberSubOrder::getSubTradeId, subOrder.getSubTradeId())
-                .set(MemberSubOrder::getStatus, subOrder.getStatus().getCode())
-                .set(MemberSubOrder::getPerformStatus, subOrder.getPerformStatus().getCode())
-                .set(MemberSubOrder::getStime, subOrder.getStime())
-                .set(MemberSubOrder::getEtime, subOrder.getEtime())
-                .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
-                .set(MemberSubOrder::getUtime, TimeUtil.now());
-
-        extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
-                .onStartPerform(performContext, subOrderPerformContext, subOrder, subOrderWrapper);
+        TransactionHelper.afterCommitExecute(() -> {
+            tradeEventDomainService.onPerformSuccessForSubOrder(performContext, subOrderPerformContext, subOrder);
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -144,6 +154,27 @@ public class MemberSubOrderDomainService {
 
         extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
                 .onReversePerformSuccess(context, subOrderReversePerformContext, subOrder, subOrderWrapper);
+
+        TransactionHelper.afterCommitExecute(() -> {
+            tradeEventDomainService.onReversePerformSuccessForSubOrder(context, subOrderReversePerformContext, subOrder);
+        });
+    }
+
+    public void onRefundSuccess(AfterSaleApplyContext context,
+                                MemberSubOrderDO subOrder) {
+        LambdaUpdateWrapper<MemberSubOrder> subOrderWrapper = new LambdaUpdateWrapper<>();
+        subOrderWrapper.eq(MemberSubOrder::getUserId, subOrder.getUserId())
+                .eq(MemberSubOrder::getSubTradeId, subOrder.getSubTradeId())
+                .set(MemberSubOrder::getStatus, subOrder.getStatus().getCode())
+                .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
+                .set(MemberSubOrder::getUtime, TimeUtil.now());
+
+        extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
+                .onRefundSuccess(context, subOrder, subOrderWrapper);
+        
+        TransactionHelper.afterCommitExecute(() -> {
+            tradeEventDomainService.onRefundSuccessForSubOrder(context, subOrder);
+        });
     }
 
 }
