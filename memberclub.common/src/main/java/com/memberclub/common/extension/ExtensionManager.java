@@ -6,11 +6,15 @@
  */
 package com.memberclub.common.extension;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Table;
 import com.memberclub.common.annotation.Route;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -19,6 +23,7 @@ import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +38,9 @@ public class ExtensionManager {
     private ApplicationContext context;
 
     private Map<String, Object> extensionBeanMap = new HashMap<>();
+
+    @Getter
+    private Table<BizTypeEnum, String, List<Object>> bizExtensionMeta = HashBasedTable.create();
 
     @PostConstruct
     public void init() {
@@ -52,12 +60,19 @@ public class ExtensionManager {
                     for (Route route : routes) {
                         for (SceneEnum scene : route.scenes()) {
                             String key = buildKey(anInterface, route.bizType().getCode(), scene.getValue());
+
+
                             Object value = extensionBeanMap.put(key, bean);
                             if (value != null) {
                                 CommonLog.error("注册 Extension key:{}冲突", key);
                                 throw new RuntimeException("注册 Extension 冲突");
                             }
                             CommonLog.info("注册 Extension key:{}, 接口:{}, 实现类:{}", key, anInterface.getSimpleName(), bean.getClass().getSimpleName());
+
+                            List<Object> extensions = bizExtensionMeta.get(route.bizType(), anInterface.getSimpleName());
+                            if (extensions == null) {
+                                bizExtensionMeta.put(route.bizType(), anInterface.getSimpleName(), Lists.newArrayList(bean));
+                            }
                         }
                     }
                 }

@@ -20,7 +20,7 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "TradeEvent 事件构建扩展点", type = ExtensionType.COMMON)
+@ExtensionConfig(desc = "TradeEvent 事件构建扩展点", type = ExtensionType.COMMON, must = true)
 public interface TradeEventDomainExtension extends BaseExtension {
 
     public String onPerformSuccessForSubOrder(PerformContext performContext,

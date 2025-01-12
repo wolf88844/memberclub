@@ -17,7 +17,7 @@ import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "默认购买订单扩展属性构建 扩展点", type = ExtensionType.PURCHASE)
+@ExtensionConfig(desc = "默认购买订单扩展属性构建 扩展点", type = ExtensionType.PURCHASE, must = true)
 public interface PurchaseOrderBuildExtension extends BaseExtension {
 
     public void buildOrder(MemberOrderDO order, PurchaseSubmitContext context);

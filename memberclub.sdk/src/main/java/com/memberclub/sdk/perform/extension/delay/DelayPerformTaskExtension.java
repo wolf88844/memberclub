@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "延迟履约任务扩展点", type = ExtensionType.PERIOD_PERFORM)
+@ExtensionConfig(desc = "延迟履约任务扩展点", type = ExtensionType.PERIOD_PERFORM, must = false)
 public interface DelayPerformTaskExtension extends BaseExtension {
 
     public OnceTaskDO buildTask(DelayItemContext context, List<MemberPerformItemDO> items);

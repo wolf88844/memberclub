@@ -14,7 +14,7 @@ import com.memberclub.domain.context.perform.PerformCmd;
 /**
  * @author 掘金五阳
  */
-@ExtensionConfig(desc = "测试用扩展点", type = ExtensionType.COMMON)
+@ExtensionConfig(desc = "测试用扩展点", type = ExtensionType.COMMON, must = false)
 public interface JustTestExtension extends BaseExtension {
 
     public void execute(PerformCmd cmd) throws Exception;

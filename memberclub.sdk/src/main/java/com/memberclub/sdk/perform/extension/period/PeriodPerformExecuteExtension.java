@@ -15,7 +15,7 @@ import com.memberclub.domain.dataobject.task.OnceTaskDO;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "履约周期履约扩展点", type = ExtensionType.PERIOD_PERFORM)
+@ExtensionConfig(desc = "履约周期履约扩展点", type = ExtensionType.PERIOD_PERFORM, must = false)
 public interface PeriodPerformExecuteExtension extends BaseExtension {
 
 

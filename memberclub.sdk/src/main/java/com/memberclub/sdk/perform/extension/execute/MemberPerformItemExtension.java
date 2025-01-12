@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "MemberPerformItem 构建扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "MemberPerformItem 构建扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 public interface MemberPerformItemExtension extends BaseExtension {
 
     public List<MemberPerformItem> toMemberPerformItems(PerformItemContext performItemContext);

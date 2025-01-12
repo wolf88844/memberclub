@@ -18,7 +18,7 @@ import com.memberclub.domain.entity.AftersaleOrder;
  * author: 掘金五阳
  */
 
-@ExtensionConfig(desc = "售后单 Domain 层扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "售后单 Domain 层扩展点", type = ExtensionType.AFTERSALE, must = true)
 public interface AftersaleDomainExtension extends BaseExtension {
 
     public void onSuccess(AfterSaleApplyContext context, AftersaleOrderDO order, LambdaUpdateWrapper<AftersaleOrder> wrapper);

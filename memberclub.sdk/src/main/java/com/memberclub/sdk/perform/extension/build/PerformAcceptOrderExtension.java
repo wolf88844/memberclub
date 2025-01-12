@@ -16,7 +16,7 @@ import com.memberclub.domain.context.perform.PerformContext;
  * author: 掘金五阳
  */
 
-@ExtensionConfig(desc = "履约接单 扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "履约接单 扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 public interface PerformAcceptOrderExtension extends BaseExtension {
 
     public PerformContext acceptOrder(PerformCmd cmd);

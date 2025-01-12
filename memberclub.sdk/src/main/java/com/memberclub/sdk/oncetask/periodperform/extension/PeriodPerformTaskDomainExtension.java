@@ -17,7 +17,7 @@ import com.memberclub.domain.entity.OnceTask;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "履约周期任务 Domain 层扩展点", type = ExtensionType.PERIOD_PERFORM)
+@ExtensionConfig(desc = "履约周期任务 Domain 层扩展点", type = ExtensionType.PERIOD_PERFORM, must = false)
 public interface PeriodPerformTaskDomainExtension extends BaseExtension {
 
     public void onCancel(ReversePerformContext reversePerformContext,

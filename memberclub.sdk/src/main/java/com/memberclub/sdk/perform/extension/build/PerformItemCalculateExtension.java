@@ -16,7 +16,7 @@ import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "MemberPerformItem 构建扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "MemberPerformItem 构建扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 public interface PerformItemCalculateExtension extends BaseExtension {
 
     public MemberPerformItemDO toPerformItem(SkuPerformItemConfigDO performConfigDO);

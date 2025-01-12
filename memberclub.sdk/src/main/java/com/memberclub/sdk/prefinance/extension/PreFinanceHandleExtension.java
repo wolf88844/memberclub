@@ -14,7 +14,7 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "预结算流程扩展点", type = ExtensionType.PRE_FINANCE)
+@ExtensionConfig(desc = "预结算流程扩展点", type = ExtensionType.PRE_FINANCE, must = true)
 public interface PreFinanceHandleExtension extends BaseExtension {
 
     public void handle(TradeEventDO event);

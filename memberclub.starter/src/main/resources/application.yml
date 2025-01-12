@@ -42,6 +42,8 @@ memberclub:
     lock: redis
     retry: rabbitmq
     mq: rabbitmq
+  extension:
+    bootcheck: true
 
 
 

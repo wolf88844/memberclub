@@ -21,4 +21,6 @@ public @interface ExtensionConfig {
     public String desc();
 
     public ExtensionType type();
+
+    public boolean must();
 }

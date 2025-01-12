@@ -21,7 +21,7 @@ import com.memberclub.domain.entity.MemberSubOrder;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "MemberSubOrder domain 层数据修改扩展点", type = ExtensionType.PURCHASE)
+@ExtensionConfig(desc = "MemberSubOrder domain 层数据修改扩展点", type = ExtensionType.PURCHASE, must = true)
 public interface MemberSubOrderDomainExtension extends BaseExtension {
 
     public void onSubmitSuccess(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper);

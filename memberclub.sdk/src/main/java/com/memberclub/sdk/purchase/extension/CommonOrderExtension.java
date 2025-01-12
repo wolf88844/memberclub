@@ -17,7 +17,7 @@ import com.memberclub.domain.dataobject.purchase.facade.CommonOrderSubmitResult;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "订单中心接口扩展点", type = ExtensionType.PURCHASE)
+@ExtensionConfig(desc = "订单中心接口扩展点", type = ExtensionType.PURCHASE, must = true)
 public interface CommonOrderExtension extends BaseExtension {
 
     public void onPreSubmit(PurchaseSubmitContext context);

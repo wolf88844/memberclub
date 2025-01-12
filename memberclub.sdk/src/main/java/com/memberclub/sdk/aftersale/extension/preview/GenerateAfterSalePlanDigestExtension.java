@@ -14,7 +14,7 @@ import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "构建售后计算摘要扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "构建售后计算摘要扩展点", type = ExtensionType.AFTERSALE, must = true)
 public interface GenerateAfterSalePlanDigestExtension extends BaseExtension {
 
     public void generateDigest(AftersalePreviewContext context);

@@ -21,7 +21,7 @@ import com.memberclub.domain.entity.MemberPerformItem;
  * author: 掘金五阳
  * 数据库层扩展点
  */
-@ExtensionConfig(desc = "MemberPerformItem Domain 层扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "MemberPerformItem Domain 层扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 public interface MemberPerformItemDomainExtension extends BaseExtension {
 
     /**

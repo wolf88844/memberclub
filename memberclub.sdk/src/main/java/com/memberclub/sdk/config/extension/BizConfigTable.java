@@ -15,7 +15,7 @@ import com.memberclub.sdk.common.LockMode;
  * author: 掘金五阳
  */
 
-@ExtensionConfig(desc = "通用配置扩展点", type = ExtensionType.COMMON)
+@ExtensionConfig(desc = "通用配置扩展点", type = ExtensionType.COMMON, must = true)
 public interface BizConfigTable extends BaseExtension {
 
     default LockMode getLockMode() {

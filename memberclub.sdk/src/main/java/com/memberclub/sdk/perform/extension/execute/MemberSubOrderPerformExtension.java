@@ -16,7 +16,7 @@ import com.memberclub.domain.context.perform.SubOrderPerformContext;
  * author: 掘金五阳
  */
 
-@ExtensionConfig(desc = "MemberSubOrder 履约扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "MemberSubOrder 履约扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 @Deprecated
 public interface MemberSubOrderPerformExtension extends BaseExtension {
 

@@ -14,7 +14,7 @@ import com.memberclub.domain.context.perform.PerformContext;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "履约执行主流程 扩展点", type = ExtensionType.PERFORM_MAIN)
+@ExtensionConfig(desc = "履约执行主流程 扩展点", type = ExtensionType.PERFORM_MAIN, must = true)
 public interface PerformExecuteExtension extends BaseExtension {
 
     public void execute(PerformContext context);

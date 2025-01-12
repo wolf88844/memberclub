@@ -14,7 +14,7 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "购买提单流程扩展点", type = ExtensionType.PURCHASE)
+@ExtensionConfig(desc = "购买提单流程扩展点", type = ExtensionType.PURCHASE, must = true)
 public interface PurchaseSubmitExtension extends BaseExtension {
 
     public void submit(PurchaseSubmitContext context);

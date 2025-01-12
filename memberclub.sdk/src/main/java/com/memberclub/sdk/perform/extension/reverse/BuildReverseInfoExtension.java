@@ -14,7 +14,7 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "构建逆向履约上下文扩展点", type = ExtensionType.REVERSE_PERFORM)
+@ExtensionConfig(desc = "构建逆向履约上下文扩展点", type = ExtensionType.REVERSE_PERFORM, must = true)
 public interface BuildReverseInfoExtension extends BaseExtension {
 
     public void buildAssets(ReversePerformContext context);

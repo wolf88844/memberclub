@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * author: 掘金五阳
  */
-@ExtensionConfig(desc = "售后金额计算扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "售后金额计算扩展点", type = ExtensionType.AFTERSALE, must = false)
 public interface AftersaleAmountExtension extends BaseExtension {
 
     public int calculteRecommendRefundPrice(AftersalePreviewContext context, Map<String, ItemUsage> batchCode2ItemUsageMap);

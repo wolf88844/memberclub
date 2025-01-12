@@ -15,7 +15,7 @@ import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "售后预览获取上下文数据扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "售后预览获取上下文数据扩展点", type = ExtensionType.AFTERSALE, must = true)
 public interface AftersaleCollectDataExtension extends BaseExtension {
 
     public AftersalePreviewContext collect(AfterSalePreviewCmd cmd);

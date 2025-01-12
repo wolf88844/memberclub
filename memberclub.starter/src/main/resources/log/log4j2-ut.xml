@@ -2,7 +2,7 @@
 <Configuration status="info">
     <Properties>
         <Property name="LOG_HOME">target/logs</Property>
-        <Property name="pattern">%d{DEFAULT} [%t] %C{1} %-5p %m -%X{msg}%n%ex</Property>
+        <Property name="pattern">%d{DEFAULT} [%t] %C{1} %5p %m %X{msg}%n%ex</Property>
     </Properties>
     <Appenders>
         <Console msg="consoleAppender" name="consoleAppender" target="SYSTEM_OUT">

@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "实时计算售后金额 扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "实时计算售后金额 扩展点", type = ExtensionType.AFTERSALE, must = false)
 public interface RealtimeCalculateUsageExtension extends BaseExtension {
 
     public Map<String, ItemUsage> calculateItemUsage(AftersalePreviewContext context);

@@ -14,7 +14,7 @@ import com.memberclub.domain.context.aftersale.preview.AftersalePreviewContext;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "售后预览扩展点", type = ExtensionType.AFTERSALE)
+@ExtensionConfig(desc = "售后预览扩展点", type = ExtensionType.AFTERSALE, must = true)
 public interface AftersalePreviewExtension extends BaseExtension {
 
     public void preview(AftersalePreviewContext context);

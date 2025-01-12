@@ -13,7 +13,7 @@ import com.memberclub.common.extension.ExtensionType;
 /**
  * @author yuhaiqiang
  */
-@ExtensionConfig(desc = "分布式 ID 生成扩展点", type = ExtensionType.COMMON)
+@ExtensionConfig(desc = "分布式 ID 生成扩展点", type = ExtensionType.COMMON, must = true)
 public interface IdGenerator extends BaseExtension {
 
     public Long generateId(IdTypeEnum idType);
