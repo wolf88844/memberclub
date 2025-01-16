@@ -10,7 +10,6 @@ import com.memberclub.infrastructure.mq.MQContants;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,12 +26,6 @@ public class RabbitmqPublishFacadeImpl implements MessageQuenePublishFacade {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        return rabbitTemplate;
-    }
 
     @Bean
     public FanoutExchange tradeEventExchange() {

@@ -6,8 +6,6 @@
  */
 package com.memberclub.infrastructure.mq;
 
-import java.util.Set;
-
 /**
  * @author yuhaiqiang
  * <p>
@@ -18,7 +16,7 @@ import java.util.Set;
  */
 public interface MessageQueueConsumerFacade {
 
-    public Set<MQTopicEnum> register();
+    public MQQueueEnum register();
 
-    public void consume(MQTopicEnum event, String message);
+    public void consume(String message);
 }

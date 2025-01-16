@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.ApplicationContextUtils;
+import com.memberclub.infrastructure.mq.MQQueueEnum;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +34,7 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
 
     private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-    private Map<MQTopicEnum, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
+    private Map<String, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
 
     @PostConstruct
     public void init() {
@@ -46,11 +46,9 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
         }
         if (MapUtils.isNotEmpty(consumers)) {
             for (Map.Entry<String, MessageQueueConsumerFacade> entry : consumers.entrySet()) {
-                Set<MQTopicEnum> eventEnums = entry.getValue().register();
-                for (MQTopicEnum mqTopicEnum : eventEnums) {
-                    consumerMap.putIfAbsent(mqTopicEnum, Lists.newArrayList());
-                    consumerMap.get(mqTopicEnum).add(entry.getValue());
-                }
+                MQQueueEnum queueEnums = entry.getValue().register();
+                consumerMap.putIfAbsent(queueEnums.getTopicName(), Lists.newArrayList());
+                consumerMap.get(queueEnums.getTopicName()).add(entry.getValue());
             }
         }
     }
@@ -60,9 +58,9 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
     @Override
     public void publish(MQTopicEnum event, String message) {
         executorService.execute(() -> {
-            if (consumerMap.containsKey(event)) {
-                for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event)) {
-                    messageQueueConsumerFacade.consume(event, message);
+            if (consumerMap.containsKey(event.toString())) {
+                for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event.toString())) {
+                    messageQueueConsumerFacade.consume(message);
                 }
             }
         });

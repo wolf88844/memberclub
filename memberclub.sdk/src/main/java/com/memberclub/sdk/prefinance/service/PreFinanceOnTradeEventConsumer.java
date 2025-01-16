@@ -6,7 +6,6 @@
  */
 package com.memberclub.sdk.prefinance.service;
 
-import com.google.common.collect.Sets;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.common.BizScene;
@@ -16,15 +15,13 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.CommonConvertor;
-import com.memberclub.infrastructure.mq.MQTopicEnum;
+import com.memberclub.infrastructure.mq.MQQueueEnum;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
 import com.memberclub.sdk.prefinance.extension.PreFinanceHandleExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 /**
  * author: 掘金五阳
@@ -38,8 +35,8 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
     private ExtensionManager extensionManager;
 
     @Override
-    public void consume(MQTopicEnum eventType, String message) {
-        LOG.info("收到 event:{}, message:{}", eventType, message);
+    public void consume(String message) {
+        LOG.info("收到  message:{}", message);
         TradeEventDO event = buildEvent(message);
         extensionManager.getExtension(BizScene.of(event.getDetail().getBizType()),
                 PreFinanceHandleExtension.class).handle(event);
@@ -60,7 +57,7 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
     }
 
     @Override
-    public Set<MQTopicEnum> register() {
-        return Sets.newHashSet(MQTopicEnum.TRADE_EVENT);
+    public MQQueueEnum register() {
+        return MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE;
     }
 }

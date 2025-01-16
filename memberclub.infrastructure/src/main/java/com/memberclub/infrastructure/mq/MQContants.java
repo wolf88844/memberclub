@@ -13,5 +13,5 @@ public class MQContants {
 
     public static final String TRADE_EVENT_TOPIC = "com.memberclub.trade.event";
 
-    public static final String TRADE_EVENT_FOR_PRE_FINANCE = "com.memberclub.trade.event.prefinance";
+    public static final String TRADE_EVENT_FOR_PRE_FINANCE = "com.memberclub.trade.event.consumer.prefinance";
 }
