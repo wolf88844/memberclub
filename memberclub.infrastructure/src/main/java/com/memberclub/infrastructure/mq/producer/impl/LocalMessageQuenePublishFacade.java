@@ -4,13 +4,13 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.mq.impl;
+package com.memberclub.infrastructure.mq.producer.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.ApplicationContextUtils;
-import com.memberclub.infrastructure.mq.MQEventEnum;
+import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
 import org.apache.commons.collections.MapUtils;
@@ -34,7 +34,7 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
 
     private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-    private Map<MQEventEnum, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
+    private Map<MQTopicEnum, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
 
     @PostConstruct
     public void init() {
@@ -46,10 +46,10 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
         }
         if (MapUtils.isNotEmpty(consumers)) {
             for (Map.Entry<String, MessageQueueConsumerFacade> entry : consumers.entrySet()) {
-                Set<MQEventEnum> eventEnums = entry.getValue().register();
-                for (MQEventEnum mqEventEnum : eventEnums) {
-                    consumerMap.putIfAbsent(mqEventEnum, Lists.newArrayList());
-                    consumerMap.get(mqEventEnum).add(entry.getValue());
+                Set<MQTopicEnum> eventEnums = entry.getValue().register();
+                for (MQTopicEnum mqTopicEnum : eventEnums) {
+                    consumerMap.putIfAbsent(mqTopicEnum, Lists.newArrayList());
+                    consumerMap.get(mqTopicEnum).add(entry.getValue());
                 }
             }
         }
@@ -58,7 +58,7 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
 
     @Retryable()
     @Override
-    public void publish(MQEventEnum event, String message) {
+    public void publish(MQTopicEnum event, String message) {
         executorService.execute(() -> {
             if (consumerMap.containsKey(event)) {
                 for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event)) {

@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public interface MessageQueueConsumerFacade {
 
-    public Set<MQEventEnum> register();
+    public Set<MQTopicEnum> register();
 
-    public void consume(MQEventEnum event, String message);
+    public void consume(MQTopicEnum event, String message);
 }

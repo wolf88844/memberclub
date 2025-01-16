@@ -17,7 +17,7 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.infrastructure.mq.MQEventEnum;
+import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.sdk.event.trade.extension.TradeEventDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class TradeEventDomainService {
                 TradeEventDomainExtension.class).onPerformSuccessForSubOrder(performContext,
                 subOrderPerformContext, subOrder, event);
 
-        messageQuenePublishFacade.publish(MQEventEnum.TRADE_EVENT, value);
+        messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
     }
 
     public void onReversePerformSuccessForSubOrder(ReversePerformContext context,
@@ -55,7 +55,7 @@ public class TradeEventDomainService {
                 TradeEventDomainExtension.class).onReversePerformSuccessForSubOrder(context,
                 subOrderReversePerformContext, subOrder, event);
 
-        messageQuenePublishFacade.publish(MQEventEnum.TRADE_EVENT, value);
+        messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
     }
 
     public void onRefundSuccessForSubOrder(AfterSaleApplyContext context,
@@ -64,7 +64,7 @@ public class TradeEventDomainService {
         String value = extensionManager.getExtension(BizScene.of(subOrder.getBizType()),
                 TradeEventDomainExtension.class).onRefundSuccessForSubOrder(context, subOrder, event);
 
-        messageQuenePublishFacade.publish(MQEventEnum.TRADE_EVENT, value);
+        messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
     }
 
 

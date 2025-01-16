@@ -14,6 +14,12 @@ spring:
   h2:
     console:
       enabled: true
+  rabbitmq:
+    host: localhost
+    stream:
+      username: guest
+      password: guest
+
 eureka:
   client:
     enable: false
@@ -37,7 +43,7 @@ memberclub:
       enabled: false
     id: local
     retry: local
-    mq: local
+    mq: rabbitmq
   extension:
     bootcheck: true
 

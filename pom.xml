@@ -96,6 +96,11 @@
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${springversion}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${springversion}</version>
+            </dependency>
 
             <!--SpringBoot END-->
 
@@ -160,6 +165,7 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${org.mapstruct.version}</version>
             </dependency>
+
             <!--其他重要组件 End-->
 
 

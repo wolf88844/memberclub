@@ -9,22 +9,22 @@ package com.memberclub.infrastructure.mq;
 /**
  * @author yuhaiqiang
  */
-public enum MQEventEnum {
+public enum MQTopicEnum {
 
-    TRADE_EVENT(1, "交易事件"),
+    TRADE_EVENT(1, MQContants.TRADE_EVENT_TOPIC),
     ;
 
     private int code;
 
     private String name;
 
-    MQEventEnum(int code, String name) {
+    MQTopicEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static MQEventEnum findByCode(int code) throws IllegalArgumentException {
-        for (MQEventEnum item : MQEventEnum.values()) {
+    public static MQTopicEnum findByCode(int code) throws IllegalArgumentException {
+        for (MQTopicEnum item : MQTopicEnum.values()) {
             if (item.code == code) {
                 return item;
             }

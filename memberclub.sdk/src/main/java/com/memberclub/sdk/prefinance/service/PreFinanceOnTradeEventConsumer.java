@@ -16,7 +16,7 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.CommonConvertor;
-import com.memberclub.infrastructure.mq.MQEventEnum;
+import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
 import com.memberclub.sdk.prefinance.extension.PreFinanceHandleExtension;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
     private ExtensionManager extensionManager;
 
     @Override
-    public void consume(MQEventEnum eventType, String message) {
+    public void consume(MQTopicEnum eventType, String message) {
         LOG.info("收到 event:{}, message:{}", eventType, message);
         TradeEventDO event = buildEvent(message);
         extensionManager.getExtension(BizScene.of(event.getDetail().getBizType()),
@@ -60,7 +60,7 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
     }
 
     @Override
-    public Set<MQEventEnum> register() {
-        return Sets.newHashSet(MQEventEnum.TRADE_EVENT);
+    public Set<MQTopicEnum> register() {
+        return Sets.newHashSet(MQTopicEnum.TRADE_EVENT);
     }
 }
