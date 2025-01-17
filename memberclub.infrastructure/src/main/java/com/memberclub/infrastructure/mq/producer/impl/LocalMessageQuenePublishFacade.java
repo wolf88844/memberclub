@@ -15,6 +15,8 @@ import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
 import org.apache.commons.collections.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,9 @@ import java.util.concurrent.Executors;
 @ConditionalOnProperty(name = "memberclub.infrastructure.mq", havingValue = "local", matchIfMissing = false)
 @Service
 public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade {
+
+    public static final Logger LOG = LoggerFactory.getLogger(LocalMessageQuenePublishFacade.class);
+
 
     private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
@@ -60,6 +65,7 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
         executorService.execute(() -> {
             if (consumerMap.containsKey(event.toString())) {
                 for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event.toString())) {
+                    LOG.info("本地local 模式收到消息:{}", message);
                     messageQueueConsumerFacade.consume(message);
                 }
             }

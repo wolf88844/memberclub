@@ -1,13 +1,44 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;TRACE_LEVEL_SYSTEM_OUT=2;
-    username: test
-    password: test
+    ##url: jdbc:h2:tcp://localhost:9092/~/member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
+    url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
+    ## #TRACE_LEVEL_SYSTEM_OUT=2;
+    username: sa
+    password: dean
     hikari:
       driver-class-name: org.h2.Driver
   sql:
     init:
       schema-locations: classpath:sql/tables.sql
+
+  rabbitmq:
+    host: localhost
+    stream:
+      username: guest
+      password: guest
+  redis:
+    # 数据库
+    database: 0
+    # 主机
+    host: localhost
+    # 端口
+    port: 6379
+    # 密码
+    # password:
+    # 读超时
+    timeout: 5s
+    # 连接超时
+    connect-timeout: 5s
+    redisson:
+      config:
+        singleServerConfig:
+          password: null
+          address: "redis://127.0.0.1:6379"
+          database: 1
+        threads: 4
+        nettyThreads: 4
+        codec: "!<org.redisson.codec.FstCodec> {}"
+        transportMode: "NIO"
 
 eureka:
   client:
@@ -15,5 +46,24 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+# 禁用向 eureka 注册
+eureka.client.register-with-eureka: false
+eureka.client.fetch-registry: false
+
+
 logging:
   config: classpath:log/log4j2.xml
+
+## 测试模式
+memberclub:
+  infrastructure:
+    config: local
+    lock: local
+    feign:
+      enabled: false
+    id: redisson
+    retry: local
+    mq: rabbitmq
+  extension:
+    bootcheck: true
+

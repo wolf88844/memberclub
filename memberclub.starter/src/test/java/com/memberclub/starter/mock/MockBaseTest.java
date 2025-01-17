@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -29,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * author: 掘金五阳
  */
 
-@ActiveProfiles("ut")
+//@ActiveProfiles("ut")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppStarter.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class MockBaseTest {

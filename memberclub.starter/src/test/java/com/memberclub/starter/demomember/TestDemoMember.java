@@ -246,7 +246,6 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         //Thread.sleep(1000000);
     }
 
-
     @SneakyThrows
     @Test
     public void testDefaultMember() {

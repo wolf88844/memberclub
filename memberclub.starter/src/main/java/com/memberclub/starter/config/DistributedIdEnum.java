@@ -13,5 +13,5 @@ package com.memberclub.starter.config;
 public enum DistributedIdEnum {
 
     local,
-    redis,
+    redisson,
 }
