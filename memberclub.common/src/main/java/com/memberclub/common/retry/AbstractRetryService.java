@@ -6,10 +6,11 @@
  */
 package com.memberclub.common.retry;
 
-import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.JsonUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -19,10 +20,13 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractRetryService implements RetryService {
 
+    public static final Logger LOG = LoggerFactory.getLogger(AbstractRetryService.class);
+
+
     @Override
     public void consumeMessage(RetryMessage msg) {
         try {
-            CommonLog.info("开始消费重试消息 {}", msg);
+            LOG.info("开始消费重试消息 {}", msg);
             RetryLocalContext.setRetryTimes(msg.getRetryTimes());
             Object bean = ApplicationContextUtils.getContext().getBean(msg.getBeanName());
             Class<?> clazz = Class.forName(msg.getBeanClassName());
@@ -45,7 +49,7 @@ public abstract class AbstractRetryService implements RetryService {
             } catch (Exception e) {
             }
         } catch (Exception e) {
-            CommonLog.error("调用重试消息方法,重试组件异常:{}", msg, e);
+            LOG.error("调用重试消息方法,重试组件异常:{}", msg, e);
         } finally {
             RetryLocalContext.clear();
         }

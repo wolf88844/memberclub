@@ -37,7 +37,7 @@ memberclub:
     feign:
       enabled: false
     id: local
-    retry: local
+    retry: redisson
     mq: local
   extension:
     bootcheck: true

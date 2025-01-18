@@ -62,7 +62,7 @@ memberclub:
     feign:
       enabled: false
     id: redisson
-    retry: local
+    retry: redisson
     mq: rabbitmq
   extension:
     bootcheck: true
