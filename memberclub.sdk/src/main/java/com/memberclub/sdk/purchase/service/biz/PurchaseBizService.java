@@ -15,7 +15,7 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.exception.MemberException;
-import com.memberclub.sdk.purchase.extension.PurchaseSubmitExtension;
+import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class PurchaseBizService {
         PurchaseSubmitResponse response = new PurchaseSubmitResponse();
         try {
             extensionManager.getExtension(
-                    context.toDefaultBizScene(), PurchaseSubmitExtension.class)
+                    context.toDefaultBizScene(), PurchaseExtension.class)
                     .submit(context);
             context.monitor();
 

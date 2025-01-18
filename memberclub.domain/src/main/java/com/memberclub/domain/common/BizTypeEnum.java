@@ -12,7 +12,9 @@ package com.memberclub.domain.common;
 public enum BizTypeEnum {
 
     DEFAULT(0, "default_biz"),
-    DEMO_MEMBER(1, "demo_member");
+    DEMO_MEMBER(1, "demo_member"),
+    DEMO_COUPON_PACKAGE(2, "demo_coupon_package"),
+    ;
 
     private int code;
 

@@ -73,7 +73,11 @@ public class DefaultMemberSubOrderDomainExtension implements MemberSubOrderDomai
                                  SubOrderPerformContext subOrderPerformContext,
                                  MemberSubOrderDO memberSubOrderDO,
                                  LambdaUpdateWrapper<MemberSubOrder> wrapper) {
-        memberSubOrderDao.update(null, wrapper);
+        int cnt = memberSubOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onPerformSuccess 更新异常");
+        }
+        CommonLog.info("更新子单状态为履约完成 status:{}, cnt:{}", memberSubOrderDO.getPerformStatus(), cnt);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.domain.common.BizTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,8 @@ public class ExtensionBootChecker {
     public static final Logger LOG = LoggerFactory.getLogger(ExtensionBootChecker.class);
 
 
-    private List<BizTypeEnum> checkBizs = Lists.newArrayList(BizTypeEnum.DEMO_MEMBER);
+    private List<BizTypeEnum> checkBizs = Lists.newArrayList(BizTypeEnum.DEMO_MEMBER
+            /*, BizTypeEnum.DEMO_COUPON_PACKAGE*/);
 
     @Autowired
     private ExtensionManager extensionManager;
@@ -58,6 +60,7 @@ public class ExtensionBootChecker {
     @PostConstruct
     public void init() {
         Set<Class<?>> classes = scan("com.memberclub");
+        List<String> errorMessages = Lists.newArrayList();
         for (Class<?> clazz : classes) {
             if (!clazz.isInterface()) {
                 continue;
@@ -83,12 +86,17 @@ public class ExtensionBootChecker {
                         continue;
                     }
                     LOG.error("扫描到 Extension接口 {}, biz:{} 没有扩展点, 请关注", clazz.getSimpleName(), checkBiz);
-                    throw new RuntimeException(String.format("启动异常, 扫描到 Extension接口 %s, biz:%s 没有扩展点, 请关注",
+                    errorMessages.add(String.format("启动异常, 扫描到 Extension接口 %s, biz:%s 没有扩展点, 请关注",
                             clazz.getSimpleName(), checkBiz));
                 }
             }
         }
-
+        if (CollectionUtils.isNotEmpty(errorMessages)) {
+            for (String errorMessage : errorMessages) {
+                LOG.error(errorMessage);
+            }
+            throw new RuntimeException(String.format("缺少扩展点实现"));
+        }
     }
 
     public static List<Class<?>> scanPackage(String basePackage) {

@@ -30,9 +30,9 @@ import javax.annotation.PostConstruct;
  * author: 掘金五阳
  */
 @ExtensionProvider(desc = "默认售后预览扩展点", bizScenes = {
-        @Route(bizType = BizTypeEnum.DEFAULT, scenes = {SceneEnum.DEFAULT_SCENE})
+        @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.SCENE_AFTERSALE_MONTH_CARD})
 })
-public class DefaultAftersalePreviewExtension implements AftersalePreviewExtension {
+public class DemoMemberAftersalePreviewExtension implements AftersalePreviewExtension {
 
 
     private FlowChain<AftersalePreviewContext> previewChain = null;

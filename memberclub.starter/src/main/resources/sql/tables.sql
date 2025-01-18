@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS member_sub_order (
     sub_trade_id BIGINT(20)  NOT NULL COMMENT '子单交易 id',
     sku_id BIGINT(20)  NOT NULL COMMENT 'skuId',
     act_price_fen INT(11)  NULL COMMENT '实付金额',
-    origin_price_fen INT(11)  NOT NULL COMMENT '原价金额',
+    origin_price_fen INT(11)  NULL COMMENT '原价金额',
     sale_price_fen INT(11)  NOT NULL COMMENT '原价金额',
     buy_count INT(11)  NOT NULL COMMENT '购买数量',
     status INT(11)  NOT NULL COMMENT '主状态',

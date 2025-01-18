@@ -50,6 +50,7 @@ public class DefaultMemberOrderDomainExtension implements MemberOrderDomainExten
         if (cnt <= 0) {
             throw ResultCode.DATA_UPDATE_ERROR.newException("member_order 更新到履约成功异常");
         }
+        CommonLog.info("更新主单的履约状态为履约完成 status:{} cnt:{}", memberOrderDO.getPerformStatus(), cnt);
     }
 
 

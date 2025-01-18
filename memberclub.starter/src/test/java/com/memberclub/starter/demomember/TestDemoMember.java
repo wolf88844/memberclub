@@ -58,6 +58,7 @@ import com.memberclub.sdk.aftersale.service.AftersaleBizService;
 import com.memberclub.sdk.perform.service.PerformBizService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
@@ -116,7 +117,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Mockito.doCallRealMethod().when(couponGrantFacade).grant(Mockito.any());
 
 
-        Thread.sleep(1100);
+        Thread.sleep(1500);
 
         verifyData(cmd);
     }
@@ -572,7 +573,12 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         his.setOrderId("1001");
         his.setOrderSystemType(1);
         his.setBuyCount(1);
-        his.setTradeId("1_1001");
+        his.setSubTradeId(RandomUtils.nextLong());
+        his.setOriginPriceFen(2323);
+        his.setSalePriceFen(32343);
+        his.setActPriceFen(4343);
+        his.setTradeId(RandomStringUtils.random(12));
+
 
 
         his.setExtra("{}");
@@ -626,6 +632,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             item.setCtime(TimeUtil.now());
             item.setCycle(1);
             item.setPhase(1);
+            item.setItemToken(RandomStringUtils.random(10));
             item.setRightId(1);
             item.setRightType(1);
             item.setSkuId(1);
@@ -636,6 +643,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             item.setEtime(TimeUtil.now());
             item.setUserId(1);
             item.setUtime(TimeUtil.now());
+            item.setExtra("{}");
             items.add(item);
         }
 

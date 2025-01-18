@@ -12,7 +12,7 @@ import com.memberclub.common.flow.FlowChain;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
-import com.memberclub.sdk.purchase.extension.PurchaseSubmitExtension;
+import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct;
 @ExtensionProvider(desc = "DemoMember 购买提单扩展点", bizScenes = {
         @Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.HOMEPAGE_SUBMIT_SCENE})
 })
-public class DemoMemberPurchaseSubmitExtension implements PurchaseSubmitExtension {
+public class DemoMemberPurchaseExtension implements PurchaseExtension {
 
     private static FlowChain<PurchaseSubmitContext> flowChain = null;
 

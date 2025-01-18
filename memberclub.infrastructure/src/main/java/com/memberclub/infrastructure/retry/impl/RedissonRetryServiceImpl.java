@@ -9,6 +9,7 @@ package com.memberclub.infrastructure.retry.impl;
 import com.memberclub.common.retry.AbstractRetryService;
 import com.memberclub.common.retry.RetryMessage;
 import com.memberclub.common.util.TimeUtil;
+import org.redisson.RedissonShutdownException;
 import org.redisson.api.RBlockingDeque;
 import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
@@ -16,12 +17,11 @@ import org.redisson.codec.JsonJacksonCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 @ConditionalOnProperty(name = "memberclub.infrastructure.retry", havingValue = "redisson", matchIfMissing = false)
 @Service
-public class RedissonRetryServiceImpl extends AbstractRetryService implements ApplicationRunner {
+public class RedissonRetryServiceImpl extends AbstractRetryService {
 
     public static final Logger LOG = LoggerFactory.getLogger(RedissonRetryServiceImpl.class);
 
@@ -100,9 +100,8 @@ public class RedissonRetryServiceImpl extends AbstractRetryService implements Ap
         return redissonClient.getDelayedQueue(blockingDeque);
     }
 
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    @PostConstruct
+    public void run() throws Exception {
         final Thread thread = new Thread(() -> {
             final RBlockingDeque<RetryMessage> blockingDeque = getBlockingDeque(RETRY_DELAY_QUEUE);
             while (true) {
@@ -114,6 +113,9 @@ public class RedissonRetryServiceImpl extends AbstractRetryService implements Ap
                     }
                     LOG.info("DelayedTask task :[{}]", retryMessage);
                     executorService.submit(() -> consumeMessage(retryMessage));
+                } catch (RedissonShutdownException e) {
+                    LOG.warn("延迟任务终止轮训: DelayedTaskListener#delayedTaskHandle error delayedQueueName:[{}]", RETRY_DELAY_QUEUE);
+                    break;
                 } catch (Exception e) {
                     LOG.error("DelayedTaskListener#delayedTaskHandle error delayedQueueName:[{}]",
                             RETRY_DELAY_QUEUE, e);
