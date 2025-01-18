@@ -1,4 +1,6 @@
 spring:
+
+  #### 数据库 配置
   datasource:
     ##url: jdbc:h2:tcp://localhost:9092/~/member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
     url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
@@ -10,12 +12,13 @@ spring:
   sql:
     init:
       schema-locations: classpath:sql/tables.sql
-
+  #### RabbitMQ 配置
   rabbitmq:
     host: localhost
     stream:
       username: guest
       password: guest
+  #### Redis配置
   redis:
     # 数据库
     database: 0
@@ -24,7 +27,7 @@ spring:
     # 端口
     port: 6379
     # 密码
-    # password:
+    #password:
     # 读超时
     timeout: 5s
     # 连接超时
