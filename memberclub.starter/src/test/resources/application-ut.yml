@@ -33,11 +33,11 @@ logging:
 memberclub:
   infrastructure:
     config: local
-    lock: redisson
+    lock: local
     feign:
       enabled: false
     id: local
-    retry: redisson
+    retry: local
     mq: local
   extension:
     bootcheck: true
