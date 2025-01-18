@@ -26,8 +26,8 @@ public abstract class AbstractRetryService implements RetryService {
     @Override
     public void consumeMessage(RetryMessage msg) {
         try {
-            LOG.info("开始消费重试消息 {}", msg);
-            RetryLocalContext.setRetryTimes(msg.getRetryTimes());
+            LOG.info("开始消费重试消息 currentTimes:{}, msg:{}", msg.getRetryTimes(), msg);
+            RetryLocalContext.setRetryTimes(msg.getBeanName(), msg.getMethodName(), msg.getRetryTimes());
             Object bean = ApplicationContextUtils.getContext().getBean(msg.getBeanName());
             Class<?> clazz = Class.forName(msg.getBeanClassName());
 

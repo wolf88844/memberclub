@@ -54,12 +54,16 @@ public class RetryableAspect {
             } catch (Exception e) {
                 Object param = joinPoint.getArgs()[0];
 
-                int retryTimes = RetryLocalContext.getRetryTimes();
+                String beanName = toLowerCaseFirst(joinPoint.getSignature().getDeclaringType().getSimpleName());
+                String methoName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
+
+                int retryTimes = RetryLocalContext.getRetryTimes(beanName, methoName);
                 retryTimes++;
 
                 if (retryTimes > annotation.maxTimes()) {
                     // TODO: 2024/12/31 fallback逻辑
-                    CommonLog.error("超过最大重试次数 methodName:{} ,params:{}", method.getName(), args);
+                    CommonLog.error("超过最大重试次数 maxTimes:{}, methodName:{} ,params:{}",
+                            annotation.maxTimes(), method.getName(), args);
                     throw e;
                 }
 
@@ -75,9 +79,9 @@ public class RetryableAspect {
                 delayTime = delayTime > annotation.maxDelaySeconds() ? annotation.maxDelaySeconds() : delayTime;
 
                 RetryMessage message = new RetryMessage();
-                message.setBeanName(toLowerCaseFirst(joinPoint.getSignature().getDeclaringType().getSimpleName()));
+                message.setBeanName(beanName);
                 message.setBeanClassName(joinPoint.getSignature().getDeclaringType().getName());
-                message.setMethodName(((MethodSignature) joinPoint.getSignature()).getMethod().getName());
+                message.setMethodName(methoName);
 
                 List<String> argsList = Lists.newArrayList(args).stream().map(JsonUtils::toJson).collect(Collectors.toList());
 

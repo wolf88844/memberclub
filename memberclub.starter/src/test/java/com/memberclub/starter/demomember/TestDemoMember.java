@@ -109,8 +109,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             CommonLog.error("首次调用出现异常", e);
         }
 
-        //Mockito.doCallRealMethod().when(couponGrantFacade).grant(Mockito.any());
-        Thread.sleep(15000000);
+        Mockito.doCallRealMethod().when(couponGrantFacade).grant(Mockito.any());
+        Thread.sleep(1500);
         verifyData(cmd);
     }
 

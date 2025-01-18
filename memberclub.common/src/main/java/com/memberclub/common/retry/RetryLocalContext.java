@@ -6,6 +6,11 @@
  */
 package com.memberclub.common.retry;
 
+import com.google.common.collect.Maps;
+import lombok.Getter;
+
+import java.util.Map;
+
 /**
  * author: 掘金五阳
  */
@@ -13,7 +18,11 @@ public class RetryLocalContext {
 
     public static final ThreadLocal<RetryLocalContext> LOCAL_CONTEXT = new ThreadLocal<>();
 
-    public int retryTimes = 0;
+    /**
+     * 使用 Map 是为了避免多个Retryable 注解重叠时,分别记录每个方法的重试次数.
+     */
+    @Getter
+    public Map<String, Integer> method2RetryTimes = Maps.newHashMapWithExpectedSize(2);
 
 
     public static ThreadLocal<RetryLocalContext> getLocalContext() {
@@ -27,11 +36,13 @@ public class RetryLocalContext {
         LOCAL_CONTEXT.remove();
     }
 
-    public static int getRetryTimes() {
-        return getLocalContext().get().retryTimes;
+    public static int getRetryTimes(String beanName, String method) {
+        return getLocalContext().get().getMethod2RetryTimes()
+                .getOrDefault(String.format("%s.%s", beanName, method), 0);
     }
 
-    public static void setRetryTimes(int retryTimes) {
-        getLocalContext().get().retryTimes = retryTimes;
+    public static void setRetryTimes(String beanName, String method, int retryTimes) {
+        getLocalContext().get().getMethod2RetryTimes()
+                .put(String.format("%s.%s", beanName, method), retryTimes);
     }
 }
