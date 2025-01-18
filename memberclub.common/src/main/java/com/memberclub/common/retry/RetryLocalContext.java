@@ -25,6 +25,9 @@ public class RetryLocalContext {
     public Map<String, Integer> method2RetryTimes = Maps.newHashMapWithExpectedSize(2);
 
 
+    public int retryTimes;
+
+
     public static ThreadLocal<RetryLocalContext> getLocalContext() {
         if (LOCAL_CONTEXT.get() == null) {
             LOCAL_CONTEXT.set(new RetryLocalContext());
@@ -39,10 +42,12 @@ public class RetryLocalContext {
     public static int getRetryTimes(String beanName, String method) {
         return getLocalContext().get().getMethod2RetryTimes()
                 .getOrDefault(String.format("%s.%s", beanName, method), 0);
+
+        //return getLocalContext().get().retryTimes;
     }
 
     public static void setRetryTimes(String beanName, String method, int retryTimes) {
-        getLocalContext().get().getMethod2RetryTimes()
-                .put(String.format("%s.%s", beanName, method), retryTimes);
+        getLocalContext().get().getMethod2RetryTimes().put(String.format("%s.%s", beanName, method), retryTimes);
+        //getLocalContext().get().retryTimes = retryTimes;
     }
 }

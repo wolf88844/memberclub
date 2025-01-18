@@ -45,6 +45,7 @@ import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetStatusEnum;
+import com.memberclub.infrastructure.lock.impl.LocalDistributedLock;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
@@ -85,6 +86,9 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     @Autowired
     private OnceTaskDao onceTaskDao;
 
+    //@SpyBean(name = "localDistributedLock")
+    private LocalDistributedLock localDistributedLock;
+
     @SneakyThrows
     @Test
     public void testDefaultMemberAndRetry() {
@@ -110,8 +114,47 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         }
 
         Mockito.doCallRealMethod().when(couponGrantFacade).grant(Mockito.any());
-        Thread.sleep(1500);
+
+
+        Thread.sleep(1100);
+
         verifyData(cmd);
+    }
+
+    /**
+     * 重复Retryable注解
+     */
+    @SneakyThrows
+    //@Test
+    public void testDefaultMemberAndRetryRepeat() {
+        PurchaseSubmitResponse response = submit(doubleRightsSku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
+
+        Mockito.reset(couponGrantFacade);
+
+        Mockito.doThrow(new RuntimeException("mock error"))
+                .when(couponGrantFacade).grant(Mockito.any());
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        try {
+            PerformResp resp = performBizService.perform(cmd);
+            Assert.assertTrue(resp.isSuccess());
+            verifyData(cmd);
+        } catch (Exception e) {
+            CommonLog.error("首次调用出现异常", e);
+        }
+        Mockito.doThrow(new RuntimeException()).when(localDistributedLock).unlock(Mockito.anyString(), Mockito.anyLong());
+
+        Mockito.doCallRealMethod().when(couponGrantFacade).grant(Mockito.any());
+
+
+        Thread.sleep(1500);
+
+        Mockito.reset(localDistributedLock);
     }
 
 

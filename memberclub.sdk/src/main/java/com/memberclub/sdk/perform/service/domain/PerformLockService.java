@@ -8,6 +8,7 @@ package com.memberclub.sdk.perform.service.domain;
 
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.retry.Retryable;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
@@ -68,6 +69,7 @@ public class PerformLockService {
         return key;
     }
 
+    @Retryable(initialDelaySeconds = 1, maxDelaySeconds = 5, maxTimes = 4)
     public void unlock(BizTypeEnum bizType, long userId, String tradeId, long lockValue) {
         BizConfigTable table = configService.findConfigTable(BizScene.of(bizType));
         String key = buildKey(bizType, userId, tradeId, table);
