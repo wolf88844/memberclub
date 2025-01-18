@@ -42,3 +42,14 @@ memberclub:
   extension:
     bootcheck: true
 
+
+apollo:
+  meta: http://localhost:8080
+  bootstrap:
+    enabled: true
+
+
+### 业务自定义配置项 Start
+junit_test_poll_config: false
+
+### 业务自定义配置项 END

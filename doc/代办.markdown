@@ -24,3 +24,13 @@ password: dean
     onReversePerformSuccess
     onStartRefund
     onRefundSuccess
+    
+    
+## 安装 mysql
+https://www.cnblogs.com/liyihua/p/12306159.html
+
+## 修改 mysql 密码
+https://juejin.cn/post/7179863212928696379
+
+## 安装 Apollo
+https://developer.aliyun.com/article/1369063

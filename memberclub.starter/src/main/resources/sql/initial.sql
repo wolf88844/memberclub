@@ -1,6 +1,9 @@
--- 用于单测使用的 H2 数据库初始化
 
-SET MODE MYSQL;
+-- 用于在 Mysql 初始化数据库
+
+CREATE DATABASE IF NOT EXISTS member_db DEFAULT CHARACTER SET = utf8mb4;
+
+USE member_db;
 
 
 CREATE TABLE IF NOT EXISTS member_order (
@@ -119,6 +122,5 @@ CREATE TABLE IF NOT EXISTS aftersale_order (
     utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
     ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (id),
-    --UNIQUE KEY uniq_aftersale_order (user_id, preview_token),
     KEY tradeid_key (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;

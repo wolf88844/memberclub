@@ -1,11 +1,12 @@
 /**
- * @(#)EmptyDynamicConfig.java, 十二月 26, 2024.
+ * @(#)ApolloDynamicConfig.java, 一月 18, 2025.
  * <p>
- * Copyright 2024 fenbi.com. All rights reserved.
+ * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.infrastructure.dynamic_config.impl;
 
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,9 +16,10 @@ import org.springframework.stereotype.Service;
 /**
  * author: 掘金五阳
  */
-@ConditionalOnProperty(name = "memberclub.infrastructure.config", havingValue = "local", matchIfMissing = false)
+@EnableApolloConfig
+@ConditionalOnProperty(name = "memberclub.infrastructure.config", havingValue = "apollo", matchIfMissing = false)
 @Service
-public class LocalDynamicConfig implements DynamicConfig {
+public class ApolloDynamicConfig implements DynamicConfig {
 
     @Autowired
     private Environment environment;

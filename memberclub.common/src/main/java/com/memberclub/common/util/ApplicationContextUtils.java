@@ -46,4 +46,16 @@ public class ApplicationContextUtils implements ApplicationContextAware {
         }
         return false;
     }
+
+    public static boolean isUnitTest() {
+        String[] profiles = ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles();
+        if (profiles != null) {
+            for (String profile : profiles) {
+                if ("ut".equals(profile)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

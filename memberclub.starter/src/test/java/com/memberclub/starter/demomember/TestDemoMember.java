@@ -8,6 +8,7 @@ package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableMap;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.EncrptUtils;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.PeriodUtils;
@@ -45,6 +46,7 @@ import com.memberclub.domain.entity.MemberSubOrder;
 import com.memberclub.domain.entity.OnceTask;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.domain.facade.AssetStatusEnum;
+import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 import com.memberclub.infrastructure.lock.impl.LocalDistributedLock;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
@@ -56,6 +58,7 @@ import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
 import com.memberclub.sdk.aftersale.service.AftersaleBizService;
 import com.memberclub.sdk.perform.service.PerformBizService;
+import com.memberclub.starter.JustUnitTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -64,6 +67,8 @@ import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -89,6 +94,26 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
     //@SpyBean(name = "localDistributedLock")
     private LocalDistributedLock localDistributedLock;
+
+    @Autowired
+    private DynamicConfig dynamicConfig;
+
+    public static final Logger LOG = LoggerFactory.getLogger(TestDemoMember.class);
+
+
+    @Test
+    public void testApollo() throws Exception {
+        //while (true) {
+        LOG.info("单测用例轮训获取参数配置");
+        Thread.sleep(1000);
+        if (!dynamicConfig.getBoolean("junit_test_poll_config", true)) {
+            LOG.info("退出轮训");
+        } else {
+            Assert.fail("配置错误");
+        }
+        //}
+    }
+
 
     @SneakyThrows
     @Test
@@ -556,9 +581,16 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         return memberOrder;
     }
 
+
     @Test
+    @JustUnitTest
     public void test() {
-        System.out.println("启动 ok");
+        if (!ApplicationContextUtils.isUnitTest()) {
+            CommonLog.info("当前 Profile:{} 不执行本单测",
+                    JsonUtils.toJson(ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles()));
+            return;
+        }
+
         memberSubOrderDao.selectByUserId(1000);
         MemberSubOrder his = new MemberSubOrder();
         his.setBizType(1);
@@ -578,7 +610,6 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         his.setSalePriceFen(32343);
         his.setActPriceFen(4343);
         his.setTradeId(RandomStringUtils.random(12));
-
 
 
         his.setExtra("{}");
@@ -621,6 +652,11 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
     @Test
     public void testItem() {
+        if (!ApplicationContextUtils.isUnitTest()) {
+            CommonLog.info("当前 Profile:{} 不执行本单测",
+                    JsonUtils.toJson(ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles()));
+            return;
+        }
         int cnt = 3;
         List<MemberPerformItem> items = Lists.newArrayList();
         for (int i = cnt; i > 0; i--) {
