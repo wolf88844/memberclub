@@ -73,7 +73,7 @@ public class PerformContext {
     /********************* Start 重试上下文***************/
     private int retryTimes;
 
-    private String lockValue;
+    private Long lockValue;
 
     private long baseTime;
 

@@ -13,5 +13,5 @@ package com.memberclub.starter.config;
 public enum DistributedLockEnum {
 
     local,
-    redis,
+    redisson,
 }

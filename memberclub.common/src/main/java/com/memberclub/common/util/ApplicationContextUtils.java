@@ -34,4 +34,16 @@ public class ApplicationContextUtils implements ApplicationContextAware {
         CommonLog.warn("ApplicationContextUtils 可正常获取 applcationContext");
         context = applicationContext;
     }
+
+    public static boolean isTest() {
+        String[] profiles = ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles();
+        if (profiles != null) {
+            for (String profile : profiles) {
+                if (!"online".equals(profile)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

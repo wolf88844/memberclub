@@ -11,7 +11,7 @@ package com.memberclub.infrastructure.lock;
  */
 public interface DistributeLock {
 
-    boolean lock(String key, String value, int timeSeconds);
+    boolean lock(String key, Long value, int timeSeconds);
 
-    boolean unlock(String key, String value);
+    void unlock(String key, Long value);
 }

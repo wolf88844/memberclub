@@ -23,7 +23,7 @@ public class PeriodPerformResourceLockFlow extends FlowNode<PeriodPerformContext
 
     @Override
     public void process(PeriodPerformContext context) {
-        String lockValue = performLockService.lock(context.getBizType(),
+        long lockValue = performLockService.lock(context.getBizType(),
                 null,
                 context.getUserId(),
                 context.getTradeId());

@@ -36,12 +36,12 @@ public class PerformLockService {
     @Autowired
     private DistributeLock distributeLock;
 
-    public String lock(BizTypeEnum biztype, String lockValue, long userId, String tradeId) {
+    public long lock(BizTypeEnum biztype, Long lockValue, long userId, String tradeId) {
         BizConfigTable table = configService.findConfigTable(BizScene.of(biztype));
 
         String key = buildKey(biztype, userId, tradeId, table);
         if (lockValue == null) {
-            lockValue = String.valueOf(TimeUtil.now());
+            lockValue = TimeUtil.now();
         }
 
         boolean locked = distributeLock.lock(key, lockValue,
@@ -68,18 +68,18 @@ public class PerformLockService {
         return key;
     }
 
-    public void unlock(BizTypeEnum bizType, long userId, String tradeId, String lockValue) {
+    public void unlock(BizTypeEnum bizType, long userId, String tradeId, long lockValue) {
         BizConfigTable table = configService.findConfigTable(BizScene.of(bizType));
         String key = buildKey(bizType, userId, tradeId, table);
 
         //内部重试解锁,务必确保解锁成功
-        boolean succ = distributeLock.unlock(key, lockValue);
-        CommonLog.info("尝试解锁完成 key:{}, value:{} ,succ:{}", key, lockValue, succ);
+        distributeLock.unlock(key, lockValue);
+        CommonLog.info("尝试解锁完成 key:{}, value:{}", key, lockValue);
 
         Monitor.PERFORM_EXECUTE.counter(bizType, "unlock", "true");
     }
 
-    public void rollbackLock(BizTypeEnum bizType, long userId, String tradeId, String lockValue, int retryTimes) {
+    public void rollbackLock(BizTypeEnum bizType, long userId, String tradeId, long lockValue, int retryTimes) {
         BizConfigTable table = configService.findConfigTable(BizScene.of(bizType));
         String key = buildKey(bizType, userId, tradeId, table);
         CommonLog.error("回滚阶段尝试解锁 key:{}, value:{}", key, lockValue);

@@ -37,7 +37,7 @@ public class PerformCmd implements RetryableContext {
 
     private long baseTime;
 
-    private String lockValue;
+    private Long lockValue;
 
     /*********重试相关***********/
 

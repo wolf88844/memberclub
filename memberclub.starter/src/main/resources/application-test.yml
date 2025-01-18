@@ -58,7 +58,7 @@ logging:
 memberclub:
   infrastructure:
     config: local
-    lock: local
+    lock: redisson
     feign:
       enabled: false
     id: redisson

@@ -49,7 +49,7 @@ memberclub:
   infrastructure:
     config: apollo
     id: redisson
-    lock: redis
+    lock: redisson
     retry: rabbitmq
     mq: rabbitmq
   extension:

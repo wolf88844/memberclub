@@ -23,7 +23,7 @@ public class MemberResourcesLockFlow extends FlowNode<PerformContext> {
 
     @Override
     public void process(PerformContext context) {
-        String lockValue = performLockService.lock(context.getBizType(),
+        Long lockValue = performLockService.lock(context.getBizType(),
                 context.getLockValue(),
                 context.getUserId(),
                 context.getTradeId());

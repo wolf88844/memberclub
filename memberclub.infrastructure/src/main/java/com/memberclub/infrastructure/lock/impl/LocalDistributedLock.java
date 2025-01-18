@@ -20,17 +20,17 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class LocalDistributedLock implements DistributeLock {
 
-    private ConcurrentMap<String, String> lockMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<String, Long> lockMap = new ConcurrentHashMap<>();
 
     @Override
-    public boolean lock(String key, String value, int timeSeconds) {
-        String oldValue = lockMap.putIfAbsent(key, value);
+    public boolean lock(String key, Long value, int timeSeconds) {
+        Long oldValue = lockMap.putIfAbsent(key, value);
 
         return oldValue == null;
     }
 
     @Override
-    public boolean unlock(String key, String value) {
-        return lockMap.remove(key, value);
+    public void unlock(String key, Long value) {
+        lockMap.remove(key, value);
     }
 }
