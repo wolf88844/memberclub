@@ -27,10 +27,6 @@ public class PerformCmd implements RetryableContext {
 
     private String tradeId;
 
-    private Integer actPriceFen;
-
-    private Integer originPriceFen;
-
     /*********重试相关***********/
 
     private int retryTimes;

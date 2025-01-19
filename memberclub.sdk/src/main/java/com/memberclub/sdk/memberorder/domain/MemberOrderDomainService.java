@@ -23,8 +23,8 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
-import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
 import com.memberclub.sdk.memberorder.MemberOrderDataObjectBuildFactory;
+import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,6 +152,9 @@ public class MemberOrderDomainService {
 
     public MemberOrderDO getMemberOrderDO(long userId, String tradeId) {
         MemberOrder order = memberOrderDao.selectByTradeId(userId, tradeId);
+        if (order == null) {
+            return null;
+        }
 
         List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(userId, tradeId);
 

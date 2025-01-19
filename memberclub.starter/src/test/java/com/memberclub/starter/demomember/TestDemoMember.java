@@ -34,8 +34,8 @@ import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
@@ -520,10 +520,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     private PerformCmd buildCmd(MemberOrderDO memberOrder) {
         PerformCmd cmd = new PerformCmd();
         cmd.setOrderId(memberOrder.getOrderInfo().getOrderId());
-        cmd.setActPriceFen(memberOrder.getActPriceFen());
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
         cmd.setOrderSystemType(OrderSystemTypeEnum.COMMON_ORDER);
-        cmd.setOriginPriceFen(memberOrder.getOriginPriceFen());
         cmd.setUserId(memberOrder.getUserId());
         cmd.setTradeId(memberOrder.getTradeId());
         return cmd;
