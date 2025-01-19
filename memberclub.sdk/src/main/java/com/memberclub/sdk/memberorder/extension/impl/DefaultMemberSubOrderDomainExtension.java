@@ -19,9 +19,9 @@ import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.memberorder.extension.MemberSubOrderDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 

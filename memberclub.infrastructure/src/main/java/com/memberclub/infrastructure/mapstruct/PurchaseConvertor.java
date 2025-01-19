@@ -8,14 +8,14 @@ package com.memberclub.infrastructure.mapstruct;
 
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
+import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
-import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,7 +32,7 @@ public interface PurchaseConvertor {
 
     public SubOrderViewInfo toSubOrderViewInfo(SkuViewInfo viewInfo);
 
-    public SubOrderSettleInfo toSubOrderSettleInfo(SkuSettleInfo settleInfo);
+    public SubOrderFinanceInfo toSubOrderSettleInfo(SkuFinanceInfo settleInfo);
 
     public SubOrderSaleInfo toSubOrderSaleInfo(SkuSaleInfo saleInfo);
 

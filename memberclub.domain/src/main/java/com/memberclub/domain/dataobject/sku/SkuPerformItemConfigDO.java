@@ -6,9 +6,9 @@
  */
 package com.memberclub.domain.dataobject.sku;
 
+import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
-import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import lombok.Data;
 
@@ -36,7 +36,7 @@ public class SkuPerformItemConfigDO {
 
     private RightGrantInfo grantInfo = new RightGrantInfo();
 
-    private RightSettleInfo settleInfo = new RightSettleInfo();
+    private RightFinanceInfo settleInfo = new RightFinanceInfo();
 
     private RightViewInfo viewInfo = new RightViewInfo();
 

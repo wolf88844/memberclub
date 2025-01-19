@@ -9,7 +9,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import org.junit.Test;

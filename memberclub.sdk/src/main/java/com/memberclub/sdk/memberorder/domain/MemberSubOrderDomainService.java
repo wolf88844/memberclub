@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.memberorder.domain;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
@@ -20,8 +21,8 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberSubOrder;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.event.trade.service.domain.TradeEventDomainService;
 import com.memberclub.sdk.memberorder.extension.MemberSubOrderDomainExtension;
 import com.memberclub.sdk.util.TransactionHelper;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class MemberSubOrderDomainService {
 
@@ -171,7 +173,7 @@ public class MemberSubOrderDomainService {
 
         extensionManager.getExtension(BizScene.of(subOrder.getBizType()), MemberSubOrderDomainExtension.class)
                 .onRefundSuccess(context, subOrder, subOrderWrapper);
-        
+
         TransactionHelper.afterCommitExecute(() -> {
             tradeEventDomainService.onRefundSuccessForSubOrder(context, subOrder);
         });

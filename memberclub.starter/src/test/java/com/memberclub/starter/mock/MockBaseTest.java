@@ -6,8 +6,8 @@
  */
 package com.memberclub.starter.mock;
 
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.starter.AppStarter;
 import com.memberclub.starter.impl.MockAssetsFacadeSPI;
 import com.memberclub.starter.impl.MockCommonOrderFacadeSPI;

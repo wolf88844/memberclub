@@ -13,7 +13,7 @@ import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
 
 /**
  * author: 掘金五阳

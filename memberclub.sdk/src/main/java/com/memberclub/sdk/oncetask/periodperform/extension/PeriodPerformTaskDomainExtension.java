@@ -12,7 +12,7 @@ import com.memberclub.common.extension.ExtensionConfig;
 import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
-import com.memberclub.domain.entity.OnceTask;
+import com.memberclub.domain.entity.trade.OnceTask;
 
 /**
  * author: 掘金五阳

@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.perform.service.domain;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
@@ -21,9 +22,9 @@ import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberPerformItemDao;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemDomainExtension;
 import org.apache.commons.collections.CollectionUtils;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class MemberPerformItemDomainService {
 

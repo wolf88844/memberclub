@@ -18,9 +18,9 @@ import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberPerformItemDao;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -13,8 +13,8 @@ import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
-import com.memberclub.domain.entity.OnceTask;
-import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
+import com.memberclub.domain.entity.trade.OnceTask;
+import com.memberclub.infrastructure.mybatis.mappers.trade.OnceTaskDao;
 import com.memberclub.sdk.oncetask.periodperform.extension.PeriodPerformTaskDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -27,13 +27,13 @@ import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
 import lombok.SneakyThrows;
 import org.mapstruct.Named;
 
@@ -127,7 +127,7 @@ public class PerformCustomConvertor {
     }
 
     @Named("toSettleInfoString")
-    public String toSettleInfoString(PerformItemSettleInfo settleInfo) {
+    public String toSettleInfoString(PerformItemFinanceInfo settleInfo) {
         return JsonUtils.toJson(settleInfo);
     }
 

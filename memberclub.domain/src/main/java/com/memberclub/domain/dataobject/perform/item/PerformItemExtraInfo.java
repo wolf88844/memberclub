@@ -18,7 +18,7 @@ public class PerformItemExtraInfo {
 
     private PerformItemViewInfo viewInfo = new PerformItemViewInfo();
 
-    private PerformItemSettleInfo settleInfo = new PerformItemSettleInfo();
+    private PerformItemFinanceInfo settleInfo = new PerformItemFinanceInfo();
 
     private PerformItemSaleInfo saleInfo = new PerformItemSaleInfo();
 

@@ -7,7 +7,7 @@
 package com.memberclub.sdk.sku.service;
 
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 
 /**
  * author: 掘金五阳

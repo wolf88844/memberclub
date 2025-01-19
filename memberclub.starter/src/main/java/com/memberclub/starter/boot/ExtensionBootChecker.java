@@ -57,8 +57,13 @@ public class ExtensionBootChecker {
     @Autowired
     private ExtensionManager extensionManager;
 
+    private static volatile boolean run = false;
+
     @PostConstruct
     public void init() {
+        if (!run) {
+            run = true;
+        }
         Set<Class<?>> classes = scan("com.memberclub");
         List<String> errorMessages = Lists.newArrayList();
         for (Class<?> clazz : classes) {

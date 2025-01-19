@@ -12,7 +12,7 @@ import com.memberclub.common.extension.ExtensionConfig;
 import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
-import com.memberclub.domain.entity.AftersaleOrder;
+import com.memberclub.domain.entity.trade.AftersaleOrder;
 
 /**
  * author: 掘金五阳

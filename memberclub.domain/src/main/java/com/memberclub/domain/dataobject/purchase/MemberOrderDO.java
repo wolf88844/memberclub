@@ -19,7 +19,7 @@ import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderSaleInfo;
-import com.memberclub.domain.dataobject.order.MemberOrderSettleInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderFinanceInfo;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.exception.ResultCode;
 import lombok.Data;
@@ -44,7 +44,7 @@ public class MemberOrderDO {
 
     private CommonUserInfo userInfo;
 
-    private MemberOrderSettleInfo settleInfo;
+    private MemberOrderFinanceInfo settleInfo;
 
     private MemberOrderSaleInfo saleInfo;
 

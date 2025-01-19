@@ -17,15 +17,15 @@ import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
-import com.memberclub.domain.dataobject.sku.SkuSettleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
@@ -131,11 +131,11 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
         skuInfoDO.setSaleInfo(skuSaleInfo);
 
-        SkuSettleInfo settleInfo = new SkuSettleInfo();
+        SkuFinanceInfo settleInfo = new SkuFinanceInfo();
         settleInfo.setContractorId("438098434");
         settleInfo.setSettlePriceFen(300);
 
-        skuInfoDO.setSettleInfo(settleInfo);
+        skuInfoDO.setFinanceInfo(settleInfo);
 
         SkuViewInfo viewInfo = new SkuViewInfo();
         viewInfo.setDisplayDesc("大额红包");

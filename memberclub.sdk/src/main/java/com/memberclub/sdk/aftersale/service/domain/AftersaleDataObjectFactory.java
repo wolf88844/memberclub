@@ -13,7 +13,7 @@ import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
-import com.memberclub.domain.entity.AftersaleOrder;
+import com.memberclub.domain.entity.trade.AftersaleOrder;
 import org.springframework.stereotype.Service;
 
 /**

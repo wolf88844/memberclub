@@ -11,21 +11,21 @@ import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemSettleInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
+import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightSaleInfo;
-import com.memberclub.domain.dataobject.sku.rights.RightSettleInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
-import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.domain.entity.OnceTask;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
+import com.memberclub.domain.entity.trade.OnceTask;
 import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -111,7 +111,7 @@ public interface PerformConvertor {
 
     public PerformItemViewInfo toViewInfo(RightViewInfo viewInfo);
 
-    public PerformItemSettleInfo toSettleInfo(RightSettleInfo settleInfo);
+    public PerformItemFinanceInfo toSettleInfo(RightFinanceInfo settleInfo);
 
     public PerformItemSaleInfo toSaleInfo(RightSaleInfo saleInfo);
 

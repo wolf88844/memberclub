@@ -8,7 +8,7 @@ package com.memberclub.starter.impl;
 
 import com.google.common.collect.Maps;
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.sdk.sku.service.SkuBizService;
 import org.springframework.stereotype.Service;
 

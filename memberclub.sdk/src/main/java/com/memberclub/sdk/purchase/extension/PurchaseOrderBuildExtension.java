@@ -11,7 +11,7 @@ import com.memberclub.common.extension.ExtensionConfig;
 import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 
 /**

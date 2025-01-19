@@ -18,7 +18,7 @@ public class SubOrderExtraInfo {
 
     private SubOrderSaleInfo saleInfo = new SubOrderSaleInfo();
 
-    private SubOrderSettleInfo settleInfo = new SubOrderSettleInfo();
+    private SubOrderFinanceInfo settleInfo = new SubOrderFinanceInfo();
 
     private SubOrderViewInfo viewInfo = new SubOrderViewInfo();
 

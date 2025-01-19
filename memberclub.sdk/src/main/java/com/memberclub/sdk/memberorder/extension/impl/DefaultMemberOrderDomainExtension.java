@@ -15,9 +15,9 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.exception.ResultCode;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 

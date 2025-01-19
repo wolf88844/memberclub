@@ -12,7 +12,7 @@ import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
 
 import java.util.List;
 

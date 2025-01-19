@@ -13,7 +13,7 @@ import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.sdk.purchase.extension.PurchaseOrderBuildExtension;
 

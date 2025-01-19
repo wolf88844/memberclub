@@ -15,7 +15,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.entity.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
 import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
 import com.memberclub.sdk.perform.extension.build.PerformItemCalculateExtension;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemExtension;

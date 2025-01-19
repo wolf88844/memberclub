@@ -34,3 +34,6 @@ https://juejin.cn/post/7179863212928696379
 
 ## 安装 Apollo
 https://developer.aliyun.com/article/1369063
+
+## mybatis-plus整合多数据源
+https://juejin.cn/post/7316202589604003867

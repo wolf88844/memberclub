@@ -16,12 +16,12 @@ import com.memberclub.domain.context.purchase.common.RenewTypeEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderSaleInfo;
-import com.memberclub.domain.dataobject.order.MemberOrderSettleInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderFinanceInfo;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSettleInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.purchase.OrderInfoDO;
@@ -76,7 +76,7 @@ public class MemberOrderBuildFactory {
         order.setUserInfo(context.getUserInfo());
         order.setStatus(MemberOrderStatusEnum.INIT);
         order.setPerformStatus(com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.INIT);
-        order.setSettleInfo(new MemberOrderSettleInfo());
+        order.setSettleInfo(new MemberOrderFinanceInfo());
         order.setSaleInfo(new MemberOrderSaleInfo());
         order.getSaleInfo().setRenewType(RenewTypeEnum.NONE);
         order.setExtra(new MemberOrderExtraInfo());
@@ -102,7 +102,7 @@ public class MemberOrderBuildFactory {
             subOrder.setUtime(TimeUtil.now());
             SubOrderViewInfo viewInfo = PurchaseConvertor.INSTANCE.toSubOrderViewInfo(skuInfo.getViewInfo());
 
-            SubOrderSettleInfo settleInfo = PurchaseConvertor.INSTANCE.toSubOrderSettleInfo(skuInfo.getSettleInfo());
+            SubOrderFinanceInfo settleInfo = PurchaseConvertor.INSTANCE.toSubOrderSettleInfo(skuInfo.getFinanceInfo());
 
             SubOrderSaleInfo saleInfo = PurchaseConvertor.INSTANCE.toSubOrderSaleInfo(skuInfo.getSaleInfo());
 

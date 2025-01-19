@@ -175,6 +175,17 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${org.mapstruct.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.2.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>3.4.1</version>
+            </dependency>
 
             <!--其他重要组件 End-->
 

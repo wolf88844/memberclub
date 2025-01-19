@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.aftersale.service.domain;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.ImmutableList;
 import com.memberclub.common.extension.ExtensionManager;
@@ -19,12 +20,12 @@ import com.memberclub.domain.dataobject.aftersale.AftersaleOrderExtraDO;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.AftersaleOrder;
+import com.memberclub.domain.entity.trade.AftersaleOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
-import com.memberclub.infrastructure.mybatis.mappers.AftersaleOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.AftersaleOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.aftersale.extension.domain.AftersaleDomainExtension;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.event.trade.service.domain.TradeEventDomainService;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class AftersaleDomainService {
 

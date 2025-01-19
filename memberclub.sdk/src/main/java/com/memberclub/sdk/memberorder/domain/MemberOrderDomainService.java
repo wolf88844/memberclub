@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.memberorder.domain;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
@@ -16,12 +17,12 @@ import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
-import com.memberclub.infrastructure.mybatis.mappers.MemberOrderDao;
-import com.memberclub.infrastructure.mybatis.mappers.MemberSubOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
 import com.memberclub.sdk.sku.service.MemberOrderDataObjectBuildFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import static com.memberclub.domain.common.MemberTradeEvent.MEMBER_ORDER_START_P
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class MemberOrderDomainService {
 

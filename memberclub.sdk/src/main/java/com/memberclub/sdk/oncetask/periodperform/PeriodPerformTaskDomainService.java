@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.oncetask.periodperform.service;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.Lists;
@@ -18,10 +19,10 @@ import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
-import com.memberclub.domain.entity.OnceTask;
+import com.memberclub.domain.entity.trade.OnceTask;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
-import com.memberclub.infrastructure.mybatis.mappers.OnceTaskDao;
+import com.memberclub.infrastructure.mybatis.mappers.trade.OnceTaskDao;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.oncetask.periodperform.extension.PeriodPerformTaskDomainExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDataObjectBuildFactory;
@@ -41,6 +42,7 @@ import static com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum.P
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class PeriodPerformTaskDomainService {
     @Autowired

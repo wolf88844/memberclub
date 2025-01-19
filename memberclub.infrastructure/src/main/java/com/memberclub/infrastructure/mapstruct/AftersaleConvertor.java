@@ -10,7 +10,7 @@ import com.memberclub.domain.context.aftersale.apply.AftersaleApplyCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderDO;
-import com.memberclub.domain.entity.AftersaleOrder;
+import com.memberclub.domain.entity.trade.AftersaleOrder;
 import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -18,8 +18,8 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.purchase.OrderInfoDO;
-import com.memberclub.domain.entity.MemberOrder;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

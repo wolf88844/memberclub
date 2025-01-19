@@ -6,6 +6,7 @@
  */
 package com.memberclub.sdk.perform.service.domain;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
@@ -21,8 +22,8 @@ import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
-import com.memberclub.domain.entity.MemberPerformItem;
-import com.memberclub.infrastructure.mybatis.mappers.MemberPerformItemDao;
+import com.memberclub.domain.entity.trade.MemberPerformItem;
+import com.memberclub.infrastructure.mybatis.mappers.trade.MemberPerformItemDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import java.util.Map;
 /**
  * author: 掘金五阳
  */
+@DS("tradeDataSource")
 @Service
 public class PerformDomainService {
 

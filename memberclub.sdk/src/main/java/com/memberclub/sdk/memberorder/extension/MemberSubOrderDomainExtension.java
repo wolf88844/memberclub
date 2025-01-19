@@ -16,7 +16,7 @@ import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.entity.MemberSubOrder;
+import com.memberclub.domain.entity.trade.MemberSubOrder;
 
 /**
  * author: 掘金五阳
