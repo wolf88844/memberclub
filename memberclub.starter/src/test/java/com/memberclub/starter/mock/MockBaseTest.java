@@ -10,7 +10,7 @@ import com.memberclub.infrastructure.assets.facade.MockAssetsFacadeSPI;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
-import com.memberclub.infrastructure.sku.impl.MockSkuBizService;
+import com.memberclub.sdk.sku.service.impl.MockSkuBizService;
 import com.memberclub.starter.AppStarter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;

@@ -16,7 +16,11 @@ package com.memberclub.infrastructure.mq;
  */
 public interface MessageQueueConsumerFacade {
 
+    public static final ConsumeStatauEnum success = ConsumeStatauEnum.success;
+
+    public static final ConsumeStatauEnum retry = ConsumeStatauEnum.success;
+
     public MQQueueEnum register();
 
-    public void consume(String message);
+    public ConsumeStatauEnum consume(String message);
 }

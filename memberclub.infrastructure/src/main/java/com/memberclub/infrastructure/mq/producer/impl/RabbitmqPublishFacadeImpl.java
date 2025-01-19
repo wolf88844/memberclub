@@ -13,7 +13,6 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -27,7 +26,7 @@ public class RabbitmqPublishFacadeImpl implements MessageQuenePublishFacade {
     private RabbitTemplate rabbitTemplate;
 
 
-    @Bean
+    //@Bean
     public FanoutExchange tradeEventExchange() {
         return new FanoutExchange(MQContants.TRADE_EVENT_TOPIC, true, false);
     }

@@ -8,11 +8,13 @@ package com.memberclub.starter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author 掘金五阳
  */
 
+@EnableScheduling
 @SpringBootApplication(scanBasePackages = {"com.memberclub"})
 public class AppStarter {
 

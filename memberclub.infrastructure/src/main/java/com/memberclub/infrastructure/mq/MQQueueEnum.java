@@ -47,6 +47,10 @@ public enum MQQueueEnum {
         return queneName;
     }
 
+    public String getDelayQueneName() {
+        return queneName + "_delay";
+    }
+
     public MQQueueEnum setQueneName(String queneName) {
         this.queneName = queneName;
         return this;

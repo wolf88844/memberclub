@@ -15,6 +15,7 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.CommonConvertor;
+import com.memberclub.infrastructure.mq.ConsumeStatauEnum;
 import com.memberclub.infrastructure.mq.MQQueueEnum;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
 import com.memberclub.sdk.prefinance.extension.PreFinanceHandleExtension;
@@ -35,11 +36,12 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
     private ExtensionManager extensionManager;
 
     @Override
-    public void consume(String message) {
+    public ConsumeStatauEnum consume(String message) {
         LOG.info("收到  message:{}", message);
         TradeEventDO event = buildEvent(message);
         extensionManager.getExtension(BizScene.of(event.getDetail().getBizType()),
                 PreFinanceHandleExtension.class).handle(event);
+        return success;
     }
 
     private TradeEventDO buildEvent(String message) {
