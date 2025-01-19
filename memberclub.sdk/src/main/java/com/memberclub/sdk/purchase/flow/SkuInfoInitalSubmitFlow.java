@@ -11,7 +11,7 @@ import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
-import com.memberclub.sdk.sku.service.SkuBizService;
+import com.memberclub.infrastructure.sku.SkuBizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

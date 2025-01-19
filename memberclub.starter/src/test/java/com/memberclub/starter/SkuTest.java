@@ -10,17 +10,15 @@ import com.google.common.collect.ImmutableList;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.JsonUtils;
-import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
-import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
-import com.memberclub.domain.entity.sku.MemberSku;
 import com.memberclub.infrastructure.mybatis.mappers.sku.MemberSkuDao;
 import com.memberclub.sdk.sku.service.SkuDomainService;
 import com.memberclub.starter.mock.MockBaseTest;
@@ -98,7 +96,6 @@ public class SkuTest extends MockBaseTest {
         return skuInfoDO;
     }
 
-
     @Autowired
     private SkuDomainService skuDomainService;
 
@@ -107,26 +104,10 @@ public class SkuTest extends MockBaseTest {
         if (!ApplicationContextUtils.isUnitTest()) {
             CommonLog.info("当前 Profile:{} 不执行本单测",
                     JsonUtils.toJson(ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles()));
-            return;
+            //return;
         }
 
         SkuInfoDO skuInfoDO = buildDoubleRightsSku(1);
-
-        MemberSku sku = new MemberSku();
-        sku.setBizType(skuInfoDO.getBizType());
-        sku.setExtra("{}");
-        sku.setFinanceInfo(JsonUtils.toJson(skuInfoDO.getFinanceInfo()));
-        sku.setId(RandomUtils.nextLong());
-        sku.setInventoryInfo("{}");
-        sku.setPerformanceInfo("{}");
-        sku.setRestrictInfo("{}");
-        sku.setSaleInfo("{}");
-        sku.setViewInfo("{}");
-        sku.setStatus(0);
-
-        sku.setUtime(TimeUtil.now());
-        sku.setCtime(TimeUtil.now());
-
-        skuDomainService.createMemberSku(sku);
+        skuDomainService.createMemberSku(skuInfoDO);
     }
 }

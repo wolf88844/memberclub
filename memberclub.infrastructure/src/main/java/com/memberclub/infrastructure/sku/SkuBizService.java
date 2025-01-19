@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.sku.service;
+package com.memberclub.infrastructure.sku;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;

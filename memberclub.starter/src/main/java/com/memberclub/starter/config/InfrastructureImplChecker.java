@@ -71,8 +71,14 @@ public class InfrastructureImplChecker {
      */
     private AssetCenterEnum asset;
 
+    /**
+     *
+     */
+    private SkuAccessEnum sku;
+
     @NestedConfigurationProperty()
     private Feign feign;
+
 
     @Data
     class Feign {

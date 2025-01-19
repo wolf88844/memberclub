@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.memberclub.common.log.CommonLog;
+import lombok.Getter;
 
 import java.io.IOException;
 
@@ -22,12 +23,14 @@ import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_
  */
 public class JsonUtils {
 
+    @Getter
     private static ObjectMapper objectMapper = new ObjectMapper();
 
 
     static {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.disable(FAIL_ON_EMPTY_BEANS);
         objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 

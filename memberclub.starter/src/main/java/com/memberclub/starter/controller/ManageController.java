@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ManageController {
 
     @ApiOperation("查询商品列表")
     @PostMapping("/sku/list")
+    @ResponseBody
     public List<SkuInfoDO> listSkus() {
         return skuDomainService.queryAllSkus();
     }

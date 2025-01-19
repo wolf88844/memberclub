@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+# 示例 ./starter.sh -c true -e test -o start
 
 while getopts ":c:e:o" opt
 do
@@ -16,13 +16,13 @@ do
     ;;
 esac done
 
-pcompile=${compile:compile}
+pcompile=${compile:true}
 penv=${env:test}
 pop=${op:start}
 
 echo "当前环境:$penv"
 
-if [  $compile="compile" ]; then
+if [  $compile="true" ]; then
     echo "开始编译 环境:$penv"
    (cd ../ && mvn clean package -P "$penv" -Dmaven.test.skip=true)
 fi

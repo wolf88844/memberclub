@@ -15,7 +15,13 @@ spring:
     template:
       mandatory: true
     publisher-confirm-type: correlated
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
+
+server:
+  port: 9977
 
 app:
   id: memberclub                   # 应用唯一标识
@@ -60,6 +66,7 @@ memberclub:
     mq: rabbitmq
     order: spi
     asset: spi
+    sku: db
   extension:
     bootcheck: true
 

@@ -52,6 +52,7 @@ memberclub:
     mq: local
     order: local
     asset: local
+    sku: local
   extension:
     bootcheck: true
 

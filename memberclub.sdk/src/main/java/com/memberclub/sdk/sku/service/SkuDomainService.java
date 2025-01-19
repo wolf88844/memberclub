@@ -37,8 +37,17 @@ public class SkuDomainService {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void createMemberSku(MemberSku sku) {
-        int cnt = memberSkuDao.insert(sku);
+    public void createMemberSku(SkuInfoDO sku) {
+        MemberSku memberSku = memberSkuDataObjectFactory.toSku(sku);
+        int cnt = memberSkuDao.insert(memberSku);
+    }
+
+
+    public SkuInfoDO queryById(Long id) {
+        LambdaQueryWrapper<MemberSku> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MemberSku::getId, id);
+        MemberSku memberSku = memberSkuDao.selectOne(wrapper);
+        return memberSkuDataObjectFactory.toSkuInfoDO(memberSku);
     }
 
     public List<SkuInfoDO> queryAllSkus() {

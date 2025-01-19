@@ -10,8 +10,8 @@ import com.memberclub.infrastructure.assets.facade.MockAssetsFacadeSPI;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
+import com.memberclub.infrastructure.sku.impl.MockSkuBizService;
 import com.memberclub.starter.AppStarter;
-import com.memberclub.starter.impl.MockSkuBizService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
 import org.h2.tools.Server;
@@ -40,7 +40,6 @@ public class MockBaseTest {
 
     @Autowired
     public MockSkuBizService mockSkuBizService;
-
     @Autowired
     public MemberOrderDao memberOrderDao;
 

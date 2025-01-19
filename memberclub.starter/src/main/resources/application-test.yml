@@ -85,10 +85,11 @@ memberclub:
     mq: rabbitmq
     order: local
     asset: local
+    sku: local
   extension:
     bootcheck: true
 apollo:
-  meta: localhost:8080
+  meta: http://127.0.0.1:8080
   bootstrap:
     enabled: true                                 # 是否开启 Apollo
 

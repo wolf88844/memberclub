@@ -20,15 +20,21 @@ public class SkuInfoDO {
 
     private int bizType;
 
-    private SkuViewInfo viewInfo;
+    private SkuViewInfo viewInfo = new SkuViewInfo();
 
-    private SkuFinanceInfo financeInfo;
+    private SkuFinanceInfo financeInfo = new SkuFinanceInfo();
 
-    private SkuSaleInfo saleInfo;
+    private SkuSaleInfo saleInfo = new SkuSaleInfo();
 
-    private SkuPerformConfigDO performConfig;
+    private SkuPerformConfigDO performConfig = new SkuPerformConfigDO();
 
-    private SkuInventoryInfo inventoryInfo;
+    private SkuInventoryInfo inventoryInfo = new SkuInventoryInfo();
 
-    private SkuRestrictInfo restrictInfo;
+    private SkuRestrictInfo restrictInfo = new SkuRestrictInfo();
+
+    private SkuExtra extra = new SkuExtra();
+
+    private long utime;
+
+    private long ctime;
 }

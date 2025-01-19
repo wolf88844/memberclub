@@ -23,6 +23,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberSkuDataObjectFactory {
 
+    public MemberSku toSku(SkuInfoDO skuInfoDO) {
+        MemberSku sku = new MemberSku();
+        sku.setId(skuInfoDO.getSkuId());
+        sku.setBizType(skuInfoDO.getBizType());
+        sku.setCtime(skuInfoDO.getCtime());
+        sku.setUtime(skuInfoDO.getUtime());
+        sku.setExtra(JsonUtils.toJson(skuInfoDO.getExtra()));
+        sku.setFinanceInfo(JsonUtils.toJson(skuInfoDO.getFinanceInfo()));
+
+        sku.setInventoryInfo(JsonUtils.toJson(skuInfoDO.getInventoryInfo()));
+        sku.setPerformanceInfo(JsonUtils.toJson(skuInfoDO.getPerformConfig()));
+        sku.setRestrictInfo(JsonUtils.toJson(skuInfoDO.getRestrictInfo()));
+        sku.setSaleInfo(JsonUtils.toJson(skuInfoDO.getSaleInfo()));
+        sku.setViewInfo(JsonUtils.toJson(skuInfoDO.getViewInfo()));
+        sku.setStatus(0);
+        return sku;
+    }
+
+
     public SkuInfoDO toSkuInfoDO(MemberSku sku) {
         SkuInfoDO skuInfoDO = new SkuInfoDO();
         skuInfoDO.setSkuId(sku.getId());

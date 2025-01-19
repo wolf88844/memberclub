@@ -199,6 +199,11 @@
                 <version>3.4.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2-extension-spring5</artifactId>
+                <version>2.0.42</version>
+            </dependency>
             <!--其他重要组件 End-->
 
 

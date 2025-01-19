@@ -6,6 +6,7 @@
  */
 package com.memberclub.infrastructure.swagger;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -15,7 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Profile({"ut", "test"})
 @EnableSwagger2
+@Configuration
 public class SwaggerConfiguration {
 
-
+    
 }
+
