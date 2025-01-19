@@ -7,6 +7,8 @@
 package com.memberclub.sdk.sku.service;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.entity.sku.MemberSku;
 import com.memberclub.infrastructure.mybatis.mappers.sku.MemberSkuDao;
 import org.slf4j.Logger;
@@ -14,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -27,9 +32,18 @@ public class SkuDomainService {
 
     public static final Logger LOG = LoggerFactory.getLogger(SkuDomainService.class);
 
+    @Autowired
+    private MemberSkuDataObjectFactory memberSkuDataObjectFactory;
+
 
     @Transactional(rollbackFor = Exception.class)
     public void createMemberSku(MemberSku sku) {
         int cnt = memberSkuDao.insert(sku);
+    }
+
+    public List<SkuInfoDO> queryAllSkus() {
+        LambdaQueryWrapper<MemberSku> wrapper = new LambdaQueryWrapper<>();
+        List<MemberSku> skus = memberSkuDao.selectList(wrapper);
+        return skus.stream().map(memberSkuDataObjectFactory::toSkuInfoDO).collect(Collectors.toList());
     }
 }

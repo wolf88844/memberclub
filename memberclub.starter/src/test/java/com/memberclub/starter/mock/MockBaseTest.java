@@ -6,11 +6,11 @@
  */
 package com.memberclub.starter.mock;
 
+import com.memberclub.infrastructure.assets.facade.MockAssetsFacadeSPI;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
+import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
 import com.memberclub.starter.AppStarter;
-import com.memberclub.starter.impl.MockAssetsFacadeSPI;
-import com.memberclub.starter.impl.MockCommonOrderFacadeSPI;
 import com.memberclub.starter.impl.MockSkuBizService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
@@ -32,10 +32,10 @@ import java.util.concurrent.atomic.AtomicLong;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppStarter.class/*, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT*/)
 public class MockBaseTest {
-    @SpyBean()
+    @SpyBean
     public MockAssetsFacadeSPI couponGrantFacade;
 
-    @SpyBean
+    @Autowired
     public MockCommonOrderFacadeSPI commonOrderFacadeSPI;
 
     @Autowired

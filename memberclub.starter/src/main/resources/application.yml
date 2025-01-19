@@ -58,6 +58,8 @@ memberclub:
     lock: redisson
     retry: rabbitmq
     mq: rabbitmq
+    order: spi
+    asset: spi
   extension:
     bootcheck: true
 

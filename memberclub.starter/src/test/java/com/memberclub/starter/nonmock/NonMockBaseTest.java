@@ -7,7 +7,7 @@
 package com.memberclub.starter.nonmock;
 
 import com.memberclub.starter.AppStarter;
-import com.memberclub.starter.impl.MockAssetsFacadeSPI;
+import com.memberclub.infrastructure.assets.facade.MockAssetsFacadeSPI;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;

@@ -4,8 +4,9 @@
  * Copyright 2024 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.starter.impl;
+package com.memberclub.infrastructure.assets.facade;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.facade.AssetDO;
@@ -17,9 +18,9 @@ import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
-import com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.assertj.core.util.Lists;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * author: 掘金五阳
  */
+@ConditionalOnProperty(name = "memberclub.infrastructure.asset", havingValue = "local")
+@Service
 public class MockAssetsFacadeSPI implements AssetsFacadeSPI {
 
     private AtomicLong couponIdGenerator = new AtomicLong(System.currentTimeMillis());

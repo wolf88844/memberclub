@@ -4,19 +4,18 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.starter.impl;
+package com.memberclub.infrastructure.order.facade;
 
+import com.google.common.collect.Lists;
 import com.memberclub.domain.dataobject.purchase.facade.SkuBuyResultDO;
 import com.memberclub.infrastructure.order.context.SkuBuyInfoDTO;
 import com.memberclub.infrastructure.order.context.SubmitOrderRequestDTO;
 import com.memberclub.infrastructure.order.context.SubmitOrderResponseDTO;
-import com.memberclub.infrastructure.order.facade.CommonOrderFacadeSPI;
-import com.memberclub.infrastructure.order.facade.RefundOrderRequestDTO;
-import com.memberclub.infrastructure.order.facade.RefundOrderResponseDTO;
 import org.apache.commons.lang3.RandomUtils;
-import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,8 @@ import java.util.stream.Collectors;
 /**
  * author: 掘金五阳
  */
+@Service
+@ConditionalOnProperty(name = "memberclub.infrastructure.order", havingValue = "local")
 public class MockCommonOrderFacadeSPI implements CommonOrderFacadeSPI {
 
     public static final Logger LOG = LoggerFactory.getLogger(MockCommonOrderFacadeSPI.class);

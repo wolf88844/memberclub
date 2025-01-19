@@ -24,7 +24,7 @@ import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
-import com.memberclub.sdk.sku.service.MemberOrderDataObjectBuildFactory;
+import com.memberclub.sdk.memberorder.MemberOrderDataObjectBuildFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

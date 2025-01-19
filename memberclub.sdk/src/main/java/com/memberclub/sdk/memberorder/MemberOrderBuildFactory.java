@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.sku.service;
+package com.memberclub.sdk.memberorder;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
@@ -25,7 +25,7 @@ import com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.purchase.OrderInfoDO;
-import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.id.IdTypeEnum;
 import com.memberclub.infrastructure.mapstruct.PurchaseConvertor;
@@ -106,7 +106,7 @@ public class MemberOrderBuildFactory {
 
             SubOrderSaleInfo saleInfo = PurchaseConvertor.INSTANCE.toSubOrderSaleInfo(skuInfo.getSaleInfo());
 
-            SubOrderPerformConfigDO performConfig = skuInfo.getPerformConfig();
+            SkuPerformConfigDO performConfig = skuInfo.getPerformConfig();
             subOrder.getExtra().setPerformConfig(performConfig);
             subOrder.getExtra().setSettleInfo(settleInfo);
             subOrder.getExtra().setViewInfo(viewInfo);

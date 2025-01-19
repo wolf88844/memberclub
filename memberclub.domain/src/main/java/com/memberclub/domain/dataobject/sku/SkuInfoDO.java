@@ -6,10 +6,6 @@
  */
 package com.memberclub.domain.dataobject.sku;
 
-import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
-import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
-import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
-import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import lombok.Data;
 
 /**
@@ -30,5 +26,9 @@ public class SkuInfoDO {
 
     private SkuSaleInfo saleInfo;
 
-    private SubOrderPerformConfigDO performConfig;
+    private SkuPerformConfigDO performConfig;
+
+    private SkuInventoryInfo inventoryInfo;
+
+    private SkuRestrictInfo restrictInfo;
 }

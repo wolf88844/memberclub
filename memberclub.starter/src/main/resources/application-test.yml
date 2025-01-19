@@ -16,6 +16,8 @@ spring:
           username: root
           password: 123456
           driverClassName: com.mysql.jdbc.Driver
+          init:
+            schema: classpath:sql/member_db.sql
         skuDataSource:
           url: jdbc:mysql://localhost:3306/member_sku?useUnicode=true&characterEncoding=UTF-8
           ##url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
@@ -23,9 +25,8 @@ spring:
           username: root
           password: 123456
           driverClassName: com.mysql.jdbc.Driver
-  sql:
-    init:
-      schema-locations: classpath:sql/tables.sql
+          init:
+            schema: classpath:sql/member_sku.sql
   #### RabbitMQ 配置
   rabbitmq:
     host: localhost
@@ -82,6 +83,8 @@ memberclub:
     id: redisson
     retry: redisson
     mq: rabbitmq
+    order: local
+    asset: local
   extension:
     bootcheck: true
 apollo:

@@ -22,7 +22,7 @@ import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
-import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
@@ -145,8 +145,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuInfoDO.setViewInfo(viewInfo);
 
 
-        SubOrderPerformConfigDO subOrderPerformConfigDO = new SubOrderPerformConfigDO();
-        skuInfoDO.setPerformConfig(subOrderPerformConfigDO);
+        SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
+        skuInfoDO.setPerformConfig(skuPerformConfigDO);
 
 
         SkuPerformItemConfigDO skuPerformItemConfigDO = new SkuPerformItemConfigDO();
@@ -176,8 +176,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         rightViewInfo.setDisplayName("会员折扣券权益");
         skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
 
-        subOrderPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
-        skuInfoDO.setPerformConfig(subOrderPerformConfigDO);
+        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
+        skuInfoDO.setPerformConfig(skuPerformConfigDO);
         return skuInfoDO;
     }
 }

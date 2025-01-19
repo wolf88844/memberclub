@@ -56,7 +56,20 @@ public class InfrastructureImplChecker {
      */
     private DistributedRetryEnum retry;
 
+    /**
+     * 分布式消息队列
+     */
     private DistributedMQEnum mq;
+
+    /**
+     * 订单中心
+     */
+    private OrderCenterEnum order;
+
+    /**
+     * 资产服务
+     */
+    private AssetCenterEnum asset;
 
     @NestedConfigurationProperty()
     private Feign feign;

@@ -1,17 +1,27 @@
 spring:
   datasource:
-    trade:
-      ##url: jdbc:h2:tcp://localhost:9092/~/member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
-      url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
-      ## #TRACE_LEVEL_SYSTEM_OUT=2;
-      username: sa
-      password: dean
-      hikari:
-        driver-class-name: org.h2.Driver
-  sql:
-    init:
-      schema-locations: classpath:sql/tables.sql
-      mode: always
+    dynamic:
+      primary: tradeDataSource
+      strict: true
+      datasource:
+        druid:
+          initialSize: 3
+          minIdle: 3
+          maxActive: 20
+        tradeDataSource:
+          url: jdbc:h2:mem:member_db;DB_CLOSE_DELAY=-1;mode=MySQL;
+          ## #TRACE_LEVEL_SYSTEM_OUT=2;
+          username: sa
+          password: dean
+          driverClassName: org.h2.Driver
+          schema: classpath:sql/member_db.sql
+        skuDataSource:
+          url: jdbc:h2:mem:member_sku;DB_CLOSE_DELAY=-1;mode=MySQL;
+          ## #TRACE_LEVEL_SYSTEM_OUT=2;
+          username: sa
+          password: dean
+          driverClassName: org.h2.Driver
+          schema: classpath:sql/member_sku.sql
   h2:
     console:
       enabled: true
@@ -40,6 +50,8 @@ memberclub:
     id: local
     retry: local
     mq: local
+    order: local
+    asset: local
   extension:
     bootcheck: true
 

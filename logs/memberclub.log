@@ -1,0 +1,86 @@
+2025-01-19 10:59:15,384 [main] StartupInfoLogger  INFO Starting AppStarter v1.0.0-SNAPSHOT using Java 1.8.0_212 on yuhaiqiangdeMacBook-Pro-2.local with PID 89394 (/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.starter/target/memberclub-starter-ut.jar started by yuhaiqiang in /Users/yuhaiqiang/dev/fenbi/memberclub)
+2025-01-19 10:59:15,397 [main] SpringApplication  INFO The following 1 profile is active: "ut"
+2025-01-19 10:59:16,653 [main] AbstractApplicationContext  WARN Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'downstream-examples.FeignClientSpecification' defined in null: Cannot register bean definition [Generic bean: class [org.springframework.cloud.openfeign.FeignClientSpecification]; scope=; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] for bean 'downstream-examples.FeignClientSpecification': There is already [Generic bean: class [org.springframework.cloud.openfeign.FeignClientSpecification]; scope=; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] bound.
+2025-01-19 10:59:16,668 [main] ConditionEvaluationReportLoggingListener  INFO 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-01-19 10:59:16,700 [main] LoggingFailureAnalysisReporter ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'downstream-examples.FeignClientSpecification' could not be registered. A bean with that name has already been defined and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+2025-01-19 11:00:07,246 [main] DeferredLogCache  INFO App ID is set to memberclub by app.id property from System Property
+2025-01-19 11:00:07,256 [main] DeferredLogCache  INFO Environment is set to null. Because it is not available in either (1) JVM system property 'env', (2) OS env variable 'ENV' nor (3) property 'env' from the properties InputStream.
+2025-01-19 11:00:07,256 [main] DeferredLogCache  INFO Located meta services from apollo.meta configuration: localhost:8080!
+2025-01-19 11:00:07,256 [main] DeferredLogCache  INFO Located meta server address localhost:8080 for env UNKNOWN from com.ctrip.framework.apollo.internals.DefaultMetaServerProvider
+2025-01-19 11:00:07,257 [main] DeferredLogCache  WARN Sync config from upstream repository class com.ctrip.framework.apollo.internals.RemoteConfigRepository failed, reason: Get config services failed from localhost:8080/services/config?appId=memberclub&ip=192.168.1.7 [Cause: Could not complete get operation [Cause: unknown protocol: localhost]]
+2025-01-19 11:00:07,257 [main] DeferredLogCache  WARN Sync config from upstream repository class com.ctrip.framework.apollo.internals.RemoteConfigRepository failed, reason: Get config services failed from localhost:8080/services/config?appId=memberclub&ip=192.168.1.7 [Cause: Could not complete get operation [Cause: unknown protocol: localhost]]
+2025-01-19 11:00:07,257 [main] DeferredLogCache  WARN Init Apollo Local Config failed - namespace: application, reason: Load config from local config failed! [Cause: Cannot read from local cache file /Users/yuhaiqiang/dev/fenbi/memberclub/config-cache/memberclub+default+application.properties].
+2025-01-19 11:00:07,257 [main] DeferredLogCache  WARN Could not load config for namespace application from Apollo, please check whether the configs are released in Apollo! Return default value now!
+2025-01-19 11:00:07,285 [main] StartupInfoLogger  INFO Starting AppStarter v1.0.0-SNAPSHOT using Java 1.8.0_212 on yuhaiqiangdeMacBook-Pro-2.local with PID 89541 (/Users/yuhaiqiang/dev/fenbi/memberclub/memberclub.starter/target/memberclub-starter-test.jar started by yuhaiqiang in /Users/yuhaiqiang/dev/fenbi/memberclub)
+2025-01-19 11:00:07,289 [main] SpringApplication  INFO The following 1 profile is active: "test"
+2025-01-19 11:00:08,868 [Apollo-RemoteConfigLongPollService-1] RemoteConfigLongPollService  WARN Long polling failed, will retry in 2 seconds. appId: memberclub, cluster: default, namespaces: application, long polling url: null, reason: Get config services failed from localhost:8080/services/config?appId=memberclub&ip=192.168.1.7 [Cause: Could not complete get operation [Cause: unknown protocol: localhost]]
+2025-01-19 11:00:09,076 [main] RepositoryConfigurationDelegate  INFO Multiple Spring Data modules found, entering strict repository configuration mode
+2025-01-19 11:00:09,081 [main] RepositoryConfigurationDelegate  INFO Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-01-19 11:00:09,120 [main] RepositoryConfigurationDelegate  INFO Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2025-01-19 11:00:10,116 [main] ConfigurationClassPostProcessor  INFO Cannot enhance @Configuration bean definition 'com.yomahub.liteflow.springboot.config.LiteflowMainAutoConfiguration' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2025-01-19 11:00:10,261 [main] GenericScope  INFO BeanFactory id=06fa3de5-500c-34bd-ab99-1cabf582f497
+2025-01-19 11:00:11,252 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'org.springframework.cloud.commons.config.CommonsConfigAutoConfiguration' of type [org.springframework.cloud.commons.config.CommonsConfigAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,256 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerDefaultMappingsProviderAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerDefaultMappingsProviderAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,259 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'loadBalancerClientsDefaultsMappingsProvider' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerDefaultMappingsProviderAutoConfiguration$$Lambda$479/257459516] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,264 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'defaultsBindHandlerAdvisor' of type [org.springframework.cloud.commons.config.DefaultsBindHandlerAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,300 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,307 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$54bba2c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,336 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'dsProcessor' of type [com.baomidou.dynamic.datasource.processor.DsHeaderProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,349 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'com.yomahub.liteflow.springboot.config.LiteflowPropertyAutoConfiguration' of type [com.yomahub.liteflow.springboot.config.LiteflowPropertyAutoConfiguration$$EnhancerBySpringCGLIB$$b19f0a6d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,364 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'liteflow-com.yomahub.liteflow.springboot.LiteflowProperty' of type [com.yomahub.liteflow.springboot.LiteflowProperty] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,374 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'liteflow.monitor-com.yomahub.liteflow.springboot.LiteflowMonitorProperty' of type [com.yomahub.liteflow.springboot.LiteflowMonitorProperty] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,380 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'liteflowConfig' of type [com.yomahub.liteflow.property.LiteflowConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,388 [main] PostProcessorRegistrationDelegate$BeanPostProcessorChecker  INFO Bean 'com.yomahub.liteflow.spi.spring.SpringAware' of type [com.yomahub.liteflow.spi.spring.SpringAware] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-01-19 11:00:11,893 [main] TomcatWebServer  INFO Tomcat initialized with port(s): 8080 (http)
+2025-01-19 11:00:12,093 [main] ServletWebServerApplicationContext  INFO Root WebApplicationContext: initialization completed in 4706 ms
+2025-01-19 11:00:12,630 [main] DruidDataSource  INFO {dataSource-1,tradeDataSource} inited
+2025-01-19 11:00:12,634 [main] DruidDataSource  INFO {dataSource-2,skuDataSource} inited
+2025-01-19 11:00:12,634 [main] DynamicRoutingDataSource  INFO dynamic-datasource - add a datasource named [skuDataSource] success
+2025-01-19 11:00:12,635 [main] DynamicRoutingDataSource  INFO dynamic-datasource - add a datasource named [tradeDataSource] success
+2025-01-19 11:00:12,635 [main] DynamicRoutingDataSource  INFO dynamic-datasource initial loaded [2] datasource,primary datasource named [tradeDataSource]
+2025-01-19 11:00:12,816 [main] CommonLog  WARN ApplicationContextUtils 可正常获取 applcationContext
+2025-01-19 11:00:12,838 [main] CommonLog  INFO 注册 Extension key:AftersaleAmountExtension_0_1, 接口:AftersaleAmountExtension, 实现类:DefaultPriceDividedAftersaleAmountExtension
+2025-01-19 11:00:12,843 [main] AbstractApplicationContext  WARN Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'extensionBootChecker': Unsatisfied dependency expressed through field 'extensionManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'extensionManager': Invocation of init method failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultRealtimeCalculateUsageExtension': Unsatisfied dependency expressed through field 'assetsFacadeSPI'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2025-01-19 11:00:12,844 [main] DynamicRoutingDataSource  INFO dynamic-datasource start closing ....
+2025-01-19 11:00:12,853 [main] DruidDataSource  INFO {dataSource-1} closing ...
+2025-01-19 11:00:12,854 [main] DruidDataSource  INFO {dataSource-1} closed
+2025-01-19 11:00:12,855 [main] DruidDataSource  INFO {dataSource-2} closing ...
+2025-01-19 11:00:12,855 [main] DruidDataSource  INFO {dataSource-2} closed
+2025-01-19 11:00:12,855 [main] DynamicRoutingDataSource  INFO dynamic-datasource all closed success,bye
+2025-01-19 11:00:12,878 [Apollo-RemoteConfigLongPollService-1] RemoteConfigLongPollService  WARN Long polling failed, will retry in 4 seconds. appId: memberclub, cluster: default, namespaces: application, long polling url: null, reason: Get config services failed from localhost:8080/services/config?appId=memberclub&ip=192.168.1.7 [Cause: Could not complete get operation [Cause: unknown protocol: localhost]]
+2025-01-19 11:00:12,912 [main] ConditionEvaluationReportLoggingListener  INFO 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-01-19 11:00:12,960 [main] LoggingFailureAnalysisReporter ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field assetsFacadeSPI in com.memberclub.sdk.aftersale.extension.preview.impl.DefaultRealtimeCalculateUsageExtension required a bean of type 'com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.memberclub.infrastructure.assets.facade.AssetsFacadeSPI' in your configuration.
+

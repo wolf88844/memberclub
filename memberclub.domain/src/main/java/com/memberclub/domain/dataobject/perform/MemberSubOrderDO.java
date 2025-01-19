@@ -14,7 +14,7 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
-import com.memberclub.domain.dataobject.sku.SubOrderPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import lombok.Data;
 
 /**
@@ -51,7 +51,7 @@ public class MemberSubOrderDO {
 
     private SubOrderExtraInfo extra = new SubOrderExtraInfo();
 
-    private SubOrderPerformConfigDO performConfig;
+    private SkuPerformConfigDO performConfig;
 
     private long stime;
 
