@@ -16,9 +16,9 @@ do
     ;;
 esac done
 
-pcompile=${compile:true}
-penv=${env:test}
-pop=${op:start}
+pcompile=${compile:-true}
+penv=${env:-test}
+pop=${op:-start}
 
 echo "当前环境:$penv"
 

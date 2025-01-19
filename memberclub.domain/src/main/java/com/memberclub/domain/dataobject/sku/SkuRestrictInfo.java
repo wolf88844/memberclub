@@ -8,9 +8,13 @@ package com.memberclub.domain.dataobject.sku;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * author: 掘金五阳
  */
 @Data
 public class SkuRestrictInfo {
+
+    private List<SkuRestrictItem> restrictItems;
 }

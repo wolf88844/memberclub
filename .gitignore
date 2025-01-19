@@ -1,3 +1,5 @@
+config-cache/*
+logs/*
 */logs
 */target
 *.iml

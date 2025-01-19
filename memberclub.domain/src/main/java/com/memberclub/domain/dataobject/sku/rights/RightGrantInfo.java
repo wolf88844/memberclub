@@ -14,4 +14,5 @@ import lombok.Data;
 @Data
 public class RightGrantInfo {
 
+    private String rightConfigId;
 }

@@ -6,11 +6,9 @@
  */
 package com.memberclub.starter.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.memberclub.common.util.JsonUtils;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -27,9 +25,5 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/");
     }
 
-    @Bean
-    @Primary
-    public ObjectMapper objectMapper() {
-        return JsonUtils.getObjectMapper();
-    }
+
 }

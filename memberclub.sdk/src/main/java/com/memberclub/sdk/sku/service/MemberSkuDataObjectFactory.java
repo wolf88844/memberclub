@@ -41,11 +41,10 @@ public class MemberSkuDataObjectFactory {
         return sku;
     }
 
-
     public SkuInfoDO toSkuInfoDO(MemberSku sku) {
         SkuInfoDO skuInfoDO = new SkuInfoDO();
         skuInfoDO.setSkuId(sku.getId());
-        skuInfoDO.setSkuId(sku.getBizType());
+        skuInfoDO.setBizType(sku.getBizType());
         skuInfoDO.setFinanceInfo(JsonUtils.fromJson(sku.getFinanceInfo(), SkuFinanceInfo.class));
         skuInfoDO.setInventoryInfo(JsonUtils.fromJson(sku.getInventoryInfo(), SkuInventoryInfo.class));
         skuInfoDO.setPerformConfig(JsonUtils.fromJson(sku.getPerformanceInfo(), SkuPerformConfigDO.class));
