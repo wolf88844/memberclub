@@ -132,4 +132,16 @@ public class ManageController {
         return performBizService.perform(cmd);
     }
 
+    @PostMapping("/purchase/submitAndPay")
+    public PerformResp submitAndPay(@RequestBody PurchaseTestRequest request) {
+        PurchaseSubmitResponse response = submit(request);
+        if (response.isSuccess()) {
+            TestPayRequest payRequest = new TestPayRequest();
+            payRequest.setUserId(response.getMemberOrderDO().getUserId());
+            payRequest.setTradeId(response.getMemberOrderDO().getTradeId());
+            return pay(payRequest);
+        }
+        throw new RuntimeException("提单失败");
+    }
+
 }

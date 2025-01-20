@@ -12,7 +12,9 @@ import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.mq.ConsumeStatauEnum;
 import com.memberclub.infrastructure.mq.MQQueueEnum;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
+import com.memberclub.infrastructure.mq.RabbitRegisterConfiguration;
 import com.memberclub.infrastructure.mq.producer.impl.RabbitmqPublishFacadeImpl;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
@@ -21,8 +23,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,16 +38,13 @@ import static com.memberclub.infrastructure.mq.MQContants.TRADE_EVENT_FOR_PRE_FI
  */
 @ConditionalOnProperty(name = "memberclub.infrastructure.mq", havingValue = "rabbitmq", matchIfMissing = true)
 @Configuration
-public class RabbitmqConsumerConfiguration implements ApplicationRunner {
+public class RabbitmqConsumerConfiguration {
 
     public static final Logger LOG = LoggerFactory.getLogger(RabbitmqConsumerConfiguration.class);
 
 
     @Autowired
     private RabbitmqPublishFacadeImpl rabbitmqPublishFacade;
-
-    @Autowired
-    private RabbitmqDeadLetterConfiguration rabbitmqDeadLetterConfiguration;
 
     private Map<String, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
 
@@ -69,49 +66,20 @@ public class RabbitmqConsumerConfiguration implements ApplicationRunner {
                 consumerMap.get(mqQueueEnum.getQueneName()).add(entry.getValue());
             }
         }
-        commonRabbitmqRetryableQueue.registerRetryableQueue(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE);
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-
-    }
-    /* @Bean
-    public Queue tradeEventPreFinanceQueue() {
-        return QueueBuilder.durable(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getQueneName())
-                .build();
-    }
-
-    @Bean
-    public org.springframework.amqp.core.Binding tradeEventForFinanceQueueBinding() {
-        return BindingBuilder.bind(tradeEventPreFinanceQueue())
-                .to(rabbitmqDeadLetterConfiguration.deadLetterExchange())
-                .with(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getQueneName());
-    }
-
-
-    @Bean
-    public Queue tradeEventPreFinanceDelayQueue() {
-        return QueueBuilder.durable(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getDelayQueneName())
-                .deadLetterExchange(RabbitmqDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .deadLetterRoutingKey(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getQueneName())
-                .ttl(1000)
-                .build();
-    }
-
-    @Bean
-    public org.springframework.amqp.core.Binding tradeEventForFinanceDelayQueueBinding() {
-        return BindingBuilder.bind(tradeEventPreFinanceDelayQueue()).to(rabbitmqPublishFacade.tradeEventExchange());
-    }
-*/
 
     @RabbitListener(queues = {TRADE_EVENT_FOR_PRE_FINANCE})
     @RabbitHandler
     public void consumeTradeEventPreFinanceQueue(String value, Channel channel, Message message) throws IOException {
+        doConsume(value, channel, message, MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE);
+    }
+
+    public void doConsume(String value, Channel channel, Message message, MQQueueEnum queue) throws IOException {
         LOG.info("rabbitmq 收到消息:{}", value);
 
         boolean fail = false;
-        for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getQueneName())) {
+        for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(queue.getQueneName())) {
             try {
                 ConsumeStatauEnum status = messageQueueConsumerFacade.consume(value);
                 if (status == ConsumeStatauEnum.retry) {
@@ -124,7 +92,26 @@ public class RabbitmqConsumerConfiguration implements ApplicationRunner {
         if (!fail) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } else {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            Integer retryCount;
+            Map<String, Object> headers = message.getMessageProperties().getHeaders();
+            if (!headers.containsKey("retry-count")) {
+                retryCount = 0;
+            } else {
+                retryCount = (Integer) headers.get("retry-count");
+            }
+            //判断是否满足最大重试次数(重试3次)
+            if (retryCount++ < 3) {
+                headers.put("retry-count", retryCount);
+                //重新发送到MQ中
+                AMQP.BasicProperties basicProperties = new AMQP.BasicProperties().builder().contentType("text/plain").headers(headers).build();
+                channel.basicPublish(RabbitRegisterConfiguration.DEAD_LETTER_EXCHANGE,
+                        MQQueueEnum.TRADE_EVENT_FOR_PRE_FINANCE.getDelayQueneName(), basicProperties,
+                        message.getBody());
+            } else {
+                LOG.error("达到最大重试次数 retryCount:{}, message:{}", (retryCount - 1), value);
+            }
+
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
     }
 

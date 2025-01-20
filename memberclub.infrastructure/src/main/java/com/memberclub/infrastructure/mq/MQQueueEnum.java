@@ -6,12 +6,17 @@
  */
 package com.memberclub.infrastructure.mq;
 
+import lombok.Getter;
+
 /**
  * @author yuhaiqiang
  */
 public enum MQQueueEnum {
 
-    TRADE_EVENT_FOR_PRE_FINANCE(1, MQContants.TRADE_EVENT_FOR_PRE_FINANCE, MQContants.TRADE_EVENT_TOPIC);
+    TRADE_EVENT_FOR_PRE_FINANCE(1,
+            MQContants.TRADE_EVENT_FOR_PRE_FINANCE,
+            MQContants.TRADE_EVENT_TOPIC, 5000),
+    ;
 
     private int code;
 
@@ -19,9 +24,14 @@ public enum MQQueueEnum {
 
     private String topicName;
 
-    MQQueueEnum(int code, String name, String topicName) {
+    @Getter
+    private long delayMillSeconds;
+
+    MQQueueEnum(int code, String name, String topicName, long delayMillSeconds) {
         this.code = code;
         this.queneName = name;
+        this.topicName = topicName;
+        this.delayMillSeconds = delayMillSeconds;
     }
 
     public static MQQueueEnum findByCode(int code) throws IllegalArgumentException {
