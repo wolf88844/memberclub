@@ -61,7 +61,7 @@ memberclub:
   infrastructure:
     config: apollo
     id: redisson
-    lock: redisson
+    lock: redis
     retry: rabbitmq
     mq: rabbitmq
     order: spi
