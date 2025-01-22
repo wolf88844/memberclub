@@ -51,6 +51,12 @@ spring:
     timeout: 5s
     # 连接超时
     connect-timeout: 5s
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1s
+        max-idle: 8
+        min-idle: 0
     redisson:
       config:
         singleServerConfig:
@@ -81,7 +87,7 @@ logging:
 memberclub:
   infrastructure:
     config: apollo
-    lock: redisson
+    lock: redis
     feign:
       enabled: false
     id: redisson

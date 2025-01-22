@@ -14,6 +14,9 @@ do
     o)
         op="$OPTARG"
     ;;
+    d)
+       debug="$OPTARG"
+       ;;
 esac done
 
 pcompile=${compile:-true}
@@ -27,7 +30,12 @@ if [  $compile="true" ]; then
    (cd ../ && mvn clean package -P "$penv" -Dmaven.test.skip=true)
 fi
 
+if [ $penv="test" ]; then
+    pdebug=${debug:--agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005}
+    echo "debug参数: $pdebug"
+fi
+
 if [ $pop="start" ];then
-   (cd ../ && java -jar memberclub.starter/target/memberclub-starter-"$penv".jar )
+   (cd ../ && java "$pdebug" -jar memberclub.starter/target/memberclub-starter-"$penv".jar )
 fi
 

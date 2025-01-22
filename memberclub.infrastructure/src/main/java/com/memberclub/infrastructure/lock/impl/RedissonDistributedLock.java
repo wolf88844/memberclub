@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.redis.core.RedisKeyValueTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -32,13 +33,16 @@ public class RedissonDistributedLock implements DistributeLock {
     @Autowired
     private RedissonClient redissonClient;
 
+
     @Override
     @SneakyThrows
     public boolean lock(String key, Long value, int timeSeconds) {
         if (ApplicationContextUtils.isTest()) {
             LOG.info("redisson收到加锁请求 key:{}, value:{}, timeSeconds:{}", key, value, timeSeconds);
         }
+
         RLock lock = redissonClient.getLock(key);
+
         return lock.tryLockAsync(100, timeSeconds * 1000, TimeUnit.MILLISECONDS, value)
                 .get();
     }

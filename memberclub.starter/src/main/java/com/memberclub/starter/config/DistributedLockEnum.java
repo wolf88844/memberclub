@@ -14,4 +14,5 @@ public enum DistributedLockEnum {
 
     local,
     redisson,
+    redis,
 }
