@@ -15,7 +15,8 @@ public enum MQQueueEnum {
 
     TRADE_EVENT_FOR_PRE_FINANCE(1,
             MQContants.TRADE_EVENT_FOR_PRE_FINANCE,
-            MQContants.TRADE_EVENT_TOPIC, 5000),
+            MQContants.TRADE_EVENT_TOPIC,
+            5000),
     ;
 
     private int code;
@@ -27,7 +28,8 @@ public enum MQQueueEnum {
     @Getter
     private long delayMillSeconds;
 
-    MQQueueEnum(int code, String name, String topicName, long delayMillSeconds) {
+    MQQueueEnum(int code, String name, String topicName,
+                long delayMillSeconds) {
         this.code = code;
         this.queneName = name;
         this.topicName = topicName;
