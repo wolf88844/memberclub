@@ -8,7 +8,7 @@ package com.memberclub.sdk.perform.flow.period;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
-import com.memberclub.sdk.perform.service.domain.PerformLockService;
+import com.memberclub.sdk.perform.service.domain.MemberTradeLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,30 +19,20 @@ import org.springframework.stereotype.Service;
 public class PeriodPerformResourceLockFlow extends FlowNode<PeriodPerformContext> {
 
     @Autowired
-    private PerformLockService performLockService;
+    private MemberTradeLockService memberTradeLockService;
 
     @Override
     public void process(PeriodPerformContext context) {
-        long lockValue = performLockService.lock(context.getBizType(),
-                null,
-                context.getUserId(),
-                context.getTradeId());
-        context.setLockValue(lockValue);
+        memberTradeLockService.lockOnPrePeriodPerform(context);
     }
 
     @Override
     public void success(PeriodPerformContext context) {
-        performLockService.unlock(context.getBizType(),
-                context.getUserId(),
-                context.getTradeId(),
-                context.getLockValue());
+        memberTradeLockService.unlockOnPeriodPerformSuccess(context);
     }
 
     @Override
     public void rollback(PeriodPerformContext context, Exception e) {
-        performLockService.unlock(context.getBizType(),
-                context.getUserId(),
-                context.getTradeId(),
-                context.getLockValue());
+        memberTradeLockService.unlockOnPeriodPerformFail(context);
     }
 }

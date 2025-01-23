@@ -40,11 +40,17 @@ public class RedisTemplateDistributedLock implements DistributeLock {
         if (ApplicationContextUtils.isTest()) {
             LOG.info("redis收到加锁请求 key:{}, value:{}, timeSeconds:{}", key, value, timeSeconds);
         }
-        return getLock(key, String.valueOf(value), timeSeconds);
+        boolean succ = getLock(key, String.valueOf(value), timeSeconds);
+        if (succ) {
+            LOG.info("加锁成功 key:{} value:{}", key, value);
+        } else {
+            LOG.error("加锁失败 key:{} value:{}", key, value);
+        }
+        return succ;
     }
 
     @Override
-    public void unlock(String key, Long value) {
+    public boolean unlock(String key, Long value) {
         if (ApplicationContextUtils.isTest()) {
             LOG.info("redis收到解锁请求 key:{}, value:{}", key, value);
         }
@@ -54,6 +60,7 @@ public class RedisTemplateDistributedLock implements DistributeLock {
         } else {
             LOG.error("解锁失败需要重试 key:{} value:{}", key, value);
         }
+        return succ;
     }
 
     private static final Long SUCCESS = 1L;
@@ -83,7 +90,7 @@ public class RedisTemplateDistributedLock implements DistributeLock {
             }
 
         } catch (Exception e) {
-            LOG.error("加锁失败 lockKey:{}, value:{}, expiredTime:{}", lockKey, value, expireTime, e);
+            LOG.error("加锁异常 lockKey:{}, value:{}, expiredTime:{}", lockKey, value, expireTime, e);
             String redisValue = redisTemplate.opsForValue().get(lockKey);
             if (redisValue != null
                     && StringUtils.equals(redisValue, value)) {

@@ -20,6 +20,7 @@ public enum Monitor {
     AFTER_SALE_DOAPPLY("aftersale_doapply"),
     AFTER_SALE_APPLY("aftersale_apply"),
     DEPENDENCY_INVOKE("dependency_invoke"),
+    LOCK("lock"),
     ;
 
     private String name;

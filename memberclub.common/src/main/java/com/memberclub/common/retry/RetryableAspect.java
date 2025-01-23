@@ -6,6 +6,7 @@
  */
 package com.memberclub.common.retry;
 
+import com.google.common.base.Defaults;
 import com.google.common.collect.Lists;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
@@ -94,7 +95,10 @@ public class RetryableAspect {
                 message.setExpectedTime(TimeUtil.now() + TimeUnit.SECONDS.toMillis(delayTime));
 
                 retryService.addRetryMessage(message);
-                throw e;
+                if (annotation.throwException()) {
+                    throw e;
+                }
+                return Defaults.defaultValue(method.getReturnType());
             }
         } else {
             return joinPoint.proceed();

@@ -6,6 +6,7 @@
  */
 package com.memberclub.infrastructure.lock.impl;
 
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,23 @@ public class LocalDistributedLock implements DistributeLock {
     public boolean lock(String key, Long value, int timeSeconds) {
         Long oldValue = lockMap.putIfAbsent(key, value);
 
-        return oldValue == null;
+        boolean succ = oldValue == null;
+        if (!succ) {
+            CommonLog.error("加锁失败,需要上游重试 key:{}, value:{}", key, value);
+        } else {
+            CommonLog.info("加锁成功 key:{}, value:{}", key, value);
+        }
+        return succ;
     }
 
     @Override
-    public void unlock(String key, Long value) {
-        lockMap.remove(key, value);
+    public boolean unlock(String key, Long value) {
+        boolean succ = lockMap.remove(key, value);
+        if (!succ) {
+            CommonLog.error("解锁失败,自动重试 key:{}, value:{}", key, value);
+        } else {
+            CommonLog.info("解锁成功 key:{}, value:{}", key, value);
+        }
+        return succ;
     }
 }

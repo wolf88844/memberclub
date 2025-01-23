@@ -26,6 +26,8 @@ public @interface Retryable {
 
     public double multiplier() default 1.0;
 
+    public boolean throwException() default false;
+
     public Class<Exception>[] include() default {Exception.class};
 
     public Class<Exception>[] exclude() default {};

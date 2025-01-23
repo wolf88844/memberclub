@@ -66,7 +66,7 @@ public class PerformBizService {
 
 
     @UserLog(domain = LogDomainEnum.PERFORM)
-    @Retryable(initialDelaySeconds = 1, multiplier = 2.0, maxDelaySeconds = 10)
+    @Retryable(initialDelaySeconds = 1, multiplier = 2.0, maxDelaySeconds = 10, throwException = true)
     public PerformResp perform(PerformCmd cmd) {
         PerformResp resp = new PerformResp();
         try {

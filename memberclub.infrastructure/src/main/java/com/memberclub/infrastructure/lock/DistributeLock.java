@@ -13,5 +13,5 @@ public interface DistributeLock {
 
     boolean lock(String key, Long value, int timeSeconds);
 
-    void unlock(String key, Long value);
+    boolean unlock(String key, Long value);
 }

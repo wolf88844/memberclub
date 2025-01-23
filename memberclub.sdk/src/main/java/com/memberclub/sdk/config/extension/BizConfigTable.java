@@ -9,7 +9,7 @@ package com.memberclub.sdk.config.extension;
 import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.common.extension.ExtensionConfig;
 import com.memberclub.common.extension.ExtensionType;
-import com.memberclub.sdk.common.LockMode;
+import com.memberclub.domain.context.common.LockMode;
 
 /**
  * author: 掘金五阳
