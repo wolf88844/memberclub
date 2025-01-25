@@ -488,7 +488,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     }
 
     private void verifyData(PerformCmd cmd, int buyCount) {
-        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByUserId(cmd.getUserId());
+        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         for (MemberSubOrder memberSubOrder : subOrders) {
             Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode(), memberSubOrder.getPerformStatus());
         }
@@ -507,11 +507,15 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     }
 
     private void verifyTaskData(PerformCmd cmd, int taskSize) {
-        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
-        Assert.assertEquals(taskSize, tasks.size());
+        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
 
-        for (OnceTask task : tasks) {
-            Assert.assertNotNull(task.getTaskGroupId());
+        for (MemberSubOrder subOrder : subOrders) {
+            List<OnceTask> tasks = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(), String.valueOf(subOrder.getSubTradeId()));
+            Assert.assertEquals(taskSize, tasks.size());
+
+            for (OnceTask task : tasks) {
+                Assert.assertNotNull(task.getTaskGroupId());
+            }
         }
     }
 
@@ -536,7 +540,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     @SneakyThrows
     private MemberOrder buildMemberOrder(int buyCount, int cycle) {
         MemberOrder memberOrder = new MemberOrder();
-        memberOrder.setUserId(userIdGenerator.incrementAndGet());
+        //memberOrder.setUserId(userIdGenerator.incrementAndGet());
+        memberOrder.setUserId(DEFAULT_USER_ID);
         memberOrder.setOrderId(orderIdGenerator.incrementAndGet() + "");
         memberOrder.setOrderSystemType(1);
         memberOrder.setOriginPriceFen(3000);

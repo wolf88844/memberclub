@@ -42,13 +42,13 @@ public class PurchaseBizService {
         PurchaseSubmitResponse response = new PurchaseSubmitResponse();
         try {
             extensionManager.getExtension(
-                    context.toDefaultBizScene(), PurchaseExtension.class)
-                    .submit(context);
+                    context.toDefaultBizScene(), PurchaseExtension.class).submit(context);
             context.monitor();
 
             if (context.getMemberOrder().getStatus() == MemberOrderStatusEnum.SUBMITED) {
                 response.setSuccess(true);
                 response.setMemberOrderDO(context.getMemberOrder());
+                response.setLockValue(context.getLockValue());
                 return response;
             }
             // TODO: 2025/1/4 补充错误信息
@@ -60,8 +60,6 @@ public class PurchaseBizService {
         }
         // TODO: 2025/1/4 补充返回值
     }
-
-
 
 
 }

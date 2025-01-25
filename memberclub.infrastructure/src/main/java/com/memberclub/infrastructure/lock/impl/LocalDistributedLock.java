@@ -40,6 +40,10 @@ public class LocalDistributedLock implements DistributeLock {
     public boolean unlock(String key, Long value) {
         boolean succ = lockMap.remove(key, value);
         if (!succ) {
+            if (!lockMap.containsKey(key)) {
+                CommonLog.error("未发现锁,无法解锁 key:{}, value:{}", key, value);
+                return true;
+            }
             CommonLog.error("解锁失败,自动重试 key:{}, value:{}", key, value);
         } else {
             CommonLog.info("解锁成功 key:{}, value:{}", key, value);

@@ -7,14 +7,18 @@
 package com.memberclub.domain.context.common;
 
 import com.memberclub.domain.common.BizTypeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * author: 掘金五阳
  */
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LockContext {
 
     String lockScene;
@@ -28,8 +32,4 @@ public class LockContext {
     String tradeId;
 
     LockMode lockMode;
-
-    boolean unlockOnPeriodPerformFail;
-
-    boolean unlockOnAfterSaleFail;
 }

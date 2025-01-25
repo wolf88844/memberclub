@@ -19,6 +19,8 @@ public class PurchaseSubmitResponse {
 
     private int errorCode;
 
+    private Long lockValue;
+
     private String msg;
 
     private MemberOrderDO memberOrderDO;

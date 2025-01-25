@@ -8,6 +8,8 @@ package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.common.LockContext;
+import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
@@ -17,15 +19,16 @@ import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
-import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
+import com.memberclub.sdk.lock.LockService;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
@@ -52,6 +55,9 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     @Autowired
     public PurchaseBizService purchaseBizService;
 
+
+
+
     @Test
     @SneakyThrows
     public void testSubmit() {
@@ -68,6 +74,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         for (MemberSubOrder subOrder : subOrders) {
             //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
         }
+        releaseLock(response.getLockValue());
         waitH2();
     }
 
@@ -94,7 +101,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         cmd.setUserInfo(userInfo);
         cmd.setLocationInfo(locationInfo);
 
-        cmd.setUserId(userIdGenerator.incrementAndGet());
+        //cmd.setUserId(userIdGenerator.incrementAndGet());
+        cmd.setUserId(DEFAULT_USER_ID);
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
 
         PurchaseSkuSubmitCmd sku = new PurchaseSkuSubmitCmd();

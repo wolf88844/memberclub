@@ -6,10 +6,14 @@
  */
 package com.memberclub.starter.mock;
 
+import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.common.LockContext;
+import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.infrastructure.assets.facade.MockAssetsFacadeSPI;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
+import com.memberclub.sdk.lock.LockService;
 import com.memberclub.sdk.sku.service.impl.MockSkuBizService;
 import com.memberclub.starter.AppStarter;
 import lombok.SneakyThrows;
@@ -46,12 +50,16 @@ public class MockBaseTest {
     @Autowired
     public MemberSubOrderDao memberSubOrderDao;
 
+    public static final Long DEFAULT_USER_ID = 894838959L;
+
     public AtomicLong userIdGenerator = new AtomicLong(RandomUtils.nextInt());
 
     public AtomicLong orderIdGenerator = new AtomicLong(System.currentTimeMillis());
 
     static boolean isRunH2Servier = false;
 
+    @Autowired
+    private LockService lockService;
 
     @SneakyThrows
     //@BeforeClass
@@ -62,6 +70,17 @@ public class MockBaseTest {
         server.start();
     }
 
+    public void releaseLock(Long value) {
+        LockContext context = LockContext.builder()
+                .userId(DEFAULT_USER_ID)
+                .bizType(BizTypeEnum.DEMO_MEMBER)
+                .lockMode(LockMode.LOCK_USER)
+                .lockValue(value)
+                .lockScene("purchase")
+                .build();
+
+        lockService.unlock(context);
+    }
 
     public static void waitH2() {
         if (isRunH2Servier) {

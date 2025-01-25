@@ -16,7 +16,6 @@ import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
-import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.config.extension.BizConfigTable;
 import com.memberclub.sdk.config.service.ConfigService;
 import com.memberclub.sdk.lock.LockService;
@@ -35,9 +34,6 @@ public class MemberTradeLockService {
 
     @Autowired
     private LockService lockService;
-
-    @Autowired
-    private DistributeLock distributeLock;
 
     @Autowired
     private ConfigService configService;
@@ -62,7 +58,9 @@ public class MemberTradeLockService {
         if (lockable) {
             Long lockValue = lockService.lock(lockContext);
             context.setLockValue(lockValue);
+            return;
         }
+        CommonLog.error("提单前, 不加锁 lockContext:{}", lockContext);
     }
 
 
@@ -79,7 +77,9 @@ public class MemberTradeLockService {
 
         if (unlockable) {
             lockService.unlock(lockContext);
+            return;
         }
+        CommonLog.error("提单主流程成功, 不释放锁 lockContext:{}", lockContext);
     }
 
     public void unlockOnPurchaseFail(PurchaseSubmitContext context) {
@@ -95,7 +95,9 @@ public class MemberTradeLockService {
         boolean unlockable = getLockExtension(context.getBizType()).buildOnPurchaseFail(lockContext, context);
         if (unlockable) {
             lockService.unlock(lockContext);
+            return;
         }
+        CommonLog.error("提单失败, 不释放锁 lockContext:{}", lockContext);
     }
 
     /************************************ 履约主流程 ********************************************/
@@ -117,7 +119,9 @@ public class MemberTradeLockService {
 
             context.setLockValue(lockValue);
             context.getCmd().setLockValue(context.getLockValue());
+            return;
         }
+        CommonLog.error("履约主流程前, 不加锁 lockContext:{}", lockContext);
     }
 
 
@@ -135,7 +139,9 @@ public class MemberTradeLockService {
 
         if (unlockable) {
             lockService.unlock(lockContext);
+            return;
         }
+        CommonLog.error("履约主流程成功, 不释放锁 lockContext:{}", lockContext);
     }
 
     public void unlockOnPerformFail(PerformContext context) {
@@ -152,7 +158,9 @@ public class MemberTradeLockService {
         boolean unlockable = getLockExtension(context.getBizType()).buildOnPerformFail(lockContext, context);
         if (unlockable) {
             lockService.unlock(lockContext);
+            return;
         }
+        CommonLog.error("履约主流程失败, 不释放锁 lockContext:{}", lockContext);
     }
 
     /************************************ 周期履约 ********************************************/
@@ -169,6 +177,7 @@ public class MemberTradeLockService {
         boolean lockable = getLockExtension(context.getBizType()).buildOnPrePeriodPerform(lockContext, context);
 
         if (!lockable) {
+            CommonLog.error("周期履约流程前, 不加锁 lockContext:{}", lockContext);
             return;
         }
 
@@ -191,6 +200,7 @@ public class MemberTradeLockService {
         boolean unlockable = getLockExtension(context.getBizType()).buildOnPeriodPerformSuccess(lockContext, context);
 
         if (!unlockable) {
+            CommonLog.error("周期履约流程成功, 不释放锁 lockContext:{}", lockContext);
             return;
         }
         lockService.unlock(lockContext);
@@ -210,7 +220,9 @@ public class MemberTradeLockService {
         boolean unlockable = getLockExtension(context.getBizType()).buildOnPeriodPerformFail(lockContext, context);
         if (unlockable) {
             lockService.unlock(lockContext);
+            return;
         }
+        CommonLog.error("周期履约流程失败, 不释放锁 lockContext:{}", lockContext);
     }
     /************************************ 周期履约 ********************************************/
 
@@ -229,6 +241,7 @@ public class MemberTradeLockService {
         boolean lockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSale(lockContext, context);
 
         if (!lockable) {
+            CommonLog.error("售后流程钱不加锁 lockContext:{}", lockContext);
             return;
         }
         Long lockValue = lockService.lock(lockContext);
@@ -250,6 +263,7 @@ public class MemberTradeLockService {
         boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSaleSuccess(lockContext, context);
 
         if (!unlockable) {
+            CommonLog.error("售后成功不释放锁 lockContext:{}", lockContext);
             return;
         }
         lockService.unlock(lockContext);
@@ -268,6 +282,7 @@ public class MemberTradeLockService {
                 .build();
         boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSaleFail(lockContext, context, e);
         if (!unlockable) {
+            CommonLog.error("售后失败不释放锁 lockContext:{}", lockContext);
             return;
         }
         lockService.unlock(lockContext);
