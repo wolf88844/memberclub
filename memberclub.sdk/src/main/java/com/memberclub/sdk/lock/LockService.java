@@ -28,6 +28,11 @@ public class LockService {
     @Autowired
     private DistributeLock distributeLock;
 
+    /**
+     * @param context
+     * @return
+     * @throws MemberException 加锁失败抛出异常
+     */
     public Long lock(LockContext context) {
         String key = buildKey(context.getBizType(),
                 context.getUserId(),

@@ -30,7 +30,7 @@ public class AfterSaleApplyContext implements RetryableContext {
 
     private AftersalePreviewContext previewContext;
 
-    private String lockValue;//成功后释放锁
+    private Long lockValue;//成功后释放锁
 
     /******************************************/
     //售后订单信息

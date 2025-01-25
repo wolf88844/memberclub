@@ -29,7 +29,7 @@ public class LockContext {
 
     LockMode lockMode;
 
-    boolean unlockOnPerformFail;
-
     boolean unlockOnPeriodPerformFail;
+
+    boolean unlockOnAfterSaleFail;
 }

@@ -19,6 +19,6 @@ import com.memberclub.domain.context.common.LockMode;
 public interface BizConfigTable extends BaseExtension {
 
     default LockMode getLockMode() {
-        return LockMode.LOCK_ORDER;
+        return LockMode.LOCK_USER;
     }
 }

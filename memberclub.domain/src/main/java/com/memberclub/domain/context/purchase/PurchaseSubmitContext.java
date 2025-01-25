@@ -9,8 +9,8 @@ package com.memberclub.domain.context.purchase;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.exception.MemberException;
 import lombok.Data;
 
@@ -31,6 +31,8 @@ public class PurchaseSubmitContext {
     private BizTypeEnum bizType;
 
     private PurchaseSubmitCmd submitCmd;
+
+    private Long lockValue;
 
     /********************************************/
     //模型数据

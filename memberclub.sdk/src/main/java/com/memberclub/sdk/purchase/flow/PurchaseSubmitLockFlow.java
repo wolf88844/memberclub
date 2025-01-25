@@ -7,8 +7,9 @@
 package com.memberclub.sdk.purchase.flow;
 
 import com.memberclub.common.flow.FlowNode;
-import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.sdk.perform.service.domain.MemberTradeLockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,13 +18,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class PurchaseSubmitLockFlow extends FlowNode<PurchaseSubmitContext> {
 
+    @Autowired
+    private MemberTradeLockService memberTradeLockService;
+
     @Override
     public void process(PurchaseSubmitContext context) {
-        CommonLog.info("用户粒度加锁完成");
+        memberTradeLockService.lockOnPrePurchase(context);
     }
 
     @Override
     public void callback(PurchaseSubmitContext context, Exception e) {
-        CommonLog.info("用户粒度解锁完成");
+        if (e != null) {
+            memberTradeLockService.unlockOnPurchaseFail(context);
+        } else {
+            memberTradeLockService.unlockOnPurchaseSuccess(context);
+        }
     }
 }

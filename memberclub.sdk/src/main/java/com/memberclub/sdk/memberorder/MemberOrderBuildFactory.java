@@ -15,16 +15,16 @@ import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.RenewTypeEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.MemberOrderExtraInfo;
-import com.memberclub.domain.dataobject.order.MemberOrderSaleInfo;
 import com.memberclub.domain.dataobject.order.MemberOrderFinanceInfo;
+import com.memberclub.domain.dataobject.order.MemberOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.perform.his.SubOrderExtraInfo;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.purchase.OrderInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.infrastructure.id.IdGenerator;
 import com.memberclub.infrastructure.id.IdTypeEnum;
@@ -84,6 +84,7 @@ public class MemberOrderBuildFactory {
         order.getExtra().setUserInfo(order.getUserInfo());
         order.getExtra().setSettleInfo(order.getSettleInfo());
         order.getExtra().setSaleInfo(order.getSaleInfo());
+        order.getExtra().setLockValue(context.getLockValue());
 
         extensionManager.getExtension(context.toDefaultBizScene(),
                 PurchaseOrderBuildExtension.class).buildOrder(order, context);

@@ -8,7 +8,8 @@ package com.memberclub.sdk.aftersale.flow.apply;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
-import com.memberclub.domain.exception.AftersaleDoApplyException;
+import com.memberclub.sdk.perform.service.domain.MemberTradeLockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,27 +18,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AftersaleApplyLockFlow extends FlowNode<AfterSaleApplyContext> {
 
+    @Autowired
+    private MemberTradeLockService memberTradeLockService;
+
     @Override
     public void process(AfterSaleApplyContext context) {
-        // TODO: 2025/1/1
         //加锁失败,抛出异常
+        memberTradeLockService.lockOnPreAfterSale(context);
     }
 
     @Override
     public void callback(AfterSaleApplyContext context, Exception e) {
         if (e != null) {
-            // TODO: 2025/1/1 如果异常类型是受理异常,则不能释放锁.
-            if (e instanceof AftersaleDoApplyException) {
-
-            }
+            memberTradeLockService.unlockOnAfterSaleFail(context, e);
         } else {
             // TODO: 2025/1/1 释放锁
+            memberTradeLockService.unlockOnAfterSaleSuccess(context);
         }
-    }
-
-    @Override
-    public void rollback(AfterSaleApplyContext context, Exception e) {
-
-
     }
 }

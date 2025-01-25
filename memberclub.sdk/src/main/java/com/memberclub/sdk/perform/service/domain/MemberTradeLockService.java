@@ -10,9 +10,12 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.common.LockContext;
+import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.config.extension.BizConfigTable;
 import com.memberclub.sdk.config.service.ConfigService;
@@ -33,7 +36,6 @@ public class MemberTradeLockService {
     @Autowired
     private LockService lockService;
 
-
     @Autowired
     private DistributeLock distributeLock;
 
@@ -43,6 +45,60 @@ public class MemberTradeLockService {
     public LockExtension getLockExtension(BizTypeEnum bizTypeEnum) {
         return extensionManager.getExtension(BizScene.of(bizTypeEnum), LockExtension.class);
     }
+
+    /************************************ 购买提单 ********************************************/
+
+    public void lockOnPrePurchase(PurchaseSubmitContext context) {
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getBizType()));
+
+        LockContext lockContext = LockContext.builder().
+                bizType(context.getBizType()).
+                lockScene("purchase").
+                lockMode(LockMode.LOCK_USER).
+                userId(context.getUserId()).
+                build();
+        boolean lockable = getLockExtension(context.getBizType()).buildOnPrePurchase(lockContext, context);
+
+        if (lockable) {
+            Long lockValue = lockService.lock(lockContext);
+            context.setLockValue(lockValue);
+        }
+    }
+
+
+    public void unlockOnPurchaseSuccess(PurchaseSubmitContext context) {
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getBizType()));
+
+        LockContext lockContext = LockContext.builder().bizType(context.getBizType())
+                .lockScene("purchase")
+                .lockMode(LockMode.LOCK_USER)
+                .userId(context.getUserId())
+                .lockValue(context.getLockValue())
+                .build();
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPurchaseSuccess(lockContext, context);
+
+        if (unlockable) {
+            lockService.unlock(lockContext);
+        }
+    }
+
+    public void unlockOnPurchaseFail(PurchaseSubmitContext context) {
+        CommonLog.error("回滚阶段尝试解锁");
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getBizType()));
+
+        LockContext lockContext = LockContext.builder().bizType(context.getBizType())
+                .lockScene("purchase")
+                .lockMode(LockMode.LOCK_USER)
+                .userId(context.getUserId())
+                .lockValue(context.getLockValue())
+                .build();
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPurchaseFail(lockContext, context);
+        if (unlockable) {
+            lockService.unlock(lockContext);
+        }
+    }
+
+    /************************************ 履约主流程 ********************************************/
 
     public void lockOnPrePerform(PerformContext context) {
         BizConfigTable table = configService.findConfigTable(BizScene.of(context.getBizType()));
@@ -54,12 +110,14 @@ public class MemberTradeLockService {
                 userId(context.getUserId()).
                 tradeId(context.getTradeId()).
                 build();
-        getLockExtension(context.getBizType()).buildOnPrePerform(lockContext, context);
+        boolean lockable = getLockExtension(context.getBizType()).buildOnPrePerform(lockContext, context);
 
-        Long lockValue = lockService.lock(lockContext);
+        if (lockable) {
+            Long lockValue = lockService.lock(lockContext);
 
-        context.setLockValue(lockValue);
-        context.getCmd().setLockValue(context.getLockValue());
+            context.setLockValue(lockValue);
+            context.getCmd().setLockValue(context.getLockValue());
+        }
     }
 
 
@@ -73,9 +131,11 @@ public class MemberTradeLockService {
                 .tradeId(context.getTradeId())
                 .lockValue(context.getLockValue())
                 .build();
-        getLockExtension(context.getBizType()).buildOnPerformSuccess(lockContext, context);
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPerformSuccess(lockContext, context);
 
-        lockService.unlock(lockContext);
+        if (unlockable) {
+            lockService.unlock(lockContext);
+        }
     }
 
     public void unlockOnPerformFail(PerformContext context) {
@@ -89,8 +149,8 @@ public class MemberTradeLockService {
                 .tradeId(context.getTradeId())
                 .lockValue(context.getLockValue())
                 .build();
-        getLockExtension(context.getBizType()).buildOnPerformFail(lockContext, context);
-        if (lockContext.isUnlockOnPerformFail()) {
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPerformFail(lockContext, context);
+        if (unlockable) {
             lockService.unlock(lockContext);
         }
     }
@@ -106,7 +166,11 @@ public class MemberTradeLockService {
                 userId(context.getUserId()).
                 tradeId(context.getTradeId()).
                 build();
-        getLockExtension(context.getBizType()).buildOnPrePeriodPerform(lockContext, context);
+        boolean lockable = getLockExtension(context.getBizType()).buildOnPrePeriodPerform(lockContext, context);
+
+        if (!lockable) {
+            return;
+        }
 
         Long lockValue = lockService.lock(lockContext);
 
@@ -124,8 +188,11 @@ public class MemberTradeLockService {
                 lockValue(context.getLockValue()).
                 tradeId(context.getTradeId()).
                 build();
-        getLockExtension(context.getBizType()).buildOnPeriodPerformSuccess(lockContext, context);
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPeriodPerformSuccess(lockContext, context);
 
+        if (!unlockable) {
+            return;
+        }
         lockService.unlock(lockContext);
     }
 
@@ -140,10 +207,71 @@ public class MemberTradeLockService {
                 .tradeId(context.getTradeId())
                 .lockValue(context.getLockValue())
                 .build();
-        getLockExtension(context.getBizType()).buildOnPeriodPerformFail(lockContext, context);
-        if (lockContext.isUnlockOnPeriodPerformFail()) {
+        boolean unlockable = getLockExtension(context.getBizType()).buildOnPeriodPerformFail(lockContext, context);
+        if (unlockable) {
             lockService.unlock(lockContext);
         }
     }
     /************************************ 周期履约 ********************************************/
+
+
+    /************************************ 售后 ********************************************/
+    public void lockOnPreAfterSale(AfterSaleApplyContext context) {
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getCmd().getBizType()));
+
+        LockContext lockContext = LockContext.builder().
+                bizType(context.getCmd().getBizType()).
+                lockScene("after_sale").
+                lockMode(table.getLockMode()).
+                userId(context.getCmd().getUserId()).
+                tradeId(context.getCmd().getTradeId()).
+                build();
+        boolean lockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSale(lockContext, context);
+
+        if (!lockable) {
+            return;
+        }
+        Long lockValue = lockService.lock(lockContext);
+
+        context.setLockValue(lockValue);
+    }
+
+    public void unlockOnAfterSaleSuccess(AfterSaleApplyContext context) {
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getCmd().getBizType()));
+
+        LockContext lockContext = LockContext.builder().
+                bizType(context.getCmd().getBizType()).
+                lockScene("after_sale").
+                lockMode(table.getLockMode()).
+                userId(context.getCmd().getUserId()).
+                lockValue(context.getLockValue()).
+                tradeId(context.getCmd().getTradeId()).
+                build();
+        boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSaleSuccess(lockContext, context);
+
+        if (!unlockable) {
+            return;
+        }
+        lockService.unlock(lockContext);
+    }
+
+    public void unlockOnAfterSaleFail(AfterSaleApplyContext context, Exception e) {
+        CommonLog.error("售后回滚阶段尝试解锁");
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getCmd().getBizType()));
+
+        LockContext lockContext = LockContext.builder().bizType(context.getCmd().getBizType())
+                .lockScene("after_sale")
+                .lockMode(table.getLockMode())
+                .userId(context.getCmd().getUserId())
+                .tradeId(context.getCmd().getTradeId())
+                .lockValue(context.getLockValue())
+                .build();
+        boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnAfterSaleFail(lockContext, context, e);
+        if (!unlockable) {
+            return;
+        }
+        lockService.unlock(lockContext);
+    }
+
+    /************************************ 售后 ********************************************/
 }

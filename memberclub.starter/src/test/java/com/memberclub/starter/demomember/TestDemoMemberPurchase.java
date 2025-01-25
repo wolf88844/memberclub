@@ -97,7 +97,6 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         cmd.setUserId(userIdGenerator.incrementAndGet());
         cmd.setBizType(BizTypeEnum.DEMO_MEMBER);
 
-
         PurchaseSkuSubmitCmd sku = new PurchaseSkuSubmitCmd();
         sku.setSkuId(skuId);
         sku.setBuyCount(buyCount);
