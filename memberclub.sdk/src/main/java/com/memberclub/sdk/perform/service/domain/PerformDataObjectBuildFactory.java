@@ -52,6 +52,7 @@ public class PerformDataObjectBuildFactory {
         itemDO.setRightId(item.getRightId());
         itemDO.setRightType(RightTypeEnum.findByCode(item.getRightType()));
         itemDO.setSkuId(item.getSkuId());
+        itemDO.setSubTradeId(item.getSubTradeId());
         itemDO.setStime(item.getStime());
         itemDO.setStatus(PerformItemStatusEnum.findByCode(item.getStatus()));
         return itemDO;

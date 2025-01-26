@@ -9,6 +9,7 @@ package com.memberclub.domain.dataobject.perform.item;
 import lombok.Data;
 
 /**
+ * @see com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo
  * author: 掘金五阳
  */
 @Data
@@ -23,4 +24,14 @@ public class PerformItemFinanceInfo {
      * 结算价格
      */
     public Integer settlePriceFen;
+
+    /**
+     * 结算资产类型
+     */
+    public Integer financeAssetType;
+
+    /**
+     * 是否可结算
+     */
+    public Boolean financeable;
 }

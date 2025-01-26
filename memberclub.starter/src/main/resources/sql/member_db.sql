@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS member_perform_item (
     biz_type INT(11)  NOT NULL COMMENT '产品线',
     user_id BIGINT(20)  NOT NULL COMMENT 'userId',
     trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
+    sub_trade_id VARCHAR(128)  NOT NULL COMMENT '子单交易 id',
     sku_id BIGINT(20)  NOT NULL COMMENT 'skuId',
     right_id INT(11)  NOT NULL COMMENT '权益Id',
     right_type INT(11)  NOT NULL COMMENT '权益类型',

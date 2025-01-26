@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.context.aftersale.preview;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.common.collect.Maps;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.contant.AftersaleUnableCode;
@@ -20,6 +21,7 @@ import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * author: 掘金五阳
@@ -37,6 +39,8 @@ public class AftersalePreviewContext {
     List<MemberSubOrderDO> subOrders;
 
     List<MemberPerformItemDO> performItems;
+
+    private Integer periodIndex;
 
     /******************售后预览中间数据****************************/
 
@@ -101,6 +105,5 @@ public class AftersalePreviewContext {
     public BizScene toDefaultBizScene() {
         return BizScene.of(getCmd().getBizType().getCode());
     }
-
 
 }

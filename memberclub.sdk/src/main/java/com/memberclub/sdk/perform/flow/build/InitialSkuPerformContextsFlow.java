@@ -46,6 +46,7 @@ public class InitialSkuPerformContextsFlow extends FlowNode<PerformContext> {
             for (SkuPerformItemConfigDO config : subOrder.getPerformConfig().getConfigs()) {
                 MemberPerformItemDO item = calculateExtension.toPerformItem(config);
                 item.setSkuId(subOrder.getSkuId());
+                item.setSubTradeId(String.valueOf(subOrder.getSubTradeId()));
                 items.add(item);
             }
             subOrderPerformContext.setImmediatePerformItems(items);

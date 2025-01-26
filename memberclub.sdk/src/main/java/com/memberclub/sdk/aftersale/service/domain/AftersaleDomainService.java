@@ -163,10 +163,13 @@ public class AftersaleDomainService {
     @Autowired
     private MemberSubOrderDomainService memberSubOrderDomainService;
 
-
+    @Transactional(rollbackFor = Exception.class)
     public void onRefundSuccessForMemberOrder(AfterSaleApplyContext context) {
         if (!Boolean.TRUE.equals(context.getOrderRefundInvokeSuccess())) {
             CommonLog.info("没有调用订单退款,因此不修改主状态");
+            for (MemberSubOrderDO subOrder : context.getPreviewContext().getSubOrders()) {
+                memberSubOrderDomainService.onJustFreezeSuccess(context, subOrder);
+            }
             return;
         }
         CommonLog.info("调用成功订单退款, 开始修改 MemberOrder/MemberSubOrder 主状态");

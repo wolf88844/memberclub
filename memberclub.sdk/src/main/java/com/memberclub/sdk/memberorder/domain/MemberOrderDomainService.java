@@ -25,6 +25,8 @@ import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.sdk.memberorder.MemberOrderDataObjectBuildFactory;
 import com.memberclub.sdk.memberorder.extension.MemberOrderDomainExtension;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,6 +161,19 @@ public class MemberOrderDomainService {
         List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(userId, tradeId);
 
         MemberOrderDO memberOrderDO = memberOrderDataObjectBuildFactory.buildMemberOrderDO(order, subOrders);
+
+        return memberOrderDO;
+    }
+
+    public MemberOrderDO getMemberOrderDO(long userId, String tradeId, Long subTradeId) {
+        MemberOrderDO memberOrderDO = getMemberOrderDO(userId, tradeId);
+        if (memberOrderDO != null && CollectionUtils.isNotEmpty(memberOrderDO.getSubOrders())) {
+            memberOrderDO.setSubOrders(
+                    memberOrderDO.getSubOrders().stream()
+                            .filter(sbo -> NumberUtils.compare(sbo.getSubTradeId(), subTradeId) == 0)
+                            .collect(Collectors.toList())
+            );
+        }
 
         return memberOrderDO;
     }

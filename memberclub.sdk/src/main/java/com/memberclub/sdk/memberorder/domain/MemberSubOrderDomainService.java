@@ -179,4 +179,9 @@ public class MemberSubOrderDomainService {
         });
     }
 
+    public void onJustFreezeSuccess(AfterSaleApplyContext context,
+                                    MemberSubOrderDO subOrder) {
+        tradeEventDomainService.onFreezeSuccessForSubOrder(context, subOrder);
+    }
+
 }

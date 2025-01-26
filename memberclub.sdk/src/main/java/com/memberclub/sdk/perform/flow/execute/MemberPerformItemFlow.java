@@ -10,10 +10,8 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.entity.trade.MemberPerformItem;
-import com.memberclub.infrastructure.mybatis.mappers.trade.MemberPerformItemDao;
 import com.memberclub.sdk.perform.extension.execute.MemberPerformItemExtension;
 import com.memberclub.sdk.perform.service.domain.MemberPerformItemDomainService;
-import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +25,6 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
 
     @Autowired
     ExtensionManager extensionManager;
-
-    @Autowired
-    private MemberPerformItemDao memberPerformItemDao;
-
-    @Autowired
-    private PerformDomainService performDomainService;
 
     @Autowired
     private MemberPerformItemDomainService memberPerformItemDomainService;

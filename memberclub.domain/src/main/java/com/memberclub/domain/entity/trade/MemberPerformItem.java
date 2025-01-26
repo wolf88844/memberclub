@@ -30,7 +30,9 @@ public class MemberPerformItem {
     private long rightId;
 
     private int providerId;
-    
+
+    private String subTradeId;
+
     private int rightType;
 
     private String batchCode;

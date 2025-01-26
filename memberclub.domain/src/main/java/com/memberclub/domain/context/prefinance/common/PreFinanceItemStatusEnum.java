@@ -1,34 +1,38 @@
 /**
- * @(#)MQEventEnum.java, 一月 12, 2025.
+ * @(#)PreFinanceItemStatusEnum.java, 一月 25, 2025.
  * <p>
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.mq;
-
-import lombok.Getter;
+package com.memberclub.domain.context.prefinance.common;
 
 /**
  * @author yuhaiqiang
  */
-public enum MQTopicEnum {
+public enum PreFinanceItemStatusEnum {
 
-    TRADE_EVENT(1, MQContants.TRADE_EVENT_TOPIC),
 
-    PRE_FINANCE_EVENT(2, MQContants.PRE_FINANCE_EVENT_TOPIC);
+    PERFORM(15, "已履约"),
+
+    JUST_FREEZE(25, "仅冻结"),
+
+    REFUND(35, "退款"),
+
+    EXPIRE(45, "已过期"),
+
+    ;
 
     private int code;
 
-    @Getter
     private String name;
 
-    MQTopicEnum(int code, String name) {
+    PreFinanceItemStatusEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static MQTopicEnum findByCode(int code) throws IllegalArgumentException {
-        for (MQTopicEnum item : MQTopicEnum.values()) {
+    public static PreFinanceItemStatusEnum findByCode(int code) throws IllegalArgumentException {
+        for (PreFinanceItemStatusEnum item : PreFinanceItemStatusEnum.values()) {
             if (item.code == code) {
                 return item;
             }

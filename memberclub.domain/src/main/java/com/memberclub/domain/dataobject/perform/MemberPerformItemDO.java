@@ -32,6 +32,8 @@ public class MemberPerformItemDO implements Comparable {
 
     private int assetCount;
 
+    private String subTradeId;
+
     private int phase = 1;
 
     private int cycle;

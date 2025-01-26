@@ -8,8 +8,6 @@ package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
 import com.memberclub.domain.common.BizTypeEnum;
-import com.memberclub.domain.context.common.LockContext;
-import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
@@ -25,10 +23,10 @@ import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
+import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
-import com.memberclub.sdk.lock.LockService;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
@@ -54,8 +52,6 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     @Autowired
     public PurchaseBizService purchaseBizService;
-
-
 
 
     @Test
@@ -141,6 +137,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         SkuFinanceInfo settleInfo = new SkuFinanceInfo();
         settleInfo.setContractorId("438098434");
         settleInfo.setSettlePriceFen(300);
+        settleInfo.setFinanceProductType(1);
+        settleInfo.setPeriodCycle(cycle);
 
         skuInfoDO.setFinanceInfo(settleInfo);
 
@@ -150,7 +148,6 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         viewInfo.setInternalDesc("大额红包 5 元");
         viewInfo.setInternalName("大额红包 5 元");
         skuInfoDO.setViewInfo(viewInfo);
-
 
         SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
         skuInfoDO.setPerformConfig(skuPerformConfigDO);
@@ -167,8 +164,15 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuPerformItemConfigDO.setProviderId("1");
         RightViewInfo rightViewInfo = new RightViewInfo();
         rightViewInfo.setDisplayName("会员立减券权益");
+
         skuPerformItemConfigDO.setViewInfo(rightViewInfo);
 
+        RightFinanceInfo rightFinanceInfo = new RightFinanceInfo();
+        rightFinanceInfo.setContractorId("438098434");
+        rightFinanceInfo.setSettlePriceFen(233);
+        rightFinanceInfo.setFinanceable(true);
+        rightFinanceInfo.setFinanceAssetType(1);
+        skuPerformItemConfigDO.setSettleInfo(rightFinanceInfo);
 
         SkuPerformItemConfigDO skuPerformItemConfigDO2 = new SkuPerformItemConfigDO();
         skuPerformItemConfigDO2.setAssetCount(4);
@@ -182,6 +186,14 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         rightViewInfo = new RightViewInfo();
         rightViewInfo.setDisplayName("会员折扣券权益");
         skuPerformItemConfigDO2.setViewInfo(rightViewInfo);
+
+
+        RightFinanceInfo rightFinanceInfo2 = new RightFinanceInfo();
+        rightFinanceInfo2.setContractorId("438098434");
+        rightFinanceInfo2.setSettlePriceFen(233);
+        rightFinanceInfo2.setFinanceable(true);
+        rightFinanceInfo2.setFinanceAssetType(2);
+        skuPerformItemConfigDO2.setSettleInfo(rightFinanceInfo2);
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
         skuInfoDO.setPerformConfig(skuPerformConfigDO);

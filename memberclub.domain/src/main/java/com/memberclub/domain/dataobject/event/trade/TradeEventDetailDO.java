@@ -10,12 +10,14 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import lombok.Data;
 
+import java.util.List;
+
 /**
+ * @see com.memberclub.domain.dataobject.event.trade.TradeEventDetail
  * author: 掘金五阳
  */
 @Data
 public class TradeEventDetailDO {
-
 
     private Long userId;
 
@@ -28,6 +30,10 @@ public class TradeEventDetailDO {
     private Long skuId;
 
     private Long eventTime;
+
+    private Integer periodIndex;
+
+    private List<String> itemTokens;
 
     private SubOrderPerformStatusEnum performStatus;
 }

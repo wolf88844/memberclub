@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 
-import static com.memberclub.infrastructure.mq.MQContants.TRADE_EVENT_FOR_PRE_FINANCE;
+import static com.memberclub.infrastructure.mq.MQContants.TRADE_EVENT_QUEUE_ON_PRE_FINANCE;
 
 /**
  * author: 掘金五阳
@@ -27,7 +27,7 @@ import static com.memberclub.infrastructure.mq.MQContants.TRADE_EVENT_FOR_PRE_FI
 public class RabbitmqConsumerConfiguration extends AbstractRabbitmqConsumerConfiguration {
 
 
-    @RabbitListener(queues = {TRADE_EVENT_FOR_PRE_FINANCE})
+    @RabbitListener(queues = {TRADE_EVENT_QUEUE_ON_PRE_FINANCE})
     @RabbitHandler
     public void consumeTradeEventPreFinanceQueue(String value, Channel channel, Message message) throws IOException {
         consumeAndFailRetry(value, channel, message,

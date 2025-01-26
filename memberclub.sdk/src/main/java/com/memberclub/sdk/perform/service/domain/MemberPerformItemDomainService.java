@@ -7,12 +7,14 @@
 package com.memberclub.sdk.perform.service.domain;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.flow.SkipException;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
+import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
@@ -49,7 +51,19 @@ public class MemberPerformItemDomainService {
     @Autowired
     private MemberPerformItemDao memberPerformItemDao;
 
-    @Retryable
+    @Autowired
+    PerformDataObjectBuildFactory performDataObjectBuildFactory;
+
+
+    public List<MemberPerformItemDO> batchQueryItems(Long userId, List<String> itemTokens) {
+        LambdaQueryWrapper<MemberPerformItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MemberPerformItem::getUserId, userId)
+                .in(MemberPerformItem::getItemToken, itemTokens);
+        List<MemberPerformItem> items = memberPerformItemDao.selectList(wrapper);
+        return CollectionUtilEx.map(items, performDataObjectBuildFactory::toMemberPerformItemDO);
+    }
+
+    @Retryable(initialDelaySeconds = 1, throwException = false)
     @Transactional(rollbackFor = Exception.class)
     public void onPerformStatus(PerformItemContext context) {
         for (MemberPerformItemDO item : context.getItems()) {

@@ -30,6 +30,11 @@ public class RabbitRegisterConfiguration {
         return newFanoutExchange(MQContants.TRADE_EVENT_TOPIC);
     }
 
+    @Bean
+    public FanoutExchange preFinanceExchange() {
+        return new FanoutExchange(MQTopicEnum.PRE_FINANCE_EVENT.getName());
+    }
+
     public static FanoutExchange newFanoutExchange(String topic) {
         return new FanoutExchange(topic, true, false);
     }

@@ -14,7 +14,7 @@ import lombok.Getter;
 public enum MQQueueEnum {
 
     TRADE_EVENT_FOR_PRE_FINANCE(1,
-            MQContants.TRADE_EVENT_FOR_PRE_FINANCE,
+            MQContants.TRADE_EVENT_QUEUE_ON_PRE_FINANCE,
             MQContants.TRADE_EVENT_TOPIC,
             5000),
     ;

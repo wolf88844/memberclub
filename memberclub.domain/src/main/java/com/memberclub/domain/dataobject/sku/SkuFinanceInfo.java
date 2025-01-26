@@ -9,11 +9,12 @@ package com.memberclub.domain.dataobject.sku;
 import lombok.Data;
 
 /**
+ * @see com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo
  * author: 掘金五阳
  */
 @Data
 public class SkuFinanceInfo {
-    
+
     /**
      * 承包商 Id
      */
@@ -23,4 +24,14 @@ public class SkuFinanceInfo {
      * 结算价格
      */
     public Integer settlePriceFen;
+
+    /**
+     * 周期数量
+     */
+    public Integer periodCycle;
+
+    /**
+     * 结算产品类型
+     */
+    public Integer financeProductType;
 }

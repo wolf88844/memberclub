@@ -8,7 +8,10 @@ package com.memberclub.domain.dataobject.event.trade;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
+ * @see com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO
  * author: 掘金五阳
  */
 @Data
@@ -25,6 +28,10 @@ public class TradeEventDetail {
     private Long skuId;
 
     private Long eventTime;
+
+    private Integer periodIndex;
+
+    private List<String> itemTokens;
 
     private int performStatus;
 }
