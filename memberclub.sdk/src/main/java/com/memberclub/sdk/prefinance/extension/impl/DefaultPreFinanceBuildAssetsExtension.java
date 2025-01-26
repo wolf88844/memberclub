@@ -86,6 +86,6 @@ public class DefaultPreFinanceBuildAssetsExtension implements PreFinanceBuildAss
 
     @Override
     public void buildOnRefund(PreFinanceContext context) {
-        context.setBatchCode2Assets(Maps.newHashMap());
+        //context.setBatchCode2Assets(Maps.newHashMap());
     }
 }

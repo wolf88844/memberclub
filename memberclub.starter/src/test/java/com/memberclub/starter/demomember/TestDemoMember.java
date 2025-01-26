@@ -30,6 +30,7 @@ import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.order.LocationInfo;
@@ -390,6 +391,11 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         for (MemberSubOrder his : hisAfterApply) {
             Assert.assertEquals(SubOrderPerformStatusEnum.getReversedStatus(completeRefund),
                     his.getPerformStatus());
+            if (completeRefund) {
+                Assert.assertEquals(SubOrderStatusEnum.REFUNDED.getCode(), his.getStatus());
+            } else {
+                Assert.assertEquals(SubOrderStatusEnum.PERFORMED.getCode(), his.getStatus());
+            }
         }
         for (MemberPerformItem item : itemsAfterApply) {
             Assert.assertEquals(PerformItemStatusEnum.getReversedStatus(completeRefund),

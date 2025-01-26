@@ -96,26 +96,33 @@ public class PreFinanceDomainService {
 
     public PreFinanceEventDetail buildBasicFinanceEventDetail(PreFinanceContext context, MemberPerformItemDO item, List<AssetDO> assets) {
         PreFinanceEventDetail detail = new PreFinanceEventDetail();
-        detail.setAssetNum(item.getAssetCount());
         detail.setStime(item.getStime());
         detail.setEtime(item.getEtime());
+        detail.setAssetBatchCode(item.getBatchCode());
+        detail.setFinanceAssetType(item.getExtra().getSettleInfo().getFinanceAssetType());
         if (context.getPreFinanceEventEnum() == PreFinanceEventEnum.PERFORM) {
             detail.setAssetNum(item.getAssetCount());
+            buildFinanceAssets(assets, detail);
         } else if (context.getPreFinanceEventEnum() == PreFinanceEventEnum.EXPIRE) {
             detail.setAssetNum(assets.size());
+            buildFinanceAssets(assets, detail);
         } else if (context.getPreFinanceEventEnum() == PreFinanceEventEnum.REFUND) {
-            detail.setAssetNum(assets.size());
+            //detail.setAssetNum(assets.size());
+
         } else if (context.getPreFinanceEventEnum() == PreFinanceEventEnum.FREEZE_NON_REFUND) {
             detail.setAssetNum(assets.size());
+            buildFinanceAssets(assets, detail);
         }
 
-        detail.setFinanceAssetType(item.getExtra().getSettleInfo().getFinanceAssetType());
+        return detail;
+    }
+
+    private void buildFinanceAssets(List<AssetDO> assets, PreFinanceEventDetail detail) {
         List<FinanceAssetDO> financeAssets = CollectionUtilEx.map(assets, (asset) -> {
             FinanceAssetDO financeAssetDO = new FinanceAssetDO();
             financeAssetDO.setAssetId(String.valueOf(asset.getAssetId()));
             return financeAssetDO;
         });
         detail.setAssets(financeAssets);
-        return detail;
     }
 }

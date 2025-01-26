@@ -24,7 +24,7 @@ public class PreFinanceEventDetail {
     /**
      * 期望数量
      */
-    private int assetNum;
+    private Integer assetNum;
 
     /**
      * 结算资产类型
