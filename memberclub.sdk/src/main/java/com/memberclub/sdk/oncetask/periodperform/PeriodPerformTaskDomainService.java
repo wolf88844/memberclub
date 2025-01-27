@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
-import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
@@ -20,10 +19,8 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.entity.trade.OnceTask;
-import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mybatis.mappers.trade.OnceTaskDao;
-import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.oncetask.periodperform.extension.PeriodPerformTaskDomainExtension;
 import com.memberclub.sdk.perform.service.domain.PerformDataObjectBuildFactory;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,8 +56,8 @@ public class PeriodPerformTaskDomainService {
         List<OnceTask> tasks = context.getTasks().stream()
                 .map(onceTaskDO -> PerformConvertor.INSTANCE.toOnceTask(onceTaskDO))
                 .collect(Collectors.toList());
-
-
+        extensionManager.getExtension(BizScene.of(context.getPerformContext().getBizType()),
+                PeriodPerformTaskDomainExtension.class).onCreate(context, tasks);
     }
 
     public void buildActivePeriodTasks(ReversePerformContext context,
