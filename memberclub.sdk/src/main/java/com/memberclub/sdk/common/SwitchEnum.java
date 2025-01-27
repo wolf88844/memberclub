@@ -15,12 +15,41 @@ import org.springframework.util.Assert;
  */
 public enum SwitchEnum {
 
+    /**
+     * 加锁超时时间
+     */
     LOCK_TIMEOUT_SECONDS("lock_time", 10),
+    /**
+     * 履约重试最大次数
+     */
     PERFORM_RETRY_MAX_TIME("perform_retry_max_time", 5),
+    /**
+     * 售后降级开关
+     */
     AFTERSALE_DEGRADE("aftersale_degrade_%s", false),
+    /**
+     * 售后计划摘要默认版本
+     */
     AFTERSALE_PLAN_GENERATE_DIGEST_VERSION("aftersale_plan_generate_digest_version", 1),
+    /**
+     * 售后计划摘要降级
+     */
     AFTERSALE_PLAN_GENERATE_DIGEST_CHECK_DEGRADE("aftersale_plan_generate_digest_check_degrade", false),
+    /***
+     * 预结算消费的重试次数
+     */
     TRADE_EVENT_FOR_PRE_FINANCE_RETRY_TIMES("com.memberclub.trade.event.consumer.prefinance.retryTimes", 3),
+
+    /**
+     * 任务扫描 持续的最大天数, 如每个任务的 Stime+ 35天内均需要触发(如未执行成功)
+     */
+    ONCE_TASK_SCAN_PERIOD_PERFORM_ELASPED_DAYS("once_task_scan_period_perform_elasped_days", 35),
+
+    /**
+     * 任务扫描,提前触发的天数, 如某个任务的 now < stime but (stime-1days) < now ,则可以被扫描到
+     */
+    ONCE_TASK_SCAN_PERIOD_PERFORM_PRE_DAYS("once_task_scan_period_perform_pre_days", 1),
+    
     ;
 
 

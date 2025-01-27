@@ -6,6 +6,8 @@
  */
 package com.memberclub.infrastructure.mapstruct;
 
+import com.memberclub.domain.context.oncetask.execute.OnceTaskExecuteContext;
+import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDetail;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
@@ -35,5 +37,7 @@ public interface CommonConvertor {
 
     })
     public TradeEventDetailDO toTradeEventDetailDO(TradeEventDetail detail);
+
+    public OnceTaskExecuteContext toOnceTaskExecuteContext(OnceTaskTriggerContext context);
 
 }

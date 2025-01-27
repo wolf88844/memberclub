@@ -20,7 +20,7 @@ public @interface Retryable {
 
     public int initialDelaySeconds() default 5;
 
-    public int maxDelaySeconds() default 60;
+    public int maxDelaySeconds() default 10;
 
     public int maxTimes() default 5;
 

@@ -15,6 +15,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * author: 掘金五阳
@@ -35,6 +36,19 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
             "</foreach>",
             "</script>"})
     public List<OnceTask> queryTasks(@Param("userId") long userId, @Param("taskTokens") List<String> taskTokens);
+
+    @Select("<script> SELECT * FROM " + TABLE_NAME +
+            " WHERE biz_type=#{bizType} AND id>#{minId} " +
+            " AND stime &gt;= #{minStime} AND stime &lt;= #{maxStime}" +
+            " ORDER BY id" +
+            " LIMIT #{pageSize}" +
+            "</script>")
+    public List<OnceTask> scanTasks(@Param("bizType") Integer bizType,
+                                    @Param("userIds") Set<Long> userIds,
+                                    @Param("minStime") Long minStime,
+                                    @Param("maxStime") Long maxStime,
+                                    @Param("minId") Long minId,
+                                    @Param("pageSize") Integer pageSize);
 
     @Select({"<script> SELECT * FROM ", TABLE_NAME,
             "WHERE user_id=#{userId} ",

@@ -24,6 +24,7 @@ import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
+import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
@@ -62,6 +63,7 @@ import com.memberclub.infrastructure.mybatis.mappers.trade.MemberSubOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.OnceTaskDao;
 import com.memberclub.sdk.aftersale.service.AftersaleBizService;
 import com.memberclub.sdk.perform.service.PerformBizService;
+import com.memberclub.starter.job.OnceTaskTriggerBizService;
 import com.memberclub.starter.util.JustUnitTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -225,6 +227,42 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             performBizService.periodPerform(taskDO);
             checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
         }
+        verifyData(cmd, 3);
+
+        //Thread.sleep(1000000);
+    }
+
+    @Autowired
+    private OnceTaskTriggerBizService onceTaskTriggerBizService;
+
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndMutilPeriodCardAndPeriodPerformTrigger() {
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT);
+        PurchaseSubmitResponse response = submit(cycle3Sku, 1);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
+
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
+        verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
+
+        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
+
+        OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
+        triggerCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+
+        onceTaskTriggerBizService.triggerPeriodPerform(triggerCmd);
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(2, msgs.size()));
+
+
         verifyData(cmd, 3);
 
         //Thread.sleep(1000000);
@@ -441,7 +479,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
             for (OnceTask task : tasks) {
                 if (task.getStatus() == OnceTaskStatusEnum.CANCEL.getCode() ||
-                        task.getStatus() == OnceTaskStatusEnum.SUCC.getCode()) {
+                        task.getStatus() == OnceTaskStatusEnum.SUCCESS.getCode()) {
 
                 } else {
                     Assert.fail("任务状态异常:" + task.getStatus());

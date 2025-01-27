@@ -8,7 +8,7 @@ package com.memberclub.domain.common;
 
 import com.memberclub.domain.contants.StringContants;
 
-import static com.memberclub.domain.contants.StringContants.*;
+import static com.memberclub.domain.contants.StringContants.DISCOUNT_COUPON_RIGHT_TYPE;
 
 /**
  * @author 掘金五阳
@@ -38,6 +38,18 @@ public enum SceneEnum {
 
 
     /*****************************************/
+    /**
+     * @see com.memberclub.domain.context.oncetask.common.TaskTypeEnum
+     * 任务
+     */
+    PERIOD_PERFORM_TASK_TYPE("1"),
+
+    FINANCE_EXPIRE_TASK_TYPE("2"),
+
+    AFTERSALE_EXPIRE_REFUND_TASK_TYPE("3"),
+    
+    /*****************************************/
+
     ;
 
 

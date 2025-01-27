@@ -12,7 +12,7 @@ package com.memberclub.domain.context.oncetask.common;
 public enum TaskTypeEnum {
 
     PERIOD_PERFORM(1, "周期履约"),
-    SETTLE_EXPIRE(1, "结算过期任务"),
+    FINANCE_EXPIRE(1, "结算过期任务"),
     AFTERSALE_EXPIRE_REFUND(1, "售后过期退"),
     ;
 

@@ -6,11 +6,14 @@
  */
 package com.memberclub.domain.exception;
 
+import lombok.Getter;
+
 /**
  * @author 掘金五阳
  */
 public class MemberException extends RuntimeException {
 
+    @Getter
     ResultCode code;
 
     public MemberException(ResultCode code) {

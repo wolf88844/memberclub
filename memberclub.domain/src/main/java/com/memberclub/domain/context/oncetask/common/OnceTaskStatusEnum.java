@@ -15,7 +15,7 @@ public enum OnceTaskStatusEnum {
     PROCESSING(9, "执行中"),
     CANCEL(19, "取消"),
     FAIL(29, "失败"),
-    SUCC(39, "成功");
+    SUCCESS(39, "成功");
 
     private int value;
 

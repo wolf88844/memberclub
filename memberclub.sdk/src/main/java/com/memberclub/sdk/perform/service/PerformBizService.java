@@ -20,6 +20,7 @@ import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
+import com.memberclub.domain.exception.MemberException;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.build.PerformAcceptOrderExtension;
@@ -49,11 +50,19 @@ public class PerformBizService {
         PeriodPerformExecuteExtension extension =
                 extensionManager.getExtension(BizScene.of(context.getBizType()), PeriodPerformExecuteExtension.class);
 
-        extension.buildContext(task, context);
-
-        extension.periodPerform(context);
-
-        return null;
+        PerformResp resp = new PerformResp();
+        try {
+            extension.buildContext(task, context);
+            extension.periodPerform(context);
+            resp.setSuccess(true);
+            resp.setNeedRetry(false);
+            return resp;
+        } catch (MemberException e) {
+            CommonLog.error("周期履约异常 task:{}", task, e);
+            resp.setSuccess(false);
+            resp.setNeedRetry(e.getCode().isNeedRetry());
+            return resp;
+        }
     }
 
 

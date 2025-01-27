@@ -9,6 +9,7 @@ package com.memberclub.domain.dataobject.task;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
+import com.memberclub.domain.context.oncetask.execute.OnceTaskExecuteContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import lombok.Data;
@@ -49,5 +50,20 @@ public class OnceTaskDO {
                          SubOrderReversePerformContext context) {
         setUtime(System.currentTimeMillis());
         setStatus(OnceTaskStatusEnum.CANCEL);
+    }
+
+    public void onStartExecute(OnceTaskExecuteContext context) {
+        setStatus(OnceTaskStatusEnum.PROCESSING);
+        setUtime(System.currentTimeMillis());
+    }
+
+    public void onExecuteSuccess(OnceTaskExecuteContext context) {
+        setStatus(OnceTaskStatusEnum.SUCCESS);
+        setUtime(System.currentTimeMillis());
+    }
+
+    public void onExecuteFail(OnceTaskExecuteContext context) {
+        setStatus(OnceTaskStatusEnum.FAIL);
+        setUtime(System.currentTimeMillis());
     }
 }
