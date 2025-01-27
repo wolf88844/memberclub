@@ -14,6 +14,7 @@ import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.event.trade.TradeEvent;
@@ -38,6 +39,11 @@ public class DefaultTradeEventDomainExtension implements TradeEventDomainExtensi
                                               MemberSubOrderDO subOrder,
                                               TradeEventDO event) {
 
+        return toEventValue(event);
+    }
+
+    @Override
+    public String onPeriodPerformSuccessForSubOrder(PeriodPerformContext context, TradeEventDO event) {
         return toEventValue(event);
     }
 

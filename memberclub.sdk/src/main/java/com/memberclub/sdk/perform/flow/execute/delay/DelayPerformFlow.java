@@ -34,15 +34,16 @@ public class DelayPerformFlow extends SubFlowNode<PerformContext, DelayItemConte
             return;
         }
 
-        Map<Integer, List<MemberPerformItemDO>> itemMap = context.getCurrentSubOrderPerformContext()
+        Map<Integer, List<MemberPerformItemDO>> phase2Items = context.getCurrentSubOrderPerformContext()
                 .getDelayPerformItems().stream()
-                .collect(Collectors.groupingBy((item) -> item.getRightType().getCode()));
+                .collect(Collectors.groupingBy((item) -> item.getPhase()));
 
-        for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : itemMap.entrySet()) {
+
+        for (Map.Entry<Integer, List<MemberPerformItemDO>> entry : phase2Items.entrySet()) {
             DelayItemContext itemContext = new DelayItemContext();
             itemContext.setItems(entry.getValue());
             itemContext.setPerformContext(context);
-            itemContext.setRightType(entry.getKey());
+            itemContext.setPhase(entry.getKey());
             itemContext.setSubOrderPerformContext(context.getCurrentSubOrderPerformContext());
             flowChainService.execute(getSubChain(), itemContext);
         }

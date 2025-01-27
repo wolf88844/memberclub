@@ -52,6 +52,9 @@ import com.memberclub.infrastructure.lock.impl.LocalDistributedLock;
 import com.memberclub.infrastructure.mapstruct.AftersaleConvertor;
 import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.infrastructure.mapstruct.PerformCustomConvertor;
+import com.memberclub.infrastructure.mq.MQTopicEnum;
+import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
+import com.memberclub.infrastructure.mq.MessageQueueDebugFacade;
 import com.memberclub.infrastructure.mybatis.mappers.trade.AftersaleOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberOrderDao;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberPerformItemDao;
@@ -74,6 +77,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -184,10 +188,13 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Mockito.reset(localDistributedLock);
     }
 
+    @Autowired
+    private MessageQuenePublishFacade messageQuenePublishFacade;
 
     @SneakyThrows
     @Test
     public void testDefaultMemberAndMutilPeriodCardAndPeriodPerform() {
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT);
         PurchaseSubmitResponse response = submit(cycle3Sku, 1);
         MemberOrderDO memberOrder = response.getMemberOrderDO();
 
@@ -201,7 +208,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
-        verifyTaskData(cmd, 4);
+        verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
 
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
 
@@ -212,11 +219,30 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             taskDO.setContent(contentDO);
             return taskDO;
         }).collect(Collectors.toList());
+
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
         for (OnceTaskDO taskDO : taskDOS) {
             performBizService.periodPerform(taskDO);
+            checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
         }
         verifyData(cmd, 3);
+
         //Thread.sleep(1000000);
+    }
+
+    public void checkMessageAndReset(MQTopicEnum topic) {
+        checkMessageAndReset(topic, (msgs) -> {
+        });
+    }
+
+    public void checkMessageAndReset(MQTopicEnum topic, Consumer<List<String>> consumer) {
+        if (ApplicationContextUtils.isUnitTest()) {
+            if (messageQuenePublishFacade instanceof MessageQueueDebugFacade) {
+                List<String> messages = ((MessageQueueDebugFacade) messageQuenePublishFacade).getMessage(topic.getName());
+                ((MessageQueueDebugFacade) messageQuenePublishFacade).resetMsgs(MQTopicEnum.TRADE_EVENT.getName());
+                consumer.accept(messages);
+            }
+        }
     }
 
 
@@ -235,7 +261,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
-        verifyTaskData(cmd, 4);
+        verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
+
         //Thread.sleep(1000000);
     }
 
@@ -254,7 +281,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         Assert.assertTrue(resp.isSuccess());
         verifyData(cmd, 1);
 
-        verifyTaskData(cmd, 4);
+        verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
 
 
         AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();

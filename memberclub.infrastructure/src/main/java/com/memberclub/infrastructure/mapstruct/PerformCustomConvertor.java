@@ -25,9 +25,9 @@ import com.memberclub.domain.dataobject.aftersale.AftersaleOrderStatusEnum;
 import com.memberclub.domain.dataobject.aftersale.ApplySkuInfoDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
+import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.TaskContentDO;
@@ -185,6 +185,7 @@ public class PerformCustomConvertor {
         content.setSubTradeId(context.getSubOrderPerformContext().getSubOrder().getSubTradeId());
         content.setTradeId(context.getPerformContext().getTradeId());
         content.setSkuId(context.getSubOrderPerformContext().getSubOrder().getSkuId());
+        content.setPhase(context.getPhase());
 
         List<PerformTaskContentItemDO> contentItems = Lists.newArrayList();
         for (MemberPerformItemDO item : items) {

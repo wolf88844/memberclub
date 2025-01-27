@@ -9,10 +9,13 @@ package com.memberclub.sdk.event.trade.service.domain;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.CollectionUtilEx;
+import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
@@ -21,6 +24,7 @@ import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.sdk.event.trade.extension.TradeEventDomainExtension;
@@ -56,6 +60,30 @@ public class TradeEventDomainService {
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
     }
+
+    public void onPeriodPerformSuccess(PeriodPerformContext context) {
+        TradeEventDO event = new TradeEventDO();
+        event.setEventType(TradeEventEnum.SUB_ORDER_PERIOD_PERFORM_SUCCESS);
+        TradeEventDetailDO detail = new TradeEventDetailDO();
+        detail.setEventTime(TimeUtil.now());
+        detail.setSkuId(context.getSkuId());
+        detail.setTradeId(context.getTradeId());
+        detail.setBizType(context.getBizType());
+        detail.setSubTradeId(context.getContent().getSubTradeId());
+        detail.setUserId(context.getUserId());
+        detail.setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        detail.setPeriodIndex(context.getContent().getPhase());
+        detail.setItemTokens(
+                CollectionUtilEx.map(context.getContent().getItems(), PerformTaskContentItemDO::getItemToken)
+        );
+        event.setDetail(detail);
+
+        String value = extensionManager.getExtension(BizScene.of(context.getBizType()),
+                TradeEventDomainExtension.class).onPeriodPerformSuccessForSubOrder(context, event);
+
+        messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+    }
+
 
     public void onReversePerformSuccessForSubOrder(ReversePerformContext context,
                                                    SubOrderReversePerformContext subOrderReversePerformContext,

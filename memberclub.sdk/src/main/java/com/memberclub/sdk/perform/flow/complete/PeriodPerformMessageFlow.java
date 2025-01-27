@@ -8,6 +8,8 @@ package com.memberclub.sdk.perform.flow.complete;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.sdk.event.trade.service.domain.TradeEventDomainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,8 +19,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class PeriodPerformMessageFlow extends FlowNode<PeriodPerformContext> {
 
+    @Autowired
+    private TradeEventDomainService tradeEventDomainService;
+
     @Override
     public void process(PeriodPerformContext context) {
 
+    }
+
+    @Override
+    public void success(PeriodPerformContext context) {
+        tradeEventDomainService.onPeriodPerformSuccess(context);
     }
 }

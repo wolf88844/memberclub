@@ -12,6 +12,7 @@ import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.SubOrderPerformContext;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
@@ -27,6 +28,9 @@ public interface TradeEventDomainExtension extends BaseExtension {
                                               SubOrderPerformContext subOrderPerformContext,
                                               MemberSubOrderDO subOrder,
                                               TradeEventDO event);
+
+
+    public String onPeriodPerformSuccessForSubOrder(PeriodPerformContext context, TradeEventDO event);
 
     public String onReversePerformSuccessForSubOrder(ReversePerformContext context,
                                                      SubOrderReversePerformContext subOrderReversePerformContext,

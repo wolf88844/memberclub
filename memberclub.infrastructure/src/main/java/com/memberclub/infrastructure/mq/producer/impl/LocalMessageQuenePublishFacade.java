@@ -14,6 +14,7 @@ import com.memberclub.infrastructure.mq.MQQueueEnum;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import com.memberclub.infrastructure.mq.MessageQueueConsumerFacade;
+import com.memberclub.infrastructure.mq.MessageQueueDebugFacade;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ import java.util.concurrent.Executors;
 
 @ConditionalOnProperty(name = "memberclub.infrastructure.mq", havingValue = "local", matchIfMissing = false)
 @Service
-public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade {
+public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade, MessageQueueDebugFacade {
 
     public static final Logger LOG = LoggerFactory.getLogger(LocalMessageQuenePublishFacade.class);
 
@@ -40,6 +41,8 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
     private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     private Map<String, List<MessageQueueConsumerFacade>> consumerMap = Maps.newHashMap();
+
+    private Map<String, List<String>> topic2Msgs = Maps.newHashMap();
 
     @PostConstruct
     public void init() {
@@ -58,17 +61,28 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
         }
     }
 
+    @Override
+    public List<String> getMessage(String topic) {
+        return topic2Msgs.get(topic);
+    }
+
+    @Override
+    public void resetMsgs(String topic) {
+        topic2Msgs.remove(topic);
+    }
 
     @Retryable()
     @Override
     public void publish(MQTopicEnum event, String message) {
-        executorService.execute(() -> {
-            if (consumerMap.containsKey(event.toString())) {
-                for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event.toString())) {
-                    LOG.info("本地local 模式收到消息:{}", message);
-                    messageQueueConsumerFacade.consume(message);
-                }
+        //executorService.execute(() -> {
+        topic2Msgs.putIfAbsent(event.toString(), Lists.newArrayList());
+        topic2Msgs.get(event.toString()).add(message);
+        if (consumerMap.containsKey(event.toString())) {
+            for (MessageQueueConsumerFacade messageQueueConsumerFacade : consumerMap.get(event.toString())) {
+                LOG.info("本地local 模式收到消息:{}", message);
+                messageQueueConsumerFacade.consume(message);
             }
-        });
+        }
+        //});
     }
 }

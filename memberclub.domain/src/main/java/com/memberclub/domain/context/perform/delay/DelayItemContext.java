@@ -24,8 +24,6 @@ public class DelayItemContext {
 
     public SubOrderPerformContext subOrderPerformContext;
 
-    private int rightType;
-
     private int phase;
 
     public List<MemberPerformItemDO> items;

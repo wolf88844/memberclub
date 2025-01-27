@@ -25,5 +25,7 @@ public class PerformTaskContentDO extends TaskContentDO {
 
     private Long subTradeId;
 
+    private Integer phase;
+
     private List<PerformTaskContentItemDO> items;
 }

@@ -46,6 +46,7 @@ public class DemoMemberPreFinanceHandleExtension implements PreFinanceHandleExte
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_REFUND_SUCCESS, SubOrderPerformStatusEnum.COMPLETED_REVERSED, PreFinanceEventEnum.REFUND);
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_REFUND_SUCCESS, SubOrderPerformStatusEnum.PORTION_REVERSED, PreFinanceEventEnum.REFUND);
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_FREEZE_SUCCESS, SubOrderPerformStatusEnum.PORTION_REVERSED, PreFinanceEventEnum.FREEZE_NON_REFUND);
+        financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_PERIOD_PERFORM_SUCCESS, SubOrderPerformStatusEnum.PERFORM_SUCC, PreFinanceEventEnum.PERFORM);
     }
 
     private static Map<PreFinanceEventEnum, FlowChain<PreFinanceContext>> financeEventChainMap = Maps.newHashMap();
