@@ -7,6 +7,7 @@
 package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.EncrptUtils;
@@ -29,6 +30,7 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
+import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
@@ -239,7 +241,10 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     @Test
     public void testDefaultMemberAndMutilPeriodCardAndPeriodPerformTrigger() {
         checkMessageAndReset(MQTopicEnum.TRADE_EVENT);
-        PurchaseSubmitResponse response = submit(cycle3Sku, 1);
+
+        PurchaseSubmitCmd submitCmd = buildPurchaseSubmitCmd(cycle3Sku.getSkuId(), 1);
+        submitCmd.setUserId(userIdGenerator.incrementAndGet());
+        PurchaseSubmitResponse response = purchaseBizService.submit(submitCmd);
         MemberOrderDO memberOrder = response.getMemberOrderDO();
 
 
@@ -257,6 +262,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
 
         OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
+        triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
         triggerCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
 
         onceTaskTriggerBizService.triggerPeriodPerform(triggerCmd);

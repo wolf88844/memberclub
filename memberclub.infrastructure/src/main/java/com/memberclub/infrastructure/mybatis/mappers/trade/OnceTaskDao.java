@@ -40,6 +40,10 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
     @Select("<script> SELECT * FROM " + TABLE_NAME +
             " WHERE biz_type=#{bizType} AND id>#{minId} " +
             " AND stime &gt;= #{minStime} AND stime &lt;= #{maxStime}" +
+            " <if test='userIds != null'> AND user_id IN " +
+            "<foreach collection='userIds' item='userId' separator=',' open='(' close=')'> " +
+            " #{userId} " +
+            "</foreach> </if>" +
             " ORDER BY id" +
             " LIMIT #{pageSize}" +
             "</script>")

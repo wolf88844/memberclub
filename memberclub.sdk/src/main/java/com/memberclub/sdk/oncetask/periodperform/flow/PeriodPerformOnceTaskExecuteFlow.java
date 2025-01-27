@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.oncetask.execute.flow;
+package com.memberclub.sdk.oncetask.periodperform.flow;
 
 import com.memberclub.common.flow.FlowNode;
 import com.memberclub.common.log.CommonLog;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class OnceTaskExecuteOnPeriodPerformFlow extends FlowNode<OnceTaskExecuteContext> {
+public class PeriodPerformOnceTaskExecuteFlow extends FlowNode<OnceTaskExecuteContext> {
 
     @Autowired
     private PerformBizService performBizService;

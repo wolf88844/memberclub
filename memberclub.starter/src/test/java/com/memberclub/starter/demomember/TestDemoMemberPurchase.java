@@ -81,7 +81,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     }
 
 
-    private PurchaseSubmitCmd buildPurchaseSubmitCmd(long skuId, int buyCount) {
+    public PurchaseSubmitCmd buildPurchaseSubmitCmd(long skuId, int buyCount) {
         PurchaseSubmitCmd cmd = new PurchaseSubmitCmd();
         LocationInfo locationInfo = new LocationInfo();
         ClientInfo clientInfo = new ClientInfo();

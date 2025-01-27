@@ -17,10 +17,7 @@ import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
  */
 @ExtensionConfig(desc = "任务触发扩展点", must = false, type = ExtensionType.COMMON)
 public interface OnceTaskTriggerExtension extends BaseExtension {
-
-    default void buildTriggerStime(OnceTaskTriggerContext context) {
-    }
-
+    
     public void trigger(OnceTaskTriggerContext context);
 
     public void execute(OnceTaskExecuteContext context);

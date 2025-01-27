@@ -45,23 +45,11 @@ public class OnceTaskDomainService {
 
     public void scanTasks(OnceTaskTriggerJobContext context, Consumer<List<OnceTask>> consumer) {
         Long minId = 0L;
-        int page = 100;
+        int page = 1;
         List<OnceTask> tasks = null;
         do {
-            /*LambdaQueryWrapper<OnceTask> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(OnceTask::getStatus,
-                    CollectionUtilEx.mapToList(context.getContext().getStatus(), OnceTaskStatusEnum::getCode));
-            queryWrapper.eq(OnceTask::getBizType, context.getContext().getBizType().getCode());
-            queryWrapper.ge(OnceTask::getStime, context.getContext().getMinTriggerStime());
-            queryWrapper.le(OnceTask::getStime, context.getContext().getMaxTriggerStime());
-            queryWrapper.gt(OnceTask::getId, minId);
-            queryWrapper.orderByAsc(OnceTask::getId);
-
-            IPage<OnceTask> iPage = onceTaskDao.selectPage(Page.of(0L, page), queryWrapper);
-            minId = tasks.get(tasks.size() - 1).getId();*/
-
             tasks = onceTaskDao.scanTasks(context.getContext().getBizType().getCode(),
-                    context.getContext().getUserIds(),
+                     context.getContext().getUserIds(),
                     context.getContext().getMinTriggerStime(), context.getContext().getMaxTriggerStime(),
                     minId, page);
             if (CollectionUtils.isNotEmpty(tasks)) {

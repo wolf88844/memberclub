@@ -60,25 +60,7 @@ public class PeriodPerformTaskDomainService {
                 .map(onceTaskDO -> PerformConvertor.INSTANCE.toOnceTask(onceTaskDO))
                 .collect(Collectors.toList());
 
-        int count = onceTaskDao.insertIgnoreBatch(tasks);
-        if (count < tasks.size()) {
-            List<String> taskTokens = tasks.stream().map(OnceTask::getTaskToken).collect(Collectors.toList());
-            List<OnceTask> taskFromDb = onceTaskDao.queryTasks(context.getPerformContext().getUserId(), taskTokens);
-            if (taskFromDb.size() != count) {
-                CommonLog.error("新增周期履约任务失败 dbCount:{}, expectCount:{}, dbtasks:{}", taskFromDb.size(), tasks.size(), taskFromDb);
-                Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),
-                        "task_create", false);
-                throw ResultCode.PERIOD_PERFORM_TASK_CREATE_ERROR.newException();
-            } else {
-                CommonLog.warn("幂等新增周期履约任务 count:{}, tasks:{}", count, tasks);
-                Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),
-                        "task_create", "duplicated");
-            }
-            return;
-        }
-        CommonLog.warn("新增周期履约任务成功 count:{}, tasks:{}", count, tasks);
-        Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),
-                "task_create", true);
+
     }
 
     public void buildActivePeriodTasks(ReversePerformContext context,
