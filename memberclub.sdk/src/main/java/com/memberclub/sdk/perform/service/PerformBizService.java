@@ -21,13 +21,13 @@ import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.exception.MemberException;
-import com.memberclub.infrastructure.mapstruct.PerformConvertor;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.perform.extension.build.PerformAcceptOrderExtension;
 import com.memberclub.sdk.perform.extension.build.PerformSeparateOrderExtension;
 import com.memberclub.sdk.perform.extension.execute.PerformExecuteExtension;
 import com.memberclub.sdk.perform.extension.period.PeriodPerformExecuteExtension;
 import com.memberclub.sdk.perform.extension.reverse.ReversePerformExtension;
+import com.memberclub.sdk.perform.service.domain.PerformDataObjectBuildFactory;
 import com.memberclub.sdk.perform.service.domain.PerformDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,15 +44,18 @@ public class PerformBizService {
     @Autowired
     private PerformDomainService performDomainService;
 
+    @Autowired
+    private PerformDataObjectBuildFactory performDataObjectBuildFactory;
+
     @UserLog(domain = LogDomainEnum.PERFORM)
     public PerformResp periodPerform(OnceTaskDO task) {
-        PeriodPerformContext context = PerformConvertor.INSTANCE.toPeriodPerformContextForTask(task);
+        PeriodPerformContext context = performDataObjectBuildFactory.buildPeriodPerformContext(task);
         PeriodPerformExecuteExtension extension =
                 extensionManager.getExtension(BizScene.of(context.getBizType()), PeriodPerformExecuteExtension.class);
+        extension.buildContext(task, context);
 
         PerformResp resp = new PerformResp();
         try {
-            extension.buildContext(task, context);
             extension.periodPerform(context);
             resp.setSuccess(true);
             resp.setNeedRetry(false);

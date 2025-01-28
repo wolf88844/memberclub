@@ -11,12 +11,13 @@ import com.memberclub.common.flow.FlowChain;
 import com.memberclub.domain.context.oncetask.execute.OnceTaskExecuteContext;
 import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
 import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerJobContext;
-import com.memberclub.sdk.oncetask.periodperform.flow.PeriodPerformOnceTaskExecuteFlow;
 import com.memberclub.sdk.oncetask.execute.OnceTaskRepositoryFlow;
-import com.memberclub.sdk.oncetask.trigger.extension.OnceTaskSeprateFlow;
+import com.memberclub.sdk.oncetask.periodperform.flow.PeriodPerformOnceTaskExecuteFlow;
 import com.memberclub.sdk.oncetask.trigger.extension.OnceTaskTriggerExtension;
 import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskConcurrentTriggerFlow;
-import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskScanTableFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskScanDataFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskSeprateFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskTriggerMonitorFlow;
 
 import javax.annotation.PostConstruct;
 
@@ -34,8 +35,9 @@ public abstract class DefaultPeriodPerformTriggerExtension implements OnceTaskTr
         triggerFlowChain = FlowChain.newChain(OnceTaskTriggerContext.class)
                 .addNode(OnceTaskSeprateFlow.class)
                 .addNodeWithSubNodes(OnceTaskConcurrentTriggerFlow.class, OnceTaskTriggerJobContext.class,
-                        ImmutableList.of(OnceTaskScanTableFlow.class)
+                        ImmutableList.of(OnceTaskScanDataFlow.class)
                 )
+                .addNode(OnceTaskTriggerMonitorFlow.class)
         ;
 
         executelowChain = FlowChain.newChain(OnceTaskExecuteContext.class)

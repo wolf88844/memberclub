@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.sdk.oncetask.trigger.extension;
+package com.memberclub.sdk.oncetask.trigger.flow;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.flow.SubFlowNode;

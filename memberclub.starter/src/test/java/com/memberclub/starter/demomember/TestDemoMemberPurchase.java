@@ -7,6 +7,7 @@
 package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
+import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
@@ -81,7 +82,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     }
 
 
-    public PurchaseSubmitCmd buildPurchaseSubmitCmd(long skuId, int buyCount) {
+    public static PurchaseSubmitCmd buildPurchaseSubmitCmd(long skuId, int buyCount) {
         PurchaseSubmitCmd cmd = new PurchaseSubmitCmd();
         LocationInfo locationInfo = new LocationInfo();
         ClientInfo clientInfo = new ClientInfo();
@@ -122,11 +123,13 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     }
 
 
-    public SkuInfoDO buildDoubleRightsSku(int cycle) {
+    public static SkuInfoDO buildDoubleRightsSku(int cycle) {
         SkuInfoDO skuInfoDO = new SkuInfoDO();
 
         skuInfoDO.setSkuId(RandomUtils.nextInt());
         skuInfoDO.setBizType(BizTypeEnum.DEMO_MEMBER.getCode());
+        skuInfoDO.setCtime(TimeUtil.now());
+        skuInfoDO.setUtime(TimeUtil.now());
 
         SkuSaleInfo skuSaleInfo = new SkuSaleInfo();
         skuSaleInfo.setOriginPriceFen(3000);

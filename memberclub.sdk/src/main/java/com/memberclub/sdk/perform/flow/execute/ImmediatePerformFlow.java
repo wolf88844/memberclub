@@ -39,6 +39,7 @@ public class ImmediatePerformFlow extends SubFlowNode<PerformContext, PerformIte
             itemContext.setUserId(context.getUserId());
             itemContext.setBizType(context.getBizType());
             itemContext.setTradeId(context.getTradeId());
+            itemContext.setSubTradeId(String.valueOf(context.getCurrentSubOrderPerformContext().getSubOrder().getSubTradeId()));
             itemContext.setRightType(entry.getKey());
             itemContext.setPeriodPerform(false);
             itemContext.setSkuId(context.getCurrentSubOrderPerformContext().getSubOrder().getSkuId());

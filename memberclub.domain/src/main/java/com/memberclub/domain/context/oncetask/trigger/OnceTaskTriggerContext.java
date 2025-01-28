@@ -13,6 +13,7 @@ import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * author: 掘金五阳
@@ -35,4 +36,15 @@ public class OnceTaskTriggerContext {
     private Long maxTriggerStime;
 
     private List<TriggerJobDO> jobs;
+
+
+    /*************************************************************/
+    //监控数据
+    public AtomicLong successCount;
+
+    public AtomicLong failCount;
+
+    public AtomicLong totalCount;
+    /*************************************************************/
+
 }

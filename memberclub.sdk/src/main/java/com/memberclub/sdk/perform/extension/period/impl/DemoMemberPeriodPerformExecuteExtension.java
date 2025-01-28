@@ -61,5 +61,6 @@ public class DemoMemberPeriodPerformExecuteExtension implements PeriodPerformExe
         context.setContent(((PerformTaskContentDO) task.getContent()));
         context.setSkuId(context.getContent().getSkuId());
         context.setTradeId(context.getContent().getTradeId());
+        context.setSubTradeId(String.valueOf(context.getContent().getSubTradeId()));
     }
 }

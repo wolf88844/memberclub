@@ -19,6 +19,8 @@ public class PerformTaskContentItemDO {
 
     private String tradeId;
 
+    private String subTradeId;
+
     private long skuId;
 
     private long rightId;

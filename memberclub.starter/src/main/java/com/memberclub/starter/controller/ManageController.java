@@ -7,6 +7,7 @@
 package com.memberclub.starter.controller;
 
 import com.google.common.collect.Lists;
+import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
@@ -26,6 +27,7 @@ import com.memberclub.starter.controller.convertor.PurchaseConvertor;
 import com.memberclub.starter.controller.vo.PurchaseSubmitVO;
 import com.memberclub.starter.controller.vo.TestPayRequest;
 import com.memberclub.starter.controller.vo.test.PurchaseTestRequest;
+import com.memberclub.starter.job.OnceTaskTriggerBizService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -142,6 +144,14 @@ public class ManageController {
             return pay(payRequest);
         }
         throw new RuntimeException("提单失败");
+    }
+
+    @Autowired
+    private OnceTaskTriggerBizService onceTaskTriggerBizService;
+
+    @PostMapping("/task/trigger")
+    public void periodPerform(@RequestBody OnceTaskTriggerCmd cmd) {
+        onceTaskTriggerBizService.triggerPeriodPerform(cmd);
     }
 
 }

@@ -44,6 +44,10 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
             "<foreach collection='userIds' item='userId' separator=',' open='(' close=')'> " +
             " #{userId} " +
             "</foreach> </if>" +
+            " AND status IN " +
+            "<foreach collection='statuses' item='status' separator=',' open='(' close=')'> " +
+            " #{status} " +
+            "</foreach>" +
             " ORDER BY id" +
             " LIMIT #{pageSize}" +
             "</script>")
@@ -51,6 +55,7 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
                                     @Param("userIds") Set<Long> userIds,
                                     @Param("minStime") Long minStime,
                                     @Param("maxStime") Long maxStime,
+                                    @Param("statuses") Set<Integer> statuses,
                                     @Param("minId") Long minId,
                                     @Param("pageSize") Integer pageSize);
 

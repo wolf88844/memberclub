@@ -28,6 +28,8 @@ public class PerformItemContext {
 
     private String tradeId;
 
+    private String subTradeId;
+
     private long skuId;
 
     private boolean periodPerform;

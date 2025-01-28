@@ -13,10 +13,11 @@ import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
 import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerJobContext;
 import com.memberclub.sdk.oncetask.aftersale.flow.ExpiredRefundOnceTaskExecuteFlow;
 import com.memberclub.sdk.oncetask.execute.OnceTaskRepositoryFlow;
-import com.memberclub.sdk.oncetask.trigger.extension.OnceTaskSeprateFlow;
 import com.memberclub.sdk.oncetask.trigger.extension.OnceTaskTriggerExtension;
 import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskConcurrentTriggerFlow;
-import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskScanTableFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskScanDataFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskSeprateFlow;
+import com.memberclub.sdk.oncetask.trigger.flow.OnceTaskTriggerMonitorFlow;
 
 import javax.annotation.PostConstruct;
 
@@ -33,8 +34,9 @@ public abstract class DefaultExpireRefundTriggerExtension implements OnceTaskTri
         triggerFlowChain = FlowChain.newChain(OnceTaskTriggerContext.class)
                 .addNode(OnceTaskSeprateFlow.class)
                 .addNodeWithSubNodes(OnceTaskConcurrentTriggerFlow.class, OnceTaskTriggerJobContext.class,
-                        ImmutableList.of(OnceTaskScanTableFlow.class)
+                        ImmutableList.of(OnceTaskScanDataFlow.class)
                 )
+                .addNode(OnceTaskTriggerMonitorFlow.class)
         ;
 
         executelowChain = FlowChain.newChain(OnceTaskExecuteContext.class)

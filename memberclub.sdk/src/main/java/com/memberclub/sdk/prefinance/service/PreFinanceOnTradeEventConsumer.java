@@ -41,7 +41,7 @@ public class PreFinanceOnTradeEventConsumer implements MessageQueueConsumerFacad
         TradeEventDO event = buildEvent(message);
         extensionManager.getExtension(BizScene.of(event.getDetail().getBizType()),
                 PreFinanceHandleExtension.class).handle(event);
-        return ConsumeStatauEnum.retry;
+        return ConsumeStatauEnum.success;
     }
 
     private TradeEventDO buildEvent(String message) {

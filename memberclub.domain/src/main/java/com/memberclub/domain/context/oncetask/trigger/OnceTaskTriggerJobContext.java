@@ -17,4 +17,16 @@ public class OnceTaskTriggerJobContext {
     private OnceTaskTriggerContext context;
 
     private TriggerJobDO job;
+
+    public long successCount;
+
+    public long failCount;
+
+    public long totalCount;
+
+    public void reduceMonitor() {
+        context.successCount.addAndGet(successCount);
+        context.failCount.addAndGet(failCount);
+        context.totalCount.addAndGet(totalCount);
+    }
 }

@@ -205,6 +205,7 @@ public class PerformCustomConvertor {
         itemPO.setBizType(context.getBizType().getCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
+        itemPO.setSubTradeId(String.valueOf(subOrderPerformContext.getSubOrder().getSubTradeId()));
         itemPO.setSkuId(subOrderPerformContext.getSubOrder().getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());
@@ -217,6 +218,7 @@ public class PerformCustomConvertor {
         itemPO.setBizType(context.getBizType().getCode());
         itemPO.setUserId(context.getUserId());
         itemPO.setTradeId(context.getTradeId());
+        itemPO.setSubTradeId(context.getSubTradeId());
         itemPO.setSkuId(context.getSkuId());
         itemPO.setCtime(TimeUtil.now());
         itemPO.setUtime(TimeUtil.now());

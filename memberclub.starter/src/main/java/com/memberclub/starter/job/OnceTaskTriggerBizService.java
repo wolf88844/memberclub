@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.memberclub.sdk.common.SwitchEnum.ONCE_TASK_SCAN_PERIOD_PERFORM_ELASPED_DAYS;
 
@@ -59,6 +60,9 @@ public class OnceTaskTriggerBizService {
         context.setNow(TimeUtil.now());
         context.setMinTriggerStime(cmd.getMinTriggerStime());
         context.setMaxTriggerStime(cmd.getMaxTriggerStime());
+        context.setSuccessCount(new AtomicLong(0));
+        context.setFailCount(new AtomicLong(0));
+        context.setTotalCount(new AtomicLong(0));
 
         extensionManager.getExtension(BizScene.of(cmd.getBizType()),
                 OnceTaskTriggerExtension.class).trigger(context);

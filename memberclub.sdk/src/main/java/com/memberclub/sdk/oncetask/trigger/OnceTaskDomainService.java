@@ -8,9 +8,11 @@ package com.memberclub.sdk.oncetask.trigger;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
 import com.memberclub.domain.context.oncetask.execute.OnceTaskExecuteContext;
+import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
 import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerJobContext;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.entity.trade.OnceTask;
@@ -49,8 +51,9 @@ public class OnceTaskDomainService {
         List<OnceTask> tasks = null;
         do {
             tasks = onceTaskDao.scanTasks(context.getContext().getBizType().getCode(),
-                     context.getContext().getUserIds(),
+                    context.getContext().getUserIds(),
                     context.getContext().getMinTriggerStime(), context.getContext().getMaxTriggerStime(),
+                    CollectionUtilEx.mapToSet(context.getContext().getStatus(), OnceTaskStatusEnum::getCode),
                     minId, page);
             if (CollectionUtils.isNotEmpty(tasks)) {
                 minId = tasks.get(tasks.size() - 1).getId();
@@ -58,6 +61,7 @@ public class OnceTaskDomainService {
 
             consumer.accept(tasks);
         } while (CollectionUtils.isNotEmpty(tasks));
+        context.reduceMonitor();
     }
 
     public void execute(OnceTaskTriggerJobContext context, List<OnceTask> tasks) {
@@ -66,15 +70,26 @@ public class OnceTaskDomainService {
             OnceTaskExecuteContext executeContext = CommonConvertor.INSTANCE.toOnceTaskExecuteContext(context.getContext());
             executeContext.setOnceTask(taskDO);
             try {
+                context.totalCount++;
                 extensionManager.getExtension(BizScene.of(context.getContext().getBizType()),
                         OnceTaskTriggerExtension.class).execute(executeContext);
                 LOG.info("执行任务成功 bizType:{}, taskType:{}, taskToken:{}, taskGroupId:{}",
                         taskDO.getBizType(), taskDO.getTaskType(), taskDO.getTaskToken(), task.getTaskGroupId());
+                context.successCount++;
             } catch (Throwable e) {
                 LOG.error("执行 OnceTask任务失败 task:{}", taskDO, e);
+                context.failCount++;
             }
-
         }
+    }
+
+    public void monitor(OnceTaskTriggerContext context, Exception e) {
+        String result = e != null ? "失败" : "成功";
+        LOG.info("任务执行完成,结果:{} 总数:{} 成功数量:{}, 失败数量:{}",
+                result,
+                context.getTotalCount().get(),
+                context.getSuccessCount().get(),
+                context.getFailCount().get());
     }
 
     public void onStartExecute(OnceTaskExecuteContext context, OnceTaskDO task) {

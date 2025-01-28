@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class OnceTaskScanTableFlow extends FlowNode<OnceTaskTriggerJobContext> {
+public class OnceTaskScanDataFlow extends FlowNode<OnceTaskTriggerJobContext> {
 
     @Autowired
     private OnceTaskDomainService onceTaskDomainService;

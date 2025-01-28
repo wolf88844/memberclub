@@ -25,6 +25,8 @@ public class PeriodPerformContext {
 
     private String tradeId;
 
+    private String subTradeId;
+
     private long skuId;
 
     private OnceTaskDO task;

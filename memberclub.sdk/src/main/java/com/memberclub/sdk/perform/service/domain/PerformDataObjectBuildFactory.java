@@ -11,6 +11,7 @@ import com.memberclub.domain.context.perform.common.GrantTypeEnum;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
+import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
@@ -30,6 +31,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PerformDataObjectBuildFactory {
+
+    public PeriodPerformContext buildPeriodPerformContext(OnceTaskDO taskDO) {
+        PeriodPerformContext context = PerformConvertor.INSTANCE.toPeriodPerformContextForTask(taskDO);
+        context.setSubTradeId(String.valueOf(context.getContent().getSubTradeId()));
+        return context;
+    }
 
     public List<MemberPerformItemDO> toMemberPerformItemDOs(List<MemberPerformItem> items) {
         return items.stream().map(this::toMemberPerformItemDO).collect(Collectors.toList());
