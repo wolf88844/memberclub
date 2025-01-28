@@ -65,7 +65,7 @@ public class MemberPerformItemDomainService {
 
     @Retryable(initialDelaySeconds = 1, throwException = false)
     @Transactional(rollbackFor = Exception.class)
-    public void onPerformStatus(PerformItemContext context) {
+    public void onPerformSuccess(PerformItemContext context) {
         for (MemberPerformItemDO item : context.getItems()) {
             item.onFinishPerform(context);
             LambdaUpdateWrapper<MemberPerformItem> wrapper = new LambdaUpdateWrapper<>();

@@ -17,10 +17,13 @@ import com.memberclub.domain.context.prefinance.PreFinanceEvent;
 import com.memberclub.domain.context.prefinance.PreFinanceEventDetail;
 import com.memberclub.domain.context.prefinance.common.PreFinanceEventEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
+import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.facade.AssetDO;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
+import com.memberclub.infrastructure.mybatis.mappers.trade.OnceTaskDao;
 import com.memberclub.sdk.prefinance.extension.PreFinanceBuildAssetsExtension;
+import com.memberclub.sdk.prefinance.extension.PreFinanceDomainExtension;
 import com.memberclub.sdk.prefinance.extension.PreFinanceMessageBuildExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,12 @@ public class PreFinanceDomainService {
 
     @Autowired
     private MessageQuenePublishFacade messageQuenePublishFacade;
+
+    @Autowired
+    private PreFinanceDataObjectFactory preFinanceDataObjectFactory;
+
+    @Autowired
+    private OnceTaskDao onceTaskDao;
 
     public void buildAssets(PreFinanceContext preFinanceContext) {
         PreFinanceBuildAssetsExtension extension =
@@ -74,7 +83,7 @@ public class PreFinanceDomainService {
         event.setDetails(details);
 
         for (MemberPerformItemDO performItem : context.getPerformItems()) {
-            if (Boolean.FALSE.equals(performItem.getExtra().getSettleInfo().getFinanceable())) {
+            if (!performItem.isFinanceable()) {
                 CommonLog.warn("该履约项无需参与资产结算 itemToken:{}, assetBatchCode:{}",
                         performItem.getItemToken(), performItem.getBatchCode());
                 continue;
@@ -124,5 +133,20 @@ public class PreFinanceDomainService {
             return financeAssetDO;
         });
         detail.setAssets(financeAssets);
+    }
+
+    public void onCreateExpireTask(PreFinanceContext context) {
+        List<OnceTaskDO> taskDOList = Lists.newArrayList();
+        for (MemberPerformItemDO performItem : context.getPerformItems()) {
+            if (!performItem.isFinanceable()) {
+                CommonLog.warn("该履约项无需参与资产过期结算 itemToken:{}, assetBatchCode:{}",
+                        performItem.getItemToken(), performItem.getBatchCode());
+                continue;
+            }
+            OnceTaskDO task = preFinanceDataObjectFactory.buildFinanceExpireTask(context, performItem);
+            taskDOList.add(task);
+        }
+        extensionManager.getExtension(BizScene.of(context.getBizType()),
+                PreFinanceDomainExtension.class).onCreateExpiredTask(context, taskDOList);
     }
 }

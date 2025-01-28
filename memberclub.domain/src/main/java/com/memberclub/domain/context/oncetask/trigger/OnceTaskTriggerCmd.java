@@ -24,6 +24,8 @@ public class OnceTaskTriggerCmd {
 
     private Set<Long> userIds;
 
+    private Set<String> taskGroupIds;
+
     private TaskTypeEnum taskType;
 
     private List<OnceTaskStatusEnum> status;

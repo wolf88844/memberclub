@@ -32,7 +32,7 @@ public class PreFinanceContext {
 
     private String tradeId;
 
-    private Long subTradeId;
+    private String subTradeId;
 
     private Long skuId;
 

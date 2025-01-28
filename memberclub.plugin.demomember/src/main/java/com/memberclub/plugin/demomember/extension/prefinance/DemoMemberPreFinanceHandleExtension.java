@@ -25,6 +25,7 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.sdk.prefinance.extension.PreFinanceHandleExtension;
 import com.memberclub.sdk.prefinance.flow.PreFinanceBuildMemberAssetsFlow;
 import com.memberclub.sdk.prefinance.flow.PreFinanceBuildMemberOrderFlow;
+import com.memberclub.sdk.prefinance.flow.PreFinanceCreateExpiredTaskFlow;
 import com.memberclub.sdk.prefinance.flow.PreFinancePublishEventFlow;
 import com.memberclub.sdk.prefinance.flow.PreFinanceQueryAssetsFlow;
 
@@ -42,11 +43,12 @@ public class DemoMemberPreFinanceHandleExtension implements PreFinanceHandleExte
     private static Table<TradeEventEnum, SubOrderPerformStatusEnum, PreFinanceEventEnum> financeEventEnumTable = HashBasedTable.create();
 
     static {
-        financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_PERFORM_SUCCESS, SubOrderPerformStatusEnum.PERFORM_SUCC, PreFinanceEventEnum.PERFORM);
+        financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_PERFORM_SUCCESS, SubOrderPerformStatusEnum.PERFORM_SUCCESS, PreFinanceEventEnum.PERFORM);
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_REFUND_SUCCESS, SubOrderPerformStatusEnum.COMPLETED_REVERSED, PreFinanceEventEnum.REFUND);
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_REFUND_SUCCESS, SubOrderPerformStatusEnum.PORTION_REVERSED, PreFinanceEventEnum.REFUND);
         financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_FREEZE_SUCCESS, SubOrderPerformStatusEnum.PORTION_REVERSED, PreFinanceEventEnum.FREEZE_NON_REFUND);
-        financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_PERIOD_PERFORM_SUCCESS, SubOrderPerformStatusEnum.PERFORM_SUCC, PreFinanceEventEnum.PERFORM);
+        financeEventEnumTable.put(TradeEventEnum.SUB_ORDER_PERIOD_PERFORM_SUCCESS, SubOrderPerformStatusEnum.PERFORM_SUCCESS, PreFinanceEventEnum.PERFORM);
+        financeEventEnumTable.put(TradeEventEnum.MEMBER_PERFORM_ITEM_EXPIRE, SubOrderPerformStatusEnum.PERFORM_SUCCESS, PreFinanceEventEnum.EXPIRE);
     }
 
     private static Map<PreFinanceEventEnum, FlowChain<PreFinanceContext>> financeEventChainMap = Maps.newHashMap();
@@ -59,6 +61,7 @@ public class DemoMemberPreFinanceHandleExtension implements PreFinanceHandleExte
                 .addNode(PreFinanceBuildMemberAssetsFlow.class)
                 .addNode(PreFinanceQueryAssetsFlow.class)
                 .addNode(PreFinancePublishEventFlow.class)
+                .addNode(PreFinanceCreateExpiredTaskFlow.class)
                 //
                 ;
 
@@ -121,7 +124,7 @@ public class DemoMemberPreFinanceHandleExtension implements PreFinanceHandleExte
         context.setPreFinanceEventEnum(preFinanceEventEnum);
         context.setBizType(event.getDetail().getBizType());
         context.setSkuId(event.getDetail().getSkuId());
-        context.setSubTradeId(event.getDetail().getSubTradeId());
+        context.setSubTradeId(event.getDetail().getSubTradeId().toString());
         context.setTradeId(event.getDetail().getTradeId());
         context.setUserId(event.getDetail().getUserId());
         return context;

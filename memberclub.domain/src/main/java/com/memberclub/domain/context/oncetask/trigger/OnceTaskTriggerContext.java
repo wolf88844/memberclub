@@ -25,6 +25,8 @@ public class OnceTaskTriggerContext {
 
     private Set<Long> userIds;
 
+    private Set<String> taskGroupIds;
+
     private List<OnceTaskStatusEnum> status;
 
     private TaskTypeEnum taskType;

@@ -79,7 +79,7 @@ public class MemberOrderDomainService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    @Retryable
+    @Retryable(throwException = false)
     public void onSubmitSuccess(MemberOrderDO order) {
         LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(MemberOrder::getUserId, order.getUserId())
@@ -129,7 +129,7 @@ public class MemberOrderDomainService {
     }
 
 
-    @Retryable
+    @Retryable(throwException = false)
     @Transactional(rollbackFor = Exception.class)
     public void submitFail(MemberOrderDO order) {
         // TODO: 2025/1/4

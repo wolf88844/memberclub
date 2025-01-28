@@ -69,7 +69,7 @@ public class MemberSubOrderDO {
 
     public void onPerformSuccess(SubOrderPerformContext subOrderPerformContext) {
         setStatus(SubOrderStatusEnum.PERFORMED);
-        setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCCESS);
         setUtime(System.currentTimeMillis());
     }
 

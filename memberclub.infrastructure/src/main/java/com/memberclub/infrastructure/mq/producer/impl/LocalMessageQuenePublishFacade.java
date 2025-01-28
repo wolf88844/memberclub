@@ -71,7 +71,7 @@ public class LocalMessageQuenePublishFacade implements MessageQuenePublishFacade
         topic2Msgs.remove(topic);
     }
 
-    @Retryable()
+    @Retryable(throwException = false)
     @Override
     public void publish(MQTopicEnum event, String message) {
         //executorService.execute(() -> {

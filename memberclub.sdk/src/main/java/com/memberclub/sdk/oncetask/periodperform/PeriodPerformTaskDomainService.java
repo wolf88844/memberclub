@@ -14,6 +14,7 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
+import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
@@ -68,6 +69,7 @@ public class PeriodPerformTaskDomainService {
             LambdaQueryWrapper<OnceTask> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(OnceTask::getUserId, context.getUserId())
                     .eq(OnceTask::getTaskGroupId, String.valueOf(subOrderReversePerformContext.getSubTradeId()))
+                    .eq(OnceTask::getTaskType, TaskTypeEnum.PERIOD_PERFORM.getCode())
                     .in(OnceTask::getStatus, Lists.newArrayList(FAIL.getCode(), PROCESSING.getCode(), INIT.getCode()));
 
             List<OnceTask> tasks = onceTaskDao.selectList(queryWrapper);

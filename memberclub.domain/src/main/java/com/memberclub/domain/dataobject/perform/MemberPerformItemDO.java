@@ -72,4 +72,9 @@ public class MemberPerformItemDO implements Comparable {
         status = PerformItemStatusEnum.PERFORM_SUCCESS;
         utime = System.currentTimeMillis();
     }
+
+    public boolean isFinanceable() {
+        return !(Boolean.FALSE.equals(getExtra().getSettleInfo().getFinanceable()));
+    }
+
 }

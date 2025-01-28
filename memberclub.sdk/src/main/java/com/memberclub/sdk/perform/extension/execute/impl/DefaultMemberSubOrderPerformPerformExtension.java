@@ -40,7 +40,7 @@ public class DefaultMemberSubOrderPerformPerformExtension implements MemberSubOr
     @Override
     public void buildMemberSubOrderWhenPerformSuccess(PerformContext context, SubOrderPerformContext subOrderPerformContext) {
         subOrderPerformContext.getSubOrder().setStatus(SubOrderStatusEnum.PERFORMED);
-        subOrderPerformContext.getSubOrder().setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        subOrderPerformContext.getSubOrder().setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCCESS);
         subOrderPerformContext.getSubOrder().setUtime(TimeUtil.now());
         return;
     }

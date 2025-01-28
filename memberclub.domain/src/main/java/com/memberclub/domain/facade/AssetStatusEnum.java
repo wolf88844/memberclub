@@ -14,6 +14,7 @@ public enum AssetStatusEnum {
     UNUSE(0, "unuse"),
     USED(1, "used"),
     FREEZE(3, "freezed"),
+    EXPIRE(10, "expired"),
     ;
 
     private int value;
@@ -35,7 +36,7 @@ public enum AssetStatusEnum {
         throw new IllegalArgumentException("Invalid AssetStatusEnum value: " + value);
     }
 
-   
+
     @Override
     public String toString() {
         return this.name;

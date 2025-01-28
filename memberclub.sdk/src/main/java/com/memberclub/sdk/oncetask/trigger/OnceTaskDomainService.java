@@ -40,21 +40,23 @@ public class OnceTaskDomainService {
 
     @Autowired
     private ExtensionManager extensionManager;
+
     @Autowired
     private OnceTaskDao onceTaskDao;
+
     @Autowired
     private PerformDataObjectBuildFactory performDataObjectBuildFactory;
 
     public void scanTasks(OnceTaskTriggerJobContext context, Consumer<List<OnceTask>> consumer) {
         Long minId = 0L;
-        int page = 1;
+        int page = 10;
         List<OnceTask> tasks = null;
         do {
             tasks = onceTaskDao.scanTasks(context.getContext().getBizType().getCode(),
-                    context.getContext().getUserIds(),
+                    context.getContext().getUserIds(), context.getContext().getTaskGroupIds(),
                     context.getContext().getMinTriggerStime(), context.getContext().getMaxTriggerStime(),
                     CollectionUtilEx.mapToSet(context.getContext().getStatus(), OnceTaskStatusEnum::getCode),
-                    minId, page);
+                    context.getContext().getTaskType().getCode(), minId, page);
             if (CollectionUtils.isNotEmpty(tasks)) {
                 minId = tasks.get(tasks.size() - 1).getId();
             }
@@ -71,7 +73,7 @@ public class OnceTaskDomainService {
             executeContext.setOnceTask(taskDO);
             try {
                 context.totalCount++;
-                extensionManager.getExtension(BizScene.of(context.getContext().getBizType()),
+                extensionManager.getExtension(BizScene.of(context.getContext().getBizType(), context.getContext().getTaskType().getCode() + ""),
                         OnceTaskTriggerExtension.class).execute(executeContext);
                 LOG.info("执行任务成功 bizType:{}, taskType:{}, taskToken:{}, taskGroupId:{}",
                         taskDO.getBizType(), taskDO.getTaskType(), taskDO.getTaskToken(), task.getTaskGroupId());
@@ -85,8 +87,8 @@ public class OnceTaskDomainService {
 
     public void monitor(OnceTaskTriggerContext context, Exception e) {
         String result = e != null ? "失败" : "成功";
-        LOG.info("任务执行完成,结果:{} 总数:{} 成功数量:{}, 失败数量:{}",
-                result,
+        LOG.info("{} 任务执行完成,结果:{} 总数:{} 成功数量:{}, 失败数量:{}",
+                context.getTaskType(), result,
                 context.getTotalCount().get(),
                 context.getSuccessCount().get(),
                 context.getFailCount().get());
@@ -97,6 +99,7 @@ public class OnceTaskDomainService {
         LambdaUpdateWrapper<OnceTask> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OnceTask::getUserId, task.getUserId());
         wrapper.eq(OnceTask::getTaskToken, task.getTaskToken());
+        wrapper.eq(OnceTask::getTaskType, context.getTaskType().getCode());
         wrapper.ne(OnceTask::getStatus, OnceTaskStatusEnum.SUCCESS.getCode());
         wrapper.set(OnceTask::getStatus, task.getStatus().getCode());
 
@@ -111,6 +114,7 @@ public class OnceTaskDomainService {
         LambdaUpdateWrapper<OnceTask> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OnceTask::getUserId, task.getUserId());
         wrapper.eq(OnceTask::getTaskToken, task.getTaskToken());
+        wrapper.eq(OnceTask::getTaskType, context.getTaskType().getCode());
         wrapper.set(OnceTask::getStatus, task.getStatus().getCode());
 
         int cnt = onceTaskDao.update(null, wrapper);
@@ -124,6 +128,7 @@ public class OnceTaskDomainService {
         LambdaUpdateWrapper<OnceTask> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OnceTask::getUserId, task.getUserId());
         wrapper.eq(OnceTask::getTaskToken, task.getTaskToken());
+        wrapper.eq(OnceTask::getTaskType, context.getTaskType().getCode());
         wrapper.ne(OnceTask::getStatus, OnceTaskStatusEnum.SUCCESS.getCode());
         wrapper.set(OnceTask::getStatus, task.getStatus().getCode());
 

@@ -71,7 +71,7 @@ public class TradeEventDomainService {
         detail.setBizType(context.getBizType());
         detail.setSubTradeId(context.getContent().getSubTradeId());
         detail.setUserId(context.getUserId());
-        detail.setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCC);
+        detail.setPerformStatus(SubOrderPerformStatusEnum.PERFORM_SUCCESS);
         detail.setPeriodIndex(context.getContent().getPhase());
         detail.setItemTokens(
                 CollectionUtilEx.map(context.getContent().getItems(), PerformTaskContentItemDO::getItemToken)

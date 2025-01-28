@@ -25,6 +25,7 @@ import com.memberclub.domain.context.aftersale.contant.RefundTypeEnum;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewCmd;
 import com.memberclub.domain.context.aftersale.preview.AfterSalePreviewResponse;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
+import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
 import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerCmd;
 import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformResp;
@@ -81,6 +82,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -214,7 +216,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
         verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
 
-        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
+        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId(), TaskTypeEnum.PERIOD_PERFORM.getCode());
 
         List<OnceTaskDO> taskDOS = tasks.stream().map(task -> {
             OnceTaskDO taskDO = PerformConvertor.INSTANCE.toOnceTaskDO(task);
@@ -259,7 +261,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
         verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
 
-        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId());
+        List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId(), TaskTypeEnum.PERIOD_PERFORM.getCode());
 
         OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
         triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
@@ -274,16 +276,89 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         //Thread.sleep(1000000);
     }
 
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberAndMutilPeriodCardAndPeriodPerformTriggerAndExpire() {
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT);
+
+        //提单
+        PurchaseSubmitCmd submitCmd = buildPurchaseSubmitCmd(cycle3Sku.getSkuId(), 1);
+        submitCmd.setUserId(userIdGenerator.incrementAndGet());
+        PurchaseSubmitResponse response = purchaseBizService.submit(submitCmd);
+        MemberOrderDO memberOrder = response.getMemberOrderDO();
+
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        //开始履约
+        PerformCmd cmd = buildCmd(memberOrder);
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(1, msgs.size()));
+        verifyTaskData(cmd, cycle3Sku.getPerformConfig().getConfigs().get(0).getCycle() - 1);
+
+        List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+
+        //触发周期履约
+        OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
+        triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
+        triggerCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+
+        checkMessageAndReset(MQTopicEnum.PRE_FINANCE_EVENT, null);
+        List<OnceTask> onceTasks2 = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(), items.get(0).getSubTradeId(), TaskTypeEnum.FINANCE_EXPIRE.getCode());
+
+        onceTaskTriggerBizService.triggerPeriodPerform(triggerCmd);
+        items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
+        List<OnceTask> onceTasks1 = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(), items.get(0).getSubTradeId(), TaskTypeEnum.FINANCE_EXPIRE.getCode());
+        checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(2, msgs.size()));
+        checkMessageAndReset(MQTopicEnum.PRE_FINANCE_EVENT, (msgs) -> Assert.assertEquals(2, msgs.size()));
+
+        verifyData(cmd, 3);
+
+
+        //修改资产状态
+
+        for (MemberPerformItem item : items) {
+            List<AssetDO> assetDos = couponGrantFacade.assetBatchCode2Assets.get(item.getBatchCode());
+            for (AssetDO assetDO : assetDos) {
+                if (assetDO.getStatus() == AssetStatusEnum.UNUSE.getCode()) {
+                    assetDO.setStatus(AssetStatusEnum.EXPIRE.getCode());
+                }
+            }
+        }
+
+        Thread.sleep(1000);
+
+        //触发结算过期
+        OnceTaskTriggerCmd financeExpireCmd = new OnceTaskTriggerCmd();
+        financeExpireCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        financeExpireCmd.setTaskGroupIds(Sets.newHashSet(items.get(0).getSubTradeId()));
+        financeExpireCmd.setMinTriggerStime(TimeUtil.now() - 1000000);
+        financeExpireCmd.setMaxTriggerStime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(100));
+        onceTaskTriggerBizService.triggerFinanceExpire(financeExpireCmd);
+        List<OnceTask> onceTasks = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(), items.get(0).getSubTradeId(), TaskTypeEnum.FINANCE_EXPIRE.getCode());
+        checkMessageAndReset(MQTopicEnum.PRE_FINANCE_EVENT, (msgs) -> Assert.assertEquals(6, msgs.size()));
+
+        //Thread.sleep(1000000);
+    }
+
     public void checkMessageAndReset(MQTopicEnum topic) {
-        checkMessageAndReset(topic, (msgs) -> {
-        });
+        checkMessageAndReset(topic, null);
     }
 
     public void checkMessageAndReset(MQTopicEnum topic, Consumer<List<String>> consumer) {
         if (ApplicationContextUtils.isUnitTest()) {
             if (messageQuenePublishFacade instanceof MessageQueueDebugFacade) {
                 List<String> messages = ((MessageQueueDebugFacade) messageQuenePublishFacade).getMessage(topic.getName());
-                ((MessageQueueDebugFacade) messageQuenePublishFacade).resetMsgs(MQTopicEnum.TRADE_EVENT.getName());
+                ((MessageQueueDebugFacade) messageQuenePublishFacade).resetMsgs(topic.getName());
+                if (consumer == null) {
+                    return;
+                }
+                if (messages == null) {
+                    throw new RuntimeException("没有获取到消息 ");
+                }
                 consumer.accept(messages);
             }
         }
@@ -481,7 +556,9 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         }
         for (MemberSubOrder memberSubOrder : hisAfterApply) {
             List<OnceTask> tasks =
-                    onceTaskDao.queryTasksByUserIdAndGroupId(memberSubOrder.getUserId(), String.valueOf(memberSubOrder.getSubTradeId()));
+                    onceTaskDao.queryTasksByUserIdAndGroupId(memberSubOrder.getUserId(),
+                            String.valueOf(memberSubOrder.getSubTradeId()),
+                            TaskTypeEnum.PERIOD_PERFORM.getCode());
 
             for (OnceTask task : tasks) {
                 if (task.getStatus() == OnceTaskStatusEnum.CANCEL.getCode() ||
@@ -567,7 +644,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     private void verifyData(PerformCmd cmd, int buyCount) {
         List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
         for (MemberSubOrder memberSubOrder : subOrders) {
-            Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCC.getCode(), memberSubOrder.getPerformStatus());
+            Assert.assertEquals(SubOrderPerformStatusEnum.PERFORM_SUCCESS.getCode(), memberSubOrder.getPerformStatus());
         }
         Assert.assertEquals(1, subOrders.size());
         List<MemberPerformItem> items = memberPerformItemDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
@@ -587,7 +664,8 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), cmd.getTradeId());
 
         for (MemberSubOrder subOrder : subOrders) {
-            List<OnceTask> tasks = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(), String.valueOf(subOrder.getSubTradeId()));
+            List<OnceTask> tasks = onceTaskDao.queryTasksByUserIdAndGroupId(cmd.getUserId(),
+                    String.valueOf(subOrder.getSubTradeId()), TaskTypeEnum.PERIOD_PERFORM.getCode());
             Assert.assertEquals(taskSize, tasks.size());
 
             for (OnceTask task : tasks) {

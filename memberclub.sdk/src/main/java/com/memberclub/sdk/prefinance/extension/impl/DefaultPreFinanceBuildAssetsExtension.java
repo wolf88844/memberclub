@@ -77,11 +77,14 @@ public class DefaultPreFinanceBuildAssetsExtension implements PreFinanceBuildAss
     @Override
     public void buildOnExpire(PreFinanceContext context) {
         for (Map.Entry<String, List<AssetDO>> entry : context.getBatchCode2Assets().entrySet()) {
-            List<AssetDO> assets = entry.getValue().stream().filter(asset -> asset.getStatus() == AssetStatusEnum.UNUSE.getCode())
-                    .filter(asset -> asset.getStime() < TimeUtil.now() && TimeUtil.now() < asset.getEtime())
-                    .collect(Collectors.toList());
+            List<AssetDO> assets = CollectionUtilEx.filter(entry.getValue(), this::isExpire);
             entry.setValue(assets);
         }
+    }
+
+    private boolean isExpire(AssetDO asset) {
+        return asset.getStatus() == AssetStatusEnum.EXPIRE.getCode() ||
+                (asset.getStime() < TimeUtil.now() && TimeUtil.now() < asset.getEtime() && asset.getStatus() == AssetStatusEnum.UNUSE.getCode());
     }
 
     @Override

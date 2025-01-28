@@ -6,12 +6,14 @@
  */
 package com.memberclub.sdk.perform.service.domain;
 
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.context.perform.common.GrantTypeEnum;
 import com.memberclub.domain.context.perform.common.PerformItemStatusEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.perform.common.RightTypeEnum;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.domain.context.prefinance.task.FinanceTaskContent;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.item.PerformItemExtraInfo;
 import com.memberclub.domain.dataobject.task.OnceTaskDO;
@@ -69,7 +71,14 @@ public class PerformDataObjectBuildFactory {
     public OnceTaskDO toOnceTaskDO(OnceTask task) {
         OnceTaskDO taskDO = PerformConvertor.INSTANCE.toOnceTaskDO(task);
         TaskContentDO contentDO = PerformCustomConvertor.toTaskContentDO(task.getContent(), task.getTaskContentClassName());
-        taskDO.setTradeId(((PerformTaskContentDO) contentDO).getTradeId());
+        if (contentDO instanceof PerformTaskContentDO) {
+            taskDO.setTradeId(((PerformTaskContentDO) contentDO).getTradeId());
+        } else if (contentDO instanceof FinanceTaskContent) {
+            taskDO.setTradeId(((FinanceTaskContent) contentDO).getTradeId());
+        } else {
+            CommonLog.error("未知的任务类型:{}, className:{}, content:{}", task.getTaskType(), task.getTaskContentClassName(), contentDO);
+        }
+
         taskDO.setContent(contentDO);
         return taskDO;
     }

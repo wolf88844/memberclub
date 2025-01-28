@@ -25,7 +25,7 @@ public class PreFinanceBuildMemberOrderFlow extends FlowNode<PreFinanceContext> 
 
     @Override
     public void process(PreFinanceContext context) {
-        MemberOrderDO order = memberOrderDomainService.getMemberOrderDO(context.getUserId(), context.getTradeId(), context.getSubTradeId());
+        MemberOrderDO order = memberOrderDomainService.getMemberOrderDO(context.getUserId(), context.getTradeId(), Long.valueOf(context.getSubTradeId()));
         context.setMemberOrder(order);
         context.setSubOrder(CollectionUtils.isNotEmpty(order.getSubOrders()) ? order.getSubOrders().get(0) : null);
     }

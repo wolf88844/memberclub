@@ -42,6 +42,6 @@ public class MemberPerformItemFlow extends FlowNode<PerformItemContext> {
     @Override
     public void success(PerformItemContext context) {
         //下游保证批量发放成功
-        memberPerformItemDomainService.onPerformStatus(context);
+        memberPerformItemDomainService.onPerformSuccess(context);
     }
 }

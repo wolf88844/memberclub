@@ -50,11 +50,18 @@ public class OnceTaskTriggerBizService {
         trigger(cmd);
     }
 
+    public void triggerFinanceExpire(OnceTaskTriggerCmd cmd) {
+        cmd.setTaskType(TaskTypeEnum.FINANCE_EXPIRE);
+        cmd.setStatus(Lists.newArrayList(OnceTaskStatusEnum.FAIL, OnceTaskStatusEnum.INIT, OnceTaskStatusEnum.PROCESSING));
+
+        trigger(cmd);
+    }
 
     public void trigger(OnceTaskTriggerCmd cmd) {
         OnceTaskTriggerContext context = new OnceTaskTriggerContext();
         context.setBizType(cmd.getBizType());
         context.setUserIds(cmd.getUserIds());
+        context.setTaskGroupIds(cmd.getTaskGroupIds());
         context.setStatus(cmd.getStatus());
         context.setTaskType(cmd.getTaskType());
         context.setNow(TimeUtil.now());
@@ -64,7 +71,7 @@ public class OnceTaskTriggerBizService {
         context.setFailCount(new AtomicLong(0));
         context.setTotalCount(new AtomicLong(0));
 
-        extensionManager.getExtension(BizScene.of(cmd.getBizType()),
+        extensionManager.getExtension(BizScene.of(cmd.getBizType(), cmd.getTaskType().getCode() + ""),
                 OnceTaskTriggerExtension.class).trigger(context);
     }
 }

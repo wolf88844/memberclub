@@ -11,6 +11,7 @@ import com.memberclub.common.annotation.Route;
 import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.oncetask.common.TaskTypeEnum;
 import com.memberclub.domain.context.perform.delay.DelayItemContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
@@ -45,7 +46,8 @@ public class DefaultPeriodPerformTaskDomainExtension implements PeriodPerformTas
             return;
         }
         List<String> taskTokens = tasks.stream().map(OnceTask::getTaskToken).collect(Collectors.toList());
-        List<OnceTask> taskFromDb = onceTaskDao.queryTasks(context.getPerformContext().getUserId(), taskTokens);
+        List<OnceTask> taskFromDb = onceTaskDao.queryTasks(context.getPerformContext().getUserId(),
+                taskTokens, TaskTypeEnum.PERIOD_PERFORM.getCode());
         if (taskFromDb.size() == count) {
             CommonLog.warn("幂等新增周期履约任务 count:{}, tasks:{}", count, tasks);
             Monitor.PERFORM_EXECUTE.counter(context.getPerformContext().getBizType(),
