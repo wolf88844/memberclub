@@ -14,5 +14,12 @@ import lombok.Data;
 @Data
 public class SkuInventoryInfo {
 
+    private boolean enable;
+
+    /**
+     * @see
+     */
+    private int type;
+
     private Long total;
 }

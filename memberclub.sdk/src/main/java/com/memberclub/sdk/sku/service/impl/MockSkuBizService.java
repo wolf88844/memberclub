@@ -6,10 +6,14 @@
  */
 package com.memberclub.sdk.sku.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.entity.inventory.Inventory;
+import com.memberclub.infrastructure.mybatis.mappers.sku.InventoryDao;
 import com.memberclub.infrastructure.sku.SkuBizService;
+import com.memberclub.sdk.sku.service.MemberSkuDataObjectFactory;
 import com.memberclub.sdk.sku.service.SkuDomainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +40,12 @@ public class MockSkuBizService implements SkuBizService {
     @Autowired
     private SkuDomainService skuDomainService;
 
+    @Autowired
+    private InventoryDao inventoryDao;
+
+    @Autowired
+    private MemberSkuDataObjectFactory memberSkuDataObjectFactory;
+
     @Scheduled(fixedDelay = 10000, initialDelay = 1000)
     public void init() {
         List<SkuInfoDO> skus = skuDomainService.queryAllSkus();
@@ -47,6 +57,19 @@ public class MockSkuBizService implements SkuBizService {
 
     public void addSku(long skuId, SkuInfoDO skuInfo) {
         map.put(skuId, skuInfo);
+    }
+
+    public void addSkuAndCreateInventory(long skuId, SkuInfoDO skuInfo) {
+        map.put(skuId, skuInfo);
+        if (skuInfo.getInventoryInfo().isEnable()) {
+            Inventory inventory = memberSkuDataObjectFactory.buildInventoryFromSku(skuInfo);
+            int cnt = inventoryDao.insertIgnoreBatch(Lists.newArrayList(inventory));
+            if (cnt >= 1) {
+                LOG.warn("成功创建商品库存 {}", inventory);
+            } else {
+                LOG.warn("商品库存已存在,无需再次创建 {}", skuInfo.getSkuId());
+            }
+        }
     }
 
     @Override

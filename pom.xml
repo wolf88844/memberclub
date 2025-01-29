@@ -128,12 +128,20 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!--<dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+            </dependency>-->
             <!--SpringCloud End-->
 
 
             <!--其他重要组件-->
 
+            <!-- <dependency>
+                 <groupId>org.apache.shardingsphere</groupId>
+                 <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                 <version>4.1.1</version>
+             </dependency>-->
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>

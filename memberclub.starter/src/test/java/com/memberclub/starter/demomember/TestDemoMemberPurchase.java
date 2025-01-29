@@ -18,28 +18,37 @@ import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
+import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
+import com.memberclub.domain.entity.inventory.Inventory;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
+import com.memberclub.domain.exception.MemberException;
+import com.memberclub.domain.exception.ResultCode;
+import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
+import com.memberclub.sdk.inventory.service.InventoryDomainService;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * author: 掘金五阳
@@ -51,6 +60,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     public SkuInfoDO cycle3Sku = null;
 
+    public SkuInfoDO inventoryEnabledSku = null;
+
     @Autowired
     public PurchaseBizService purchaseBizService;
 
@@ -59,6 +70,82 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     @SneakyThrows
     public void testSubmit() {
         PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(doubleRightsSku.getSkuId(), 2);
+        PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
+
+        Assert.assertEquals(true, response.isSuccess());
+
+        List<MemberSubOrder> subOrders = memberSubOrderDao.selectByTradeId(cmd.getUserId(), response.getMemberOrderDO().getTradeId());
+
+        MemberOrder order = memberOrderDao.selectByTradeId(cmd.getUserId(), response.getMemberOrderDO().getTradeId());
+        Assert.assertEquals(MemberOrderStatusEnum.SUBMITED.getCode(), order.getStatus());
+
+        for (MemberSubOrder subOrder : subOrders) {
+            //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
+        }
+        releaseLock(response.getLockValue());
+        waitH2();
+    }
+
+
+    @Test
+    @SneakyThrows
+    public void testSubmitInventoryLoss() {
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(inventoryEnabledSku.getSkuId(), 101);
+        try {
+            PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
+            releaseLock(response.getLockValue());
+            Assert.assertEquals(false, response.isSuccess());
+        } catch (MemberException e) {
+            if (e.getCause() instanceof MemberException) {
+                if (((MemberException) e.getCause()).getCode() == ResultCode.INVENTORY_DECREMENT_FAIL) {
+                    return;
+                }
+            }
+            Assert.fail("库存扣减校验失败");
+        }
+    }
+
+    @SpyBean
+    private MockCommonOrderFacadeSPI mockCommonOrderFacadeSPI;
+
+    @Autowired
+    private InventoryDomainService inventoryDomainService;
+
+    @Test
+    @SneakyThrows
+    public void testSubmitInventoryRollback() {
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(inventoryEnabledSku.getSkuId(), 4);
+
+        List<Inventory> inventories = inventoryDomainService.queryInventorys(inventoryEnabledSku.getSkuId());
+        Assert.assertEquals(1, inventories.size());
+        Inventory pre = inventories.get(0);
+        try {
+
+            Mockito.doThrow(new RuntimeException("mock submit order error"))
+                    .when(mockCommonOrderFacadeSPI).submit(Mockito.any());
+
+            PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
+            releaseLock(response.getLockValue());
+            Assert.assertEquals(false, response.isSuccess());
+        } catch (MemberException e) {
+            if (e.getCode() == ResultCode.COMMON_ORDER_SUBMIT_ERROR) {
+
+                inventories = inventoryDomainService.queryInventorys(inventoryEnabledSku.getSkuId());
+                Assert.assertEquals(pre.getSaleCount(), inventories.get(0).getSaleCount());
+                Assert.assertEquals(pre.getVersion() + 2, inventories.get(0).getVersion());
+
+                return;
+            }
+            Assert.fail("失败");
+        } finally {
+            Mockito.reset(mockCommonOrderFacadeSPI);
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    public void testSubmitInventory() {
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(inventoryEnabledSku.getSkuId(), 3);
         PurchaseSubmitResponse response = purchaseBizService.submit(cmd);
 
         Assert.assertEquals(true, response.isSuccess());
@@ -120,13 +207,25 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
         cycle3Sku = buildDoubleRightsSku(3);
         mockSkuBizService.addSku(cycle3Sku.getSkuId(), cycle3Sku);
+
+
+        inventoryEnabledSku = buildDoubleRightsSku(1);
+
+        SkuInventoryInfo inventoryInfo = new SkuInventoryInfo();
+        inventoryInfo.setEnable(true);
+        inventoryInfo.setTotal(100L);
+        inventoryInfo.setType(InventoryTypeEnum.TOTAL.getCode());
+        inventoryEnabledSku.setInventoryInfo(inventoryInfo);
+        mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
     }
 
+
+    private static AtomicLong skuIdGenerator = new AtomicLong(200300);
 
     public static SkuInfoDO buildDoubleRightsSku(int cycle) {
         SkuInfoDO skuInfoDO = new SkuInfoDO();
 
-        skuInfoDO.setSkuId(RandomUtils.nextInt());
+        skuInfoDO.setSkuId(skuIdGenerator.incrementAndGet());
         skuInfoDO.setBizType(BizTypeEnum.DEMO_MEMBER.getCode());
         skuInfoDO.setCtime(TimeUtil.now());
         skuInfoDO.setUtime(TimeUtil.now());
@@ -151,6 +250,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         viewInfo.setInternalDesc("大额红包 5 元");
         viewInfo.setInternalName("大额红包 5 元");
         skuInfoDO.setViewInfo(viewInfo);
+
 
         SkuPerformConfigDO skuPerformConfigDO = new SkuPerformConfigDO();
         skuInfoDO.setPerformConfig(skuPerformConfigDO);

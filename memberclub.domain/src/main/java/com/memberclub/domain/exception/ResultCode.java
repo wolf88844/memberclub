@@ -28,11 +28,19 @@ public enum ResultCode {
     AFTERSALE_DO_APPLY_ERROR(18, "售后受理执行失败", true),
     EXTRACT_MESSAGE_ERROR(19, "解析消息异常", false),
     PERIOD_PERFORM_EXECUTE_ERROR(20, "周期履约任务执行失败", true),
+    INVENTORY_DECREMENT_FAIL(21, "扣减库存失败", false, false),
+    INVENTORY_DECREMENT_DUPLICATED(22, "扣减库存重复", false, false),
+    INVENTORY_ROLLBACK_INVALID(23, "回补库存无效", false, false),
+    INVENTORY_ROLLBACK_FAIL(24, "回补库存失败", true, false),
+
     ;
 
     private int value;
 
     private String msg;
+
+    @Getter
+    private boolean success;
 
     @Getter
     private boolean needRetry;
@@ -41,6 +49,14 @@ public enum ResultCode {
         this.value = value;
         this.msg = msg;
         this.needRetry = needRetry;
+        this.success = false;
+    }
+
+    ResultCode(int value, String msg, boolean success, boolean needRetry) {
+        this.value = value;
+        this.msg = msg;
+        this.needRetry = needRetry;
+        this.success = success;
     }
 
     public static ResultCode findByCode(int value) throws IllegalArgumentException {

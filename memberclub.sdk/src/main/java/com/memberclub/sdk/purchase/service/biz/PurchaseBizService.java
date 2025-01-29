@@ -15,6 +15,7 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.exception.MemberException;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,10 @@ public class PurchaseBizService {
         } catch (MemberException e) {
             context.monitorException(e);
             throw e;
+        } catch (Exception e) {
+            MemberException me = ResultCode.COMMON_ORDER_SUBMIT_ERROR.newException("提单流程异常", e);
+            context.monitorException(me);
+            throw me;
         }
         // TODO: 2025/1/4 补充返回值
     }
