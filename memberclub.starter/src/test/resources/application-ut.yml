@@ -54,6 +54,7 @@ memberclub:
     asset: local
     sku: local
     cache: local
+    usertag: local
   extension:
     bootcheck: true
 

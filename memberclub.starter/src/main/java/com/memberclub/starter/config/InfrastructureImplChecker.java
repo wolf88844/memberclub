@@ -75,6 +75,11 @@ public class InfrastructureImplChecker {
      * 缓存
      */
     private DistributedCacheEnum cache;
+
+    /**
+     * userTag
+     */
+    private DistributedUserTagEnum usertag;
     /**
      *
      */

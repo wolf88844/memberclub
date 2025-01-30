@@ -15,9 +15,10 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import com.memberclub.sdk.purchase.flow.CommonOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
-import com.memberclub.sdk.purchase.flow.PurchaseValidateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseOperateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
+import com.memberclub.sdk.purchase.flow.PurchaseUserQuotaFlow;
+import com.memberclub.sdk.purchase.flow.PurchaseValidateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
 
 import javax.annotation.PostConstruct;
@@ -37,11 +38,11 @@ public class DemoMemberPurchaseExtension implements PurchaseExtension {
         flowChain = FlowChain.newChain(PurchaseSubmitContext.class)
                 .addNode(PurchaseSubmitLockFlow.class)
                 .addNode(SkuInfoInitalSubmitFlow.class)
-                //检查库存是否充足
-                .addNode(PurchaseValidateInventoryFlow.class)
-                .addNode(MemberOrderSubmitFlow.class)
-                .addNode(PurchaseOperateInventoryFlow.class)
-                .addNode(CommonOrderSubmitFlow.class)
+                .addNode(PurchaseUserQuotaFlow.class)//检查限额
+                .addNode(PurchaseValidateInventoryFlow.class)//检查库存
+                .addNode(MemberOrderSubmitFlow.class)// 会员提单
+                .addNode(PurchaseOperateInventoryFlow.class)//扣减库存
+                .addNode(CommonOrderSubmitFlow.class)//订单系统提单
         ;
     }
 

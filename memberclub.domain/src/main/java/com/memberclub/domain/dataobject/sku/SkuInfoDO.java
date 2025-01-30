@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.dataobject.sku;
 
+import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictInfo;
 import lombok.Data;
 
 /**

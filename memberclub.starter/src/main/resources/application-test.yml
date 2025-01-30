@@ -97,6 +97,7 @@ memberclub:
     asset: local
     sku: local
     cache: redisson
+    usertag: redis
   extension:
     bootcheck: true
 apollo:

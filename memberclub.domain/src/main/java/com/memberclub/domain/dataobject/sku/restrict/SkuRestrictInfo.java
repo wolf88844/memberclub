@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.dataobject.sku;
+package com.memberclub.domain.dataobject.sku.restrict;
 
 import lombok.Data;
 
@@ -15,6 +15,8 @@ import java.util.List;
  */
 @Data
 public class SkuRestrictInfo {
+
+    private boolean enable;
 
     private List<SkuRestrictItem> restrictItems;
 }

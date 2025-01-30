@@ -233,6 +233,7 @@
                     <include>sql/*.sql</include>
                     <include>log/log4j2.xml</include>
                     <include>log/log4j2-${enviroment}.xml</include>
+                    <include>lua/*</include>
                 </includes>
                 <!-- 是否需要进行变量替换，没有必要使用变量取值的，千万不要将filtering设置为true，针对于这一点官网也明确指出二进制文件一定不要过滤，例如Excel模板 -->
                 <filtering>true</filtering>

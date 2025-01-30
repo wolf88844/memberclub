@@ -28,6 +28,11 @@ import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
+import com.memberclub.domain.dataobject.sku.restrict.RestrictItemType;
+import com.memberclub.domain.dataobject.sku.restrict.RestrictPeriodType;
+import com.memberclub.domain.dataobject.sku.restrict.RestrictUserTypeEnum;
+import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictInfo;
+import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictItem;
 import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.inventory.Inventory;
@@ -70,6 +75,48 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     @Autowired
     public PurchaseBizService purchaseBizService;
 
+    @Before
+    public void init() {
+        doubleRightsSku = buildDoubleRightsSku(1);
+        mockSkuBizService.addSku(doubleRightsSku.getSkuId(), doubleRightsSku);
+
+        cycle3Sku = buildDoubleRightsSku(3);
+        mockSkuBizService.addSku(cycle3Sku.getSkuId(), cycle3Sku);
+
+
+        inventoryEnabledSku = buildDoubleRightsSku(1);
+
+        SkuInventoryInfo inventoryInfo = new SkuInventoryInfo();
+        inventoryInfo.setEnable(true);
+        inventoryInfo.setTotal(100L);
+        inventoryInfo.setType(InventoryTypeEnum.TOTAL.getCode());
+        inventoryEnabledSku.setInventoryInfo(inventoryInfo);
+
+        SkuRestrictInfo skuRestrictInfo = new SkuRestrictInfo();
+        //skuRestrictInfo.setEnable(true);
+        List<SkuRestrictItem> skuRestrictItems = Lists.newArrayList();
+        skuRestrictInfo.setRestrictItems(skuRestrictItems);
+
+        SkuRestrictItem item = new SkuRestrictItem();
+        item.setTotal(8L);
+        item.setPeriodType(RestrictPeriodType.TOTAL);
+        item.setItemType(RestrictItemType.TOTAL);
+        item.setUserTypes(Lists.newArrayList(RestrictUserTypeEnum.USERID));
+        skuRestrictItems.add(item);
+
+
+        SkuRestrictItem item2 = new SkuRestrictItem();
+        item2.setTotal(4L);
+        item2.setPeriodType(RestrictPeriodType.TOTAL);
+        item2.setItemType(RestrictItemType.SKU);
+        item2.setUserTypes(Lists.newArrayList(RestrictUserTypeEnum.USERID));
+        skuRestrictItems.add(item2);
+
+        inventoryEnabledSku.setRestrictInfo(skuRestrictInfo);
+
+        mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
+
+    }
 
     @Test
     @SneakyThrows
@@ -207,26 +254,6 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     @Autowired
     private CacheService cacheService;
-
-    @Before
-    public void init() {
-        doubleRightsSku = buildDoubleRightsSku(1);
-        mockSkuBizService.addSku(doubleRightsSku.getSkuId(), doubleRightsSku);
-
-        cycle3Sku = buildDoubleRightsSku(3);
-        mockSkuBizService.addSku(cycle3Sku.getSkuId(), cycle3Sku);
-
-
-        inventoryEnabledSku = buildDoubleRightsSku(1);
-
-        SkuInventoryInfo inventoryInfo = new SkuInventoryInfo();
-        inventoryInfo.setEnable(true);
-        inventoryInfo.setTotal(100L);
-        inventoryInfo.setType(InventoryTypeEnum.TOTAL.getCode());
-        inventoryEnabledSku.setInventoryInfo(inventoryInfo);
-        mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
-
-    }
 
 
     private static AtomicLong skuIdGenerator = new AtomicLong(200300);

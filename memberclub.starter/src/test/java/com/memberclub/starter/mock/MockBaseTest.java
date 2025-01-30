@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 //@ActiveProfiles("ut")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppStarter.class/*, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT*/)
+@SpringBootTest(classes = AppStarter.class  /*, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT*/)
 public class MockBaseTest {
     @SpyBean
     public MockAssetsFacadeSPI couponGrantFacade;

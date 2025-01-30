@@ -17,7 +17,7 @@ import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
-import com.memberclub.domain.dataobject.sku.SkuRestrictInfo;
+import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictInfo;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.entity.inventory.Inventory;
