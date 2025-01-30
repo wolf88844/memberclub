@@ -15,7 +15,8 @@ import com.memberclub.domain.context.inventory.InventorySkuOpDO;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
 import com.memberclub.domain.entity.inventory.Inventory;
 import com.memberclub.sdk.inventory.extension.InventoryExtension;
-import com.memberclub.sdk.inventory.flow.InventoryCheckFlow;
+import com.memberclub.sdk.inventory.flow.InventoryValidateFlow;
+import com.memberclub.sdk.inventory.flow.InventoryFilteredFlow;
 import com.memberclub.sdk.inventory.flow.InventoryOperateFlow;
 
 import javax.annotation.PostConstruct;
@@ -30,15 +31,27 @@ public class DefaultInventoryExtension implements InventoryExtension {
 
     private FlowChain<InventoryOpContext> inventoryOpContextFlowChain = null;
 
+    private FlowChain<InventoryOpContext> checkFlowChain = null;
+
 
     @PostConstruct
     public void init() {
         inventoryOpContextFlowChain = FlowChain.newChain(InventoryOpContext.class)
-                .addNode(InventoryCheckFlow.class)
+                .addNode(InventoryFilteredFlow.class)
                 .addNode(InventoryOperateFlow.class)
+        ;
+
+
+        checkFlowChain = FlowChain.newChain(InventoryOpContext.class)
+                .addNode(InventoryFilteredFlow.class)
+                .addNode(InventoryValidateFlow.class)
         ;
     }
 
+    @Override
+    public void validate(InventoryOpContext context) {
+        checkFlowChain.execute(context);
+    }
 
     @Override
     public void operate(InventoryOpContext context) {

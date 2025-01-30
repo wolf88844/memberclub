@@ -72,6 +72,10 @@ public class InfrastructureImplChecker {
     private AssetCenterEnum asset;
 
     /**
+     * 缓存
+     */
+    private DistributedCacheEnum cache;
+    /**
      *
      */
     private SkuAccessEnum sku;

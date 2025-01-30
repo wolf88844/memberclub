@@ -15,6 +15,7 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import com.memberclub.sdk.purchase.flow.CommonOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
+import com.memberclub.sdk.purchase.flow.PurchaseValidateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseOperateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
@@ -37,6 +38,7 @@ public class DemoMemberPurchaseExtension implements PurchaseExtension {
                 .addNode(PurchaseSubmitLockFlow.class)
                 .addNode(SkuInfoInitalSubmitFlow.class)
                 //检查库存是否充足
+                .addNode(PurchaseValidateInventoryFlow.class)
                 .addNode(MemberOrderSubmitFlow.class)
                 .addNode(PurchaseOperateInventoryFlow.class)
                 .addNode(CommonOrderSubmitFlow.class)

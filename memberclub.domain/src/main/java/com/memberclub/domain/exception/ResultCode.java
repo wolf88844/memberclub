@@ -32,7 +32,7 @@ public enum ResultCode {
     INVENTORY_DECREMENT_DUPLICATED(22, "扣减库存重复", false, false),
     INVENTORY_ROLLBACK_INVALID(23, "回补库存无效", false, false),
     INVENTORY_ROLLBACK_FAIL(24, "回补库存失败", true, false),
-
+    INVENTORY_LACKING(25, "库存不足", false, false),
     ;
 
     private int value;

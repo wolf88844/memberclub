@@ -26,6 +26,8 @@ public interface MemberOrderDao extends BaseMapper<MemberOrder> {
 
     static final String TABLE_NAME = "member_order";
 
+    Integer insertIgnoreBatch(List<MemberOrder> orders);
+
     // 更新履约状态
     @Update({"<script> UPDATE ", TABLE_NAME,
             " SET perform_status=#{toPerformStatus}, utime=#{utime} ",

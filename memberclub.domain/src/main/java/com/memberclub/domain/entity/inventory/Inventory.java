@@ -8,6 +8,7 @@ package com.memberclub.domain.entity.inventory;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
 import lombok.Data;
 
@@ -53,5 +54,16 @@ public class Inventory {
             return "total";
         }
         return "";
+    }
+
+    public static InventoryCacheDO toCache(Inventory inventory) {
+        InventoryCacheDO cache = new InventoryCacheDO();
+        cache.setSaleCount(inventory.getSaleCount());
+        cache.setTotalCount(inventory.getTotalCount());
+        cache.setVersion(inventory.getVersion());
+        cache.setTargetId(inventory.getTargetId());
+        cache.setTargetType(inventory.getTargetType());
+        cache.setSubKey(inventory.getSubKey());
+        return cache;
     }
 }

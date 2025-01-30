@@ -38,7 +38,7 @@ public class MemberSkuDataObjectFactory {
         inventory.setBizType(info.getBizType());
         inventory.setCtime(TimeUtil.now());
         inventory.setUtime(TimeUtil.now());
-        inventory.setVersion(0);
+        inventory.setVersion(TimeUtil.now());
         //inventory.setEtime(info.getSaleInfo());
         //inventory.setStime();
         inventory.setStatus(InventoryStatusEnum.ACTIVTE.getCode());

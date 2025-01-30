@@ -11,10 +11,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.memberclub.domain.entity.sku.MemberSku;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * author: 掘金五阳
  */
 @DS("skuDataSource")
 @Mapper
 public interface MemberSkuDao extends BaseMapper<MemberSku> {
+
+    Integer insertIgnoreBatch(List<MemberSku> skus);
 }

@@ -11,11 +11,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.inventory.InventoryOpCmd;
 import com.memberclub.domain.context.inventory.InventoryOpContext;
 import com.memberclub.domain.context.inventory.InventoryOpTypeEnum;
 import com.memberclub.domain.context.inventory.InventorySkuOpDO;
+import com.memberclub.domain.dataobject.inventory.InventoryCacheCmd;
+import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
 import com.memberclub.domain.entity.inventory.Inventory;
@@ -25,10 +28,13 @@ import com.memberclub.infrastructure.mybatis.mappers.sku.InventoryDao;
 import com.memberclub.infrastructure.mybatis.mappers.sku.InventoryRecordDao;
 import com.memberclub.infrastructure.sku.SkuBizService;
 import com.memberclub.sdk.sku.service.MemberSkuDataObjectFactory;
+import com.memberclub.sdk.util.TransactionHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +55,12 @@ public class InventoryDomainService {
     private SkuBizService skuBizService;
 
     @Autowired
+    private InventoryCacheDomainService inventoryCacheDomainService;
+
+    @Autowired
     private MemberSkuDataObjectFactory memberSkuDataObjectFactory;
 
-    public void querySkuInventorys(InventoryOpContext context) {
+    public void querySkuInventoryInfos(InventoryOpContext context) {
         Map<Long, SkuInventoryInfo> skuId2Inventorys = Maps.newHashMap();
         for (InventorySkuOpDO sku : context.getCmd().getSkus()) {
             SkuInfoDO skuInfoDO = skuBizService.querySku(context.getCmd().getBizType(), sku.getSkuId());
@@ -60,14 +69,79 @@ public class InventoryDomainService {
         context.setSkuId2InventoryInfo(skuId2Inventorys);
     }
 
+    public boolean filterAndGetOperatable(InventoryOpContext context) {
+        Iterator<InventorySkuOpDO> iterator = context.getCmd().getSkus().iterator();
+        List<Long> removedSkuIds = Lists.newArrayList();
+        while (iterator.hasNext()) {
+            InventorySkuOpDO skuOpDO = iterator.next();
+
+            SkuInventoryInfo inventoryInfo = context.getSkuId2InventoryInfo().get(skuOpDO.getSkuId());
+            if (inventoryInfo == null) {
+                throw ResultCode.CONFIG_DATA_ERROR.newException("未找到商品库存数据");
+            }
+            boolean removable = !inventoryInfo.isEnable();
+
+            if (removable) {
+                iterator.remove();
+                removedSkuIds.add(skuOpDO.getSkuId());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(removedSkuIds)) {
+            CommonLog.warn("部分商品无需管理库存:{}", removedSkuIds);
+        }
+        return context.isOperatable();
+    }
+
+
     public List<Inventory> queryInventorys(Long skuId) {
         LambdaQueryWrapper<Inventory> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Inventory::getTargetId, skuId);
         return inventoryDao.selectList(wrapper);
     }
 
+    public Inventory queryInventory(Long targetId,
+                                    int targetType,
+                                    String subKey) {
+        LambdaQueryWrapper<Inventory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Inventory::getTargetId, targetId);
+        wrapper.eq(Inventory::getTargetType, targetType);
+        wrapper.eq(Inventory::getSubKey, subKey);
+        return inventoryDao.selectOne(wrapper);
+    }
+
+    //@Async("threadPoolExecutor")
+    public void sync(List<InventoryRecord> records) {
+        List<InventoryCacheDO> caches = Lists.newArrayList();
+        for (InventoryRecord record : records) {
+            Inventory inventory = queryInventory(
+                    record.getTargetId(), record.getTargetType(), record.getSubKey());
+            InventoryCacheDO cache = Inventory.toCache(inventory);
+            caches.add(cache);
+        }
+        inventoryCacheDomainService.syncCaches(new InventoryCacheCmd(caches));
+    }
+
+    public boolean isEnough(InventoryOpContext context) {
+        boolean nonEnough = false;
+        for (InventorySkuOpDO sku : context.getCmd().getSkus()) {
+            Inventory inventory = inventoryDao.getInventory(context.getTargetType().getCode(),
+                    sku.getSkuId(),
+                    sku.getSubKey());
+            if (inventory.getTotalCount() < (inventory.getSaleCount() + sku.getCount())) {
+                nonEnough = true;
+                CommonLog.warn("库存预校验: 库存不足 skuId:{}, totalCount:{}, saleCount:{}, opCount:{}", sku.getSkuId(),
+                        inventory.getTotalCount(), inventory.getSaleCount(), sku.getCount());
+            } else {
+                CommonLog.info("库存预校验: 库存充足 skuId:{}, totalCount:{}, saleCount:{}, opCount:{}", sku.getSkuId(),
+                        inventory.getTotalCount(), inventory.getSaleCount(), sku.getCount());
+            }
+        }
+
+        return !nonEnough;
+    }
+
     @Transactional(rollbackFor = Exception.class)
-    public void decrement(InventoryOpContext context) {
+    public void onDecrement(InventoryOpContext context) {
         List<InventoryRecord> records = Lists.newArrayList();
 
         for (InventorySkuOpDO sku : context.getCmd().getSkus()) {
@@ -88,10 +162,13 @@ public class InventoryDomainService {
         }
 
         CommonLog.info("完成扣减库存 context:{}", context);
+        TransactionHelper.afterCommitExecute(() -> {
+            ApplicationContextUtils.getContext().getBean(InventoryDomainService.class).sync(records);
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void rollback(InventoryOpContext context) {
+    public void onRollback(InventoryOpContext context) {
         List<InventoryRecord> records = Lists.newArrayList();
 
         InventoryOpCmd cmd = context.getCmd();
@@ -120,5 +197,8 @@ public class InventoryDomainService {
             throw ResultCode.INVENTORY_DECREMENT_DUPLICATED.newException();
         }
         CommonLog.info("完成回补库存 context:{}", context);
+        TransactionHelper.afterCommitExecute(() -> {
+            ApplicationContextUtils.getContext().getBean(InventoryDomainService.class).sync(records);
+        });
     }
 }

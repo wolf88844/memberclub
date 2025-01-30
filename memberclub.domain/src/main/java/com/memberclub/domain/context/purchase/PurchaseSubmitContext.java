@@ -8,9 +8,13 @@ package com.memberclub.domain.context.purchase;
 
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.common.BizTypeEnum;
+import com.memberclub.domain.context.inventory.InventoryOpCmd;
+import com.memberclub.domain.context.inventory.InventoryOpTypeEnum;
+import com.memberclub.domain.context.inventory.InventorySkuOpDO;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.entity.inventory.InventoryTargetTypeEnum;
 import com.memberclub.domain.exception.MemberException;
 import lombok.Data;
 
@@ -72,4 +76,7 @@ public class PurchaseSubmitContext {
     public void monitorException(MemberException e) {
         // TODO: 2025/1/4 补充监控
     }
+
+
+
 }

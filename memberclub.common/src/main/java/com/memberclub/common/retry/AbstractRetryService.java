@@ -47,6 +47,9 @@ public abstract class AbstractRetryService implements RetryService {
             try {
                 ReflectionUtils.invokeMethod(m, bean, argsArray);
             } catch (Exception e) {
+                if (!msg.isThrowException()) {
+                    LOG.error("调用重试方法异常:{}", argsArray, e);
+                }
             }
         } catch (Exception e) {
             LOG.error("调用重试消息方法,重试组件异常:{}", msg, e);

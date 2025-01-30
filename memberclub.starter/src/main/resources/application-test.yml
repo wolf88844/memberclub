@@ -96,6 +96,7 @@ memberclub:
     order: local
     asset: local
     sku: local
+    cache: redisson
   extension:
     bootcheck: true
 apollo:

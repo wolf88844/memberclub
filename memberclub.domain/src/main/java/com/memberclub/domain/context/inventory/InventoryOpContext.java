@@ -9,6 +9,7 @@ package com.memberclub.domain.context.inventory;
 import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
 import com.memberclub.domain.entity.inventory.InventoryTargetTypeEnum;
 import lombok.Data;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 
@@ -23,4 +24,9 @@ public class InventoryOpContext {
     private InventoryOpCmd cmd;
 
     private Map<Long, SkuInventoryInfo> skuId2InventoryInfo;
+
+    public boolean isOperatable() {
+        return !CollectionUtils.isEmpty(cmd.getSkus());
+    }
+
 }

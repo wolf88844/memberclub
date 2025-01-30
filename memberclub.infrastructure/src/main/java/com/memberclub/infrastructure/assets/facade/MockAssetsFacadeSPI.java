@@ -18,6 +18,7 @@ import com.memberclub.domain.facade.AssetStatusEnum;
 import com.memberclub.domain.facade.GrantItemDO;
 import com.memberclub.domain.facade.GrantRequestDO;
 import com.memberclub.domain.facade.GrantResponseDO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,9 @@ public class MockAssetsFacadeSPI implements AssetsFacadeSPI {
         Map<String, List<AssetDO>> map = Maps.newHashMap();
         for (String assetBatch : request.getAssetBatchs()) {
             List<AssetDO> assets = assetBatchCode2Assets.get(assetBatch);
-            map.put(assetBatch, assets);
+            if (CollectionUtils.isNotEmpty(assets)) {
+                map.put(assetBatch, assets);
+            }
         }
         resp.setAssetBatchCode2AssetsMap(map);
         return resp;

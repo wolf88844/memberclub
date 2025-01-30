@@ -83,6 +83,7 @@ public class RetryableAspect {
                 message.setBeanName(beanName);
                 message.setBeanClassName(joinPoint.getSignature().getDeclaringType().getName());
                 message.setMethodName(methoName);
+                message.setThrowException(annotation.throwException());
 
                 List<String> argsList = Lists.newArrayList(args).stream().map(JsonUtils::toJson).collect(Collectors.toList());
 
@@ -97,6 +98,8 @@ public class RetryableAspect {
                 retryService.addRetryMessage(message);
                 if (annotation.throwException()) {
                     throw e;
+                } else {
+                    CommonLog.error("执行重试方式异常 message:{}", message, e);
                 }
                 return Defaults.defaultValue(method.getReturnType());
             }

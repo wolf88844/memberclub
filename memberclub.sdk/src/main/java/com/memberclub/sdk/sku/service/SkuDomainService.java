@@ -8,6 +8,7 @@ package com.memberclub.sdk.sku.service;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.google.common.collect.Lists;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.entity.sku.MemberSku;
 import com.memberclub.infrastructure.mybatis.mappers.sku.MemberSkuDao;
@@ -39,7 +40,7 @@ public class SkuDomainService {
     @Transactional(rollbackFor = Exception.class)
     public void createMemberSku(SkuInfoDO sku) {
         MemberSku memberSku = memberSkuDataObjectFactory.toSku(sku);
-        int cnt = memberSkuDao.insert(memberSku);
+        int cnt = memberSkuDao.insertIgnoreBatch(Lists.newArrayList(memberSku));
     }
 
 

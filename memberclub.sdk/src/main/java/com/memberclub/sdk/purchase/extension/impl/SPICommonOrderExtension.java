@@ -67,8 +67,13 @@ public class SPICommonOrderExtension implements CommonOrderExtension {
                 }).collect(Collectors.toList());
         request.setSkus(dtos);
 
-
-        SubmitOrderResponseDTO response = commonOrderFacadeSPI.submit(request);
+        SubmitOrderResponseDTO response = null;
+        try {
+            response = commonOrderFacadeSPI.submit(request);
+        } catch (Exception e) {
+            CommonLog.error("调用订单提单异常 request:{}", request, e);
+            throw ResultCode.COMMON_ORDER_SUBMIT_ERROR.newException("调用订单提单异常", e);
+        }
         if (response.isSuccess()) {
             CommonLog.info("调用 CommonOrder 提单成功, request:{}, response:{}", request, response);
             CommonOrderSubmitResult result = new CommonOrderSubmitResult();
@@ -77,9 +82,9 @@ public class SPICommonOrderExtension implements CommonOrderExtension {
             result.setActPriceFen(response.getActPriceFen());
             return result;
         }
+
         context.setOrderSubmitErrorCode(response.getErrorCode());
         context.setOrderSubmitMsg(response.getMsg());
-
         throw ResultCode.COMMON_ORDER_SUBMIT_ERROR.newException(String.format("调用订单提单失败 errorCode:%s, msg:%s",
                 response.getErrorCode(), response.getMsg()
         ));

@@ -7,6 +7,7 @@
 package com.memberclub.starter.demomember;
 
 import com.google.common.collect.ImmutableList;
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
@@ -17,6 +18,7 @@ import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.aftersale.ClientInfo;
+import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
@@ -29,10 +31,13 @@ import com.memberclub.domain.dataobject.sku.SkuViewInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightViewInfo;
 import com.memberclub.domain.entity.inventory.Inventory;
+import com.memberclub.domain.entity.inventory.InventoryTargetTypeEnum;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
 import com.memberclub.domain.exception.MemberException;
 import com.memberclub.domain.exception.ResultCode;
+import com.memberclub.infrastructure.cache.CacheEnum;
+import com.memberclub.infrastructure.cache.CacheService;
 import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
 import com.memberclub.sdk.inventory.service.InventoryDomainService;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
@@ -96,8 +101,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
             releaseLock(response.getLockValue());
             Assert.assertEquals(false, response.isSuccess());
         } catch (MemberException e) {
-            if (e.getCause() instanceof MemberException) {
-                if (((MemberException) e.getCause()).getCode() == ResultCode.INVENTORY_DECREMENT_FAIL) {
+            if (e instanceof MemberException) {
+                if (((MemberException) e).getCode() == ResultCode.INVENTORY_LACKING) {
                     return;
                 }
             }
@@ -129,11 +134,12 @@ public class TestDemoMemberPurchase extends MockBaseTest {
             Assert.assertEquals(false, response.isSuccess());
         } catch (MemberException e) {
             if (e.getCode() == ResultCode.COMMON_ORDER_SUBMIT_ERROR) {
-
                 inventories = inventoryDomainService.queryInventorys(inventoryEnabledSku.getSkuId());
                 Assert.assertEquals(pre.getSaleCount(), inventories.get(0).getSaleCount());
                 Assert.assertEquals(pre.getVersion() + 2, inventories.get(0).getVersion());
-
+                InventoryCacheDO cache = cacheService.get(CacheEnum.inventory, Inventory.buildInventoryKey(
+                        InventoryTargetTypeEnum.SKU.getCode(), inventoryEnabledSku.getSkuId(), "total"));
+                System.out.println(JsonUtils.toJson(cache));
                 return;
             }
             Assert.fail("失败");
@@ -199,6 +205,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         return cmd;
     }
 
+    @Autowired
+    private CacheService cacheService;
 
     @Before
     public void init() {
@@ -217,6 +225,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         inventoryInfo.setType(InventoryTypeEnum.TOTAL.getCode());
         inventoryEnabledSku.setInventoryInfo(inventoryInfo);
         mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
+
     }
 
 

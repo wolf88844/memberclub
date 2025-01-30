@@ -17,6 +17,8 @@ import com.memberclub.domain.context.inventory.InventoryOpContext;
 @ExtensionConfig(desc = "库存扩展点", must = false, type = ExtensionType.PURCHASE)
 public interface InventoryExtension extends BaseExtension {
 
+    public void validate(InventoryOpContext context);
+
     public void operate(InventoryOpContext context);
 
     public void buildSubKey(InventoryOpContext context);

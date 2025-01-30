@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * author: 掘金五阳
  */
 @Service
-public class InventoryCheckFlow extends FlowNode<InventoryOpContext> {
+public class InventoryFilteredFlow extends FlowNode<InventoryOpContext> {
 
     @Autowired
     private ExtensionManager extensionManager;
@@ -31,15 +31,14 @@ public class InventoryCheckFlow extends FlowNode<InventoryOpContext> {
     @Override
     public void process(InventoryOpContext context) {
         //查询商品
-        inventoryDomainService.querySkuInventorys(context);
+        inventoryDomainService.querySkuInventoryInfos(context);
+
+        boolean operatable = inventoryDomainService.filterAndGetOperatable(context);
+        if (!operatable) {
+            throw new SkipException("无需扣减库存,跳过");
+        }
 
         extensionManager.getExtension(BizScene.of(context.getCmd().getBizType()),
                 InventoryExtension.class).buildSubKey(context);
-
-        boolean enableOperateInventory = context.getSkuId2InventoryInfo().entrySet().stream()
-                .anyMatch(entry -> entry.getValue().isEnable());
-        if (!enableOperateInventory) {
-            throw new SkipException("无需扣减库存,跳过");
-        }
     }
 }

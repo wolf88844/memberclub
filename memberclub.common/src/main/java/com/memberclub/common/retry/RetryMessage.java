@@ -32,6 +32,8 @@ public class RetryMessage implements Delayed {
 
     private long expectedTime;
 
+    private boolean throwException;
+
     @Override
     public long getDelay(TimeUnit unit) {
         return unit.convert(this.expectedTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);

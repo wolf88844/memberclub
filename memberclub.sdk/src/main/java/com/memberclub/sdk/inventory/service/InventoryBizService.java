@@ -8,8 +8,6 @@ package com.memberclub.sdk.inventory.service;
 
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.common.log.LogDomainEnum;
-import com.memberclub.common.log.UserLog;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.inventory.InventoryOpCmd;
 import com.memberclub.domain.context.inventory.InventoryOpContext;
@@ -31,7 +29,16 @@ public class InventoryBizService {
     @Autowired
     private InventoryDomainService inventoryDomainService;
 
-    @UserLog(domain = LogDomainEnum.PURCHASE, tradeId = "operateKey")
+    public void validate(InventoryOpCmd cmd) {
+        cmd.setTargetType(InventoryTargetTypeEnum.SKU);
+        InventoryOpContext context = new InventoryOpContext();
+        context.setCmd(cmd);
+        context.setTargetType(cmd.getTargetType());
+
+        extensionManager.getExtension(BizScene.of(cmd.getBizType()), InventoryExtension.class).validate(context);
+    }
+
+
     public InventoryOpResponse operateSkuInventory(InventoryOpCmd cmd) {
         cmd.setTargetType(InventoryTargetTypeEnum.SKU);
         InventoryOpContext context = new InventoryOpContext();

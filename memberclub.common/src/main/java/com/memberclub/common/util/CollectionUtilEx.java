@@ -70,18 +70,30 @@ public class CollectionUtilEx {
     }
 
     public static <T, R> List<R> map(List<T> collection, Function<T, R> mapper) {
+        if (collection == null) {
+            return Lists.newArrayList();
+        }
         return collection.stream().map(mapper).collect(Collectors.toList());
     }
 
     public static <T, R> Set<R> map(Set<T> collection, Function<T, R> mapper) {
+        if (collection == null) {
+            return Sets.newHashSet();
+        }
         return collection.stream().map(mapper).collect(Collectors.toSet());
     }
 
     public static <T, R> List<R> mapToList(Collection<T> collection, Function<T, R> mapper) {
+        if (collection == null) {
+            return Lists.newArrayList();
+        }
         return collection.stream().map(mapper).collect(Collectors.toList());
     }
 
     public static <T, R> Set<R> mapToSet(Collection<T> collection, Function<T, R> mapper) {
+        if (collection == null) {
+            return Sets.newHashSet();
+        }
         return collection.stream().map(mapper).collect(Collectors.toSet());
     }
 

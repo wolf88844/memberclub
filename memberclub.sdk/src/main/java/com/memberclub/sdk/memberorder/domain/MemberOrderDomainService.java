@@ -8,6 +8,7 @@ package com.memberclub.sdk.memberorder.domain;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
@@ -66,7 +67,7 @@ public class MemberOrderDomainService {
                 .map(PurchaseConvertor.INSTANCE::toMemberSubOrder)
                 .collect(Collectors.toList());
 
-        int cnt = memberOrderDao.insert(order);
+        int cnt = memberOrderDao.insertIgnoreBatch(Lists.newArrayList(order));
         if (cnt < 1) {
             throw ResultCode.ORDER_CREATE_ERROR.newException("会员单生成失败");
         }

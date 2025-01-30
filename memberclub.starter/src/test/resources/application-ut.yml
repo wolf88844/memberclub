@@ -53,6 +53,7 @@ memberclub:
     order: local
     asset: local
     sku: local
+    cache: local
   extension:
     bootcheck: true
 
