@@ -10,6 +10,8 @@ import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.infrastructure.dynamic_config.DynamicConfig;
 import org.springframework.util.Assert;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 掘金五阳
  */
@@ -49,7 +51,20 @@ public enum SwitchEnum {
      * 任务扫描,提前触发的天数, 如某个任务的 now < stime but (stime-1days) < now ,则可以被扫描到
      */
     ONCE_TASK_SCAN_PERIOD_PERFORM_PRE_DAYS("once_task_scan_period_perform_pre_days", 1),
-    
+
+
+    /**
+     * 新会员用户标记的超时时间
+     */
+    NEW_MEMBER_USER_TAG_TIMEOUT("new_member_user_tag_timeout", TimeUnit.DAYS.toMillis(365 * 100)),
+
+    /**
+     * 新会员用户usertag相关的 唯一键 的超时时间
+     */
+    NEW_MEMBER_USER_TAG_UNIQUE_KEY_TIMEOUT("new_member_user_tag_timeout", TimeUnit.DAYS.toMillis(35)),
+
+
+    //
     ;
 
 

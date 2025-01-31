@@ -34,6 +34,7 @@ public enum ResultCode {
     INVENTORY_ROLLBACK_FAIL(24, "回补库存失败", true, false),
     INVENTORY_LACKING(25, "库存不足", false, false),
     QUOTA_LACKING(26, "限额不足", false, false),
+    NEW_MEMBER_ERROR(27, "新会员标记错误", false, false),
     ;
 
     private int value;

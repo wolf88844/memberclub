@@ -15,6 +15,7 @@ import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import com.memberclub.sdk.purchase.flow.CommonOrderSubmitFlow;
 import com.memberclub.sdk.purchase.flow.MemberOrderSubmitFlow;
+import com.memberclub.sdk.purchase.flow.PurchaseMarkNewMemberFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseOperateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseUserQuotaFlow;
@@ -41,6 +42,7 @@ public class DemoMemberPurchaseExtension implements PurchaseExtension {
                 .addNode(PurchaseUserQuotaFlow.class)//检查限额
                 .addNode(PurchaseValidateInventoryFlow.class)//检查库存
                 .addNode(MemberOrderSubmitFlow.class)// 会员提单
+                .addNode(PurchaseMarkNewMemberFlow.class)//新会员标记
                 .addNode(PurchaseOperateInventoryFlow.class)//扣减库存
                 .addNode(CommonOrderSubmitFlow.class)//订单系统提单
         ;

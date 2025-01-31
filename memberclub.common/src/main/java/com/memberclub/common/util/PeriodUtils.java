@@ -23,7 +23,7 @@ public class PeriodUtils {
             periodDays = periodDays - 1;//包含当天
         }
         if (periodDays < 0) {
-            throw ResultCode.CONFIG_DATA_ERROR.newException();
+            throw ResultCode.CONFIG_DATA_ERROR.newException("配置数据有误, periodDays 不能小于 0");
         }
 
         long now = baseTime;

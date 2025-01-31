@@ -6,6 +6,8 @@
  */
 package com.memberclub.domain.common;
 
+import lombok.Getter;
+
 /**
  * @author 掘金五阳
  */
@@ -18,6 +20,7 @@ public enum BizTypeEnum {
 
     private int code;
 
+    @Getter
     private String name;
 
     BizTypeEnum(int code, String name) {

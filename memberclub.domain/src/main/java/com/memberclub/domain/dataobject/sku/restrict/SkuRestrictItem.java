@@ -6,6 +6,7 @@
  */
 package com.memberclub.domain.dataobject.sku.restrict;
 
+import com.memberclub.domain.dataobject.sku.UserTypeEnum;
 import lombok.Data;
 
 import java.util.List;
@@ -18,9 +19,11 @@ public class SkuRestrictItem {
 
     private RestrictPeriodType periodType;
 
+    private int periodCount;
+
     private RestrictItemType itemType;
-    
-    private List<RestrictUserTypeEnum> userTypes;
+
+    private List<UserTypeEnum> userTypes;
 
     private Long total;
 

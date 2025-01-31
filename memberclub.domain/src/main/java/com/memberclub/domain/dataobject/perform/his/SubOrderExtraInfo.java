@@ -16,6 +16,8 @@ import lombok.Data;
 @Data
 public class SubOrderExtraInfo {
 
+    private Boolean newmember;
+
     private SubOrderSaleInfo saleInfo = new SubOrderSaleInfo();
 
     private SubOrderFinanceInfo settleInfo = new SubOrderFinanceInfo();

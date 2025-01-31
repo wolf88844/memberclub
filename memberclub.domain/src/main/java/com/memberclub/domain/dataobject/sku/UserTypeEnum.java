@@ -4,12 +4,12 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.domain.dataobject.sku.restrict;
+package com.memberclub.domain.dataobject.sku;
 
 /**
  * @author yuhaiqiang
  */
-public enum RestrictUserTypeEnum {
+public enum UserTypeEnum {
 
     USERID(0, "userId");
 
@@ -17,13 +17,13 @@ public enum RestrictUserTypeEnum {
 
     private String name;
 
-    RestrictUserTypeEnum(int code, String name) {
+    UserTypeEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static RestrictUserTypeEnum findByCode(int code) throws IllegalArgumentException {
-        for (RestrictUserTypeEnum item : RestrictUserTypeEnum.values()) {
+    public static UserTypeEnum findByCode(int code) throws IllegalArgumentException {
+        for (UserTypeEnum item : UserTypeEnum.values()) {
             if (item.code == code) {
                 return item;
             }

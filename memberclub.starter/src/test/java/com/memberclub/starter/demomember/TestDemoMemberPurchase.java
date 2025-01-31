@@ -21,6 +21,8 @@ import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
+import com.memberclub.domain.dataobject.sku.NewMemberInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuExtra;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
@@ -28,9 +30,9 @@ import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
 import com.memberclub.domain.dataobject.sku.SkuViewInfo;
+import com.memberclub.domain.dataobject.sku.UserTypeEnum;
 import com.memberclub.domain.dataobject.sku.restrict.RestrictItemType;
 import com.memberclub.domain.dataobject.sku.restrict.RestrictPeriodType;
-import com.memberclub.domain.dataobject.sku.restrict.RestrictUserTypeEnum;
 import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictInfo;
 import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictItem;
 import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
@@ -93,26 +95,33 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         inventoryEnabledSku.setInventoryInfo(inventoryInfo);
 
         SkuRestrictInfo skuRestrictInfo = new SkuRestrictInfo();
-        //skuRestrictInfo.setEnable(true);
+        skuRestrictInfo.setEnable(true);
         List<SkuRestrictItem> skuRestrictItems = Lists.newArrayList();
         skuRestrictInfo.setRestrictItems(skuRestrictItems);
 
         SkuRestrictItem item = new SkuRestrictItem();
-        item.setTotal(8L);
+        item.setTotal(1000000L);
         item.setPeriodType(RestrictPeriodType.TOTAL);
+        item.setPeriodCount(31);
         item.setItemType(RestrictItemType.TOTAL);
-        item.setUserTypes(Lists.newArrayList(RestrictUserTypeEnum.USERID));
+        item.setUserTypes(Lists.newArrayList(UserTypeEnum.USERID));
         skuRestrictItems.add(item);
 
 
         SkuRestrictItem item2 = new SkuRestrictItem();
-        item2.setTotal(4L);
+        item2.setTotal(1000000L);
+        item2.setPeriodCount(31);
         item2.setPeriodType(RestrictPeriodType.TOTAL);
         item2.setItemType(RestrictItemType.SKU);
-        item2.setUserTypes(Lists.newArrayList(RestrictUserTypeEnum.USERID));
+        item2.setUserTypes(Lists.newArrayList(UserTypeEnum.USERID));
         skuRestrictItems.add(item2);
 
         inventoryEnabledSku.setRestrictInfo(skuRestrictInfo);
+
+        NewMemberInfoDO newMemberInfo = new NewMemberInfoDO();
+        newMemberInfo.setNewMemberMarkEnable(true);
+        newMemberInfo.setUserTypes(ImmutableList.of(UserTypeEnum.USERID));
+        inventoryEnabledSku.getExtra().setNewMemberInfo(newMemberInfo);
 
         mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
 
@@ -336,6 +345,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
         skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
         skuInfoDO.setPerformConfig(skuPerformConfigDO);
+
+        skuInfoDO.setExtra(new SkuExtra());
         return skuInfoDO;
     }
 }
