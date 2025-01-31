@@ -17,7 +17,7 @@ import org.redisson.client.codec.StringCodec;
 import org.redisson.codec.CompositeCodec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -36,10 +36,11 @@ import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_
  * author: 掘金五阳
  */
 @Configuration
-@EnableCaching
+@ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redisson")
 public class RedisConfiguration {
 
 
+    @ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redisson")
     @Bean
     public RedissonClient redisson() {
         Config config = new Config();
@@ -57,6 +58,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
 
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -98,6 +100,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public HashOperations<String, String, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForHash();
     }
@@ -109,6 +112,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForValue();
     }
@@ -120,6 +124,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForList();
     }
@@ -131,6 +136,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForSet();
     }
@@ -142,6 +148,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(name = "memberclub.infrastructure.usertag", havingValue = "redis")
     public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForZSet();
     }
