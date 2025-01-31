@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
+import org.redisson.codec.CompositeCodec;
+import org.redisson.codec.JsonJacksonCodec;
+import org.redisson.config.Config;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +38,16 @@ import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_
 @Configuration
 @EnableCaching
 public class RedisConfiguration {
+
+
+    @Bean
+    public RedissonClient redisson() {
+        Config config = new Config();
+        //此处调用的方法为单节点的redis
+        config.useSingleServer().setAddress("redis://localhost:6379");
+        config.setCodec(new CompositeCodec(new StringCodec(), new JsonJacksonCodec()));
+        return Redisson.create(config);
+    }
 
 
     /**

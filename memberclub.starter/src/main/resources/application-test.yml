@@ -57,16 +57,6 @@ spring:
         max-wait: -1s
         max-idle: 8
         min-idle: 0
-    redisson:
-      config:
-        singleServerConfig:
-          password: null
-          address: "redis://127.0.0.1:6379"
-          database: 1
-        threads: 4
-        codec: "!<org.redisson.codec.MarshallingCodec> {}"
-        nettyThreads: 4
-        transportMode: "NIO"
 
 
 eureka:
