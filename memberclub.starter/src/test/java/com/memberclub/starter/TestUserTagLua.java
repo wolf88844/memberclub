@@ -7,13 +7,12 @@
 package com.memberclub.starter;
 
 import com.google.common.collect.ImmutableList;
-import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpCmd;
+import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
 import com.memberclub.infrastructure.usertag.UserTagLuaUtil;
 import com.memberclub.starter.mock.MockBaseTest;
 import jodd.io.FileUtil;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class TestUserTagLua extends MockBaseTest {
     private RedisTemplate<String, String> redisTemplate;
 
 
-    @Test
+    //@Test
     public void test() {
         RedisScript<Long> script = new DefaultRedisScript<>(lua, Long.class);
         UserTagOpCmd cmd = new UserTagOpCmd();

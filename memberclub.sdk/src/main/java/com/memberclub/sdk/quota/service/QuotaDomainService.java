@@ -16,6 +16,7 @@ import com.memberclub.domain.context.usertag.UserTagOpCmd;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpResponse;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
+import com.memberclub.domain.context.usertag.UserTagTypeEnum;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.usertag.UserTagService;
@@ -66,7 +67,14 @@ public class QuotaDomainService {
 
         Map<String, UserTagOpDO> key2UserTagOp = CollectionUtilEx.toMap(usertagOps, UserTagOpDO::getKey);
 
-        UserTagOpResponse response = userTagService.operate(cmd);
+        UserTagOpResponse response = null;
+        try {
+            response = userTagService.operate(cmd);
+        } catch (Exception e) {
+            CommonLog.error("用户购买配额查询异常 cmd:{}", e);
+            throw ResultCode.QUOTA_LACKING.newException("用户购买配额查询异常", e);
+        }
+
         CommonLog.info("限额查询结果 cmd:{}, respone:{}", cmd, response);
 
         for (UserTagDO tag : response.getTags()) {
@@ -89,7 +97,7 @@ public class QuotaDomainService {
         List<SkuInfoDO> skus = context.getSkuInfos();
 
         UserTagOpCmd cmd = new UserTagOpCmd();
-        cmd.setUniqueKey(context.getMemberOrder().getTradeId());
+        cmd.buildUniqueKey(UserTagTypeEnum.quota, context.getBizType(), context.getMemberOrder().getTradeId());
         cmd.setOpType(UserTagOpTypeEnum.ADD);
 
         QuotaExtensionContext quotaExtensionContext = new QuotaExtensionContext();

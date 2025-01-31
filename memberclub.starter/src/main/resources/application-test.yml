@@ -64,8 +64,8 @@ spring:
           address: "redis://127.0.0.1:6379"
           database: 1
         threads: 4
+        codec: "!<org.redisson.codec.MarshallingCodec> {}"
         nettyThreads: 4
-        codec: "!<org.redisson.codec.FstCodec> {}"
         transportMode: "NIO"
 
 

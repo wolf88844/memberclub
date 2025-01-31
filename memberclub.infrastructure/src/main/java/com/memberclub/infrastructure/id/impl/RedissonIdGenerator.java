@@ -34,13 +34,13 @@ public class RedissonIdGenerator implements IdGenerator {
     @PostConstruct
     public void init() {
         for (IdTypeEnum value : IdTypeEnum.values()) {
-            redissonClient.getIdGenerator(value.toString())
-                    .tryInit(RandomUtils.nextLong(10000000000L, 20000000000L), 1);
+            redissonClient.getIdGenerator(value.toKey())
+                    .tryInit(RandomUtils.nextLong(100000000000000000L, 200000000000000000L), 1);
         }
     }
 
     @Override
     public Long generateId(IdTypeEnum idType) {
-        return redissonClient.getIdGenerator(idType.toString()).nextId();
+        return redissonClient.getIdGenerator(idType.toKey()).nextId();
     }
 }

@@ -10,11 +10,11 @@ import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.usertag.UserTagDO;
-import com.memberclub.domain.context.usertag.UserTagKeyEnum;
 import com.memberclub.domain.context.usertag.UserTagOpCmd;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpResponse;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
+import com.memberclub.domain.context.usertag.UserTagTypeEnum;
 import com.memberclub.domain.dataobject.newmember.NewMemberMarkContext;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.usertag.UserTagService;
@@ -40,7 +40,7 @@ public class NewMemberDomainService {
 
     public void mark(NewMemberMarkContext context) {
         UserTagOpCmd cmd = new UserTagOpCmd();
-        cmd.setUniqueKey(UserTagKeyEnum.USER_TAG_TYPE.getName() + "_" + context.getUniqueKey());
+        cmd.buildUniqueKey(UserTagTypeEnum.newmember, context.getBizType(), context.getUniqueKey());
         cmd.setOpType(UserTagOpTypeEnum.ADD);
         cmd.setExpireSeconds(
                 SwitchEnum.NEW_MEMBER_USER_TAG_UNIQUE_KEY_TIMEOUT.getLong(context.getBizType().getCode())
@@ -68,7 +68,7 @@ public class NewMemberDomainService {
 
     public void unmark(NewMemberMarkContext context) {
         UserTagOpCmd cmd = new UserTagOpCmd();
-        cmd.setUniqueKey(UserTagKeyEnum.USER_TAG_TYPE.getName() + "_" + context.getUniqueKey());
+        cmd.buildUniqueKey(UserTagTypeEnum.newmember, context.getBizType(), context.getUniqueKey());
         cmd.setOpType(UserTagOpTypeEnum.DEL);
         cmd.setExpireSeconds(
                 SwitchEnum.NEW_MEMBER_USER_TAG_UNIQUE_KEY_TIMEOUT.getLong(context.getBizType().getCode())

@@ -18,7 +18,6 @@ import com.memberclub.infrastructure.usertag.UserTagLuaUtil;
 import com.memberclub.infrastructure.usertag.UserTagService;
 import jodd.io.FileUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class RedisUserTagService implements UserTagService {
     public static final Logger LOG = LoggerFactory.getLogger(RedisUserTagService.class);
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private RedisUserTagService redisUserTagService;
@@ -99,7 +98,7 @@ public class RedisUserTagService implements UserTagService {
 
     private void get(UserTagOpCmd cmd, UserTagOpResponse response) {
         List<String> keys = CollectionUtilEx.mapToList(cmd.getTags(), UserTagOpDO::getKey);
-        List<String> values = redisTemplate.opsForValue().multiGet(keys);
+        List<Object> values = redisTemplate.opsForValue().multiGet(keys);
         List<UserTagDO> userTags = Lists.newArrayList();
 
         for (int i = 0; i < keys.size(); i++) {
@@ -107,8 +106,8 @@ public class RedisUserTagService implements UserTagService {
             userTag.setKey(keys.get(i));
             Long count = 0L;
             if (CollectionUtils.isNotEmpty(values) && values.size() > i) {
-                String countStr = values.get(i);
-                count = Long.valueOf(StringUtils.defaultIfBlank(countStr, "0"));
+                Object v = values.get(i);
+                count = v == null ? 0 : Long.valueOf(v.toString());
             }
             userTag.setCount(count);
             userTags.add(userTag);

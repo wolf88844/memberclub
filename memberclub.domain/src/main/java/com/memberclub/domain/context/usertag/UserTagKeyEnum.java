@@ -18,6 +18,7 @@ public enum UserTagKeyEnum {
     USER_TAG_TYPE(3, "t"),
     PERIOD_TYPE(4, "pt"),
     ITEM_TYPE(5, "it"),
+    UNIQUE_KEY(6, "uk"),
     ;
 
     private int code;

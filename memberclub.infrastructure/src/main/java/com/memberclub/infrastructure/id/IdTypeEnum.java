@@ -41,6 +41,10 @@ public enum IdTypeEnum {
         return this.name;
     }
 
+    public String toKey() {
+        return name + "_distributed_id";
+    }
+
     public int getCode() {
         return this.value;
     }
