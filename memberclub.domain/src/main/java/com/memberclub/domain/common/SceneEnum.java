@@ -21,6 +21,8 @@ public enum SceneEnum {
 
     RIGHT_TYPE_SCENE_DISCOUNT_COUPON(DISCOUNT_COUPON_RIGHT_TYPE.toString()),
 
+    RIGHT_TYPE_SCENE_MEMBERSHIP(StringContants.MEMBERSHIP_RIGHT_TYPE.toString()),
+
     SCENE_MONTH_CARD("201"),//履约上下文执行 scene, 月卡部分
 
     SCENE_MUTIL_PERIOD_CARD("202"),//履约上下文执行 scene, 多周期卡部分
@@ -47,7 +49,7 @@ public enum SceneEnum {
     FINANCE_EXPIRE_TASK_TYPE("2"),
 
     AFTERSALE_EXPIRE_REFUND_TASK_TYPE("3"),
-    
+
     /*****************************************/
 
     ;

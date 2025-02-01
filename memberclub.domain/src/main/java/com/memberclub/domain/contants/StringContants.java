@@ -15,8 +15,13 @@ public interface StringContants {
     Integer HOMEPAGE_VALUE = 1;
 
     Integer DEFAULT_SCENE = 1;
+    /**********************************************/
+    //权益类型常量
 
     Integer COUPON_RIGHT_TYPE = 1;
 
     Integer DISCOUNT_COUPON_RIGHT_TYPE = 2;
+
+    Integer MEMBERSHIP_RIGHT_TYPE = 3;
+
 }

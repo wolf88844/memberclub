@@ -68,9 +68,27 @@ CREATE TABLE IF NOT EXISTS once_task (
     UNIQUE KEY uniq_once_task (user_id, task_token, task_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-
-
-
+CREATE TABLE IF NOT EXISTS member_ship (
+    id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
+    biz_type INT(11)  NOT NULL COMMENT '产品线',
+    user_id BIGINT(20)  NOT NULL COMMENT 'userId',
+    trade_id VARCHAR(128)  NOT NULL COMMENT '交易 id',
+    sub_trade_id VARCHAR(128)  NOT NULL COMMENT '子单交易 id',
+    right_id INT(11)  NOT NULL COMMENT '权益Id',
+    item_token VARCHAR(128)  NOT NULL COMMENT '履约项凭证',
+    grant_code VARCHAR(128)  NULL COMMENT '发放批次码',
+    status INT(11)  NOT NULL COMMENT '状态',
+    extra TEXT NOT NULL COMMENT '扩展属性',
+    stime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '开始时间',
+    etime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '截止时间',
+    utime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '更新时间',
+    ctime BIGINT(20)  NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (id),
+    KEY key_member_ship_item (user_id, item_token),
+    KEY key_period_stime (user_id, stime),
+    KEY key_period_etime (user_id, etime),
+    UNIQUE KEY uniq_grant_item (user_id, grant_code, biz_type)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
 
 CREATE TABLE IF NOT EXISTS member_perform_item (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',

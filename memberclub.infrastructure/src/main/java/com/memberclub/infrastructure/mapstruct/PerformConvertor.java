@@ -10,12 +10,13 @@ import com.memberclub.domain.context.perform.PerformCmd;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
+import com.memberclub.domain.dataobject.membership.MemberShipDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemGrantInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemSaleInfo;
-import com.memberclub.domain.dataobject.perform.item.PerformItemFinanceInfo;
 import com.memberclub.domain.dataobject.perform.item.PerformItemViewInfo;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.rights.RightFinanceInfo;
 import com.memberclub.domain.dataobject.sku.rights.RightGrantInfo;
@@ -25,6 +26,7 @@ import com.memberclub.domain.dataobject.task.OnceTaskDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.domain.dto.sku.MemberSkuDTO;
 import com.memberclub.domain.entity.trade.MemberPerformItem;
+import com.memberclub.domain.entity.trade.MemberShip;
 import com.memberclub.domain.entity.trade.OnceTask;
 import com.memberclub.infrastructure.mapstruct.custom.CommonCustomConvertor;
 import org.mapstruct.Mapper;
@@ -39,6 +41,21 @@ import org.mapstruct.factory.Mappers;
 public interface PerformConvertor {
 
     PerformConvertor INSTANCE = Mappers.getMapper(PerformConvertor.class);
+
+    @Mappings({
+            @Mapping(target = "bizType", ignore = true),
+            @Mapping(target = "status", ignore = true),
+            @Mapping(target = "extra", ignore = true),
+    })
+    public MemberShip toMemberShip(MemberShipDO memberShipDO);
+
+    @Mappings({
+            @Mapping(target = "bizType", ignore = true),
+            @Mapping(target = "status", ignore = true),
+            @Mapping(target = "extra", ignore = true),
+
+    })
+    public MemberShipDO toMemberShipDO(MemberShip memberShipDO);
 
     @Deprecated
     public SkuInfoDO toMemberSkuInfoDO(MemberSkuDTO dto);

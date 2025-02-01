@@ -72,6 +72,8 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
     public static SkuInfoDO doubleRightsSku = null;
 
+    public static SkuInfoDO membershipSku = null;
+
     public static SkuInfoDO cycle3Sku = null;
 
     public static SkuInfoDO inventoryEnabledSku = null;
@@ -98,6 +100,41 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         mockSkuBizService.addSku(cycle3Sku.getSkuId(), cycle3Sku);
 
 
+        inventoryEnabledSku = buildInventorySku();
+        mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
+
+        membershipSku = buildMemberShipSku();
+        mockSkuBizService.addSku(membershipSku.getSkuId(), membershipSku);
+    }
+
+    private SkuInfoDO buildMemberShipSku() {
+        membershipSku = buildDoubleRightsSku(1);
+
+        SkuPerformItemConfigDO shipConfig = new SkuPerformItemConfigDO();
+        membershipSku.getPerformConfig().getConfigs().add(shipConfig);
+
+
+        shipConfig.setAssetCount(0);
+        shipConfig.setBizType(1);
+        shipConfig.setCycle(1);
+        shipConfig.setPeriodType(PeriodTypeEnum.FIX_DAY.getCode());
+        shipConfig.setRightId(32425);
+        shipConfig.setPeriodCount(31);
+        shipConfig.setRightType(3);
+        shipConfig.setProviderId("3");
+        RightViewInfo rightViewInfo = new RightViewInfo();
+        rightViewInfo.setDisplayName("会员身份");
+        shipConfig.setViewInfo(rightViewInfo);
+
+
+        RightFinanceInfo rightFinanceInfo2 = new RightFinanceInfo();
+        rightFinanceInfo2.setFinanceable(false);
+        shipConfig.setSettleInfo(rightFinanceInfo2);
+
+        return membershipSku;
+    }
+
+    private SkuInfoDO buildInventorySku() {
         inventoryEnabledSku = buildDoubleRightsSku(1);
 
         SkuInventoryInfo inventoryInfo = new SkuInventoryInfo();
@@ -134,9 +171,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         skuNewMemberInfo.setNewMemberMarkEnable(true);
         skuNewMemberInfo.setUserTypes(ImmutableList.of(UserTypeEnum.USERID));
         inventoryEnabledSku.getExtra().setSkuNewMemberInfo(skuNewMemberInfo);
-
-        mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
-
+        return inventoryEnabledSku;
     }
 
     @Test
@@ -362,7 +397,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         rightFinanceInfo2.setFinanceAssetType(2);
         skuPerformItemConfigDO2.setSettleInfo(rightFinanceInfo2);
 
-        skuPerformConfigDO.setConfigs(ImmutableList.of(skuPerformItemConfigDO, skuPerformItemConfigDO2));
+        skuPerformConfigDO.setConfigs(Lists.newArrayList(skuPerformItemConfigDO, skuPerformItemConfigDO2));
         skuInfoDO.setPerformConfig(skuPerformConfigDO);
 
         skuInfoDO.setExtra(new SkuExtra());

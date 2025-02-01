@@ -13,6 +13,7 @@ public enum RightTypeEnum {
 
     COUPON(1, "会员立减券"),
     DISCOUNT_COUPON(2, "会员折扣券"),
+    MEMBERSHIP(3, "会员身份"),
     ;
 
     private int value;
