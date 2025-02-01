@@ -8,7 +8,8 @@ package com.memberclub.sdk.quota.extension;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import lombok.Data;
 
 import java.util.List;
@@ -22,8 +23,11 @@ public class QuotaExtensionContext {
 
     private BizTypeEnum bizType;
 
-    List<SkuInfoDO> skus;
+    List<SkuAndRestrictInfo> skus;
+
+    private MemberOrderDO memberOrderDO;
+
+    private UserTagOpTypeEnum opType;
 
     List<UserTagOpDO> userTagOpDOList;
-
 }

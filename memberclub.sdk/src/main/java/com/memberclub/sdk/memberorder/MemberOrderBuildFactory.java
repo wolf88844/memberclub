@@ -73,6 +73,7 @@ public class MemberOrderBuildFactory {
         order.setOrderInfo(new OrderInfoDO());
         order.setTradeId(idGenerator.generateId(IdTypeEnum.PURCHASE_TRADE).toString());
         order.setUserId(context.getUserId());
+        order.setSource(context.getSubmitCmd().getSource());
         order.setUserInfo(context.getUserInfo());
         order.setStatus(MemberOrderStatusEnum.INIT);
         order.setPerformStatus(com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum.INIT);
@@ -113,6 +114,9 @@ public class MemberOrderBuildFactory {
             subOrder.getExtra().setViewInfo(viewInfo);
             subOrder.getExtra().setUserInfo(context.getUserInfo());
             subOrder.getExtra().setSaleInfo(saleInfo);
+            subOrder.getExtra().setSkuInventoryInfo(skuInfo.getInventoryInfo());
+            subOrder.getExtra().setSkuRestrictInfo(skuInfo.getRestrictInfo());
+            subOrder.getExtra().setSkuNewMemberInfo(skuInfo.getExtra().getSkuNewMemberInfo());
 
             subOrder.setStatus(SubOrderStatusEnum.INIT);
             subOrder.setPerformStatus(SubOrderPerformStatusEnum.INIT);

@@ -17,6 +17,8 @@ public class SkuInventoryInfo {
     private boolean enable;
 
     /**
+     * todoy 如果存在多个库存呢?
+     *
      * @see
      */
     private int type;

@@ -520,8 +520,6 @@ public class TestDemoMember extends TestDemoMemberPurchase {
 
 
         verifyOrderRefund(applyCmd, true);
-
-
     }
 
     private void verifyOrderRefund(AftersaleApplyCmd applyCmd, boolean completeRefund) {
@@ -570,6 +568,47 @@ public class TestDemoMember extends TestDemoMemberPurchase {
             }
         }
 
+    }
+
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberRefundAndApplyAndInventoryAndNewMemberAndQuota() {
+        PurchaseSubmitResponse submitResponse = submit(inventoryEnabledSku, 3);
+        MemberOrderDO memberOrder = submitResponse.getMemberOrderDO();
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 3);
+
+        AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
+        previewCmd.setUserId(cmd.getUserId());
+        previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        previewCmd.setTradeId(cmd.getTradeId());
+        previewCmd.setSource(AftersaleSourceEnum.User);
+        previewCmd.setOperator(String.valueOf(cmd.getUserId()));
+        previewCmd.setOrderId(cmd.getOrderId());
+        previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
+
+        AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
+
+        Assert.assertEquals(true, response.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.ALL_REFUND, response.getRefundType());
+
+        AftersaleApplyCmd applyCmd = AftersaleConvertor.INSTANCE.toAftersaleApplyCmd(previewCmd);
+        applyCmd.setDigests(response.getDigests());
+        applyCmd.setDigestVersion(response.getDigestVersion());
+
+        AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
+        waitH2();
+
+        Assert.assertTrue(applyResponse.isSuccess());
+
+        verifyOrderRefund(applyCmd, true);
     }
 
 

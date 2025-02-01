@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.ApplicationContextUtils;
+import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.context.inventory.InventoryOpCmd;
 import com.memberclub.domain.context.inventory.InventoryOpContext;
@@ -34,9 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * author: 掘金五阳
@@ -69,7 +72,7 @@ public class InventoryDomainService {
         context.setSkuId2InventoryInfo(skuId2Inventorys);
     }
 
-    public boolean filterAndGetOperatable(InventoryOpContext context) {
+    public boolean filterBySkuAndGetOperatable(InventoryOpContext context) {
         Iterator<InventorySkuOpDO> iterator = context.getCmd().getSkus().iterator();
         List<Long> removedSkuIds = Lists.newArrayList();
         while (iterator.hasNext()) {
@@ -92,11 +95,42 @@ public class InventoryDomainService {
         return context.isOperatable();
     }
 
+    public boolean filterByRecordsAndGetOperatable(InventoryOpContext context) {
+        List<InventorySkuOpDO> newSkuOps = Lists.newArrayList();
+        for (Map.Entry<Long, List<InventoryRecord>> entry : context.getSkuId2InventoryRecords().entrySet()) {
+            for (InventoryRecord record : entry.getValue()) {
+                InventorySkuOpDO skuOpDO = new InventorySkuOpDO();
+                skuOpDO.setCount(record.getOpCount());
+                skuOpDO.setSkuId(entry.getKey());
+                skuOpDO.setSubKey(record.getSubKey());
+                newSkuOps.add(skuOpDO);
+            }
+        }
+
+        Set<Long> skuIds = CollectionUtilEx.mapToSet(newSkuOps, InventorySkuOpDO::getSkuId);
+        Set<Long> originSkuIds = CollectionUtilEx.mapToSet(context.getCmd().getSkus(), InventorySkuOpDO::getSkuId);
+        Collection<Long> removedSkuIds = CollectionUtils.removeAll(originSkuIds, skuIds);
+
+        if (CollectionUtils.isNotEmpty(removedSkuIds)) {
+            CommonLog.warn("部分商品无需回补库存:{}", removedSkuIds);
+        }
+        context.getCmd().setSkus(newSkuOps);
+        return context.isOperatable();
+    }
+
 
     public List<Inventory> queryInventorys(Long skuId) {
         LambdaQueryWrapper<Inventory> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Inventory::getTargetId, skuId);
         return inventoryDao.selectList(wrapper);
+    }
+
+    public List<InventoryRecord> queryInventoryUserRecords(long userId, String operateKey, int opType) {
+        LambdaQueryWrapper<InventoryRecord> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InventoryRecord::getUserId, userId);
+        wrapper.eq(InventoryRecord::getOperateKey, operateKey);
+        wrapper.eq(InventoryRecord::getOpType, opType);
+        return inventoryRecordDao.selectList(wrapper);
     }
 
     public Inventory queryInventory(Long targetId,

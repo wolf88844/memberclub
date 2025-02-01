@@ -9,6 +9,7 @@ package com.memberclub.sdk.purchase.service.biz;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.LogDomainEnum;
 import com.memberclub.common.log.UserLog;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
@@ -32,6 +33,15 @@ public class PurchaseBizService {
 
     public void reverse(AfterSaleApplyContext context) {
         // TODO: 2025/1/5
+        try {
+            extensionManager.getExtension(
+                    BizScene.of(context.getCmd().getBizType()), PurchaseExtension.class).reverse(context);
+        } catch (MemberException e) {
+            throw e;
+        } catch (Exception e) {
+            MemberException me = ResultCode.PURCHASE_REVERSE_ERROR.newException("开通逆向流程异常", e);
+            throw me;
+        }
     }
 
 

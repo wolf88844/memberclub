@@ -6,10 +6,12 @@
  */
 package com.memberclub.sdk.quota.service;
 
+import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.usertag.UserTagDO;
 import com.memberclub.domain.context.usertag.UserTagOpCmd;
@@ -17,11 +19,14 @@ import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpResponse;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
 import com.memberclub.domain.context.usertag.UserTagTypeEnum;
+import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.usertag.UserTagService;
 import com.memberclub.sdk.quota.extension.QuotaExtension;
 import com.memberclub.sdk.quota.extension.QuotaExtensionContext;
+import com.memberclub.sdk.quota.extension.SkuAndRestrictInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +58,17 @@ public class QuotaDomainService {
         QuotaExtensionContext quotaExtensionContext = new QuotaExtensionContext();
         quotaExtensionContext.setUserId(userId);
         quotaExtensionContext.setBizType(context.getBizType());
-        quotaExtensionContext.setSkus(skus);
+        quotaExtensionContext.setOpType(UserTagOpTypeEnum.GET);
+
+        List<SkuAndRestrictInfo> skuAndRestrictInfos = Lists.newArrayList();
+        for (SkuInfoDO skuInfoDO : context.getSkuInfos()) {
+            SkuAndRestrictInfo skuAndRestrictInfo = new SkuAndRestrictInfo();
+            skuAndRestrictInfo.setSkuId(skuInfoDO.getSkuId());
+            skuAndRestrictInfo.setBuyCount(skuInfoDO.getBuyCount());
+            skuAndRestrictInfo.setRestrictInfo(skuInfoDO.getRestrictInfo());
+            skuAndRestrictInfos.add(skuAndRestrictInfo);
+        }
+        quotaExtensionContext.setSkus(skuAndRestrictInfos);
 
         extensionManager.getExtension(BizScene.of(context.getBizType()),
                 QuotaExtension.class).buildUserTagOp(quotaExtensionContext);
@@ -103,7 +118,17 @@ public class QuotaDomainService {
         QuotaExtensionContext quotaExtensionContext = new QuotaExtensionContext();
         quotaExtensionContext.setUserId(userId);
         quotaExtensionContext.setBizType(context.getBizType());
-        quotaExtensionContext.setSkus(skus);
+        quotaExtensionContext.setOpType(UserTagOpTypeEnum.ADD);
+        List<SkuAndRestrictInfo> skuAndRestrictInfos = Lists.newArrayList();
+        for (MemberSubOrderDO subOrder : context.getMemberOrder().getSubOrders()) {
+            SkuAndRestrictInfo skuAndRestrictInfo = new SkuAndRestrictInfo();
+            skuAndRestrictInfo.setSkuId(subOrder.getSkuId());
+            skuAndRestrictInfo.setBuyCount(subOrder.getBuyCount());
+            skuAndRestrictInfo.setRestrictInfo(subOrder.getExtra().getSkuRestrictInfo());
+            skuAndRestrictInfos.add(skuAndRestrictInfo);
+        }
+        quotaExtensionContext.setSkus(skuAndRestrictInfos);
+
 
         extensionManager.getExtension(BizScene.of(context.getBizType()),
                 QuotaExtension.class).buildUserTagOp(quotaExtensionContext);
@@ -135,26 +160,49 @@ public class QuotaDomainService {
      *
      * @param context
      */
-    public void onCancel(PurchaseSubmitContext context) {
-        /*long userId = context.getUserId();
-        List<SkuInfoDO> skus = context.getSkuInfos();
+    public void onCancel(AfterSaleApplyContext context) {
+        long userId = context.getCmd().getUserId();
+        MemberOrderDO memberOrderDO = context.getPreviewContext().getMemberOrder();
 
         UserTagOpCmd cmd = new UserTagOpCmd();
-        cmd.setUniqueKey(context.getMemberOrder().getTradeId());
-        //cmd.setExpireSeconds(TimeUnit.DAYS.toMillis(1));//先暂存 1 天,履约后调整为整笔订单的有效期
+        cmd.setUniqueKey(memberOrderDO.getTradeId());
+        //cmd.setExpireSeconds(TimeUnit.DAYS.toMillis(1));
         cmd.setOpType(UserTagOpTypeEnum.DEL);
-        List<UserTagOpDO> usertagOps = extractAndLoadUserTag(userId, skus);
+
+        QuotaExtensionContext quotaExtensionContext = new QuotaExtensionContext();
+        quotaExtensionContext.setUserId(userId);
+        quotaExtensionContext.setOpType(UserTagOpTypeEnum.DEL);
+        quotaExtensionContext.setBizType(context.getPreviewContext().getMemberOrder().getBizType());
+
+        List<SkuAndRestrictInfo> skuAndRestrictInfos = Lists.newArrayList();
+        for (MemberSubOrderDO subOrder : memberOrderDO.getSubOrders()) {
+            SkuAndRestrictInfo skuAndRestrictInfo = new SkuAndRestrictInfo();
+            skuAndRestrictInfo.setSkuId(subOrder.getSkuId());
+            skuAndRestrictInfo.setBuyCount(subOrder.getBuyCount());
+            skuAndRestrictInfo.setRestrictInfo(subOrder.getExtra().getSkuRestrictInfo());
+            skuAndRestrictInfos.add(skuAndRestrictInfo);
+        }
+        quotaExtensionContext.setSkus(skuAndRestrictInfos);
+
+        extensionManager.getExtension(BizScene.of(quotaExtensionContext.getBizType()),
+                QuotaExtension.class).buildUserTagOp(quotaExtensionContext);
+        List<UserTagOpDO> usertagOps = quotaExtensionContext.getUserTagOpDOList();
+
+        if (CollectionUtils.isEmpty(usertagOps)) {
+            CommonLog.info("无用户限额数据需要处理 cmd:{}", cmd);
+            return;
+        }
         cmd.setTags(usertagOps);
         try {
             UserTagOpResponse response = userTagService.operate(cmd);
             if (!response.isSuccess()) {
-                CommonLog.error("提单成功后写用户购买限额失败,内部有重试! cmd:{}", cmd);
+                CommonLog.error("售后成功后删除购买限额数据失败,内部有重试! cmd:{}", cmd);
                 return;
             }
-            CommonLog.info("提单成功后写用户购买限额成功 cmd:{}", cmd);
+            CommonLog.info("售后成功后删除购买限额数据成功 cmd:{}", cmd);
         } catch (Exception e) {
-            CommonLog.error("提单成功后写用户购买限额异常,内部有重试! cmd:{}", cmd);
-        }*/
+            CommonLog.error("售后成功后删除购买限额数据异常,内部有重试! cmd:{}", cmd, e);
+        }
     }
 
 }

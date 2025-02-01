@@ -88,7 +88,7 @@ public class RedisUserTagService implements UserTagService {
     @Retryable(throwException = true)
     public void del(UserTagOpCmd cmd, UserTagOpResponse response) {
         RedisScript<Long> script = new DefaultRedisScript<>(userTagDelLua, Long.class);
-        Long value = redisTemplate.execute(script, UserTagLuaUtil.buildLuaKeys(cmd));
+        Long value = redisTemplate.execute(script, UserTagLuaUtil.buildDelLuaKeys(cmd));
         if (value == 1) {
             response.setSuccess(true);
         } else if (value == -1) {

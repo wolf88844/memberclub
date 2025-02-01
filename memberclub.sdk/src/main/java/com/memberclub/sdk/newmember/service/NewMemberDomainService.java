@@ -50,6 +50,7 @@ public class NewMemberDomainService {
                 NewMemberExtension.class).buildUserTagOpList(context);
         List<UserTagOpDO> userTagOpDOList = context.getUserTagOpDOList();
         if (CollectionUtils.isEmpty(userTagOpDOList)) {
+            CommonLog.info("无用户标签需要标记 context:{}", context);
             return;
         }
         cmd.setTags(userTagOpDOList);
@@ -78,6 +79,7 @@ public class NewMemberDomainService {
                 NewMemberExtension.class).buildUserTagOpList(context);
         List<UserTagOpDO> userTagOpDOList = context.getUserTagOpDOList();
         if (CollectionUtils.isEmpty(userTagOpDOList)) {
+            CommonLog.info("无用户标签需要 取消标记 context:{}", context);
             return;
         }
         cmd.setTags(userTagOpDOList);
@@ -89,7 +91,7 @@ public class NewMemberDomainService {
             }
             CommonLog.info("删除新会员usertag成功 cmd:{}", cmd);
         } catch (Exception e) {
-            CommonLog.error("删除新会员usertag异常,内部有重试! cmd:{}", cmd);
+            CommonLog.error("删除新会员usertag异常,内部有重试! cmd:{}", cmd, e);
         }
     }
 

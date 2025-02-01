@@ -33,7 +33,7 @@ public class PurchaseMarkNewMemberFlow extends FlowNode<PurchaseSubmitContext> {
                 }
                 NewMemberMarkContext markContext = new NewMemberMarkContext();
                 markContext.setBizType(context.getBizType());
-                markContext.setNewMemberInfo(skuInfo.getExtra().getNewMemberInfo());
+                markContext.setSkuNewMemberInfo(skuInfo.getExtra().getSkuNewMemberInfo());
                 markContext.setSkuId(skuInfo.getSkuId());
                 markContext.setUniqueKey(String.valueOf(subOrder.getSubTradeId()));
                 markContext.setUserId(context.getUserId());
@@ -54,7 +54,7 @@ public class PurchaseMarkNewMemberFlow extends FlowNode<PurchaseSubmitContext> {
                 }
                 NewMemberMarkContext markContext = new NewMemberMarkContext();
                 markContext.setBizType(context.getBizType());
-                markContext.setNewMemberInfo(skuInfo.getExtra().getNewMemberInfo());
+                markContext.setSkuNewMemberInfo(skuInfo.getExtra().getSkuNewMemberInfo());
                 markContext.setSkuId(skuInfo.getSkuId());
                 markContext.setUniqueKey(String.valueOf(subOrder.getSubTradeId()));
                 markContext.setUserId(context.getUserId());

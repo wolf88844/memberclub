@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS member_order (
     act_price_fen INT(11)  NULL COMMENT '实付金额',
     origin_price_fen INT(11)  NOT NULL COMMENT '原价金额',
     sale_price_fen INT(11)  NOT NULL COMMENT '原价金额',
+    source INT(11)  NOT NULL COMMENT '开通来源',
     status INT(11)  NOT NULL COMMENT '主状态',
     perform_status INT(11)  NOT NULL COMMENT '履约状态',
     extra TEXT NOT NULL COMMENT '扩展属性',

@@ -15,7 +15,7 @@ import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.usertag.UserTagKeyEnum;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
+import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
 import com.memberclub.domain.dataobject.sku.UserTypeEnum;
 import com.memberclub.domain.dataobject.sku.restrict.RestrictItemType;
 import com.memberclub.domain.dataobject.sku.restrict.RestrictPeriodType;
@@ -35,15 +35,22 @@ public class DefaultQuotaExtension implements QuotaExtension {
 
     @Override
     public void buildUserTagOp(QuotaExtensionContext context) {
-        List<UserTagOpDO> usertagOps = extractAndLoadUserTag(context);
+        List<UserTagOpDO> usertagOps = null;
+        if (context.getOpType() == UserTagOpTypeEnum.ADD ||
+                context.getOpType() == UserTagOpTypeEnum.GET) {
+            usertagOps = extractAndLoadUserTag(context);
+        } else if (context.getOpType() == UserTagOpTypeEnum.DEL) {
+            usertagOps = extractAndLoadUserTag(context);
+        }
         context.setUserTagOpDOList(usertagOps);
     }
 
+
     private List<UserTagOpDO> extractAndLoadUserTag(QuotaExtensionContext context) {
         long userId = context.getUserId();
-        List<SkuInfoDO> skus = context.getSkus();
+        List<SkuAndRestrictInfo> skus = context.getSkus();
         List<UserTagOpDO> usertags = Lists.newArrayList();
-        for (SkuInfoDO skuInfoDO : skus) {
+        for (SkuAndRestrictInfo skuInfoDO : skus) {
             if (skuInfoDO.getRestrictInfo() == null ||
                     !skuInfoDO.getRestrictInfo().isEnable() ||
                     CollectionUtils.isEmpty(skuInfoDO.getRestrictInfo().getRestrictItems())) {
@@ -89,7 +96,8 @@ public class DefaultQuotaExtension implements QuotaExtension {
         }
     }
 
-    private void extractAndLoadItemTypes(QuotaExtensionContext context, SkuInfoDO skuInfoDO, SkuRestrictItem restrictItem, List<String> pairs) {
+    private void extractAndLoadItemTypes(QuotaExtensionContext context,
+                                         SkuAndRestrictInfo skuInfoDO, SkuRestrictItem restrictItem, List<String> pairs) {
         if (restrictItem.getItemType() != null) {
             if (restrictItem.getItemType() == RestrictItemType.TOTAL) {
                 pairs.add(buildPair(UserTagKeyEnum.ITEM_TYPE, "total"));

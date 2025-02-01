@@ -118,6 +118,15 @@ public class CollectionUtilEx {
         return toMap(collection, keyMapper, Function.identity());
     }
 
+    public static <T, K> Map<K, List<T>> groupingBy(Collection<T> collection, Function<? super T, ? extends K> keyMapper) {
+        if (CollectionUtils.isEmpty(collection)) {
+            return new HashMap<>(0);
+        }
+
+        return collection.stream().collect(Collectors.groupingBy(keyMapper));
+    }
+
+
     public static <T, K, V> Map<K, V> toMap(Collection<T> collection,
                                             Function<? super T, ? extends K> keyFunction,
                                             Function<? super T, ? extends V> valueFunction) {

@@ -39,6 +39,7 @@ public class MemberOrder {
 
     private Integer salePriceFen;
 
+    private int source;
 
     private int status;
 

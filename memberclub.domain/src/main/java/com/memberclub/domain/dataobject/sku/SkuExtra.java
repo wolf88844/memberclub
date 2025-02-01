@@ -16,5 +16,5 @@ public class SkuExtra {
 
     private String description;
 
-    private NewMemberInfoDO newMemberInfo;
+    private SkuNewMemberInfo skuNewMemberInfo;
 }

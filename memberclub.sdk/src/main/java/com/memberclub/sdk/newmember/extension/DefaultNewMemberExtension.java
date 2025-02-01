@@ -30,14 +30,14 @@ public class DefaultNewMemberExtension implements NewMemberExtension {
 
     @Override
     public void buildUserTagOpList(NewMemberMarkContext context) {
-        if (context.getNewMemberInfo() == null ||
-                !context.getNewMemberInfo().isNewMemberMarkEnable()) {
+        if (context.getSkuNewMemberInfo() == null ||
+                !context.getSkuNewMemberInfo().isNewMemberMarkEnable()) {
             CommonLog.info("该商品无需标记新会员 context:{}", context);
             return;
         }
 
         List<UserTagOpDO> userTagOpDOList = Lists.newArrayList();
-        for (UserTypeEnum userType : context.getNewMemberInfo().getUserTypes()) {
+        for (UserTypeEnum userType : context.getSkuNewMemberInfo().getUserTypes()) {
             UserTagOpDO userTagOpDO = new UserTagOpDO();
             List<String> pairs = Lists.newArrayList();
 

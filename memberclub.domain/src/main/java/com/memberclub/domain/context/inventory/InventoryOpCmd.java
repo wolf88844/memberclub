@@ -34,4 +34,6 @@ public class InventoryOpCmd {
     private List<InventorySkuOpDO> skus;
 
     private InventoryTargetTypeEnum targetType;
+
+    private long submitTime;
 }

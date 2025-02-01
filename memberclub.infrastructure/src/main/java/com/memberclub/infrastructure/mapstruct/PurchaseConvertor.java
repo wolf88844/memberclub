@@ -7,8 +7,8 @@
 package com.memberclub.infrastructure.mapstruct;
 
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderFinanceInfo;
+import com.memberclub.domain.dataobject.perform.his.SubOrderSaleInfo;
 import com.memberclub.domain.dataobject.perform.his.SubOrderViewInfo;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
@@ -56,6 +56,7 @@ public interface PurchaseConvertor {
             @Mapping(target = "extra", source = "extra", qualifiedByName = "toMemberOrderExtraInfoString"),
             @Mapping(target = "status", qualifiedByName = "toMemberOrderStatusEnumInt"),
             @Mapping(target = "performStatus", qualifiedByName = "toMemberOrderPerformStatusEnumInt"),
+            @Mapping(target = "source", qualifiedByName = "toPurchaseSourceEnumInt"),
     })
     public MemberOrder toMemberOrder(MemberOrderDO order);
 

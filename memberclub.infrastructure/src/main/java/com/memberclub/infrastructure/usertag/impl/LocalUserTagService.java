@@ -33,6 +33,7 @@ public class LocalUserTagService implements UserTagService {
     @Override
     public UserTagOpResponse operate(UserTagOpCmd cmd) {
         UserTagOpResponse response = new UserTagOpResponse();
+        response.setSuccess(true);
         if (cmd.getOpType() == UserTagOpTypeEnum.ADD) {
             for (UserTagOpDO tag : cmd.getTags()) {
                 map.compute(tag.getKey(), (k, o) -> {
@@ -45,7 +46,10 @@ public class LocalUserTagService implements UserTagService {
 
         } else if (cmd.getOpType() == UserTagOpTypeEnum.DEL) {
             for (UserTagOpDO tag : cmd.getTags()) {
-                map.remove(tag.getKey());
+                Object v = map.remove(tag.getKey());
+                if (v == null) {
+                    response.setSuccess(false);
+                }
             }
         } else if (cmd.getOpType() == UserTagOpTypeEnum.GET) {
             List<String> keys = CollectionUtilEx.mapToList(cmd.getTags(), UserTagOpDO::getKey);

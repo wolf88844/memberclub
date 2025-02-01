@@ -11,6 +11,7 @@ import com.memberclub.common.extension.ExtensionProvider;
 import com.memberclub.common.flow.FlowChain;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
+import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.sdk.purchase.extension.PurchaseExtension;
 import com.memberclub.sdk.purchase.flow.CommonOrderSubmitFlow;
@@ -21,6 +22,9 @@ import com.memberclub.sdk.purchase.flow.PurchaseSubmitLockFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseUserQuotaFlow;
 import com.memberclub.sdk.purchase.flow.PurchaseValidateInventoryFlow;
 import com.memberclub.sdk.purchase.flow.SkuInfoInitalSubmitFlow;
+import com.memberclub.sdk.purchase.flow.aftersale.PurchaseReverseInventoryFlow;
+import com.memberclub.sdk.purchase.flow.aftersale.PurchaseReverseMemberQuotaFlow;
+import com.memberclub.sdk.purchase.flow.aftersale.PurchaseReverseNewMemberFlow;
 
 import javax.annotation.PostConstruct;
 
@@ -32,11 +36,13 @@ import javax.annotation.PostConstruct;
 })
 public class DemoMemberPurchaseExtension implements PurchaseExtension {
 
-    private static FlowChain<PurchaseSubmitContext> flowChain = null;
+    private static FlowChain<PurchaseSubmitContext> submitChain = null;
+
+    private static FlowChain<AfterSaleApplyContext> purchaseReverseChain = null;
 
     @PostConstruct
     public void init() {
-        flowChain = FlowChain.newChain(PurchaseSubmitContext.class)
+        submitChain = FlowChain.newChain(PurchaseSubmitContext.class)
                 .addNode(PurchaseSubmitLockFlow.class)
                 .addNode(SkuInfoInitalSubmitFlow.class)
                 .addNode(PurchaseUserQuotaFlow.class)//检查限额
@@ -46,10 +52,22 @@ public class DemoMemberPurchaseExtension implements PurchaseExtension {
                 .addNode(PurchaseOperateInventoryFlow.class)//扣减库存
                 .addNode(CommonOrderSubmitFlow.class)//订单系统提单
         ;
+
+        purchaseReverseChain = FlowChain.newChain(AfterSaleApplyContext.class)
+                .addNode(PurchaseReverseNewMemberFlow.class)
+                .addNode(PurchaseReverseInventoryFlow.class)
+                .addNode(PurchaseReverseMemberQuotaFlow.class)
+        //
+        ;
     }
 
     @Override
     public void submit(PurchaseSubmitContext context) {
-        flowChain.execute(context);
+        submitChain.execute(context);
+    }
+
+    @Override
+    public void reverse(AfterSaleApplyContext context) {
+        purchaseReverseChain.execute(context);
     }
 }

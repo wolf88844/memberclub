@@ -8,7 +8,7 @@ package com.memberclub.domain.dataobject.newmember;
 
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
-import com.memberclub.domain.dataobject.sku.NewMemberInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuNewMemberInfo;
 import lombok.Data;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class NewMemberMarkContext {
 
     private long skuId;
 
-    private NewMemberInfoDO newMemberInfo;
+    private SkuNewMemberInfo skuNewMemberInfo;
 
     List<UserTagOpDO> userTagOpDOList;
 

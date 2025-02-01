@@ -21,7 +21,7 @@ import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
-import com.memberclub.domain.dataobject.sku.NewMemberInfoDO;
+import com.memberclub.domain.dataobject.sku.SkuNewMemberInfo;
 import com.memberclub.domain.dataobject.sku.SkuExtra;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
@@ -118,10 +118,10 @@ public class TestDemoMemberPurchase extends MockBaseTest {
 
         inventoryEnabledSku.setRestrictInfo(skuRestrictInfo);
 
-        NewMemberInfoDO newMemberInfo = new NewMemberInfoDO();
-        newMemberInfo.setNewMemberMarkEnable(true);
-        newMemberInfo.setUserTypes(ImmutableList.of(UserTypeEnum.USERID));
-        inventoryEnabledSku.getExtra().setNewMemberInfo(newMemberInfo);
+        SkuNewMemberInfo skuNewMemberInfo = new SkuNewMemberInfo();
+        skuNewMemberInfo.setNewMemberMarkEnable(true);
+        skuNewMemberInfo.setUserTypes(ImmutableList.of(UserTypeEnum.USERID));
+        inventoryEnabledSku.getExtra().setSkuNewMemberInfo(skuNewMemberInfo);
 
         mockSkuBizService.addSkuAndCreateInventory(inventoryEnabledSku.getSkuId(), inventoryEnabledSku);
 

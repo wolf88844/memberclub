@@ -14,7 +14,7 @@ import java.util.List;
  * author: 掘金五阳
  */
 @Data
-public class NewMemberInfoDO {
+public class SkuNewMemberInfo {
 
     private boolean newMemberMarkEnable;
 

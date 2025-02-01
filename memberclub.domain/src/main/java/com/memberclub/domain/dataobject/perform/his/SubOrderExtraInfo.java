@@ -7,7 +7,10 @@
 package com.memberclub.domain.dataobject.perform.his;
 
 import com.memberclub.domain.dataobject.CommonUserInfo;
+import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
+import com.memberclub.domain.dataobject.sku.SkuNewMemberInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
+import com.memberclub.domain.dataobject.sku.restrict.SkuRestrictInfo;
 import lombok.Data;
 
 /**
@@ -27,4 +30,10 @@ public class SubOrderExtraInfo {
     private CommonUserInfo userInfo = new CommonUserInfo();
 
     private SkuPerformConfigDO performConfig = new SkuPerformConfigDO();
+
+    private SkuInventoryInfo skuInventoryInfo = null;
+
+    private SkuRestrictInfo skuRestrictInfo = null;
+
+    private SkuNewMemberInfo skuNewMemberInfo = null;
 }

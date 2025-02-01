@@ -14,6 +14,7 @@ import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
+import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
 import com.memberclub.domain.dataobject.order.LocationInfo;
@@ -37,6 +38,8 @@ public class MemberOrderDO {
     private long userId;
 
     private String tradeId;
+
+    private PurchaseSourceEnum source;
 
     private OrderInfoDO orderInfo;
 
