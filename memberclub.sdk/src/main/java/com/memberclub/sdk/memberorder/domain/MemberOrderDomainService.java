@@ -17,6 +17,7 @@ import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.trade.MemberOrder;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
@@ -95,6 +96,22 @@ public class MemberOrderDomainService {
                 MemberOrderDomainExtension.class).onSubmitSuccess(order, wrapper);
 
         memberSubOrderDomainService.onSubmitSuccess(order);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Retryable(throwException = false)
+    public void onSubmitCancel(PurchaseCancelContext context, MemberOrderDO order) {
+        LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(MemberOrder::getUserId, order.getUserId())
+                .eq(MemberOrder::getTradeId, order.getTradeId())
+                .set(MemberOrder::getStatus, order.getStatus().getCode())
+                .set(MemberOrder::getExtra, JsonUtils.toJson(order.getExtra()))
+                .set(MemberOrder::getUtime, TimeUtil.now());
+
+        extensionManager.getExtension(BizScene.of(order.getBizType()),
+                MemberOrderDomainExtension.class).onSubmitCancel(order, wrapper);
+
+        memberSubOrderDomainService.onSubmitCancel(context, order);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -7,7 +7,9 @@
 package com.memberclub.sdk.event.trade.service.domain;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
@@ -19,11 +21,13 @@ import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.PerformItemReverseInfo;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDetailDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventEnum;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.dataobject.task.perform.PerformTaskContentItemDO;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
@@ -45,6 +49,24 @@ public class TradeEventDomainService {
     @Autowired
     private ExtensionManager extensionManager;
 
+    public void onPurchaseCancelSuccessForSubOrder(PurchaseCancelContext cancelContext,
+                                                   MemberOrderDO memberOrderDO,
+                                                   MemberSubOrderDO subOrder) {
+        TradeEventDO event = buildTradeEvent(subOrder,
+                Lists.newArrayList(),
+                TradeEventEnum.SUB_ORDER_CANCEL_SUCCESS,
+                1
+        );
+
+        String value = extensionManager.getExtension(BizScene.of(subOrder.getBizType()),
+                TradeEventDomainExtension.class).onPurchaseCancelSuccessForSubOrder(cancelContext,
+                memberOrderDO, subOrder, event);
+
+        messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
+    }
+
+
     public void onPerformSuccessForSubOrder(PerformContext performContext,
                                             SubOrderPerformContext subOrderPerformContext,
                                             MemberSubOrderDO subOrder) {
@@ -59,6 +81,7 @@ public class TradeEventDomainService {
                 subOrderPerformContext, subOrder, event);
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
     }
 
     public void onPeriodPerformSuccess(PeriodPerformContext context) {
@@ -82,6 +105,7 @@ public class TradeEventDomainService {
                 TradeEventDomainExtension.class).onPeriodPerformSuccessForSubOrder(context, event);
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
     }
 
 
@@ -97,6 +121,7 @@ public class TradeEventDomainService {
                 subOrderReversePerformContext, subOrder, event);
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
     }
 
     public void onRefundSuccessForSubOrder(AfterSaleApplyContext context,
@@ -115,6 +140,7 @@ public class TradeEventDomainService {
                 TradeEventDomainExtension.class).onRefundSuccessForSubOrder(context, subOrder, event);
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
     }
 
     public void onFreezeSuccessForSubOrder(AfterSaleApplyContext context,
@@ -133,6 +159,7 @@ public class TradeEventDomainService {
                 TradeEventDomainExtension.class).onRefundSuccessForSubOrder(context, subOrder, event);
 
         messageQuenePublishFacade.publish(MQTopicEnum.TRADE_EVENT, value);
+        CommonLog.info("发送 TradeEvent:{}", value);
     }
 
 

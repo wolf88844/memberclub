@@ -13,6 +13,7 @@ import com.memberclub.domain.context.perform.common.MemberOrderPerformStatusEnum
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
@@ -88,6 +89,14 @@ public class MemberOrderDO {
         status = MemberOrderStatusEnum.FAIL;
         for (MemberSubOrderDO subOrder : subOrders) {
             subOrder.setStatus(SubOrderStatusEnum.FAIL);
+        }
+    }
+
+
+    public void onSubmitCancel(PurchaseCancelContext context) {
+        status = MemberOrderStatusEnum.CANCELED;
+        for (MemberSubOrderDO subOrder : subOrders) {
+            subOrder.setStatus(SubOrderStatusEnum.CANCELED);
         }
     }
 

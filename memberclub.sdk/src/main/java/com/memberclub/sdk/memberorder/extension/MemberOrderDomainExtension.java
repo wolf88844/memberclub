@@ -23,6 +23,8 @@ public interface MemberOrderDomainExtension extends BaseExtension {
 
     public void onSubmitSuccess(MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper);
 
+    public void onSubmitCancel(MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper);
+
     public int onStartPerform(PerformContext context, LambdaUpdateWrapper<MemberOrder> wrapper);
 
     public void onPerformSuccess(PerformContext context, MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper);

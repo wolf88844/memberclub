@@ -6,6 +6,7 @@
  */
 package com.memberclub.infrastructure.mq.producer.impl;
 
+import com.memberclub.common.retry.Retryable;
 import com.memberclub.infrastructure.mq.MQTopicEnum;
 import com.memberclub.infrastructure.mq.MessageQuenePublishFacade;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,8 +23,9 @@ public class RabbitmqPublishFacadeImpl implements MessageQuenePublishFacade {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    
+
     @Override
+    @Retryable(throwException = false)
     public void publish(MQTopicEnum event, String message) {
         rabbitTemplate.convertAndSend(event.toString(), "*", message);
     }

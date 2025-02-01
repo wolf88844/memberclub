@@ -36,6 +36,7 @@ public enum ResultCode {
     QUOTA_LACKING(26, "限额不足", false, false),
     NEW_MEMBER_ERROR(27, "新会员标记错误", false, false),
     PURCHASE_REVERSE_ERROR(28, "开通逆向失败", false),
+    PURCHASE_CANCEL_ERROR(29, "开通取消失败", false),
     ;
 
     private int value;

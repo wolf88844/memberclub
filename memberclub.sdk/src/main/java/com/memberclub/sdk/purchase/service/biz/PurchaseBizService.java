@@ -14,6 +14,8 @@ import com.memberclub.domain.context.aftersale.apply.AfterSaleApplyContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelCmd;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.exception.MemberException;
 import com.memberclub.domain.exception.ResultCode;
@@ -30,9 +32,21 @@ public class PurchaseBizService {
     @Autowired
     private ExtensionManager extensionManager;
 
+    public void cancel(PurchaseCancelCmd cmd) {
+        PurchaseCancelContext context = new PurchaseCancelContext();
+        context.setCmd(cmd);
+        try {
+            extensionManager.getExtension(BizScene.of(context.getCmd().getBizType()),
+                    PurchaseExtension.class).cancel(context);
+        } catch (MemberException e) {
+            throw e;
+        } catch (Exception e) {
+            MemberException me = ResultCode.PURCHASE_CANCEL_ERROR.newException("开通取消流程异常", e);
+            throw me;
+        }
+    }
 
     public void reverse(AfterSaleApplyContext context) {
-        // TODO: 2025/1/5
         try {
             extensionManager.getExtension(
                     BizScene.of(context.getCmd().getBizType()), PurchaseExtension.class).reverse(context);

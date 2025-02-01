@@ -16,6 +16,7 @@ import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.sdk.config.extension.BizConfigTable;
 import com.memberclub.sdk.config.service.ConfigService;
 import com.memberclub.sdk.lock.LockService;
@@ -60,7 +61,7 @@ public class MemberTradeLockService {
             context.setLockValue(lockValue);
             return;
         }
-        CommonLog.error("提单前, 不加锁 lockContext:{}", lockContext);
+        CommonLog.warn("提单前, 不加锁 lockContext:{}", lockContext);
     }
 
 
@@ -79,7 +80,46 @@ public class MemberTradeLockService {
             lockService.unlock(lockContext);
             return;
         }
-        CommonLog.error("提单主流程成功, 不释放锁 lockContext:{}", lockContext);
+        CommonLog.warn("提单主流程成功, 不释放锁 lockContext:{}", lockContext);
+    }
+
+
+    public void lockOnPrePurchaseCancel(PurchaseCancelContext context) {
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getCmd().getBizType()));
+
+        LockContext lockContext = LockContext.builder().
+                bizType(context.getCmd().getBizType()).
+                lockScene("purchase").
+                lockMode(LockMode.LOCK_USER).
+                userId(context.getCmd().getUserId()).
+                build();
+        boolean lockable = getLockExtension(context.getCmd().getBizType()).buildOnPrePurchaseCancel(lockContext, context);
+
+        if (lockable) {
+            Long lockValue = lockService.lock(lockContext);
+            context.setLockValue(lockValue);
+            return;
+        }
+        CommonLog.warn("取消前, 不加锁 lockContext:{}", lockContext);
+    }
+
+
+    public void unlockOnPurchaseCancelSuccess(PurchaseCancelContext context) {
+        CommonLog.error("回滚阶段尝试解锁");
+        BizConfigTable table = configService.findConfigTable(BizScene.of(context.getCmd().getBizType()));
+
+        LockContext lockContext = LockContext.builder().bizType(context.getCmd().getBizType())
+                .lockScene("purchase")
+                .lockMode(LockMode.LOCK_USER)
+                .userId(context.getCmd().getUserId())
+                .lockValue(context.getMemberOrder().getExtra().getLockValue())
+                .build();
+        boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnPurchaseCancel(lockContext, context);
+        if (unlockable) {
+            lockService.unlock(lockContext);
+            return;
+        }
+        CommonLog.error("取消订单, 不释放锁 lockContext:{}", lockContext);
     }
 
     public void unlockOnPurchaseFail(PurchaseSubmitContext context) {

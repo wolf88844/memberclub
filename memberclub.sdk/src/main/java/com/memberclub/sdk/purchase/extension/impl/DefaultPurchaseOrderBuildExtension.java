@@ -12,6 +12,7 @@ import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.common.OrderSystemTypeEnum;
 import com.memberclub.domain.common.SceneEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
@@ -38,6 +39,11 @@ public class DefaultPurchaseOrderBuildExtension implements PurchaseOrderBuildExt
 
     @Override
     public void onSubmitSuccess(MemberOrderDO order, PurchaseSubmitContext context) {
+
+    }
+
+    @Override
+    public void onSubmitCancel(MemberOrderDO order, PurchaseCancelContext context) {
 
     }
 

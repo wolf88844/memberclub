@@ -10,9 +10,10 @@ import com.memberclub.common.extension.BaseExtension;
 import com.memberclub.common.extension.ExtensionConfig;
 import com.memberclub.common.extension.ExtensionType;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
-import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
+import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 
 /**
  * author: 掘金五阳
@@ -28,4 +29,6 @@ public interface PurchaseOrderBuildExtension extends BaseExtension {
     public void onSubmitSuccess(MemberOrderDO order, PurchaseSubmitContext context);
 
     public void onSubmitFail(MemberOrderDO order, PurchaseSubmitContext context, Exception e);
+
+    public void onSubmitCancel(MemberOrderDO order, PurchaseCancelContext context);
 }

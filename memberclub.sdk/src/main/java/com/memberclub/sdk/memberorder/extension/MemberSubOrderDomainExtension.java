@@ -27,6 +27,9 @@ public interface MemberSubOrderDomainExtension extends BaseExtension {
     public void onSubmitSuccess(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper);
 
 
+    public void onSubmitCancel(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper);
+
+
     /**
      * 开始履约 会员子单
      *

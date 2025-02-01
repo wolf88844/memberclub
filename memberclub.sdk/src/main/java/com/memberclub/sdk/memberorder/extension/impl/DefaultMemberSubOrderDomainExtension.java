@@ -41,6 +41,15 @@ public class DefaultMemberSubOrderDomainExtension implements MemberSubOrderDomai
         memberSubOrderDao.update(null, wrapper);
     }
 
+    @Override
+    public void onSubmitCancel(MemberSubOrderDO memberSubOrderDO, LambdaUpdateWrapper<MemberSubOrder> wrapper) {
+        int cnt = memberSubOrderDao.update(null, wrapper);
+        if (cnt < 1) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("MemberSubOrder onSubmitCancel 更新异常");
+        }
+        CommonLog.info("更新子单状态为取消 status:{}, cnt:{}", memberSubOrderDO.getStatus(), cnt);
+
+    }
 
     @Override
     public void onStartPerform(PerformContext context,

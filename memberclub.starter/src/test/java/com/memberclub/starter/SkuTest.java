@@ -6,6 +6,9 @@
  */
 package com.memberclub.starter;
 
+import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.util.ApplicationContextUtils;
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.infrastructure.mybatis.mappers.sku.MemberSkuDao;
 import com.memberclub.sdk.sku.service.SkuDomainService;
@@ -31,11 +34,11 @@ public class SkuTest extends MockBaseTest {
 
     @Test
     public void testAddSku() {
-        /*if (!ApplicationContextUtils.isUnitTest()) {
+        if (!ApplicationContextUtils.isUnitTest()) {
             CommonLog.info("当前 Profile:{} 不执行本单测",
                     JsonUtils.toJson(ApplicationContextUtils.getContext().getEnvironment().getActiveProfiles()));
-            //return;
-        }*/
+            return;
+        }
 
         SkuInfoDO skuInfoDO = buildDoubleRightsSku(3);
         skuDomainService.createMemberSku(skuInfoDO);

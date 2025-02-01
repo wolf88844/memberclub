@@ -14,6 +14,7 @@ import com.memberclub.domain.context.perform.common.PeriodTypeEnum;
 import com.memberclub.domain.context.purchase.PurchaseSkuSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitCmd;
 import com.memberclub.domain.context.purchase.PurchaseSubmitResponse;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelCmd;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.PurchaseSourceEnum;
 import com.memberclub.domain.dataobject.CommonUserInfo;
@@ -21,11 +22,11 @@ import com.memberclub.domain.dataobject.aftersale.ClientInfo;
 import com.memberclub.domain.dataobject.inventory.InventoryCacheDO;
 import com.memberclub.domain.dataobject.order.LocationInfo;
 import com.memberclub.domain.dataobject.sku.InventoryTypeEnum;
-import com.memberclub.domain.dataobject.sku.SkuNewMemberInfo;
 import com.memberclub.domain.dataobject.sku.SkuExtra;
 import com.memberclub.domain.dataobject.sku.SkuFinanceInfo;
 import com.memberclub.domain.dataobject.sku.SkuInfoDO;
 import com.memberclub.domain.dataobject.sku.SkuInventoryInfo;
+import com.memberclub.domain.dataobject.sku.SkuNewMemberInfo;
 import com.memberclub.domain.dataobject.sku.SkuPerformConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuPerformItemConfigDO;
 import com.memberclub.domain.dataobject.sku.SkuSaleInfo;
@@ -48,6 +49,7 @@ import com.memberclub.infrastructure.cache.CacheService;
 import com.memberclub.infrastructure.order.facade.MockCommonOrderFacadeSPI;
 import com.memberclub.sdk.inventory.service.InventoryDomainService;
 import com.memberclub.sdk.purchase.service.biz.PurchaseBizService;
+import com.memberclub.sdk.sku.service.SkuDomainService;
 import com.memberclub.starter.mock.MockBaseTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -68,17 +70,27 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TestDemoMemberPurchase extends MockBaseTest {
 
 
-    public SkuInfoDO doubleRightsSku = null;
+    public static SkuInfoDO doubleRightsSku = null;
 
-    public SkuInfoDO cycle3Sku = null;
+    public static SkuInfoDO cycle3Sku = null;
 
-    public SkuInfoDO inventoryEnabledSku = null;
+    public static SkuInfoDO inventoryEnabledSku = null;
 
     @Autowired
     public PurchaseBizService purchaseBizService;
 
+
+    @Autowired
+    private SkuDomainService skuDomainService;
+
+    private static boolean init = false;
+
     @Before
     public void init() {
+        if (init) {
+            return;
+        }
+        init = true;
         doubleRightsSku = buildDoubleRightsSku(1);
         mockSkuBizService.addSku(doubleRightsSku.getSkuId(), doubleRightsSku);
 
@@ -220,7 +232,14 @@ public class TestDemoMemberPurchase extends MockBaseTest {
         for (MemberSubOrder subOrder : subOrders) {
             //Assert.assertEquals(SubOrderStatusEnum.SUBMITED.getCode(), subOrder.getStatus());
         }
-        releaseLock(response.getLockValue());
+
+        PurchaseCancelCmd cancelCmd = new PurchaseCancelCmd();
+        cancelCmd.setBizType(cmd.getBizType());
+        cancelCmd.setUserId(cmd.getUserId());
+        cancelCmd.setTradeId(response.getMemberOrderDO().getTradeId());
+        purchaseBizService.cancel(cancelCmd);
+
+        //releaseLock(response.getLockValue());
         waitH2();
     }
 

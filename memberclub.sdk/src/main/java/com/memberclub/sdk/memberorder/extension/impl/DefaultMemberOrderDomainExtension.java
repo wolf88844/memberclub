@@ -39,6 +39,15 @@ public class DefaultMemberOrderDomainExtension implements MemberOrderDomainExten
     }
 
     @Override
+    public void onSubmitCancel(MemberOrderDO memberOrderDO, LambdaUpdateWrapper<MemberOrder> wrapper) {
+        int cnt = memberOrderDao.update(null, wrapper);
+        if (cnt <= 0) {
+            throw ResultCode.DATA_UPDATE_ERROR.newException("member_order 更新到取消成功异常");
+        }
+        CommonLog.info("更新主单的主状态为取消完成 status:{} cnt:{}", memberOrderDO.getStatus(), cnt);
+    }
+
+    @Override
     public int onStartPerform(PerformContext context, LambdaUpdateWrapper<MemberOrder> wrapper) {
         int cnt = memberOrderDao.update(null, wrapper);
         return cnt;

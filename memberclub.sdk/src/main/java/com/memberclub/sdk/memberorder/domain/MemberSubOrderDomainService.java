@@ -19,6 +19,7 @@ import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.domain.entity.trade.MemberSubOrder;
@@ -56,6 +57,24 @@ public class MemberSubOrderDomainService {
 
             extensionManager.getExtension(BizScene.of(subOrder.getBizType()),
                     MemberSubOrderDomainExtension.class).onSubmitSuccess(subOrder, subOrderWrapper);
+        }
+    }
+
+    public void onSubmitCancel(PurchaseCancelContext context, MemberOrderDO memberOrderDO) {
+        for (MemberSubOrderDO subOrder : memberOrderDO.getSubOrders()) {
+            LambdaUpdateWrapper<MemberSubOrder> subOrderWrapper = new LambdaUpdateWrapper<>();
+            subOrderWrapper.eq(MemberSubOrder::getUserId, subOrder.getUserId())
+                    .eq(MemberSubOrder::getSubTradeId, subOrder.getSubTradeId())
+                    .set(MemberSubOrder::getStatus, subOrder.getStatus().getCode())
+                    .set(MemberSubOrder::getExtra, JsonUtils.toJson(subOrder.getExtra()))
+                    .set(MemberSubOrder::getUtime, TimeUtil.now());
+
+            extensionManager.getExtension(BizScene.of(subOrder.getBizType()),
+                    MemberSubOrderDomainExtension.class).onSubmitCancel(subOrder, subOrderWrapper);
+
+            TransactionHelper.afterCommitExecute(() -> {
+                tradeEventDomainService.onPurchaseCancelSuccessForSubOrder(context, memberOrderDO, subOrder);
+            });
         }
     }
 

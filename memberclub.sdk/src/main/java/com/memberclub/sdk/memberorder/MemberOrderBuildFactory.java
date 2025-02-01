@@ -9,8 +9,10 @@ package com.memberclub.sdk.memberorder;
 import com.google.common.collect.Lists;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.perform.common.SubOrderPerformStatusEnum;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.context.purchase.common.MemberOrderStatusEnum;
 import com.memberclub.domain.context.purchase.common.RenewTypeEnum;
 import com.memberclub.domain.context.purchase.common.SubOrderStatusEnum;
@@ -56,11 +58,16 @@ public class MemberOrderBuildFactory {
 
     }
 
-
     public void onSubmitFail(PurchaseSubmitContext context, Exception e) {
         context.getMemberOrder().onSubmitFail(context);
         extensionManager.getExtension(context.toDefaultBizScene(),
                 PurchaseOrderBuildExtension.class).onSubmitFail(context.getMemberOrder(), context, e);
+    }
+
+    public void onSubmitCancel(PurchaseCancelContext context) {
+        context.getMemberOrder().onSubmitCancel(context);
+        extensionManager.getExtension(BizScene.of(context.getCmd().getBizType()),
+                PurchaseOrderBuildExtension.class).onSubmitCancel(context.getMemberOrder(), context);
     }
 
 

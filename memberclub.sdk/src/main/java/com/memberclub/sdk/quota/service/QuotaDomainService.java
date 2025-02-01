@@ -155,24 +155,41 @@ public class QuotaDomainService {
 
     }
 
-    /**
-     * 暂时忽略,目前无取消订单流程
-     *
-     * @param context
-     */
-    public void onCancel(AfterSaleApplyContext context) {
-        long userId = context.getCmd().getUserId();
-        MemberOrderDO memberOrderDO = context.getPreviewContext().getMemberOrder();
+    public void onCancel(MemberOrderDO memberOrderDO) {
+        long userId = memberOrderDO.getUserId();
 
         UserTagOpCmd cmd = new UserTagOpCmd();
         cmd.setUniqueKey(memberOrderDO.getTradeId());
-        //cmd.setExpireSeconds(TimeUnit.DAYS.toMillis(1));
         cmd.setOpType(UserTagOpTypeEnum.DEL);
 
+        QuotaExtensionContext quotaExtensionContext = buildQuotaExtensionContext(memberOrderDO, userId);
+
+        extensionManager.getExtension(BizScene.of(memberOrderDO.getBizType()),
+                QuotaExtension.class).buildUserTagOp(quotaExtensionContext);
+        List<UserTagOpDO> usertagOps = quotaExtensionContext.getUserTagOpDOList();
+
+        if (CollectionUtils.isEmpty(usertagOps)) {
+            CommonLog.info("无用户限额数据需要处理 cmd:{}", cmd);
+            return;
+        }
+        cmd.setTags(usertagOps);
+        try {
+            UserTagOpResponse response = userTagService.operate(cmd);
+            if (!response.isSuccess()) {
+                CommonLog.error("订单取消后删除购买限额数据失败,内部有重试! cmd:{}", cmd);
+                return;
+            }
+            CommonLog.info("订单取消后删除购买限额数据成功 cmd:{}", cmd);
+        } catch (Exception e) {
+            CommonLog.error("订单取消后删除购买限额数据异常,内部有重试! cmd:{}", cmd, e);
+        }
+    }
+
+    private QuotaExtensionContext buildQuotaExtensionContext(MemberOrderDO memberOrderDO, long userId) {
         QuotaExtensionContext quotaExtensionContext = new QuotaExtensionContext();
         quotaExtensionContext.setUserId(userId);
         quotaExtensionContext.setOpType(UserTagOpTypeEnum.DEL);
-        quotaExtensionContext.setBizType(context.getPreviewContext().getMemberOrder().getBizType());
+        quotaExtensionContext.setBizType(memberOrderDO.getBizType());
 
         List<SkuAndRestrictInfo> skuAndRestrictInfos = Lists.newArrayList();
         for (MemberSubOrderDO subOrder : memberOrderDO.getSubOrders()) {
@@ -183,7 +200,24 @@ public class QuotaDomainService {
             skuAndRestrictInfos.add(skuAndRestrictInfo);
         }
         quotaExtensionContext.setSkus(skuAndRestrictInfos);
+        return quotaExtensionContext;
+    }
 
+
+    /**
+     * 暂时忽略,目前无取消订单流程
+     *
+     * @param context
+     */
+    public void onReverse(AfterSaleApplyContext context) {
+        long userId = context.getCmd().getUserId();
+        MemberOrderDO memberOrderDO = context.getPreviewContext().getMemberOrder();
+
+        UserTagOpCmd cmd = new UserTagOpCmd();
+        cmd.setUniqueKey(memberOrderDO.getTradeId());
+        cmd.setOpType(UserTagOpTypeEnum.DEL);
+
+        QuotaExtensionContext quotaExtensionContext = buildQuotaExtensionContext(memberOrderDO, userId);
         extensionManager.getExtension(BizScene.of(quotaExtensionContext.getBizType()),
                 QuotaExtension.class).buildUserTagOp(quotaExtensionContext);
         List<UserTagOpDO> usertagOps = quotaExtensionContext.getUserTagOpDOList();

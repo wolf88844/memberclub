@@ -16,6 +16,7 @@ import com.memberclub.domain.context.common.LockMode;
 import com.memberclub.domain.context.perform.PerformContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.purchase.PurchaseSubmitContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.exception.AftersaleDoApplyException;
 
 /**
@@ -39,6 +40,23 @@ public interface LockExtension extends BaseExtension {
     }
 
     default boolean buildOnPurchaseFail(LockContext context, PurchaseSubmitContext purchaseSubmitContext) {
+        return true;
+    }
+
+
+    default boolean buildOnPrePurchaseCancel(LockContext context, PurchaseCancelContext purchaseCancelContext) {
+        if (context.getLockMode() == LockMode.LOCK_ORDER) {
+            return true;
+        } else if (context.getLockMode() == LockMode.LOCK_USER) {
+            //用户粒度的锁主要应用于 会员场景,因会员身份不能重叠,所以需要加用户粒度的锁
+            // 用户粒度的锁需要在 入口层即 购买域加锁,履约成功解锁,订单取消解锁
+            purchaseCancelContext.setLockValue(purchaseCancelContext.getMemberOrder().getExtra().getLockValue());
+            return false;
+        }
+        return true;
+    }
+
+    default boolean buildOnPurchaseCancel(LockContext context, PurchaseCancelContext cancelContext) {
         return true;
     }
 

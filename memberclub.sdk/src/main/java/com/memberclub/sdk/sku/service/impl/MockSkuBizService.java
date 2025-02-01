@@ -57,10 +57,11 @@ public class MockSkuBizService implements SkuBizService {
 
     public void addSku(long skuId, SkuInfoDO skuInfo) {
         map.put(skuId, skuInfo);
+        skuDomainService.createMemberSku(skuInfo);
     }
 
     public void addSkuAndCreateInventory(long skuId, SkuInfoDO skuInfo) {
-        map.put(skuId, skuInfo);
+        addSku(skuId, skuInfo);
         if (skuInfo.getInventoryInfo().isEnable()) {
             Inventory inventory = memberSkuDataObjectFactory.buildInventoryFromSku(skuInfo);
             int cnt = inventoryDao.insertIgnoreBatch(Lists.newArrayList(inventory));

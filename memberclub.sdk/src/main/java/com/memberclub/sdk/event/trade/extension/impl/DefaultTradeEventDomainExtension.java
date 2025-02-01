@@ -17,10 +17,12 @@ import com.memberclub.domain.context.perform.SubOrderPerformContext;
 import com.memberclub.domain.context.perform.period.PeriodPerformContext;
 import com.memberclub.domain.context.perform.reverse.ReversePerformContext;
 import com.memberclub.domain.context.perform.reverse.SubOrderReversePerformContext;
+import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.dataobject.event.trade.TradeEvent;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDO;
 import com.memberclub.domain.dataobject.event.trade.TradeEventDetail;
 import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
+import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 import com.memberclub.infrastructure.mapstruct.CommonConvertor;
 import com.memberclub.sdk.event.trade.extension.TradeEventDomainExtension;
 
@@ -32,13 +34,17 @@ import com.memberclub.sdk.event.trade.extension.TradeEventDomainExtension;
 })
 public class DefaultTradeEventDomainExtension implements TradeEventDomainExtension {
 
+    @Override
+    public String onPurchaseCancelSuccessForSubOrder(PurchaseCancelContext cancelContext, MemberOrderDO memberOrderDO,
+                                                     MemberSubOrderDO subOrder, TradeEventDO event) {
+        return toEventValue(event);
+    }
 
     @Override
     public String onPerformSuccessForSubOrder(PerformContext performContext,
                                               SubOrderPerformContext subOrderPerformContext,
                                               MemberSubOrderDO subOrder,
                                               TradeEventDO event) {
-
         return toEventValue(event);
     }
 
