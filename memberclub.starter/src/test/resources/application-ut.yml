@@ -1,4 +1,6 @@
 spring:
+  shardingsphere:
+    enabled: false
   datasource:
     dynamic:
       primary: tradeDataSource
