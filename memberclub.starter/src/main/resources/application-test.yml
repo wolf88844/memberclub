@@ -130,6 +130,7 @@ spring:
 
     props:
       sql-show: true  ## 展示执行 SQL
+    enabled: true
   #### RabbitMQ 配置
   rabbitmq:
     host: localhost

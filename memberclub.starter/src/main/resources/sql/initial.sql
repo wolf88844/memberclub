@@ -5,6 +5,7 @@ CREATE DATABASE IF NOT EXISTS member_db DEFAULT CHARACTER SET = utf8mb4;
 
 USE member_db;
 
+
 CREATE TABLE IF NOT EXISTS member_order_0 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -27,7 +28,6 @@ CREATE TABLE IF NOT EXISTS member_order_0 (
     PRIMARY KEY (id),
     UNIQUE KEY uniq_member_order (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
-
 
 
 CREATE TABLE IF NOT EXISTS member_order_1 (
@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS member_order_1 (
     UNIQUE KEY uniq_member_order (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-
 CREATE TABLE IF NOT EXISTS member_sub_order_0 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -77,9 +76,6 @@ CREATE TABLE IF NOT EXISTS member_sub_order_0 (
     PRIMARY KEY (id),
     UNIQUE KEY uniq_sub_order (user_id, trade_id, sku_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
-
-
-
 
 CREATE TABLE IF NOT EXISTS member_sub_order_1 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
@@ -127,8 +123,6 @@ CREATE TABLE IF NOT EXISTS member_ship_0 (
     KEY key_period_etime (user_id, etime),
     UNIQUE KEY uniq_grant_item (user_id, grant_code, biz_type)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
-
-
 CREATE TABLE IF NOT EXISTS member_ship_1 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -150,7 +144,6 @@ CREATE TABLE IF NOT EXISTS member_ship_1 (
     KEY key_period_etime (user_id, etime),
     UNIQUE KEY uniq_grant_item (user_id, grant_code, biz_type)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
-
 
 
 CREATE TABLE IF NOT EXISTS once_task_0 (
@@ -190,6 +183,9 @@ CREATE TABLE IF NOT EXISTS once_task_1 (
     UNIQUE KEY uniq_once_task (user_id, task_token, task_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
+
+
+
 CREATE TABLE IF NOT EXISTS member_perform_item_0 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -217,7 +213,6 @@ CREATE TABLE IF NOT EXISTS member_perform_item_0 (
     KEY key_perform_item_batch (user_id, trade_id, batch_code),
     UNIQUE KEY uniq_perform_item (user_id, item_token, biz_type)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
-
 
 CREATE TABLE IF NOT EXISTS member_perform_item_1 (
     id BIGINT(20)  NOT NULL AUTO_INCREMENT COMMENT '表自增主键',
@@ -247,6 +242,9 @@ CREATE TABLE IF NOT EXISTS member_perform_item_1 (
     UNIQUE KEY uniq_perform_item (user_id, item_token, biz_type)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ;
 
+
+
+
 CREATE TABLE IF NOT EXISTS aftersale_order_0 (
     id BIGINT(20)  NOT NULL COMMENT '表主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -267,7 +265,6 @@ CREATE TABLE IF NOT EXISTS aftersale_order_0 (
     KEY tradeid_key (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-
 CREATE TABLE IF NOT EXISTS aftersale_order_1 (
     id BIGINT(20)  NOT NULL COMMENT '表主键',
     biz_type INT(11)  NOT NULL COMMENT '产品线',
@@ -287,6 +284,9 @@ CREATE TABLE IF NOT EXISTS aftersale_order_1 (
     PRIMARY KEY (id),
     KEY tradeid_key (user_id, trade_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+
+CREATE DATABASE IF NOT EXISTS member_sku DEFAULT CHARACTER SET = utf8mb4;
 
 
 USE member_sku;
@@ -359,4 +359,3 @@ CREATE TABLE IF NOT EXISTS inventory_record_1 (
     PRIMARY KEY (id),
     UNIQUE KEY uniq_inventory_record (user_id, operate_key, inventory_key, op_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
-
