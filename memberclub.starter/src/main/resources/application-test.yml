@@ -121,7 +121,7 @@ spring:
           inventory-inline:
             type: INLINE
             props:
-              algorithm-expression: inventory_$->{target_id % 2}  ## 分表算法(取余)
+              algorithm-expression: inventory_$->{target_id % 1}  ## 分表算法(取余)
           inventory-record-inline:
             type: INLINE
             props:
