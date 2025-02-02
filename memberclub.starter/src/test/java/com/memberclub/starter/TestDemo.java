@@ -6,6 +6,7 @@
  */
 package com.memberclub.starter;
 
+import com.memberclub.common.util.JsonUtils;
 import org.junit.Test;
 
 /**
@@ -13,6 +14,11 @@ import org.junit.Test;
  */
 public class TestDemo {
     static final String TABLE_NAME = "once_task";
+
+
+    @Test
+    public void test1() {
+    }
 
     @Test
     public void test() {

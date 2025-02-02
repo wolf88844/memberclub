@@ -7,7 +7,6 @@
 package com.memberclub.common.retry;
 
 import com.memberclub.common.util.ApplicationContextUtils;
-import com.memberclub.common.util.JsonUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public abstract class AbstractRetryService implements RetryService {
 
             Object[] argsArray = new Object[msg.getArgsClassList().size()];
             for (int i = 0; i < msg.getArgsList().size(); i++) {
-                argsArray[i] = JsonUtils.fromJson(msg.getArgsList().get(i), argsClassArray[i]);
+                argsArray[i] = RetryUtil.fromJson(msg.getArgsList().get(i), argsClassArray[i]);
             }
 
             try {

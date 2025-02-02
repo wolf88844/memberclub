@@ -8,6 +8,7 @@ package com.memberclub.sdk.membership.service;
 
 import com.memberclub.common.log.CommonLog;
 import com.memberclub.common.retry.Retryable;
+import com.memberclub.common.util.JsonUtils;
 import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.dataobject.membership.MemberShipUnionDO;
 import com.memberclub.infrastructure.cache.CacheEnum;
@@ -27,8 +28,9 @@ public class MemberShipCacheService {
     @Retryable(throwException = false)
     public void sync(MemberShipUnionDO memberShipUnionDO) {
         String key = String.format("%s_%s", memberShipUnionDO.getBizType(), memberShipUnionDO.getUserId());
+
         cacheService.put(CacheEnum.membership, key, memberShipUnionDO);
-        CommonLog.info("记录会员身份缓存 {}", memberShipUnionDO);
+        CommonLog.info("记录会员身份缓存 {}", JsonUtils.toJson(memberShipUnionDO));
     }
 
     @Retryable(throwException = false)

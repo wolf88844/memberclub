@@ -9,7 +9,6 @@ package com.memberclub.common.retry;
 import com.google.common.base.Defaults;
 import com.google.common.collect.Lists;
 import com.memberclub.common.log.CommonLog;
-import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.RetryableContext;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -85,7 +84,7 @@ public class RetryableAspect {
                 message.setMethodName(methoName);
                 message.setThrowException(annotation.throwException());
 
-                List<String> argsList = Lists.newArrayList(args).stream().map(JsonUtils::toJson).collect(Collectors.toList());
+                List<String> argsList = Lists.newArrayList(args).stream().map(RetryUtil::toJson).collect(Collectors.toList());
 
                 List<String> argsClassList = Arrays.stream(((MethodSignature) joinPoint.getSignature()).getParameterTypes())
                         .map(Class::getName).collect(Collectors.toList());
