@@ -6,25 +6,34 @@
  */
 package com.memberclub.sdk.membership.service;
 
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.util.CollectionUtilEx;
+import com.memberclub.common.util.TimeUtil;
 import com.memberclub.domain.common.BizScene;
+import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.dataobject.membership.MemberShipDO;
+import com.memberclub.domain.dataobject.membership.MemberShipItemDO;
 import com.memberclub.domain.dataobject.membership.MemberShipStatusEnum;
+import com.memberclub.domain.dataobject.membership.MemberShipUnionDO;
 import com.memberclub.domain.entity.trade.MemberShip;
+import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberShipDao;
 import com.memberclub.sdk.membership.extension.MemberShipDomainExtension;
+import com.memberclub.sdk.util.TransactionHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * author: 掘金五阳
  */
-@DS("tradeDataSource")
 @Service
 public class MemberShipDomainService {
 
@@ -36,6 +45,9 @@ public class MemberShipDomainService {
 
     @Autowired
     private MemberShipDataObjectFactory memberShipDataObjectFactory;
+
+    @Autowired
+    private MemberShipCacheService memberShipCacheService;
 
 
     public MemberShipDO getMemberShipDO(long userId, String grantCode) {
@@ -53,6 +65,53 @@ public class MemberShipDomainService {
         MemberShip memberShip = memberShipDataObjectFactory.buildMemberShip(memberShipDO);
         extensionManager.getExtension(BizScene.of(memberShipDO.getBizType()),
                 MemberShipDomainExtension.class).onGrant(memberShipDO, memberShip);
+
+        MemberShipUnionDO memberShipUnionDO = union(memberShipDO);
+        if (memberShipUnionDO == null) {
+            throw ResultCode.PERFORM_ITEM_GRANT_ERROR.newException("会员身份同步失败");
+        }
+
+        TransactionHelper.afterCommitExecute(() -> {
+            memberShipCacheService.sync(memberShipUnionDO);
+        });
+    }
+
+    public MemberShipUnionDO union(MemberShipDO memberShipDO) {
+        List<MemberShip> memberShips = queryActiveMemberShips(memberShipDO.getUserId(), memberShipDO.getBizType());
+        MemberShipUnionDO memberShipUnionDO = new MemberShipUnionDO();
+        memberShipUnionDO.setBizType(memberShipDO.getBizType().getCode());
+        memberShipUnionDO.setUserId(memberShipDO.getUserId());
+        memberShipUnionDO.setItems(
+                CollectionUtilEx.mapToList(memberShips, (m) -> {
+                    MemberShipItemDO itemDO = new MemberShipItemDO();
+                    itemDO.setEtime(m.getEtime());
+                    itemDO.setStime(m.getStime());
+                    itemDO.setGrantCode(m.getGrantCode());
+                    return itemDO;
+                })
+        );
+        if (CollectionUtils.isEmpty(memberShipUnionDO.getItems())) {
+            CommonLog.error("未找到生效中的会员身份");
+            return null;
+        }
+        long minStime = memberShipUnionDO.getItems().
+                stream().min(Comparator.comparingLong(MemberShipItemDO::getStime)).get().getStime();
+        long maxEtime = memberShipUnionDO.getItems().
+                stream().max(Comparator.comparingLong(MemberShipItemDO::getEtime)).get().getEtime();
+        memberShipUnionDO.setStime(minStime);
+        memberShipUnionDO.setEtime(maxEtime);
+        return memberShipUnionDO;
+    }
+
+    public List<MemberShip> queryActiveMemberShips(long userId, BizTypeEnum bizType) {
+        LambdaQueryWrapper<MemberShip> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MemberShip::getUserId, userId);
+        wrapper.eq(MemberShip::getBizType, bizType.getCode());
+        wrapper.eq(MemberShip::getStatus, MemberShipStatusEnum.FINISH.getCode());
+        wrapper.ge(MemberShip::getEtime, TimeUtil.now());
+
+        List<MemberShip> memberShips = memberShipDao.selectList(wrapper);
+        return memberShips;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -71,5 +130,15 @@ public class MemberShipDomainService {
 
         extensionManager.getExtension(BizScene.of(memberShipDO.getBizType()),
                 MemberShipDomainExtension.class).onCancel(memberShipDO, wrapper);
+
+        MemberShipUnionDO memberShipUnionDO = union(memberShipDO);
+
+        TransactionHelper.afterCommitExecute(() -> {
+            if (memberShipUnionDO == null) {
+                memberShipCacheService.remove(memberShipDO.getBizType(), memberShipDO.getUserId());
+            } else {
+                memberShipCacheService.sync(memberShipUnionDO);
+            }
+        });
     }
 }

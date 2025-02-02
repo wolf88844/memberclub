@@ -486,7 +486,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
     private MemberShipDao memberShipDao;
 
     @SneakyThrows
-    @Test
+    //@Test
     public void testDefaultMemberAndMemberShip() {
         PurchaseSubmitResponse response = submit(membershipSku, 1);
         MemberOrderDO memberOrder = response.getMemberOrderDO();

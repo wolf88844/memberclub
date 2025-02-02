@@ -50,7 +50,7 @@ public class MemberShipDataObjectFactory {
         memberShipDO.setBizType(context.getBizType());
         memberShipDO.setCtime(TimeUtil.now());
         memberShipDO.setUtime(TimeUtil.now());
-        memberShipDO.setEtime(item.getStime());
+        memberShipDO.setEtime(item.getEtime());
         memberShipDO.setStime(item.getStime());
         memberShipDO.setExtra(new MemberShipExtraDO());
         memberShipDO.setGrantCode(item.getItemToken());

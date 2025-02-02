@@ -13,7 +13,10 @@ import lombok.Getter;
  */
 public enum CacheEnum {
 
-    inventory(1, "member_inventory_cache");
+    inventory(1, "member_inventory_cache"),
+    membership(2, "member_ship_cache"),
+    //
+    ;
 
     private int code;
 

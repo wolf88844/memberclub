@@ -13,5 +13,7 @@ public interface CacheService {
 
     public <K, V> V put(CacheEnum cacheEnum, K k, V v);
 
+    public <K, V> V del(CacheEnum cacheEnum, K k);
+
     public <K, V> V get(CacheEnum cacheEnum, K k);
 }
