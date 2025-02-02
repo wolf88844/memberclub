@@ -18,7 +18,7 @@ import com.memberclub.domain.dataobject.membership.MemberShipDO;
 import com.memberclub.domain.dataobject.perform.MemberPerformItemDO;
 import com.memberclub.sdk.membership.service.MemberShipDataObjectFactory;
 import com.memberclub.sdk.membership.service.MemberShipDomainService;
-import com.memberclub.sdk.perform.extension.execute.PerformItemGrantExtension;
+import com.memberclub.sdk.perform.extension.execute.AssetsGrantExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @ExtensionProvider(desc = "会员身份类型默认发放扩展点实现", bizScenes =
         {@Route(bizType = BizTypeEnum.DEMO_MEMBER, scenes = {SceneEnum.RIGHT_TYPE_SCENE_MEMBERSHIP})})
-public class DefaultMemberShipGrantExtension implements PerformItemGrantExtension {
+public class DefaultMemberShipGrantExtension implements AssetsGrantExtension {
 
     @Autowired
     private MemberShipDomainService memberShipDomainService;

@@ -508,6 +508,47 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         //Thread.sleep(1000000);
     }
 
+    @SneakyThrows
+    @Test
+    public void testDefaultMemberRefundAndApplyAndMemberShip() {
+        PurchaseSubmitResponse submitResponse = submit(membershipSku, 1);
+        MemberOrderDO memberOrder = submitResponse.getMemberOrderDO();
+
+        MemberOrder orderInDb = memberOrderDao.selectByTradeId(memberOrder.getUserId(), memberOrder.getTradeId());
+        System.out.println(JsonUtils.toJson(orderInDb));
+
+        PerformCmd cmd = buildCmd(memberOrder);
+
+        PerformResp resp = performBizService.perform(cmd);
+        Assert.assertTrue(resp.isSuccess());
+        verifyData(cmd, 1);
+
+        AfterSalePreviewCmd previewCmd = new AfterSalePreviewCmd();
+        previewCmd.setUserId(cmd.getUserId());
+        previewCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
+        previewCmd.setTradeId(cmd.getTradeId());
+        previewCmd.setSource(AftersaleSourceEnum.User);
+        previewCmd.setOperator(String.valueOf(cmd.getUserId()));
+        previewCmd.setOrderId(cmd.getOrderId());
+        previewCmd.setOrderSystemTypeEnum(cmd.getOrderSystemType());
+
+        AfterSalePreviewResponse response = aftersaleBizService.preview(previewCmd);
+
+        Assert.assertEquals(true, response.isAftersaleEnabled());
+        Assert.assertEquals(RefundTypeEnum.ALL_REFUND, response.getRefundType());
+
+        AftersaleApplyCmd applyCmd = AftersaleConvertor.INSTANCE.toAftersaleApplyCmd(previewCmd);
+        applyCmd.setDigests(response.getDigests());
+        applyCmd.setDigestVersion(response.getDigestVersion());
+
+        AftersaleApplyResponse applyResponse = aftersaleBizService.apply(applyCmd);
+        waitH2();
+
+        Assert.assertTrue(applyResponse.isSuccess());
+
+
+        verifyOrderRefund(applyCmd, true);
+    }
 
     @SneakyThrows
     @Test

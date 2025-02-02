@@ -8,6 +8,7 @@ package com.memberclub.sdk.membership.service;
 
 import com.memberclub.common.util.JsonUtils;
 import com.memberclub.common.util.TimeUtil;
+import com.memberclub.domain.common.BizTypeEnum;
 import com.memberclub.domain.context.perform.PerformItemContext;
 import com.memberclub.domain.dataobject.membership.MemberShipDO;
 import com.memberclub.domain.dataobject.membership.MemberShipExtraDO;
@@ -35,6 +36,14 @@ public class MemberShipDataObjectFactory {
         return memberShip;
     }
 
+
+    public MemberShipDO buildMemberShipDO(MemberShip memberShip) {
+        MemberShipDO memberShipDO = PerformConvertor.INSTANCE.toMemberShipDO(memberShip);
+        memberShipDO.setStatus(MemberShipStatusEnum.findByCode(memberShip.getStatus()));
+        memberShipDO.setBizType(BizTypeEnum.findByCode(memberShip.getBizType()));
+        memberShipDO.setExtra(JsonUtils.fromJson(memberShip.getExtra(), MemberShipExtraDO.class));
+        return memberShipDO;
+    }
 
     public MemberShipDO buildMemberShipDO(PerformItemContext context, MemberPerformItemDO item) {
         MemberShipDO memberShipDO = new MemberShipDO();

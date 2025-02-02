@@ -43,7 +43,8 @@ public class RealtimeCalculateUsageAmountFlow extends FlowNode<AftersalePreviewC
 
         Map<String, ItemUsage> batchCode2ItemUsage = aftersaleUsageService.buildUsageMap(context);
         context.setCurrentBatchCode2ItemUsage(batchCode2ItemUsage);
-        
+        context.getBatchCode2ItemUsage().putAll(batchCode2ItemUsage);
+
         context.setRecommendRefundPrice(aftersaleAmountService.recommendRefundPrice(context));
     }
 }

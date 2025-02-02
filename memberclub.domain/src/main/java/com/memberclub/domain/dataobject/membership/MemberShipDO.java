@@ -47,4 +47,10 @@ public class MemberShipDO {
         status = MemberShipStatusEnum.FINISH;
         utime = System.currentTimeMillis();
     }
+
+
+    public void onCancel() {
+        status = MemberShipStatusEnum.CANCEL;
+        utime = System.currentTimeMillis();
+    }
 }

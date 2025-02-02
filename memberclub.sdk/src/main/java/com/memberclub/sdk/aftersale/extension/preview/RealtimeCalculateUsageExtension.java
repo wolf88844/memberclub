@@ -21,6 +21,5 @@ import java.util.Map;
 public interface RealtimeCalculateUsageExtension extends BaseExtension {
 
     public Map<String, ItemUsage> calculateItemUsage(AftersalePreviewContext context);
-
-
+    
 }

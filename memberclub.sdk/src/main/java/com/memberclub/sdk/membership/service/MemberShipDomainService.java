@@ -7,12 +7,16 @@
 package com.memberclub.sdk.membership.service;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.google.common.collect.Lists;
+import com.memberclub.common.extension.ExtensionManager;
 import com.memberclub.common.log.CommonLog;
+import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.dataobject.membership.MemberShipDO;
+import com.memberclub.domain.dataobject.membership.MemberShipStatusEnum;
 import com.memberclub.domain.entity.trade.MemberShip;
 import com.memberclub.infrastructure.mybatis.mappers.trade.MemberShipDao;
+import com.memberclub.sdk.membership.extension.MemberShipDomainExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,33 +32,44 @@ public class MemberShipDomainService {
     private MemberShipDao memberShipDao;
 
     @Autowired
+    private ExtensionManager extensionManager;
+
+    @Autowired
     private MemberShipDataObjectFactory memberShipDataObjectFactory;
+
+
+    public MemberShipDO getMemberShipDO(long userId, String grantCode) {
+        LambdaQueryWrapper<MemberShip> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MemberShip::getGrantCode, grantCode);
+        wrapper.eq(MemberShip::getUserId, userId);
+        MemberShip memberShip = memberShipDao.selectOne(wrapper);
+        return memberShipDataObjectFactory.buildMemberShipDO(memberShip);
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     public void grant(MemberShipDO memberShipDO) {
         memberShipDO.onFinish();
         MemberShip memberShip = memberShipDataObjectFactory.buildMemberShip(memberShipDO);
-
-        int cnt = memberShipDao.insertIgnoreBatch(Lists.newArrayList(memberShip));
-        if (cnt > 0) {
-            CommonLog.info("成功写入会员身份:{}", memberShipDO);
-            return;
-        }
+        extensionManager.getExtension(BizScene.of(memberShipDO.getBizType()),
+                MemberShipDomainExtension.class).onGrant(memberShipDO, memberShip);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void cancel(MemberShipDO memberShipDO) {
+        if (memberShipDO.getStatus() == MemberShipStatusEnum.CANCEL) {
+            CommonLog.warn("会员身份发放记录已经取消, 无需再次取消 memberShipDO:{}", memberShipDO);
+            return;
+        }
+        memberShipDO.onCancel();
+
         LambdaUpdateWrapper<MemberShip> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(MemberShip::getUserId, memberShipDO.getUserId());
         wrapper.eq(MemberShip::getItemToken, memberShipDO.getItemToken());
         wrapper.set(MemberShip::getStatus, memberShipDO.getStatus().getCode());
         wrapper.set(MemberShip::getUtime, memberShipDO.getUtime());
 
-        int cnt = memberShipDao.update(null, wrapper);
-        if (cnt <= 0) {
-            CommonLog.error("取消会员身份失败:{}", memberShipDO);
-            return;
-        }
-        CommonLog.error("取消会员身份成功:{}", memberShipDO);
+        extensionManager.getExtension(BizScene.of(memberShipDO.getBizType()),
+                MemberShipDomainExtension.class).onCancel(memberShipDO, wrapper);
     }
 }

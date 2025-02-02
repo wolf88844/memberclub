@@ -66,8 +66,6 @@ public class DefaultRealtimeCalculateUsageExtension implements RealtimeCalculate
             ItemUsage itemUsage = aftersaleAmountService.summingPrice(entry.getValue());
             itemUsageMap.put(entry.getKey(), itemUsage);
         }
-        context.getBatchCode2ItemUsage().putAll(itemUsageMap);
-
         return itemUsageMap;
     }
 }

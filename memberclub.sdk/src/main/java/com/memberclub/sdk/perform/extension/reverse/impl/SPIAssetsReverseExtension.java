@@ -38,7 +38,9 @@ public class SPIAssetsReverseExtension implements AssetsReverseExtension {
     private AssetsFacadeSPI assetsFacadeSPI;
 
     @Override
-    public AssetsReverseResponse reverse(ReversePerformContext context, SubOrderReversePerformContext reverseInfo, List<PerformItemReverseInfo> items) {
+    public AssetsReverseResponse reverse(ReversePerformContext context,
+                                         SubOrderReversePerformContext reverseInfo,
+                                         List<PerformItemReverseInfo> items) {
         AssetsReverseResponse response = new AssetsReverseResponse();
         AssetReverseRequestDO requestDO = new AssetReverseRequestDO();
         requestDO.setUserId(context.getUserId());
