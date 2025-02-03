@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.memberclub.domain.context.usertag.UserTagOpCmd;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
-import com.memberclub.infrastructure.usertag.UserTagLuaUtil;
+import com.memberclub.infrastructure.cache.RedisLuaUtil;
 import com.memberclub.starter.mock.MockBaseTest;
 import jodd.io.FileUtil;
 import org.slf4j.Logger;
@@ -58,9 +58,9 @@ public class TestUserTagLua extends MockBaseTest {
         cmd.setTags(ImmutableList.of(
                 tagDO
         ));
-        System.out.println(UserTagLuaUtil.buildLuaKeys(cmd));
+        System.out.println(RedisLuaUtil.buildLuaKeys(cmd));
 
-        System.out.println(redisTemplate.execute(script, UserTagLuaUtil.buildLuaKeys(cmd)));
+        System.out.println(redisTemplate.execute(script, RedisLuaUtil.buildLuaKeys(cmd)));
     }
 
 }

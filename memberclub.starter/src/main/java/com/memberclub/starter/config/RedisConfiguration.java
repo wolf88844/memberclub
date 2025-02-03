@@ -36,11 +36,11 @@ import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_
  * author: 掘金五阳
  */
 @Configuration
-@ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redisson")
+@ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redis")
 public class RedisConfiguration {
 
 
-    @ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redisson")
+    @ConditionalOnProperty(name = "memberclub.infrastructure.cache", havingValue = "redis")
     @Bean
     public RedissonClient redisson() {
         Config config = new Config();

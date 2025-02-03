@@ -186,7 +186,7 @@ memberclub:
     order: local
     asset: local
     sku: local
-    cache: redisson
+    cache: redis
     usertag: redis
   extension:
     bootcheck: true

@@ -14,7 +14,7 @@ import com.memberclub.domain.context.usertag.UserTagOpCmd;
 import com.memberclub.domain.context.usertag.UserTagOpDO;
 import com.memberclub.domain.context.usertag.UserTagOpResponse;
 import com.memberclub.domain.context.usertag.UserTagOpTypeEnum;
-import com.memberclub.infrastructure.usertag.UserTagLuaUtil;
+import com.memberclub.infrastructure.cache.RedisLuaUtil;
 import com.memberclub.infrastructure.usertag.UserTagService;
 import jodd.io.FileUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -77,7 +77,7 @@ public class RedisUserTagService implements UserTagService {
     @Retryable(throwException = true)
     public void add(UserTagOpCmd cmd, UserTagOpResponse response) {
         RedisScript<Long> script = new DefaultRedisScript<>(userTagAddLua, Long.class);
-        Long value = redisTemplate.execute(script, UserTagLuaUtil.buildLuaKeys(cmd));
+        Long value = redisTemplate.execute(script, RedisLuaUtil.buildLuaKeys(cmd));
         if (value == 1) {
             response.setSuccess(true);
         } else if (value == -1) {
@@ -88,7 +88,7 @@ public class RedisUserTagService implements UserTagService {
     @Retryable(throwException = true)
     public void del(UserTagOpCmd cmd, UserTagOpResponse response) {
         RedisScript<Long> script = new DefaultRedisScript<>(userTagDelLua, Long.class);
-        Long value = redisTemplate.execute(script, UserTagLuaUtil.buildDelLuaKeys(cmd));
+        Long value = redisTemplate.execute(script, RedisLuaUtil.buildDelLuaKeys(cmd));
         if (value == 1) {
             response.setSuccess(true);
         } else if (value == -1) {

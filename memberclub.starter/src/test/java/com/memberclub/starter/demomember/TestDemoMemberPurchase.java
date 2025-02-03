@@ -242,7 +242,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
                 Assert.assertEquals(pre.getVersion() + 2, inventories.get(0).getVersion());
                 InventoryCacheDO cache = cacheService.get(CacheEnum.inventory, Inventory.buildInventoryKey(
                         InventoryTargetTypeEnum.SKU.getCode(), inventoryEnabledSku.getSkuId(), "total"));
-                System.out.println(JsonUtils.toJson(cache));
+                System.out.println("从缓存查出的库存:" + JsonUtils.toJson(cache));
                 return;
             }
             Assert.fail("失败");

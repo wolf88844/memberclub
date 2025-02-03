@@ -4,7 +4,7 @@
  * Copyright 2025 fenbi.com. All rights reserved.
  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.memberclub.infrastructure.usertag;
+package com.memberclub.infrastructure.cache;
 
 import com.google.common.collect.Lists;
 import com.memberclub.common.util.TimeUtil;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * author: 掘金五阳
  */
-public class UserTagLuaUtil {
+public class RedisLuaUtil {
 
     public static List<String> buildLuaKeys(UserTagOpCmd cmd) {
         List<String> params = Lists.newArrayList();
@@ -43,6 +43,16 @@ public class UserTagLuaUtil {
             params.add(tag.getOpCount() + "");
             //   params.add(tag.getExpireSeconds() + "");
         }
+        return params;
+    }
+
+    public static List<String> buildUpdateInventoryKeys(VersionCacheCmd cmd) {
+        List<String> params = Lists.newArrayList();
+        params.add(cmd.getKey());
+        params.add(cmd.getVersionKey());
+        params.add(cmd.getVersion() + "");
+        params.add(cmd.getValueKey());
+        params.add(cmd.getValue());
         return params;
     }
 }
