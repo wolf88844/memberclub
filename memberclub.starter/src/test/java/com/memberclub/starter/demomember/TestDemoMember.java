@@ -267,7 +267,7 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId(), TaskTypeEnum.PERIOD_PERFORM.getCode());
 
         OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
-        //triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
+        triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
         triggerCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
 
         onceTaskTriggerBizService.triggerPeriodPerform(triggerCmd);

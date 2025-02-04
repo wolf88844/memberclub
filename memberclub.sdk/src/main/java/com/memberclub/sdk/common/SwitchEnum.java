@@ -64,6 +64,7 @@ public enum SwitchEnum {
     NEW_MEMBER_USER_TAG_UNIQUE_KEY_TIMEOUT("new_member_user_tag_timeout", TimeUnit.DAYS.toMillis(35)),
 
 
+    ONCE_TASK_TABLE_NUM("once_task_table_num", 2),
     //
     ;
 
