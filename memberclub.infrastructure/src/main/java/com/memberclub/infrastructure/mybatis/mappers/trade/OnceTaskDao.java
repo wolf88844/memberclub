@@ -38,7 +38,7 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
     public List<OnceTask> queryTasks(@Param("userId") long userId, @Param("taskTokens") List<String> taskTokens,
                                      @Param("taskType") Integer taskType);
 
-    @Select("<script> SELECT * FROM " + TABLE_NAME +
+    @Select("<script> SELECT * FROM " + "${tableName}" +
             " WHERE biz_type=#{bizType} AND id>#{minId} " +
             " AND task_type =#{taskType} " +
             " AND stime &gt;= #{minStime} AND stime &lt;= #{maxStime}" +
@@ -57,7 +57,8 @@ public interface OnceTaskDao extends BaseMapper<OnceTask> {
             " ORDER BY id" +
             " LIMIT #{pageSize}" +
             "</script>")
-    public List<OnceTask> scanTasks(@Param("bizType") Integer bizType,
+    public List<OnceTask> scanTasks(@Param("tableName") String tableName,
+                                    @Param("bizType") Integer bizType,
                                     @Param("userIds") Set<Long> userIds,
                                     @Param("taskGroupIds") Set<String> taskGroupIds,
                                     @Param("minStime") Long minStime,

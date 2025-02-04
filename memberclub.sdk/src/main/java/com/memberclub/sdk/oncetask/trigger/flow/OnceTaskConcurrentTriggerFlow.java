@@ -39,7 +39,7 @@ public class OnceTaskConcurrentTriggerFlow extends SubFlowNode<OnceTaskTriggerCo
     @Override
     @SneakyThrows
     public void process(OnceTaskTriggerContext context) {
-        List<Callable<OnceTaskTriggerJobContext>> runnables = CollectionUtilEx.map(context.getJobs(), (job) -> {
+        List<Callable<OnceTaskTriggerJobContext>> runnables = CollectionUtilEx.mapToList(context.getJobs(), (job) -> {
             return () -> {
                 OnceTaskTriggerJobContext jobContext = new OnceTaskTriggerJobContext();
                 jobContext.setContext(context);

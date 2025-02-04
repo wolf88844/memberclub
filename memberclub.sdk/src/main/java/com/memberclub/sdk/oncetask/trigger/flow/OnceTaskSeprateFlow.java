@@ -12,6 +12,8 @@ import com.memberclub.domain.context.oncetask.trigger.OnceTaskTriggerContext;
 import com.memberclub.domain.context.oncetask.trigger.TriggerJobDO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * author: 掘金五阳
  */
@@ -22,9 +24,17 @@ public class OnceTaskSeprateFlow extends SubFlowNode<OnceTaskTriggerContext, Onc
     @Override
     public void process(OnceTaskTriggerContext context) {
         //如果分库分表,应该按照实际的规模拆分任务.
-        TriggerJobDO job = new TriggerJobDO();
-        job.setDatabase(0);
-        job.setTable(0);
-        context.setJobs(Lists.newArrayList(job));
+        int dbNum = 1;
+        int tableNum = 2;
+        List<TriggerJobDO> jobs = Lists.newArrayList();
+        for (int i = 0; i < dbNum; i++) {
+            for (int j = 0; j < tableNum; j++) {
+                TriggerJobDO job = new TriggerJobDO();
+                job.setDatabase(i);
+                job.setTable(j);
+                jobs.add(job);
+            }
+        }
+        context.setJobs(jobs);
     }
 }

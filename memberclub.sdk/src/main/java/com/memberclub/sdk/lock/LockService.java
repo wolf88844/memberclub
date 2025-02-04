@@ -15,6 +15,7 @@ import com.memberclub.domain.exception.ResultCode;
 import com.memberclub.infrastructure.lock.DistributeLock;
 import com.memberclub.sdk.common.Monitor;
 import com.memberclub.sdk.common.SwitchEnum;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,6 @@ public class LockService {
     /**
      * @param context
      * @return
-     * @throws MemberException 加锁失败抛出异常
      */
     public Long lock(LockContext context) {
         String key = buildKey(context.getBizType(),
@@ -39,7 +39,7 @@ public class LockService {
                 context.getTradeId(),
                 context.getLockMode());
         if (context.getLockValue() == null) {
-            Long lockValue = TimeUtil.now();
+            Long lockValue = TimeUtil.now() + RandomUtils.nextInt();
             context.setLockValue(lockValue);
         }
         String lockScene = StringUtils.defaultIfEmpty(context.getLockScene(), "common");

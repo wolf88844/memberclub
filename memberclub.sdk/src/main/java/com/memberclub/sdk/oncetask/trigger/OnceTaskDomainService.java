@@ -8,6 +8,8 @@ package com.memberclub.sdk.oncetask.trigger;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.memberclub.common.extension.ExtensionManager;
+import com.memberclub.common.log.CommonLog;
+import com.memberclub.common.util.ApplicationContextUtils;
 import com.memberclub.common.util.CollectionUtilEx;
 import com.memberclub.domain.common.BizScene;
 import com.memberclub.domain.context.oncetask.common.OnceTaskStatusEnum;
@@ -51,8 +53,12 @@ public class OnceTaskDomainService {
         Long minId = 0L;
         int page = 10;
         List<OnceTask> tasks = null;
+        String tableName = "once_task_hint";
+        if (ApplicationContextUtils.isUnitTest()) {
+            tableName = "once_task";
+        }
         do {
-            tasks = onceTaskDao.scanTasks(context.getContext().getBizType().getCode(),
+            tasks = onceTaskDao.scanTasks(tableName, context.getContext().getBizType().getCode(),
                     context.getContext().getUserIds(), context.getContext().getTaskGroupIds(),
                     context.getContext().getMinTriggerStime(), context.getContext().getMaxTriggerStime(),
                     CollectionUtilEx.mapToSet(context.getContext().getStatus(), OnceTaskStatusEnum::getCode),
@@ -60,6 +66,8 @@ public class OnceTaskDomainService {
             if (CollectionUtils.isNotEmpty(tasks)) {
                 minId = tasks.get(tasks.size() - 1).getId();
             }
+
+            CommonLog.info("扫描onceTask :{}", tasks);
 
             consumer.accept(tasks);
         } while (CollectionUtils.isNotEmpty(tasks));

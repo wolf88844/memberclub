@@ -112,7 +112,7 @@ public class MemberTradeLockService {
                 .lockScene("purchase")
                 .lockMode(LockMode.LOCK_USER)
                 .userId(context.getCmd().getUserId())
-                .lockValue(context.getMemberOrder().getExtra().getLockValue())
+                .lockValue(context.getLockValue())
                 .build();
         boolean unlockable = getLockExtension(context.getCmd().getBizType()).buildOnPurchaseCancel(lockContext, context);
         if (unlockable) {

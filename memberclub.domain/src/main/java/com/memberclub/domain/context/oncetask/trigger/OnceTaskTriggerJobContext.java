@@ -24,6 +24,8 @@ public class OnceTaskTriggerJobContext {
 
     public long totalCount;
 
+    private Object hintManager;
+
     public void reduceMonitor() {
         context.successCount.addAndGet(successCount);
         context.failCount.addAndGet(failCount);

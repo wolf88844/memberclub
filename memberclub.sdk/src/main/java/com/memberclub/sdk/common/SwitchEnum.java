@@ -20,7 +20,7 @@ public enum SwitchEnum {
     /**
      * 加锁超时时间
      */
-    LOCK_TIMEOUT_SECONDS("lock_time", 10),
+    LOCK_TIMEOUT_SECONDS("lock_time", 15 * 60),
     /**
      * 履约重试最大次数
      */

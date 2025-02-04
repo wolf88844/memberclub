@@ -25,6 +25,8 @@ import com.memberclub.domain.exception.AftersaleDoApplyException;
 @ExtensionConfig(desc = "加减锁扩展点", type = ExtensionType.COMMON, must = false)
 public interface LockExtension extends BaseExtension {
 
+    public static final boolean LOCK_ON_USER_RELEASE_ON_FAIL = true;
+
     default boolean buildOnPrePurchase(LockContext context, PurchaseSubmitContext purchaseSubmitContext) {
         return true;
     }
@@ -34,7 +36,7 @@ public interface LockExtension extends BaseExtension {
             return true;
         } else if (context.getLockMode() == LockMode.LOCK_USER) {
             CommonLog.warn("用户粒度锁, 提单成功不能释放,需在取消订单或履约成功后释放");
-            return false;
+            return LOCK_ON_USER_RELEASE_ON_FAIL;
         }
         return true;
     }
@@ -48,10 +50,12 @@ public interface LockExtension extends BaseExtension {
         if (context.getLockMode() == LockMode.LOCK_ORDER) {
             return true;
         } else if (context.getLockMode() == LockMode.LOCK_USER) {
-            //用户粒度的锁主要应用于 会员场景,因会员身份不能重叠,所以需要加用户粒度的锁
-            // 用户粒度的锁需要在 入口层即 购买域加锁,履约成功解锁,订单取消解锁
-            purchaseCancelContext.setLockValue(purchaseCancelContext.getMemberOrder().getExtra().getLockValue());
-            return false;
+            if (!LOCK_ON_USER_RELEASE_ON_FAIL) {
+                //用户粒度的锁主要应用于 会员场景,因会员身份不能重叠,所以需要加用户粒度的锁
+                // 用户粒度的锁需要在 入口层即 购买域加锁,履约成功解锁,订单取消解锁
+                purchaseCancelContext.setLockValue(purchaseCancelContext.getMemberOrder().getExtra().getLockValue());
+            }
+            return LOCK_ON_USER_RELEASE_ON_FAIL;
         }
         return true;
     }
@@ -65,10 +69,12 @@ public interface LockExtension extends BaseExtension {
         if (context.getLockMode() == LockMode.LOCK_ORDER) {
             return true;
         } else if (context.getLockMode() == LockMode.LOCK_USER) {
-            //用户粒度的锁主要应用于 会员场景,因会员身份不能重叠,所以需要加用户粒度的锁
-            // 用户粒度的锁需要在 入口层即 购买域加锁,履约成功解锁,订单取消解锁
-            performContext.getCmd().setLockValue(performContext.getMemberOrder().getExtra().getLockValue());
-            return false;
+            if (!LOCK_ON_USER_RELEASE_ON_FAIL) {
+                //用户粒度的锁主要应用于 会员场景,因会员身份不能重叠,所以需要加用户粒度的锁
+                // 用户粒度的锁需要在 入口层即 购买域加锁,履约成功解锁,订单取消解锁
+                performContext.getCmd().setLockValue(performContext.getMemberOrder().getExtra().getLockValue());
+            }
+            return LOCK_ON_USER_RELEASE_ON_FAIL;
         }
         return true;
     }
@@ -77,8 +83,10 @@ public interface LockExtension extends BaseExtension {
         if (context.getLockMode() == LockMode.LOCK_ORDER) {
             return true;
         } else if (context.getLockMode() == LockMode.LOCK_USER) {
-            performContext.setLockValue(performContext.getMemberOrder().getExtra().getLockValue());
-            context.setLockValue(performContext.getLockValue());
+            if (performContext.getLockValue() == null) {
+                performContext.setLockValue(performContext.getMemberOrder().getExtra().getLockValue());
+                context.setLockValue(performContext.getLockValue());
+            }
             return true;
         }
         return true;
@@ -88,7 +96,7 @@ public interface LockExtension extends BaseExtension {
         if (context.getLockMode() == LockMode.LOCK_ORDER) {
             return true;
         } else if (context.getLockMode() == LockMode.LOCK_USER) {
-            return false;
+            return LOCK_ON_USER_RELEASE_ON_FAIL;
         }
         /**
          * if (performContext.getRetryTimes() >= SwitchEnum.PERFORM_RETRY_MAX_TIME.getInt(context.getBizType().getCode())) {
@@ -131,7 +139,7 @@ public interface LockExtension extends BaseExtension {
         if (e instanceof AftersaleDoApplyException) {
             //如果是受理异常 ,需要进行重试或回滚.因此不能释放锁!
             CommonLog.error("售后受理异常,不能释放锁");
-            return false;
+            return LOCK_ON_USER_RELEASE_ON_FAIL;
         } else {
             return true;
         }

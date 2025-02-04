@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * author: 掘金五阳
  */
-public class TestDemo {
+public class TestOnceTask {
     static final String TABLE_NAME = "once_task";
 
 

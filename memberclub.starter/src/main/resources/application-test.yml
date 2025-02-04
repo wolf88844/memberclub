@@ -56,6 +56,11 @@ spring:
               standard:
                 sharding-column: user_id  ## 按照分表的列
                 sharding-algorithm-name: once-task-inline  ## 分表算法名称(使用 yml 配置不能包含下划线,否则不生效)
+          once_task_hint:
+            actual-data-nodes: trade0.once_task_$->{0..1}  ## 实际表名
+            table-strategy:
+              hint:
+                shardingAlgorithmName: hint-inline
           member_ship:  ## 数据库表名前缀
             actual-data-nodes: trade0.member_ship_$->{0..1}  ## 实际表名
             table-strategy:  ## 分表策略
@@ -87,9 +92,11 @@ spring:
               standard:
                 sharding-column: target_id  ## 按照分表的列
                 sharding-algorithm-name: inventory-record-inline  ## 分表算法名称(使用 yml 配置不能包含下划线,否则不生效)
-
-
         sharding-algorithms:
+          hint-inline:
+            type: HINT_INLINE
+            props:
+              algorithm-expression: once_task_$->{value}
           member-order-inline:
             type: INLINE
             props:
@@ -126,8 +133,6 @@ spring:
             type: INLINE
             props:
               algorithm-expression: inventory_record_$->{target_id % 2}  ## 分表算法(取余)
-
-
     props:
       sql-show: true  ## 展示执行 SQL
     enabled: true

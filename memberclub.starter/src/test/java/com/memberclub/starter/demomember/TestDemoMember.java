@@ -267,12 +267,11 @@ public class TestDemoMember extends TestDemoMemberPurchase {
         List<OnceTask> tasks = onceTaskDao.queryTasksByUserId(cmd.getUserId(), TaskTypeEnum.PERIOD_PERFORM.getCode());
 
         OnceTaskTriggerCmd triggerCmd = new OnceTaskTriggerCmd();
-        triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
+        //triggerCmd.setUserIds(Sets.newHashSet(submitCmd.getUserId()));
         triggerCmd.setBizType(BizTypeEnum.DEMO_MEMBER);
 
         onceTaskTriggerBizService.triggerPeriodPerform(triggerCmd);
         checkMessageAndReset(MQTopicEnum.TRADE_EVENT, (msgs) -> Assert.assertEquals(2, msgs.size()));
-
 
         verifyData(cmd, 3);
 

@@ -222,7 +222,7 @@ public class TestDemoMemberPurchase extends MockBaseTest {
     @Test
     @SneakyThrows
     public void testSubmitInventoryRollback() {
-        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(inventoryEnabledSku.getSkuId(), 4);
+        PurchaseSubmitCmd cmd = buildPurchaseSubmitCmd(inventoryEnabledSku.getSkuId(), 101);
 
         List<Inventory> inventories = inventoryDomainService.queryInventorys(inventoryEnabledSku.getSkuId());
         Assert.assertEquals(1, inventories.size());
@@ -236,10 +236,10 @@ public class TestDemoMemberPurchase extends MockBaseTest {
             releaseLock(response.getLockValue());
             Assert.assertEquals(false, response.isSuccess());
         } catch (MemberException e) {
-            if (e.getCode() == ResultCode.COMMON_ORDER_SUBMIT_ERROR) {
+            if (e.getCode() == ResultCode.INVENTORY_LACKING) {
                 inventories = inventoryDomainService.queryInventorys(inventoryEnabledSku.getSkuId());
                 Assert.assertEquals(pre.getSaleCount(), inventories.get(0).getSaleCount());
-                Assert.assertEquals(pre.getVersion() + 2, inventories.get(0).getVersion());
+                Assert.assertEquals(pre.getVersion(), inventories.get(0).getVersion());
                 InventoryCacheDO cache = cacheService.get(CacheEnum.inventory, Inventory.buildInventoryKey(
                         InventoryTargetTypeEnum.SKU.getCode(), inventoryEnabledSku.getSkuId(), "total"));
                 System.out.println("从缓存查出的库存:" + JsonUtils.toJson(cache));
