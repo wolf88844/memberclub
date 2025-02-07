@@ -73,6 +73,10 @@ public interface DistributeLock {
     boolean unlock(String key, Long value);
 }
 ```
+## 通用日志组件
+打印日志时，自动填充用户id和订单Id等通参，无需手动指定
+
+原理参考 https://juejin.cn/post/7407275971902357558
 ## 重试组件
 
 被标注了 Retryable 注解的方法，当抛出异常后，系统可自动重试。重试依然失败，失败请求将自动投递到延迟队列，进行分布式重试 。
@@ -118,7 +122,7 @@ public interface IdGenerator extends BaseExtension {
 集成了rabbitmq，并且基于死信队列实现了消息消费的延迟重试能力！
 
 ## Redisson
-集成 Redisson
+集成 Redisson，使用其延迟队列和分布式 ID 能力。
 ## Redis Lua
 集成了 RedisTemplate，其中库存更新、用户标签写入更新、分布式锁部分实现通过 RedisLua 脚本实现。
 
@@ -141,36 +145,66 @@ public interface DynamicConfig {
 ##  内存数据库和单元测试
 集成了 H2 内存数据库，在开发阶段使用 单元测试 profile  执行，访问内存数据库，不会污染测试环境数据库！
 # 工程目录结构
-```
-memberclub                                        # 主项目①pom.xml
-├── starter                              # 管理后台项目②pom.xml(基于Ruoyi框架二次开发)
-├── common                                # Maven项目bom模块
-├── sdk                             # 公共的工具类模块
-├── domain                             # 公共的工具类模块
-├── plugin.demomember                             # 公共的工具类模块
-├── infrastruce                               # 任务调度相关的核心类（如枚举类、接口定义、接口参数等）
-├── starter                           # 任务派发模块
-│   ├── controller                   # 任务派发的抽象接口层
-│   ├── job                  # 任务派发的Http实现
-│   └── mq                 # 任务派发的Redis实现
-├── domain                                 # 分布式ID生成模块
-├── sdk                           # Server(Supervisor & Worker)注册模块
-│   ├──                    # Server注册中心的抽象接口层
-│   ├── disjob-registry-consul                # Server注册中心：Consul实现
-│   ├── disjob-registry-database              # Server注册中心：Database实现
-│   ├── disjob-registry-etcd                  # Server注册中心：Etcd实现
-│   ├── disjob-registry-nacos                 # Server注册中心：Nacos实现
-│   ├── disjob-registry-redis                 # Server注册中心：Redis实现
-│   └── disjob-registry-zookeeper             # Server注册中心：Zookeeper实现
-├── common                            # 聚合各个模块的测试覆盖率报告
-├── infrastructure                            # Samples项目③pom.xml
-│   ├── disjob-samples-conf-common            # Samples公共配置（log4j2.xml）
-│   ├── disjob-samples-conf-supervisor        # Samples Supervisor配置
-│   ├── disjob-samples-conf-worker            # Samples Worker配置
-│   ├── disjob-samples-frameless-worker       # Worker单独部署的范例（普通Java-main应用）
-│   ├── disjob-samples-springboot-common      # Samples Spring-boot公共模块
-│   ├── disjob-samples-springboot-merged      # Supervisor与Worker合并部署的范例（Spring-boot应用）
-│   ├── disjob-samples-springboot-supervisor  # Supervisor单独部署的范例（Spring-boot应用）
-│   └── disjob-samples-springboot-worker      # Worker单独部署的范例（Spring-boot应用）
-├── plugin.demomember                         # Supervisor代码
+```text
+memberclub                       # 主项目①pom.xml
+├── starter                      # memberclub 的启东入口，Rpc/MQ/Http/Job等流量入口
+├── common                       # Common 公共工具类
+├── sdk                          # 会员领域能力 sdk
+├── domain                       # 领域对象，主要包括 DO、DTO、VO、PO 等
+├── plugin.demomember            # Demo会员（每个会员产品线独占一个 pom 工程）
+├── infrastruce                  # 基础设置层，包括rpc下游/mq/redis/apollo/db等下游
+详细说明
+├── starter                      # 启动服务
+│   ├── controller                       # Http 入口
+│   ├── job                              # Job 入口
+│   └── mq                               # MQ 流量入口
+├── domain                       # 领域对象
+│   ├── contants                         # 常量
+│   ├── context                          # 流程引擎和领域服务的上下文对象
+│   ├── dataobject                       # 数据对象 DO 等
+│   ├── entity                           # 数据库实体类 PO
+├── sdk                         # 会员领域能力以 sdk形式对各产品线提供
+│   ├── common                           # sdk 公共类工具类如 Topic/配置中心等
+│   ├── aftersale                        # 会员售后域（核心）
+│   ├── config                           # 配置中心
+│   ├── event                            # 会员交易事件领域能力（核心）
+│   ├── inventory                        # 会员商品库存领域能力（核心）
+│   ├── lock                             # 会员锁（核心）
+│   └── memberorder                      # 会员单管理（核心）
+│   └── membership                       # 会员身份域（核心）
+│   └── newmember                        # 会员新客域
+│   └── oncetask                         # 会员任务域
+│   └── ordercenter                      # 订单中心域（防腐层）
+│   └── perform                          # 会员履约域（核心）
+│   └── prefinance                       # 会员预结算域
+│   └── purchase                         # 会员购买域
+│   └── quota                            # 会员配额域
+│   └── sku                              # 会员商品域
+│   └── usertag                          # 会员用户标签域
+├── common                      # 会员 Common 公共工程，包括各类基础组价实现
+│   ├── annotation                       # 常见注解
+│   ├── extension                        # 扩展点引擎实现
+│   ├── flow                             # 流程引擎实现
+│   ├── log                              # 通用日志组件
+│   ├── retry                            # 通用分布式重试组件
+│   ├── util                             # 通用 Util 工具如 Spring 上下文工具类、加解密、集合类、周期计算、JSON 解析
+├── infrastructure             # 基础设置层，包括rpc下游/mq/redis/apollo/db等下游
+│   ├── assets                          # 下游资产服务防腐层和 资产SPI接口 
+│   ├── cache                           # 缓存组件
+│   ├── dynamic_config                  # 分布式配置中心组件
+│   ├── id                              # 分布式 ID 组件
+│   ├── lock                            # 分布式锁组件
+│   ├── mapstruct                       # mapstruct 接口
+│   ├── mq                              # MQ 接口（屏蔽了具体 MQ 接入方式，可独立替换）
+│   └── mybatis                         # Mybatis dao 层
+│   └── order                           # 订单中心防腐层
+│   └── retry                           # 分布式重试组件
+│   └── swagger                         # Swagger 配置
+│   └── usertag                         # 会员用户标签组件
+├── plugin.demomember          # Demo 会员业务特性
+│   └── config                          # 会员配置表
+│   └── perform                         # 会员履约域扩展点插件
+│   └── aftersale                       # 会员售后域扩展点插件
+│   └── prefinance                      # 会员预结算域扩展点插件
+│   └── purchase                        # 会员购买域扩展点插件
 ```
