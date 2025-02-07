@@ -1,10 +1,25 @@
----
-theme: cyanosis
----
-最近五阳写了一个付费会员中台 开源项目，欢迎大家一起探讨学习
-
 项目地址：https://gitee.com/juejinwuyang/memberclub
 
+在这个项目中你可以学习到 SpringBoot 集成 以下框架或组件。
+1. Mybatis-plus
+2. Sharding-sphere 多数据源分库分表
+3. Redis/redisson
+4. Apollo
+5. Springcloud（feign/enreka）
+6. RabbitMQ
+7. H2 内存数据库
+8. Swagger
+9. Lombok+MapStruct
+
+同时你也可以学习到以下组件的实现原理
+1. 流程引擎
+7. 扩展点引擎
+1. 分布式重试组件
+2. 通用日志组件
+3. 商品库存
+4. 分布式锁组件
+5. Redis Lua的使用
+6. Spring 上下文工具类
 
 # MemberClub 简述
 常见的会员共有以下几种形式 https://mp.weixin.qq.com/s/41dvqjqD9NgsOQvJvHP2wQ  付费会员的主要业务形态是：捆绑多种极具折扣和优惠力度的权益在会员商品中，用户购买后在一段时间内可享受会员权益，包括不限于：各位折扣力度大的优惠券、会员折扣价、会员专属内容，等会员专属权益。权益类型也可简单分为资产类（如券）、资格类（专属内容）。
@@ -93,6 +108,9 @@ public void process(AfterSaleApplyContext context) {
     }
 }
 ```
+## Spring 上下文静态类组件
+`ApplicationContextUtils` 可以在Spring 启动后，任意地方通过静态方法获取到 Spring 上下文。确保任意地方获取上下文时，Spring已被加载到静态属性中。
+
 ## 延迟队列组件
 延迟队列组件提供延迟事件触发能力，如异常重试场景往往需要延迟一段时间后再次重试，此时将请求投递到延迟队列可实现延迟重试。
 
@@ -208,3 +226,7 @@ memberclub                       # 主项目①pom.xml
 │   └── prefinance                      # 会员预结算域扩展点插件
 │   └── purchase                        # 会员购买域扩展点插件
 ```
+
+
+
+**项目地址**：https://gitee.com/juejinwuyang/memberclub
