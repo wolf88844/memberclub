@@ -227,6 +227,14 @@ memberclub                       # 主项目①pom.xml
 │   └── purchase                        # 会员购买域扩展点插件
 ```
 
+# 如何学习
+
+## 1. 先本地编译
+使用mvn命令编译
+
+mvn clean package -P ut
+## 2. 调试单元测试学习
+1. 推荐 TestDemoMember 单测类
 
 
 **项目地址**：https://gitee.com/juejinwuyang/memberclub
