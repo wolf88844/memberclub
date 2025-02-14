@@ -236,5 +236,29 @@ mvn clean package -P ut
 ## 2. 调试单元测试学习
 1. 推荐 TestDemoMember 单测类
 
+# 如何初始化环境
+memberclub 在standalone模式下无需任何中间件即可启动，在集成测试环境默认依赖 mysql/redis/apollo/rabbitmq 等中间件。
+## 安装 mysql
+https://www.cnblogs.com/liyihua/p/12306159.html
+
+## 修改 mysql 密码
+https://juejin.cn/post/7179863212928696379
+
+## 初始化数据库
+初始化SQL脚本的位置在： memberclub/memberclub.starter/src/main/resources/sql/initial.sql
+在mysql client中通过 source执行sql脚本，如下所示
+```
+source memberclub/memberclub.starter/src/main/resources/sql/initial.sql 
+```
+该脚本会自动创建数据库和表。
+
+## 安装 Apollo
+https://developer.aliyun.com/article/1369063
+
+## mybatis-plus整合多数据源
+https://juejin.cn/post/7316202589604003867
+
+## 安装 rabbitmq
+brew install rabbitmq
 
 **项目地址**：https://gitee.com/juejinwuyang/memberclub
