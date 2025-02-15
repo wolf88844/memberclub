@@ -22,13 +22,13 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver  ## 数据库连接驱动
         jdbc-url: jdbc:mysql://localhost:3306/member_db?useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: 123456
+        password: 1234567890
       sku0:
         type: com.zaxxer.hikari.HikariDataSource  ## 数据源连接池连接类型,支持 Durid,Hikari 等常见数据库连接池
         driver-class-name: com.mysql.cj.jdbc.Driver  ## 数据库连接驱动
         jdbc-url: jdbc:mysql://localhost:3306/member_sku?useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: 123456
+        password: 1234567890
     rules:  ## 分库分表规则配置
       sharding:
         tables:
@@ -203,5 +203,5 @@ apollo:
 
 ### 业务自定义配置项 Start
 junit_test_poll_config: false
-
+once_task_scan_period_perform_pre_days_1: 70
 ### 业务自定义配置项 END
