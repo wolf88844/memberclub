@@ -1,8 +1,8 @@
 /**
  * @(#)LockExtension.java, 一月 23, 2025.
  * <p>
- * Copyright 2025 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2025 memberclub.com. All rights reserved.
+ * memberclub.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.sdk.lock.extension;
 
@@ -20,7 +20,7 @@ import com.memberclub.domain.context.purchase.cancel.PurchaseCancelContext;
 import com.memberclub.domain.exception.AftersaleDoApplyException;
 
 /**
- * @author yuhaiqiang
+ * @author wuyang
  */
 @ExtensionConfig(desc = "加减锁扩展点", type = ExtensionType.COMMON, must = false)
 public interface LockExtension extends BaseExtension {

@@ -1,13 +1,13 @@
 /**
  * @(#)MessageQueueConsumerFacade.java, 一月 12, 2025.
  * <p>
- * Copyright 2025 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2025 memberclub.com. All rights reserved.
+ * memberclub.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.infrastructure.mq;
 
 /**
- * @author yuhaiqiang
+ * @author wuyang
  * <p>
  * MQ 消费防腐层, 提供了默认的实现类,一般情况下不需要额外扩展.需要注意的是
  * 在ut模式下使用 Local 模式实现 MQ, 在 test,online等正式环境,你应该依托于MQ 中间件

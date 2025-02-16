@@ -1,15 +1,15 @@
 /**
  * @(#)CacheEnum.java, 一月 29, 2025.
  * <p>
- * Copyright 2025 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2025 memberclub.com. All rights reserved.
+ * memberclub.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.infrastructure.cache;
 
 import lombok.Getter;
 
 /**
- * @author yuhaiqiang
+ * @author wuyang
  */
 public enum CacheEnum {
 

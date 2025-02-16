@@ -1,8 +1,8 @@
 /**
  * @(#)MetricsEnum.java, 十二月 28, 2024.
  * <p>
- * Copyright 2024 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2024 memberclub.com. All rights reserved.
+ * memberclub.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.sdk.common;
 
@@ -11,7 +11,7 @@ import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang.ObjectUtils;
 
 /**
- * @author yuhaiqiang
+ * @author wuyang
  */
 public enum Monitor {
 

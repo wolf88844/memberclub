@@ -1,8 +1,8 @@
 /**
  * @(#)TradeEventDomainExtension.java, 一月 12, 2025.
  * <p>
- * Copyright 2025 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2025 memberclub.com. All rights reserved.
+ * memberclub.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.memberclub.sdk.event.trade.extension;
 
@@ -21,7 +21,7 @@ import com.memberclub.domain.dataobject.perform.MemberSubOrderDO;
 import com.memberclub.domain.dataobject.purchase.MemberOrderDO;
 
 /**
- * @author yuhaiqiang
+ * @author wuyang
  */
 @ExtensionConfig(desc = "TradeEvent 事件构建扩展点", type = ExtensionType.COMMON, must = true)
 public interface TradeEventDomainExtension extends BaseExtension {
