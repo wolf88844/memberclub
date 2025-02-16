@@ -227,6 +227,42 @@ memberclub                       # 主项目①pom.xml
 │   └── purchase                        # 会员购买域扩展点插件
 ```
 
+# 技术选型
+
+#### 后端技术
+
+| 技术                 | 说明                | 官网                                           |
+| -------------------- | ------------------- | ---------------------------------------------- |
+| SpringBoot           | Web应用开发框架      | https://spring.io/projects/spring-boot         |
+| MyBatis              | ORM框架             | http://www.mybatis.org/mybatis-3/zh/index.html |
+| RabbitMQ             | 消息队列            | https://www.rabbitmq.com/                      |
+| Redis                | 内存数据存储         | https://redis.io/                              |
+| Druid                | 数据库连接池        | https://github.com/alibaba/druid               |
+| Lombok               | Java语言增强库      | https://github.com/rzwitserloot/lombok         |
+| Hutool               | Java工具类库        | https://github.com/looly/hutool                |
+| Swagger-UI           | API文档生成工具      | https://github.com/swagger-api/swagger-ui      |
+
+# 环境搭建
+
+## 开发工具
+
+| 工具          | 说明                | 官网                                            |
+| ------------- | ------------------- | ----------------------------------------------- |
+| IDEA          | 开发IDE             | https://www.jetbrains.com/idea/download         |
+| Navicat       | 数据库连接工具      | http://www.formysql.com/xiazai.html             |
+| Postman       | API接口调试工具      | https://www.postman.com/                        |
+| Typora        | Markdown编辑器      | https://typora.io/                              |
+
+### 开发环境
+
+| 工具       | 版本号    | 下载                                                         |
+|----------|--------| ------------------------------------------------------------ |
+| JDK      | 1.8    | https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html |
+| MySQL    | 8.1.0  | https://www.mysql.com/                                       |
+| Redis    | 7.0    | https://redis.io/download                                    |
+| RabbitMQ | 3.10.5 | http://www.rabbitmq.com/download.html                        |
+| Apollo   | -      | https://github.com/apolloconfig/apollo-quick-start                       |
+
 # 如何学习
 
 ## 1. 先本地编译
