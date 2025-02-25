@@ -21,6 +21,14 @@ public class ConfigService {
     @Autowired
     private ExtensionManager extensionManager;
 
+    /**
+     * 根据业务场景查找配置表
+     * 本方法通过扩展管理器获取与特定业务场景关联的配置表对象
+     * 主要用于解耦业务逻辑和配置管理，通过场景参数动态确定配置来源
+     *
+     * @param scene 业务场景，用于确定使用哪一种配置
+     * @return BizConfigTable 配置表对象，包含业务配置信息
+     */
     public BizConfigTable findConfigTable(BizScene scene) {
         return extensionManager.getExtension(scene, BizConfigTable.class);
     }
