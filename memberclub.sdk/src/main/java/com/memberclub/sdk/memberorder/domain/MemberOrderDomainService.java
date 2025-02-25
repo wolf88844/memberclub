@@ -39,28 +39,52 @@ import java.util.stream.Collectors;
 import static com.memberclub.domain.common.MemberTradeEvent.MEMBER_ORDER_START_PERFORM;
 
 /**
- * author: 掘金五阳
+ * MemberOrderDomainService 是一个服务类，用于处理会员订单的业务逻辑。
+ * 包含创建、提交成功、取消、执行开始、执行成功、反向执行成功等操作，并提供查询会员订单的方法。
+ *
+ * @author 掘金五阳
  */
 @DS("tradeDataSource")
 @Service
 public class MemberOrderDomainService {
 
-
+    /**
+     * 注入的DAO层接口，用于操作会员订单数据。
+     */
     @Autowired
     private MemberOrderDao memberOrderDao;
 
+    /**
+     * 注入的DAO层接口，用于操作会员子订单数据。
+     */
     @Autowired
     private MemberSubOrderDao memberSubOrderDao;
 
+    /**
+     * 扩展管理器，用于获取不同业务场景下的扩展实现。
+     */
     @Autowired
     private ExtensionManager extensionManager;
 
+    /**
+     * 子订单领域服务，用于处理子订单相关的业务逻辑。
+     */
     @Autowired
     private MemberSubOrderDomainService memberSubOrderDomainService;
 
+    /**
+     * 构建会员订单数据对象的工厂类。
+     */
     @Autowired
     private MemberOrderDataObjectBuildFactory memberOrderDataObjectBuildFactory;
 
+    /**
+     * 创建会员订单。
+     * 将传入的 {@link MemberOrderDO} 转换为 {@link MemberOrder} 和 {@link MemberSubOrder}，
+     * 并批量插入数据库。如果插入失败则抛出异常。
+     *
+     * @param memberOrderDO 会员订单数据对象
+     */
     public void createMemberOrder(MemberOrderDO memberOrderDO) {
         MemberOrder order = PurchaseConvertor.INSTANCE.toMemberOrder(memberOrderDO);
 
@@ -80,6 +104,12 @@ public class MemberOrderDomainService {
         CommonLog.info("生成会员单数据成功");
     }
 
+    /**
+     * 处理订单提交成功的业务逻辑。
+     * 更新会员订单的状态和其他相关信息，并调用扩展点处理额外逻辑。
+     *
+     * @param order 会员订单数据对象
+     */
     @Transactional(rollbackFor = Exception.class)
     @Retryable(throwException = false)
     public void onSubmitSuccess(MemberOrderDO order) {
@@ -98,6 +128,13 @@ public class MemberOrderDomainService {
         memberSubOrderDomainService.onSubmitSuccess(order);
     }
 
+    /**
+     * 处理订单取消的业务逻辑。
+     * 更新会员订单的状态和其他相关信息，并调用扩展点处理额外逻辑。
+     *
+     * @param context 取消上下文
+     * @param order   会员订单数据对象
+     */
     @Transactional(rollbackFor = Exception.class)
     @Retryable(throwException = false)
     public void onSubmitCancel(PurchaseCancelContext context, MemberOrderDO order) {
@@ -114,6 +151,13 @@ public class MemberOrderDomainService {
         memberSubOrderDomainService.onSubmitCancel(context, order);
     }
 
+    /**
+     * 开始执行会员订单的业务逻辑。
+     * 更新会员订单的执行状态，并调用扩展点处理额外逻辑。
+     *
+     * @param context 执行上下文
+     * @return 更新影响的行数
+     */
     @Transactional(rollbackFor = Exception.class)
     public Integer onStartPerform(PerformContext context) {
         LambdaUpdateWrapper<MemberOrder> wrapper = new LambdaUpdateWrapper<>();
@@ -128,6 +172,13 @@ public class MemberOrderDomainService {
         return cnt;
     }
 
+    /**
+     * 处理会员订单执行成功的业务逻辑。
+     * 更新会员订单的状态和执行状态，并调用扩展点处理额外逻辑。
+     *
+     * @param context 执行上下文
+     * @param order   会员订单数据对象
+     */
     @Transactional(rollbackFor = Exception.class)
     public void onPerformSuccess(PerformContext context, MemberOrderDO order) {
         order.onPerformSuccess(context);
@@ -139,21 +190,29 @@ public class MemberOrderDomainService {
                 .set(MemberOrder::getPerformStatus, order.getPerformStatus().getCode())
                 .set(MemberOrder::getStime, order.getStime())
                 .set(MemberOrder::getEtime, order.getEtime())
-                .set(MemberOrder::getUtime, order.getUtime())
-        ;
+                .set(MemberOrder::getUtime, order.getUtime());
 
         extensionManager.getExtension(BizScene.of(context.getBizType()),
                 MemberOrderDomainExtension.class).onPerformSuccess(context, order, wrapper);
     }
 
-
+    /**
+     * 处理会员订单提交失败的业务逻辑（暂未实现）。
+     *
+     * @param order 会员订单数据对象
+     */
     @Retryable(throwException = false)
     @Transactional(rollbackFor = Exception.class)
     public void submitFail(MemberOrderDO order) {
         // TODO: 2025/1/4
-
     }
 
+    /**
+     * 处理会员订单反向执行成功的业务逻辑。
+     * 更新会员订单的执行状态，并调用扩展点处理额外逻辑。
+     *
+     * @param context 反向执行上下文
+     */
     @Transactional(rollbackFor = Exception.class)
     public void onReversePerformSuccess(ReversePerformContext context) {
         MemberOrderDO order = context.getMemberOrderDO();
@@ -163,13 +222,19 @@ public class MemberOrderDomainService {
         wrapper.eq(MemberOrder::getUserId, order.getUserId())
                 .eq(MemberOrder::getTradeId, order.getTradeId())
                 .set(MemberOrder::getPerformStatus, order.getPerformStatus().getCode())
-                .set(MemberOrder::getUtime, order.getUtime())
-        ;
+                .set(MemberOrder::getUtime, order.getUtime());
 
         extensionManager.getExtension(BizScene.of(context.getBizType()),
                 MemberOrderDomainExtension.class).onReversePerformSuccess(context, order, wrapper);
     }
 
+    /**
+     * 根据用户ID和交易ID查询会员订单。
+     *
+     * @param userId 用户ID
+     * @param tradeId 交易ID
+     * @return 查询到的会员订单数据对象，如果未找到则返回null
+     */
     public MemberOrderDO getMemberOrderDO(long userId, String tradeId) {
         MemberOrder order = memberOrderDao.selectByTradeId(userId, tradeId);
         if (order == null) {
@@ -183,6 +248,14 @@ public class MemberOrderDomainService {
         return memberOrderDO;
     }
 
+    /**
+     * 根据用户ID、交易ID和子交易ID查询会员订单，并过滤出指定子交易ID的子订单。
+     *
+     * @param userId 用户ID
+     * @param tradeId 交易ID
+     * @param subTradeId 子交易ID
+     * @return 查询到的会员订单数据对象，如果未找到或无匹配子订单则返回null
+     */
     public MemberOrderDO getMemberOrderDO(long userId, String tradeId, Long subTradeId) {
         MemberOrderDO memberOrderDO = getMemberOrderDO(userId, tradeId);
         if (memberOrderDO != null && CollectionUtils.isNotEmpty(memberOrderDO.getSubOrders())) {
